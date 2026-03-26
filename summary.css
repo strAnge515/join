@@ -22,7 +22,7 @@ a {
 
 /* SIDEBAR */
 .sidebar {
-  width: 232px;
+  width: 240px;
   background: #2a3647;
   color: #cdcdcd;
   display: flex;
@@ -58,7 +58,7 @@ a {
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: 0 56px;
+  padding: 0 65px;
   font-size: 16px;
   font-weight: 400;
   color: #cdcdcd;
@@ -84,7 +84,6 @@ a {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding-left: 56px;
 }
 
 .sidebar-bottom a {
@@ -326,6 +325,10 @@ a {
 /* GREETING */
 .greeting {
   min-width: 360px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 30%;
+  bottom: 0px;
 }
 
 .greeting p {
