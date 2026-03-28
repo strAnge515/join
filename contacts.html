@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="contacts.css" />
+    <script src="./contacts-template.js"></script>
+    <script src="./contacts.js"></script>
+  </head>
+  <body onload="renderContacts()">
+    <!-- Sidenavigation -->
+    <aside>
+      <div class="aside-logo">
+        <img
+          src="./assets/img/nymixart-letter-1442853_640.png"
+          alt="joinlogo"
+        />
+      </div>
+      <nav class="navigation">
+        <a href="#">Summary</a>
+        <a href="index.html">Board</a>
+        <a href="task.html">Add Task</a>
+        <a href="#">Contacts</a>
+      </nav>
+      <footer class="aside-footer">
+        <a href="#">Legal Notice</a>
+      </footer>
+    </aside>
+    <div class="contact-container">
+      <button class="add-btn">Add new contact +</button>
+      <div id="contact-list"></div>
+    </div>
+    <div class="details">
+      <div class="details-header">
+        <h1>Contacts</h1>
+        <span class="subtitle">Better with a team</span>
+      </div>
+      <div id="contact-details"></div>
+    </div>
+  </body>
+</html>
