@@ -66,7 +66,7 @@ function createContactElement(contact) {
   const item = document.createElement('button');
   item.className = 'contact';
   item.addEventListener('click', () => {
-    showContactDetails(contact);
+    showContactDetails(item, contact);
   });
   item.innerHTML = getContactTemplate(contact, initials);
   return item;
@@ -111,9 +111,38 @@ function stringToColor(str) {
   return colors[Math.abs(hash) % colors.length];
 }
 
-function showContactDetails(contact) {
+function showContactDetails(element, contact) {
   const container = document.getElementById('contact-details');
   const initials = contact.firstName[0] + contact.lastName[0];
   const color = contact.color;
+  toggleActiveContact(element);
   container.innerHTML = getContactDetailTemplate(contact, initials, color);
+}
+
+function toggleActiveContact(element) {
+  const allContacts = document.querySelectorAll('.contact');
+  allContacts.forEach((contact) => contact.classList.remove('active'));
+  element.classList.add('active');
+}
+
+function openAddContactDialog() {
+  const dialog = document.getElementById('contactDialog');
+
+  dialog.showModal();
+
+  // Animation starten
+  setTimeout(() => {
+    dialog.classList.add('show');
+  }, 10);
+}
+
+function closeDialog() {
+  const dialog = document.getElementById('contactDialog');
+
+  dialog.classList.remove('show');
+
+  // warten bis Animation fertig ist
+  setTimeout(() => {
+    dialog.close();
+  }, 400);
 }

@@ -20,7 +20,7 @@ function getContactDetailTemplate(contact, initials, color) {
         <div>
           <div class="detail-name">${contact.firstName} ${contact.lastName}</div>
           <button class="edit-btn">✏️ Edit </button>
-          <button class="delete-btn">🗑 Delete</button>
+          <button class="edit-btn">🗑 Delete</button>
         </div>
       </div>
       <div class="detail-section">

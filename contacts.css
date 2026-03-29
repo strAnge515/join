@@ -113,6 +113,8 @@ body {
   width: 80px;
   height: 80px;
   border-radius: 50%;
+  border: 2px solid white;
+  filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.2));
   color: white;
   display: flex;
   align-items: center;
@@ -138,4 +140,9 @@ body {
 .detail-label {
   font-weight: bold;
   margin-top: 10px;
+}
+
+.edit-btn {
+  border: none;
+  cursor: pointer;
 }

@@ -6,6 +6,7 @@
     <title>Join</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="contacts.css" />
+    <link rel="stylesheet" href="add-new-contact.css" />
     <script src="./contacts-template.js"></script>
     <script src="./contacts.js"></script>
   </head>
@@ -29,7 +30,9 @@
       </footer>
     </aside>
     <div class="contact-container">
-      <button class="add-btn">Add new contact +</button>
+      <button class="add-btn" onclick="openAddContactDialog()">
+        Add new contact +
+      </button>
       <div id="contact-list"></div>
     </div>
     <div class="details">
@@ -39,5 +42,37 @@
       </div>
       <div id="contact-details"></div>
     </div>
+    <button onclick="openAddContactDialog()">Open Dialog</button>
+
+    <dialog id="contactDialog" closedby="any">
+      <div class="dialog">
+        <!-- LEFT SIDE -->
+        <div class="dialog-left">
+          <img src="./assets/img/contacts/join-logo.svg" class="logo" />
+          <h1>Add contact</h1>
+          <p>Tasks are better with a team!</p>
+          <div class="underline"></div>
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="dialog-right">
+          <img class="avatar-profile" src="./assets/img/contacts/avatar-profile.svg"></img>
+          <div class="actions">
+            <button class="close-btn" onclick="closeDialog()">✕</button>
+
+            <input type="text" placeholder="Name" />
+            <input type="email" placeholder="Email" />
+            <input type="tel" placeholder="Phone" />
+
+            <div class="action-btns">
+              <button class="cancel-btn" onclick="closeDialog()">
+                Cancel ✕
+              </button>
+              <button class="create-btn">Create contact ✔</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
   </body>
 </html>
