@@ -19,7 +19,7 @@ function getContactDetailTemplate(contact, initials, color) {
         </div>
         <div>
           <div class="detail-name">${contact.firstName} ${contact.lastName}</div>
-          <button class="edit-btn">✏️ Edit </button>
+          <button class="edit-btn" onclick="openEditContactDialog(${contact.id})">✏️ Edit </button>
           <button class="edit-btn">🗑 Delete</button>
         </div>
       </div>
@@ -32,4 +32,31 @@ function getContactDetailTemplate(contact, initials, color) {
       </div>
     </div>
   `;
+}
+
+function getEditContactTemplate(contact, initials, color) {
+  return `<div class="dialog">
+        <div class="dialog-left">
+          <img src="./assets/img/contacts/join-logo.svg" class="logo" />
+          <h1>Edit contact</h1>
+          <div class="underline"></div>
+        </div>
+        <div class="dialog-right">
+<div class="detail-avatar" style="background:${color}">
+          ${initials}
+        </div>
+          <div class="actions">
+            <button class="close-btn" onclick="closeDialog(this)">✕</button>
+            <input type="text" placeholder="Name" value="${contact.firstName} ${contact.lastName}"/>
+            <input type="email" placeholder="Email"  value="${contact.email}"/>
+            <input type="tel" placeholder="Phone" value="${contact.phone}"/>
+            <div class="action-btns">
+              <button class="cancel-btn" onclick="closeDialog(this)">
+                Cancel ✕
+              </button>
+              <button class="create-btn">Save ✔</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
 }

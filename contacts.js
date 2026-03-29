@@ -1,35 +1,41 @@
 const contacts = [
   {
+    id: 1,
     firstName: 'Anton',
     lastName: 'Mayer',
     email: 'anton@gmail.com',
     phone: '+49 123 456789',
   },
   {
+    id: 2,
     firstName: 'Anja',
     lastName: 'Schulz',
     email: 'schulz@hotmail.com',
     phone: '+49 987 654321',
   },
   {
+    id: 3,
     firstName: 'Benedikt',
     lastName: 'Ziegler',
     email: 'benedikt@gmail.com',
     phone: '+49 555 222333',
   },
   {
+    id: 4,
     firstName: 'David',
     lastName: 'Eisenberg',
     email: 'davidberg@gmail.com',
     phone: '+49 444 111222',
   },
   {
+    id: 5,
     firstName: 'Eva',
     lastName: 'Fischer',
     email: 'eva@gmail.com',
     phone: '+49 777 888999',
   },
   {
+    id: 6,
     firstName: 'Emmanuel',
     lastName: 'Mauer',
     email: 'emmanuel@gmail.com',
@@ -112,11 +118,15 @@ function stringToColor(str) {
 }
 
 function showContactDetails(element, contact) {
-  const container = document.getElementById('contact-details');
+  const contactDetailsRef = document.getElementById('contact-details');
   const initials = contact.firstName[0] + contact.lastName[0];
   const color = contact.color;
   toggleActiveContact(element);
-  container.innerHTML = getContactDetailTemplate(contact, initials, color);
+  contactDetailsRef.innerHTML = getContactDetailTemplate(
+    contact,
+    initials,
+    color,
+  );
 }
 
 function toggleActiveContact(element) {
@@ -126,23 +136,21 @@ function toggleActiveContact(element) {
 }
 
 function openAddContactDialog() {
-  const dialog = document.getElementById('contactDialog');
-
+  const dialog = document.getElementById('addContactDialog');
   dialog.showModal();
-
-  // Animation starten
-  setTimeout(() => {
-    dialog.classList.add('show');
-  }, 10);
 }
 
-function closeDialog() {
-  const dialog = document.getElementById('contactDialog');
+function openEditContactDialog(contactId) {
+  const contact = contacts.find((contact) => contact.id === contactId);
+  const dialog = document.getElementById('editContactDialog');
+  const initials = contact.firstName[0] + contact.lastName[0];
+  const color = contact.color;
+  dialog.innerHTML = '';
+  dialog.innerHTML = getEditContactTemplate(contact, initials, color);
+  dialog.showModal();
+}
 
-  dialog.classList.remove('show');
-
-  // warten bis Animation fertig ist
-  setTimeout(() => {
-    dialog.close();
-  }, 400);
+function closeDialog(element) {
+  const dialog = element.closest('dialog');
+  dialog.close();
 }

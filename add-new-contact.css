@@ -2,7 +2,7 @@ dialog {
   border: none;
   border-radius: 20px;
   padding: 0;
-  overflow: hidden;
+
   position: fixed;
   top: 50%;
   left: 50%;
@@ -19,7 +19,6 @@ dialog::backdrop {
   background: #fff;
   border-radius: 20px;
   display: flex;
-  overflow: hidden;
 }
 
 /* LEFT */
