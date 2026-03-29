@@ -1,47 +1,46 @@
 const contacts = [
   {
-    id: 1,
     firstName: 'Anton',
     lastName: 'Mayer',
     email: 'anton@gmail.com',
     phone: '+49 123 456789',
   },
   {
-    id: 2,
     firstName: 'Anja',
     lastName: 'Schulz',
     email: 'schulz@hotmail.com',
     phone: '+49 987 654321',
   },
   {
-    id: 3,
     firstName: 'Benedikt',
     lastName: 'Ziegler',
     email: 'benedikt@gmail.com',
     phone: '+49 555 222333',
   },
   {
-    id: 4,
     firstName: 'David',
     lastName: 'Eisenberg',
     email: 'davidberg@gmail.com',
     phone: '+49 444 111222',
   },
   {
-    id: 5,
     firstName: 'Eva',
     lastName: 'Fischer',
     email: 'eva@gmail.com',
     phone: '+49 777 888999',
   },
   {
-    id: 6,
     firstName: 'Emmanuel',
     lastName: 'Mauer',
     email: 'emmanuel@gmail.com',
     phone: '+49 666 333444',
   },
-];
+].map((contact, index) => ({
+  id: index + 1,
+  ...contact,
+}));
+
+let nextId = contacts.length + 1;
 
 contacts.forEach((contact) => {
   contact.color = stringToColor(contact.email);
@@ -153,4 +152,50 @@ function openEditContactDialog(contactId) {
 function closeDialog(element) {
   const dialog = element.closest('dialog');
   dialog.close();
+}
+
+function deleteContact(contactId) {
+  const confirmDelete = confirm('Kontakt wirklich löschen?');
+  if (!confirmDelete) return;
+  const index = contacts.findIndex((c) => c.id === contactId);
+  const contactDetailsRef = document.getElementById('contact-details');
+  if (index !== -1) {
+    contacts.splice(index, 1);
+    renderContacts();
+    contactDetailsRef.innerHTML = '';
+  }
+}
+
+function handleAddContact(event) {
+  event.preventDefault();
+  const nameValue = document.getElementById('nameInput').value.trim();
+  const email = document.getElementById('emailInput').value.trim();
+  const phone = document.getElementById('phoneInput').value.trim();
+  const [firstName, ...rest] = nameValue.split(' ');
+  const lastName = rest.join(' ') || '';
+  const newContact = {
+    firstName,
+    lastName,
+    email,
+    phone,
+  };
+  addContact(newContact);
+  renderContacts();
+  clearInputs();
+  closeDialog(
+    document.getElementById('addContactDialog').querySelector('.close-btn'),
+  );
+}
+
+function clearInputs() {
+  document.getElementById('nameInput').value = '';
+  document.getElementById('emailInput').value = '';
+  document.getElementById('phoneInput').value = '';
+}
+
+function addContact(newContact) {
+  contacts.push({
+    id: nextId++,
+    ...newContact,
+  });
 }

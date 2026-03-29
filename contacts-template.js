@@ -20,7 +20,7 @@ function getContactDetailTemplate(contact, initials, color) {
         <div>
           <div class="detail-name">${contact.firstName} ${contact.lastName}</div>
           <button class="edit-btn" onclick="openEditContactDialog(${contact.id})">✏️ Edit </button>
-          <button class="edit-btn">🗑 Delete</button>
+          <button class="edit-btn" onclick="deleteContact(${contact.id})">🗑 Delete</button>
         </div>
       </div>
       <div class="detail-section">
