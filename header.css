@@ -57,8 +57,8 @@
     height: 40px;
     border-radius: 50%;
     background-color: white;
-    color: #091931; /* Dunkelblau für die Initialen */
-    border: 2px solid #091931; /* Dunkelblau für den Rand */
+    color: #091931;
+    border: 2px solid #091931; 
     display: flex;
     align-items: center;
     justify-content: center;
