@@ -30,8 +30,8 @@ export async function saveContact(contactData) {
 
 
 /**
- * Loads all contacts from the Firestore database.
- * @returns {Promise<Array>} An array containing all contact objects.
+ * Loads all contacts from Firestore and sorts them alphabetically by name.
+ * @returns {Promise<Array>} An array containing all contact objects sorted A-Z.
  */
 export async function loadContacts() {
     try {
@@ -40,6 +40,8 @@ export async function loadContacts() {
         querySnapshot.forEach((doc) => {
             contacts.push({ id: doc.id, ...doc.data() });
         });
+        
+        contacts.sort((a, b) => a.name.localeCompare(b.name));
         return contacts;
     } catch (error) {
         console.error(error);
@@ -57,4 +59,21 @@ export async function deleteContact(contactId) {
     } catch (error) {
         console.error(error);
     }
+}
+
+
+/**
+ * Generates initials from a full name (e.g. "Anton Mayer" -> "AM").
+ * @param {string} name - The full name of the contact.
+ * @returns {string} The generated initials.
+ */
+export function getContactInitials(name) {
+    if (!name) return "";
+    const names = name.split(' ');
+    
+    const initials = names.slice(0, 2)
+                          .map(namePart => namePart[0].toUpperCase())
+                          .join('');
+                          
+    return initials;
 }
