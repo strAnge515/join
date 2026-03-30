@@ -54,7 +54,7 @@ function getEditContactTemplate(contact, initials, color) {
               <button class="cancel-btn" onclick="closeDialog(this)">
                 Cancel ✕
               </button>
-              <button class="create-btn">Save ✔</button>
+              <button class="create-btn" onclick="editContact(${contact.id})">Save ✔</button>
             </div>
           </div>
         </div>

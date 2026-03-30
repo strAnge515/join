@@ -197,5 +197,24 @@ function addContact(newContact) {
   contacts.push({
     id: nextId++,
     ...newContact,
+    color: stringToColor(newContact.email),
   });
+}
+
+function editContact(contactId) {
+  const contact = contacts.find((contact) => contact.id === contactId);
+  const activeContactElement = document.querySelector('.contact.active');
+  const dialogRef = document.getElementById('editContactDialog');
+  const nameInput = dialogRef.querySelector('input[type="text"]');
+  const emailInput = dialogRef.querySelector('input[type="email"]');
+  const phoneInput = dialogRef.querySelector('input[type="tel"]');
+  const [firstName, ...lastNameParts] = nameInput.value.trim().split(' ');
+  const lastName = lastNameParts.join(' ');
+  contact.firstName = firstName;
+  contact.lastName = lastName;
+  contact.email = emailInput.value.trim();
+  contact.phone = phoneInput.value.trim();
+  dialogRef.close();
+  renderContacts();
+  showContactDetails(activeContactElement, contact);
 }
