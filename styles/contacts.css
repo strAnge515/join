@@ -141,11 +141,11 @@ body {
 }
 
 .detail-avatar {
-  width: 120px;
-  height: 120px;
+  width: 114px;
+  height: 114px;
   border-radius: 50%;
   border: 3px solid white;
-  filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.2));
   color: white;
   display: flex;
   align-items: center;

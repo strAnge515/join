@@ -55,9 +55,10 @@ dialog::backdrop {
 
 /* RIGHT */
 .actions {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding-left: 83px;
+  padding-left: 80px;
   width: calc(100% - 120px);
   margin-bottom: 80px;
 }
@@ -65,7 +66,7 @@ dialog::backdrop {
 .dialog-right {
   width: 60%;
   padding-left: 83px;
-  padding-right: 40px;
+  padding-right: 48px;
   position: relative;
   display: flex;
   align-items: center;
@@ -99,12 +100,13 @@ dialog::backdrop {
 
 input {
   width: 100%;
-  padding: 0 21px;
+  padding: 0 0px 0 21px;
   margin-bottom: 32px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 14px;
   height: 50px;
+  box-sizing: border-box;
 }
 
 input::placeholder {
