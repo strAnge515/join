@@ -2,62 +2,78 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join - Board</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<!-- Sidenavigation -->
-    <aside>
-        <div class="aside-logo">
-            <img src="./assets/img/join_logo_vector.svg" alt="joinlogo">
-        </div>
-        <nav class="navigation">
-            <a href="summary.html">Summary</a>
-          <a href="index.html">Board</a>
-            <a href="task.html">Add Task</a>
-            <a href="#">Contacts</a>
-        </nav>
-        <footer class="aside-footer">
-            <a href="#">Legal Notice</a>
-        </footer>
-    </aside>
-    
+  <aside>
+    <div class="aside-logo">
+      <img src="./assets/img/join_logo_vector.svg" alt="Join Logo">
+    </div>
 
-   <!-- MAIN -->
+    <nav class="navigation">
+      <a href="summary.html">
+        <span class="nav-icon"><img src="./assets/img/sumarry_icon.svg" alt="Summary"></span>
+        <span>Summary</span>
+      </a>
+
+      <a href="index.html" class="active">
+        <span class="nav-icon"><img src="./assets/img/board.svg" alt="Board"></span>
+        <span>Board</span>
+      </a>
+
+      <a href="task.html">
+        <span class="nav-icon"><img src="./assets/img/add_task.svg" alt="Add Task"></span>
+        <span>Add Task</span>
+      </a>
+
+      <a href="contact.html">
+        <span class="nav-icon"><img src="./assets/img/contact.svg" alt="Contacts"></span>
+        <span>Contacts</span>
+      </a>
+    </nav>
+
+    <footer class="aside-footer">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Legal notice</a>
+    </footer>
+  </aside>
+
   <main class="main">
- 
-    <!-- BOARD HEADER -->
     <header class="board-header">
       <h1 class="board-header__title">Board</h1>
+
       <div class="board-header__search">
         <input type="text" placeholder="Find Task" />
         <span class="board-header__search-icon">🔍</span>
       </div>
+
       <button class="board-header__add-btn">Add task +</button>
     </header>
- 
-    <!-- BOARD -->
+
     <div class="board">
- 
-      <!-- TO DO -->
       <section class="board-column">
         <div class="board-column__header">
           <h2 class="board-column__title">To do</h2>
           <button class="board-column__add-btn">+</button>
         </div>
+
         <div class="board-column__cards" id="column-todo">
- 
           <div class="task-card">
             <span class="task-card__category" style="background:#ff7b00;">Design</span>
             <h3 class="task-card__title">Website redesign</h3>
             <p class="task-card__description">Modify the contents of the main website...</p>
+
             <div class="task-card__progress">
-              <div class="progress-bar"><div class="progress-bar__fill" style="width: 50%"></div></div>
+              <div class="progress-bar">
+                <div class="progress-bar__fill" style="width: 50%"></div>
+              </div>
               <span class="task-card__progress-label">1/2 Done</span>
             </div>
+
             <div class="task-card__footer">
               <div class="avatar-group">
                 <div class="avatar" style="background:#29abe2;">SM</div>
@@ -67,22 +83,21 @@
               <span class="prio-icon">🟢</span>
             </div>
           </div>
- 
         </div>
       </section>
- 
-      <!-- IN PROGRESS -->
+
       <section class="board-column">
         <div class="board-column__header">
           <h2 class="board-column__title">In progress</h2>
           <button class="board-column__add-btn">+</button>
         </div>
+
         <div class="board-column__cards" id="column-inprogress">
- 
           <div class="task-card">
             <span class="task-card__category" style="background:#e91e8c;">Sales</span>
             <h3 class="task-card__title">Call potential clients</h3>
             <p class="task-card__description">Make the product presentation to prospective buyers</p>
+
             <div class="task-card__footer">
               <div class="avatar-group">
                 <div class="avatar" style="background:#e74c3c;">RS</div>
@@ -92,22 +107,21 @@
               <span class="prio-icon">🔴</span>
             </div>
           </div>
- 
         </div>
       </section>
- 
-      <!-- AWAITING FEEDBACK -->
+
       <section class="board-column">
         <div class="board-column__header">
           <h2 class="board-column__title">Awaiting feedback</h2>
           <button class="board-column__add-btn">+</button>
         </div>
+
         <div class="board-column__cards" id="column-awaiting">
- 
           <div class="task-card">
             <span class="task-card__category" style="background:#00bcd4;">Backoffice</span>
             <h3 class="task-card__title">Accounting invoices</h3>
             <p class="task-card__description">Write open invoices for customer</p>
+
             <div class="task-card__footer">
               <div class="avatar-group">
                 <div class="avatar" style="background:#9c27b0;">MB</div>
@@ -117,11 +131,12 @@
               <span class="prio-icon">🟡</span>
             </div>
           </div>
- 
+
           <div class="task-card">
             <span class="task-card__category" style="background:#ffc107; color:#333;">Media</span>
             <h3 class="task-card__title">Video cut</h3>
             <p class="task-card__description">Edit the new company video</p>
+
             <div class="task-card__footer">
               <div class="avatar-group">
                 <div class="avatar" style="background:#607d8b;">HK</div>
@@ -129,26 +144,28 @@
               <span class="prio-icon">🟡</span>
             </div>
           </div>
- 
         </div>
       </section>
- 
-      <!-- DONE -->
+
       <section class="board-column">
         <div class="board-column__header">
           <h2 class="board-column__title">Done</h2>
           <button class="board-column__add-btn">+</button>
         </div>
+
         <div class="board-column__cards" id="column-done">
- 
           <div class="task-card">
             <span class="task-card__category" style="background:#1565c0;">Marketing</span>
             <h3 class="task-card__title">Social media strategy</h3>
             <p class="task-card__description">Develop an ad campaign for brand positioning</p>
+
             <div class="task-card__progress">
-              <div class="progress-bar"><div class="progress-bar__fill" style="width: 100%"></div></div>
+              <div class="progress-bar">
+                <div class="progress-bar__fill" style="width: 100%"></div>
+              </div>
               <span class="task-card__progress-label">3/3 Done</span>
             </div>
+
             <div class="task-card__footer">
               <div class="avatar-group">
                 <div class="avatar" style="background:#4caf50;">BZ</div>
@@ -157,13 +174,10 @@
               <span class="prio-icon">🟢</span>
             </div>
           </div>
- 
         </div>
       </section>
- 
     </div>
   </main>
-
 </body>
 
 </html>

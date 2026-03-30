@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join 360 - Summary</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="summary.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <aside>
+    <div class="aside-logo">
+      <img src="./assets/img/join_logo_vector.svg" alt="Join Logo">
+    </div>
+
+    <nav class="navigation">
+      <a href="summary.html" class="active">
+        <span class="nav-icon"><img src="./assets/img/sumarry_icon.svg" alt="Summary"></span>
+        <span>Summary</span>
+      </a>
+
+      <a href="index.html">
+        <span class="nav-icon"><img src="./assets/img/board.svg" alt="Board"></span>
+        <span>Board</span>
+      </a>
+
+      <a href="task.html">
+        <span class="nav-icon"><img src="./assets/img/add_task.svg" alt="Add Task"></span>
+        <span>Add Task</span>
+      </a>
+
+      <a href="contact.html">
+        <span class="nav-icon"><img src="./assets/img/contact.svg" alt="Contacts"></span>
+        <span>Contacts</span>
+      </a>
+    </nav>
+
+    <footer class="aside-footer">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Legal notice</a>
+    </footer>
+  </aside>
+
+  <main class="main summary-main">
+    <header class="topbar">
+      <div class="topbar-title">Kanban Project Management Tool</div>
+
+      <div class="topbar-right">
+        <div class="help">?</div>
+        <div class="profile">SM</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <section class="headline-row">
+        <h1>Join 360</h1>
+        <div class="divider"></div>
+        <p>Key Metrics at a Glance</p>
+      </section>
+
+      <section class="summary-layout">
+        <div class="cards-grid">
+          <div class="card small-card">
+            <div class="card-icon dark-circle">✎</div>
+            <div class="card-text">
+              <h2>1</h2>
+              <span>To-do</span>
+            </div>
+          </div>
+
+          <div class="card small-card">
+            <div class="card-icon dark-circle">✓</div>
+            <div class="card-text">
+              <h2>1</h2>
+              <span>Done</span>
+            </div>
+          </div>
+
+          <div class="card urgent-card">
+            <div class="urgent-left">
+              <div class="card-icon orange-circle">
+                <img src="./assets/img/Prio alta.svg" alt="Urgent">
+              </div>
+              <div class="card-text">
+                <h2>1</h2>
+                <span>Urgent</span>
+              </div>
+            </div>
+
+            <div class="card-separator"></div>
+
+            <div class="urgent-right">
+              <h3 id="current-date"></h3>
+              <p>Upcoming Deadline</p>
+            </div>
+          </div>
+
+          <div class="bottom-cards">
+            <div class="card bottom-card">
+              <h2>5</h2>
+              <span>Tasks in Board</span>
+            </div>
+
+            <div class="card bottom-card active-progress">
+              <h2>2</h2>
+              <span>Tasks In Progress</span>
+            </div>
+
+            <div class="card bottom-card">
+              <h2>2</h2>
+              <span>Awaiting Feedback</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="greeting">
+          <p>Good morning,</p>
+          <h2>Ihr Lieben!😉✌️</h2>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="./summary.js"></script>
+</body>
+
+</html>
