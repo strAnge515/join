@@ -47,9 +47,18 @@ function getEditContactTemplate(contact, initials, color) {
         </div>
           <div class="actions">
             <button class="close-btn" onclick="closeDialog(this)">✕</button>
-            <input type="text" placeholder="Name" value="${contact.firstName} ${contact.lastName}"/>
-            <input type="email" placeholder="Email"  value="${contact.email}"/>
-            <input type="tel" placeholder="Phone" value="${contact.phone}"/>
+            <div class="input-wrapper">
+              <input id="nameInput" type="text" placeholder="Name" value="${contact.firstName} ${contact.lastName}" required />
+              <img src="assets/img/contacts/person.svg" alt="">
+            </div>
+            <div class="input-wrapper">
+              <input id="emailInput" type="email" placeholder="Email" value="${contact.email}" required />
+              <img src="assets/img/contacts/mail.svg" alt="">
+            </div>
+            <div class="input-wrapper">
+              <input id="phoneInput" type="tel" placeholder="Phone" value="${contact.phone}" required />
+              <img src="assets/img/contacts/call.svg" alt="">
+            </div>
             <div class="action-btns">
               <button class="cancel-btn" onclick="closeDialog(this)">
                 Cancel ✕
