@@ -58,7 +58,7 @@ dialog::backdrop {
   display: flex;
   flex-direction: column;
   padding-left: 83px;
-  width: 100%;
+  width: calc(100% - 120px);
   margin-bottom: 80px;
 }
 
@@ -84,6 +84,10 @@ dialog::backdrop {
 .avatar-profile {
   width: 120px;
   height: 120px;
+  margin-bottom: 32px;
+}
+
+.dialog-detail-avatar {
   margin-bottom: 32px;
 }
 
@@ -144,4 +148,8 @@ input::placeholder {
   font-size: 20px;
   font-weight: bold;
   width: 214px;
+}
+
+.save-btn {
+  width: 111px;
 }

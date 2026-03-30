@@ -42,7 +42,7 @@ function getEditContactTemplate(contact, initials, color) {
           <div class="underline"></div>
         </div>
         <div class="dialog-right">
-<div class="detail-avatar" style="background:${color}">
+<div class="detail-avatar dialog-detail-avatar" style="background:${color}">
           ${initials}
         </div>
           <div class="actions">
@@ -63,7 +63,7 @@ function getEditContactTemplate(contact, initials, color) {
               <button class="cancel-btn" onclick="closeDialog(this)">
                 Cancel ✕
               </button>
-              <button class="create-btn" onclick="editContact(${contact.id})">Save ✔</button>
+              <button class="create-btn save-btn" onclick="editContact(${contact.id})">Save ✔</button>
             </div>
           </div>
         </div>
