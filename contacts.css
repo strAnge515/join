@@ -3,9 +3,17 @@ body {
   background: #f0f0f0;
 }
 
+.vertical-line {
+  rotate: 90deg;
+  width: 59px;
+  height: 3px;
+  background: #29abe2;
+  margin: 15px;
+}
+
 .contact-container {
   width: 300px;
-  height: 100%;
+  height: 100vh;
   background: #fff;
   overflow-y: auto;
   padding: 10px;
@@ -81,7 +89,7 @@ body {
   color: #777;
 }
 
-.details {
+.detail-container {
   flex: 1;
   padding: 30px;
 }
@@ -90,13 +98,19 @@ body {
 .details-header {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 30px;
+  margin-top: 83px;
+  margin-bottom: 32px;
 }
 
 .details-header h1 {
-  font-size: 32px;
+  font-size: 61px;
+  font-weight: bold;
   margin: 0;
+}
+
+.subtitle {
+  font-size: 27px;
+  color: #2a3647;
 }
 
 .contact-detail-card {
@@ -123,8 +137,8 @@ body {
 }
 
 .detail-name {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 47px;
+  font-weight: normal;
 }
 
 .detail-actions {
@@ -138,11 +152,35 @@ body {
 }
 
 .detail-label {
+  margin: 21px 0;
+  font-size: 20px;
+  height: 74px;
+  line-height: 74px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.detail-label-email,
+.detail-label-phone {
   font-weight: bold;
-  margin-top: 10px;
+  font-size: 16px;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 16px;
 }
 
 .edit-btn {
+  display: flex;
+  align-items: center;
   border: none;
   cursor: pointer;
+  font-size: 16px;
+  gap: 13px;
 }

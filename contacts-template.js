@@ -19,16 +19,26 @@ function getContactDetailTemplate(contact, initials, color) {
         </div>
         <div>
           <div class="detail-name">${contact.firstName} ${contact.lastName}</div>
-          <button class="edit-btn" onclick="openEditContactDialog(${contact.id})">✏️ Edit </button>
-          <button class="edit-btn" onclick="deleteContact(${contact.id})">🗑 Delete</button>
+          <div class="detail-actions">
+          <button class="edit-btn" onclick="openEditContactDialog(${contact.id})">
+          <img src="assets/img/contacts/edit.svg" alt="">
+          Edit </button>
+          <button class="edit-btn" onclick="deleteContact(${contact.id})">
+           <img src="assets/img/contacts/delete.svg" alt="">
+           Delete</button>
+           </div>
         </div>
       </div>
       <div class="detail-section">
         <div class="detail-label">Contact Information</div>
-        <div class="detail-label">Email</div>
-        <div class="email">${contact.email}</div>
-        <div class="detail-label">Phone</div>
-        <div>${contact.phone}</div>
+        <div class="details">
+          <div class="detail-label-email">Email</div>
+          <div class="email">${contact.email}</div>
+        </div>
+        <div class="details">
+          <div class="detail-label-phone">Phone</div>
+          <div>${contact.phone}</div>
+        </div>
       </div>
     </div>
   `;
