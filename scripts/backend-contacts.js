@@ -16,7 +16,7 @@ const db = getFirestore(app);
 
 /**
  * Saves a new contact to the Firestore database.
- * @param {Object} contactData - The data of the contact (name, email, phone).
+ * @param {Object} contactData - The data of the contact.
  * @returns {Promise<string>} The ID of the newly created document.
  */
 export async function saveContact(contactData) {
@@ -63,16 +63,17 @@ export async function deleteContact(contactId) {
 
 
 /**
- * Generates initials from a full name (e.g. "Anton Mayer" -> "AM").
+ * Generates initials from a full name safely (e.g. "Anton Mayer" -> "AM").
  * @param {string} name - The full name of the contact.
  * @returns {string} The generated initials.
  */
 export function getContactInitials(name) {
     if (!name) return "";
-    const names = name.split(' ');
+    
+    const names = name.trim().split(/\s+/);
     
     const initials = names.slice(0, 2)
-                          .map(namePart => namePart[0].toUpperCase())
+                          .map(namePart => namePart[0] ? namePart[0].toUpperCase() : "")
                           .join('');
                           
     return initials;

@@ -51,7 +51,7 @@ export async function loadTasks() {
  * Deletes a specific task from the Firestore database.
  * @param {string} taskId - The unique Firebase ID of the task.
  */
-export async function deleteContact(taskId) {
+export async function deleteTask(taskId) {
     try {
         await deleteDoc(doc(db, "tasks", taskId));
     } catch (error) {
