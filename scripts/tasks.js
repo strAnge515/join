@@ -1,12 +1,13 @@
 import { saveTask } from "./backend-tasks";
-
+function init() {
+    addTask();
+    setPriorityButtons();
+}
 function addTask() {
     let addButton = document.getElementById('btn-create');
     addButton.addEventListener("click", () => {
 
         saveTask();
-        setPriorityButtons();
-
     })
 }
 
@@ -44,4 +45,4 @@ let task = {
 
 
 
-document.addEventListener('DOMContentLoaded', addTask);
+document.addEventListener('DOMContentLoaded', init);
