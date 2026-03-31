@@ -5,30 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="./task.css">
-    <script src="./scrip.js"></script>
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <link rel="stylesheet" href="../styles/task.css">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../style.css">
+   
+    <script defer src="../scripts/sidebar.js"></script>
+    <script defer src="../scripts/header.js"></script>
+    <script defer src="../scripts/tasks.js"></script>
 
 </head>
 
-<body onload="onloadFunc()">
+<body>
 
-    <aside>
-        <div class="aside-logo">
-            <img src="./assets/img/nymixart-letter-1442853_640.png" alt="joinlogo">
-        </div>
-        <nav class="navigation">
-            <a href="#">Summary</a>
-            <a href="index.html">Board</a>
-            <a href="task.html">Add Task</a>
-            <a href="#">Contacts</a>
-        </nav>
-        <footer class="aside-footer">
-            <a href="#">Legal Notice</a>
-        </footer>
-    </aside>
+  
+  <div id="sidebar-container"></div>
+  <div id="header-container"></div>
 
-    <main class="main">
+    <main class="main" style="margin-left: 232px; margin-top: 80px;">
     <h1 class="main-title">Add Task</h1>
  
     <form class="task-form" id="task-form">
