@@ -8,18 +8,19 @@
 <link rel="stylesheet" href="../styles/header.css">
 <script defer src="../scripts/sidebar.js"></script>
 <script defer src="../scripts/header.js"></script>
+<script type="module" src="../scripts/backend-contacts.js"></script>
     <link rel="stylesheet" href="../styles/contacts.css" />
     <link rel="stylesheet" href="../styles/contact-dialog.css">
     <script src="../scripts/contacts-template.js"></script>
-    <script src="../scripts/contacts.js"></script>
+    <script type="module" src="../scripts/contacts.js"></script>
   </head>
-  <body onload="renderContacts()">
+  <body>
     <!-- Sidenavigation -->
     <div id="sidebar-container"></div>
     <div id="header-container"></div>
     <div class="content">
     <div class="contact-container">
-      <button class="add-btn" onclick="openAddContactDialog()">
+      <button class="add-btn" id="addContactBtn">
         Add new contact
         <img src="../assets/img/contacts/person_add.svg" alt="">
       </button>
@@ -45,8 +46,8 @@
         <div class="dialog-right">
           <img class="avatar-profile" src="../assets/img/contacts/avatar-profile.svg"></img>
           <div class="actions">
-            <button class="close-btn" onclick="closeDialog(this)">✕</button>
-            <form onsubmit="handleAddContact(event)">
+            <button class="close-btn btn-to-close">✕</button>
+            <form id="newContactForm">
              <div class="input-wrapper">
               <input id="nameInput" type="text" placeholder="Name" required />
               <img src="../assets/img/contacts/person.svg" alt="">
@@ -60,7 +61,7 @@
               <img src="../assets/img/contacts/call.svg" alt="">
             </div>
               <div class="action-btns">
-                <button type="button" class="cancel-btn" onclick="closeDialog(this)"> Cancel ✕</button>
+                <button type="button" class="cancel-btn btn-to-close"> Cancel ✕</button>
                 <button type="submit" class="create-btn">Create contact ✔</button>
               </div>
             </form>

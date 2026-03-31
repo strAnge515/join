@@ -19,7 +19,7 @@ body {
 }
 
 .contact-container {
-  width: 456px;
+  width: 352px;
   height: calc(100vh - 124px);
   background: #fff;
   overflow-y: auto;

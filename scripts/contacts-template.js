@@ -20,14 +20,14 @@ function getContactDetailTemplate(contact, initials, color) {
         <div>
           <div class="detail-name">${contact.firstName} ${contact.lastName}</div>
           <div class="detail-actions">
-          <button class="edit-btn" onclick="openEditContactDialog(${contact.id})">
+          <button class="edit-btn" id="editContactBtn" data-id="${contact.id}">
           <img src="../assets/img/contacts/edit.svg" alt="">
           Edit </button>
-          <button class="edit-btn" onclick="deleteContact(${contact.id})">
+          <button class="edit-btn" id="deleteContactBtn" data-id="${contact.id}">
            <img src="../assets/img/contacts/delete.svg" alt="">
            Delete</button>
            </div>
-        </div>
+           </div>
       </div>
       <div class="detail-section">
         <div class="detail-label">Contact Information</div>
@@ -37,7 +37,7 @@ function getContactDetailTemplate(contact, initials, color) {
         </div>
         <div class="details">
           <div class="detail-label-phone">Phone</div>
-          <div>${contact.phone}</div>
+          <div class="phone">${contact.phone}</div>
         </div>
       </div>
     </div>
@@ -56,7 +56,8 @@ function getEditContactTemplate(contact, initials, color) {
           ${initials}
         </div>
           <div class="actions">
-            <button class="close-btn" onclick="closeDialog(this)">✕</button>
+            <button class="close-btn btn-to-close">✕</button>
+            <form >
             <div class="input-wrapper">
               <input id="nameInput" type="text" placeholder="Name" value="${contact.firstName} ${contact.lastName}" required />
               <img src="../assets/img/contacts/person.svg" alt="">
@@ -70,11 +71,12 @@ function getEditContactTemplate(contact, initials, color) {
               <img src="../assets/img/contacts/call.svg" alt="">
             </div>
             <div class="action-btns">
-              <button class="cancel-btn" onclick="closeDialog(this)">
+              <button class="cancel-btn btn-to-close">
                 Cancel ✕
               </button>
-              <button class="create-btn save-btn" onclick="editContact(${contact.id})">Save ✔</button>
+              <button class="create-btn save-btn" type="submit">Save ✔</button>
             </div>
+            </form>
           </div>
         </div>
       </div>`;
