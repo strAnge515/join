@@ -1,4 +1,4 @@
-import { saveTask } from "./backend-tasks";
+import { saveTask } from "./backend-tasks.js";
 function init() {
     addTask();
     setPriorityButtons();
@@ -6,7 +6,7 @@ function init() {
 function addTask() {
     let addButton = document.getElementById('btn-create');
     addButton.addEventListener("click", () => {
-
+        addInformations();
         saveTask();
     })
 }
@@ -14,11 +14,32 @@ function addTask() {
 function addInformations() {
     let taskTitle = document.getElementById('task-title').value;
     let tastkDescription = document.getElementById('task-description').value;
+    let taskCategory = document.getElementById('task-category').value;
+    let taskDate = document.getElementById('task-date').value;
+    let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
+    let taskAssignedTo = document.getElementById('task-assigned');
+    let selectedContacts = Array.from(taskAssignedTo.selectedOptions);
+    selectedContacts.map((contact) => contact.value )
 
 }
 
+function createTaskObjekt() {
+    let task = {
+        title: taskTitle,
+        description: tastkDescription,
+        category: taskCategory,
+        assignet_to: selectedContacts,
+        date: taskDate,
+        prio: taskPrio,
+        subtask: [{ title: "drag and drop einbauen", state: "false" },
+        { titel: "Bispiel 2", state: "false" },
+        { titel: "Beispiel 3", state: "false" }
+        ]
+    }
+}
+
 function setPriorityButtons() {
-    activeButton = document.querySelectorAll('.prio-btn');
+    const activeButton = document.querySelectorAll('.prio-btn');
     activeButton.forEach(button => {
         button.addEventListener('click', () => {
             activeButton.forEach(button => {
@@ -30,18 +51,7 @@ function setPriorityButtons() {
     });
 }
 
-let task = {
-    title: "Kanbanboard erstellen",
-    description: "baue ein Kanbanboard mit drag and drop system",
-    category: "to do",
-    assignet_to: ["Max", "Steffi", "Denny"],
-    date: "date",
-    prio: "urgend",
-    subtask: [{ title: "drag and drop einbauen", state: "false" },
-    { titel: "Bispiel 2", state: "false" },
-    { titel: "Beispiel 3", state: "false" }
-    ]
-}
+
 
 
 

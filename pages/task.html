@@ -12,7 +12,7 @@
    
     <script defer src="../scripts/sidebar.js"></script>
     <script defer src="../scripts/header.js"></script>
-    <script defer src="../scripts/tasks.js"></script>
+    <script type="module" defer src="../scripts/tasks.js"></script>
 
 </head>
 
@@ -50,7 +50,7 @@
         <label class="task-form-label">Prio</label>
         <div class="task-form-prio-group" id="prio-group">
           <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">🔴 Urgent</button>
-          <button type="button" class="prio-btn prio-btn--medium" data-prio="medium">🟡 Medium</button>
+          <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">🟡 Medium</button>
           <button type="button" class="prio-btn prio-btn--low"    data-prio="low">🟢 Low</button>
         </div>
       </div>
