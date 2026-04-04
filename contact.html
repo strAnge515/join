@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join - Contacts</title>
+
+  <link rel="stylesheet" href="styles/board.css">
+  <link rel="stylesheet" href="styles/contact.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <aside>
+    <div class="aside-logo">
+      <img src="./assets/img/join_logo_vector.svg" alt="Join Logo">
+    </div>
+
+    <nav class="navigation">
+      <a href="summary.html">
+        <span class="nav-icon"><img src="./assets/img/sumarry_icon.svg"></span>
+        <span>Summary</span>
+      </a>
+
+      <a href="board.html">
+        <span class="nav-icon"><img src="./assets/img/board.svg"></span>
+        <span>Board</span>
+      </a>
+
+      <a href="task.html">
+        <span class="nav-icon"><img src="./assets/img/add_task.svg"></span>
+        <span>Add Task</span>
+      </a>
+
+      <a href="contact.html" class="active">
+        <span class="nav-icon"><img src="./assets/img/contact.svg"></span>
+        <span>Contacts</span>
+      </a>
+    </nav>
+
+    <footer class="aside-footer">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Legal notice</a>
+    </footer>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main contact-main">
+
+    <!-- LEFT CONTACT LIST -->
+    <div class="contact-list">
+      <div class="contact-list-header">
+        <h2>Contacts</h2>
+        <button class="add-contact-btn" onclick="openAddContactModal()">
+          Add new contact
+        </button>
+      </div>
+
+      <div class="contact-items">
+        <div class="contact-item active">
+          <div class="contact-avatar">SM</div>
+          <div class="contact-name">Simon Müller</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-avatar">AM</div>
+          <div class="contact-name">Anna Meyer</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-avatar">JK</div>
+          <div class="contact-name">John Keller</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT CONTACT DETAIL -->
+    <div class="contact-detail">
+      <div class="contact-detail-header">
+        <div class="contact-detail-avatar">SM</div>
+        <div class="contact-detail-name">Simon Müller</div>
+      </div>
+
+      <div class="contact-info">
+        <p><strong>Email:</strong> simon@example.com</p>
+        <p><strong>Phone:</strong> +49 123 456789</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL -->
+  <div id="addContactOverlay" class="modal-overlay" onclick="closeAddContactModal(event)">
+    <div class="add-contact-modal">
+
+      <!-- LEFT SIDE -->
+      <div class="add-contact-modal__left">
+        <img src="./assets/img/join_logo_vector.svg" class="add-contact-modal__logo">
+        <h2>Add contact</h2>
+        <p>Tasks are better with a team!</p>
+        <div class="add-contact-modal__divider"></div>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="add-contact-modal__right">
+        <button class="modal-close-btn" onclick="closeAddContactModal()">✕</button>
+
+        <div class="contact-avatar-large">👤</div>
+
+        <form class="add-contact-form" onsubmit="event.preventDefault()">
+          <div class="input-group">
+            <input type="text" placeholder="Name" required>
+          </div>
+
+          <div class="input-group">
+            <input type="email" placeholder="Email" required>
+          </div>
+
+          <div class="input-group">
+            <input type="tel" placeholder="Phone">
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeAddContactModal()">Cancel</button>
+            <button type="submit" class="btn-create">Create contact</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script src="scripts/contact.js"></script>
+
+</body>
+</html>

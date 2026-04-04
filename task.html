@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join - Add Task</title>
+  <link rel="stylesheet" href="styles/board.css">
+  <link rel="stylesheet" href="styles/task.css">
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+  <aside>
+    <div class="aside-logo">
+      <img src="./assets/img/join_logo_vector.svg" alt="Join Logo">
+    </div>
+
+    <nav class="navigation">
+      <a href="summary.html">
+        <span class="nav-icon"><img src="./assets/img/sumarry_icon.svg" alt="Summary"></span>
+        <span>Summary</span>
+      </a>
+
+      <a href="board.html">
+        <span class="nav-icon"><img src="./assets/img/board.svg" alt="Board"></span>
+        <span>Board</span>
+      </a>
+
+      <a href="task.html" class="active">
+        <span class="nav-icon"><img src="./assets/img/add_task.svg" alt="Add Task"></span>
+        <span>Add Task</span>
+      </a>
+
+      <a href="contact.html">
+        <span class="nav-icon"><img src="./assets/img/contact.svg" alt="Contacts"></span>
+        <span>Contacts</span>
+      </a>
+    </nav>
+
+    <footer class="aside-footer">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Legal notice</a>
+    </footer>
+  </aside>
+
+  <main class="main">
+    <h1 class="main-title">Add Task</h1>
+
+    <form class="task-form" id="task-form">
+      <div class="form-group">
+        <label class="task-form-label" for="task-title">Title</label>
+        <input class="task-form-input" type="text" id="task-title" placeholder="Enter a title" />
+      </div>
+
+      <div class="form-group">
+        <label class="task-form-label" for="task-date">Due date</label>
+        <input class="task-form-input" type="date" id="task-date" />
+      </div>
+
+      <div class="form-group">
+        <label class="task-form-label" for="task-description">Description</label>
+        <textarea class="task-form-textarea" id="task-description" placeholder="Enter a description"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="task-form-label">Prio</label>
+        <div class="task-form-prio-group" id="prio-group">
+          <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">🔴 Urgent</button>
+          <button type="button" class="prio-btn prio-btn--medium" data-prio="medium">🟡 Medium</button>
+          <button type="button" class="prio-btn prio-btn--low" data-prio="low">🟢 Low</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="task-form-label" for="task-category">Category</label>
+        <select class="task-form-select" id="task-category">
+          <option value="">Select task category</option>
+          <option value="technical-task">Technical Task</option>
+          <option value="user-story">User Story</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="task-form-label">Subtasks</label>
+        <div class="task-form-subtask-input-row">
+          <input class="task-form-input" type="text" id="subtask-input" placeholder="Add new subtask" />
+          <button type="button" class="btn-add-subtask" id="btn-add-subtask">+</button>
+        </div>
+        <ul class="task-form-subtask-list" id="subtask-list"></ul>
+      </div>
+
+      <div class="form-group form-group--full">
+        <label class="task-form-label" for="task-assigned">Assigned to</label>
+        <select class="task-form-select" id="task-assigned" multiple size="4">
+          <option value="denny">Denny</option>
+          <option value="ruslan">Ruslan</option>
+          <option value="kathleen">Kathleen</option>
+          <option value="juri">Juri</option>
+        </select>
+      </div>
+
+      <div class="task-form-actions">
+        <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
+        <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="./scripts/task.js"></script>
+  <script type="module" src="./scripts/task.js"></script>
+
+</body>
+
+</html>
+    

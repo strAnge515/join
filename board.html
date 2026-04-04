@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join - Board</title>
+  <link rel="stylesheet" href="styles/board.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+  <aside>
+    <div class="aside-logo">
+      <img src="./assets/img/join_logo_vector.svg" alt="Join Logo">
+    </div>
+
+    <nav class="navigation">
+      <a href="summary.html">
+        <span class="nav-icon"><img src="./assets/img/sumarry_icon.svg" alt="Summary"></span>
+        <span>Summary</span>
+      </a>
+
+      <a href="board.html" class="active">
+        <span class="nav-icon"><img src="./assets/img/board.svg" alt="Board"></span>
+        <span>Board</span>
+      </a>
+
+      <a href="task.html">
+        <span class="nav-icon"><img src="./assets/img/add_task.svg" alt="Add Task"></span>
+        <span>Add Task</span>
+      </a>
+
+      <a href="contact.html">
+        <span class="nav-icon"><img src="./assets/img/contact.svg" alt="Contacts"></span>
+        <span>Contacts</span>
+      </a>
+    </nav>
+
+    <footer class="aside-footer">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Legal notice</a>
+    </footer>
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+      <div class="topbar-title">Kanban Project Management Tool</div>
+      <div class="topbar-right">
+        <div class="help">?</div>
+        <div class="profile">SM</div>
+      </div>
+    </header>
+
+    <header class="board-header">
+      <h1 class="board-header__title">Board</h1>
+
+      <div class="board-header__search">
+        <input type="text" placeholder="Find Task" />
+        <span class="board-header__search-icon">🔍</span>
+      </div>
+
+      <button class="board-header__add-btn">Add task +</button>
+    </header>
+
+    <div class="board">
+      <section class="board-column">
+        <div class="board-column__header">
+          <h2 class="board-column__title">To do</h2>
+          <button class="board-column__add-btn">+</button>
+        </div>
+        <div class="board-column__cards" id="column-todo"></div>
+      </section>
+
+      <section class="board-column">
+        <div class="board-column__header">
+          <h2 class="board-column__title">In progress</h2>
+          <button class="board-column__add-btn">+</button>
+        </div>
+        <div class="board-column__cards" id="column-inprogress"></div>
+      </section>
+
+      <section class="board-column">
+        <div class="board-column__header">
+          <h2 class="board-column__title">Awaiting feedback</h2>
+          <button class="board-column__add-btn">+</button>
+        </div>
+        <div class="board-column__cards" id="column-awaiting"></div>
+      </section>
+
+      <section class="board-column">
+        <div class="board-column__header">
+          <h2 class="board-column__title">Done</h2>
+          <button class="board-column__add-btn">+</button>
+        </div>
+        <div class="board-column__cards" id="column-done"></div>
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="./board.js"></script>
+</body>
+
+</html>
