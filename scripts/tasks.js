@@ -5,9 +5,11 @@ function init() {
 }
 function addTask() {
     let addButton = document.getElementById('btn-create');
-    addButton.addEventListener("click", () => {
-        addInformations();
-        saveTask();
+    addButton.addEventListener("click", async () => {
+        let informartionsFromInput = addInformations();
+        let object = createTaskObjekt(informartionsFromInput)
+         
+         await saveTask(object);
     })
 }
 
@@ -19,18 +21,20 @@ function addInformations() {
     let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
     let taskAssignedTo = document.getElementById('task-assigned');
     let selectedContacts = Array.from(taskAssignedTo.selectedOptions);
-    selectedContacts.map((contact) => contact.value )
+    let contact = selectedContacts.map((contact) => contact.value)
+
+    return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact }
 
 }
 
-function createTaskObjekt() {
-    let task = {
-        title: taskTitle,
-        description: tastkDescription,
-        category: taskCategory,
-        assignet_to: selectedContacts,
-        date: taskDate,
-        prio: taskPrio,
+function createTaskObjekt(data) {
+    return {
+        title: data.taskTitle,
+        description: data.tastkDescription,
+        category: data.taskCategory,
+        assignet_to: data.contact,
+        date: data.taskDate,
+        prio: data.taskPrio,
         subtask: [{ title: "drag and drop einbauen", state: "false" },
         { titel: "Bispiel 2", state: "false" },
         { titel: "Beispiel 3", state: "false" }

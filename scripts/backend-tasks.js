@@ -2,12 +2,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebas
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBmuTnjiq0SjSKXwtFK1DDu25UQ2VKzBUw",
-  authDomain: "join-developer-akademie-35d8f.firebaseapp.com",
-  projectId: "join-developer-akademie-35d8f",
-  storageBucket: "join-developer-akademie-35d8f.firebasestorage.app",
-  messagingSenderId: "767040328238",
-  appId: "1:767040328238:web:e78b51dcb15c516304c5bf"
+    apiKey: "AIzaSyBmuTnjiq0SjSKXwtFK1DDu25UQ2VKzBUw",
+    authDomain: "join-developer-akademie-35d8f.firebaseapp.com",
+    projectId: "join-developer-akademie-35d8f",
+    storageBucket: "join-developer-akademie-35d8f.firebasestorage.app",
+    messagingSenderId: "767040328238",
+    appId: "1:767040328238:web:e78b51dcb15c516304c5bf"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -20,6 +20,7 @@ const db = getFirestore(app);
  * @returns {Promise<string>} The ID of the newly created document.
  */
 export async function saveTask(taskData) {
+    console.log(taskData)
     try {
         const docRef = await addDoc(collection(db, "tasks"), taskData);
         return docRef.id;
