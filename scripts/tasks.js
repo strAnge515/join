@@ -8,8 +8,8 @@ function addTask() {
     addButton.addEventListener("click", async () => {
         let informartionsFromInput = addInformations();
         let object = createTaskObjekt(informartionsFromInput)
-         
-         await saveTask(object);
+
+        await saveTask(object);
     })
 }
 
@@ -35,9 +35,9 @@ function createTaskObjekt(data) {
         assignet_to: data.contact,
         date: data.taskDate,
         prio: data.taskPrio,
-        subtask: [{ title: "drag and drop einbauen", state: "false" },
-        { titel: "Bispiel 2", state: "false" },
-        { titel: "Beispiel 3", state: "false" }
+        subtask: [{ title: "drag and drop einbauen", state: false },
+        { title: "Bispiel 2", state: false },
+        { title: "Beispiel 3", state: false }
         ]
     }
 }
@@ -54,6 +54,26 @@ function setPriorityButtons() {
         })
     });
 }
+
+const addButton = document.getElementById('btn-add-subtask');
+addButton.addEventListener('click', addSubtask);
+
+function addSubtask() {
+    const subtaskInput = document.getElementById('subtask-input');
+    const subtaskValue = subtaskInput.value;
+    const subtaskList = document.getElementById('subtask-list');
+    if (subtaskValue === "") return;
+    subtaskList.innerHTML += "<li>" + subtaskValue + "</li>";
+    subtaskInput.value = "";
+}
+
+function subtaskAppearanceChangeByClick() {
+    const subtaskInput = document.getElementById('subtask-input');
+    const subtaskAddButton = document.getElementById('btn-add-subtask');
+    
+}
+
+
 
 
 

@@ -149,13 +149,24 @@ min-width: 1000px;
 .task-form-subtask-input-row {
   display: flex;
   gap: 8px;
+  position: relative;
+  justify-content: flex-end;
 }
 
 .task-form-subtask-input-row .task-form-input {
   flex: 1;
 }
 
-.btn-add-subtask {
+.button-wrapper {
+  display: flex;
+  position: absolute;
+}
+
+/*.subtask-button-separator {
+  
+}*/
+
+.subtask-button {
   width: 40px;
   height: 40px;
   border: 1.5px solid var(--color-border);
@@ -170,7 +181,11 @@ min-width: 1000px;
   justify-content: center;
 }
 
-.btn-add-subtask:hover {
+.subtask-button-hidden {
+  display: none;
+}
+
+.subtask-button:hover {
   background: var(--color-accent);
   color: #fff;
   border-color: var(--color-accent);
