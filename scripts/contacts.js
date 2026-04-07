@@ -184,8 +184,10 @@ function openAddContactDialog() {
   const dialogRef = document.getElementById('addContactDialog');
   dialogRef.showModal();
   dialogRef.classList.add('show');
-  dialogRef.addEventListener('close', () => {
-    dialogRef.classList.remove('show');
+  dialogRef.addEventListener('click', (event) => {
+    if (event.target === dialogRef) {
+      closeDialog(event.target);
+    }
   });
 }
 
@@ -196,8 +198,10 @@ function addEditDialogEventListeners() {
   form.addEventListener('submit', (event) => {
     editContact(event, activeContactId);
   });
-  dialogRef.addEventListener('close', () => {
-    dialogRef.classList.remove('show');
+  dialogRef.addEventListener('click', (event) => {
+    if (event.target === dialogRef) {
+      closeDialog(event.target);
+    }
   });
 }
 
@@ -218,7 +222,10 @@ function openEditContactDialog(contactId) {
 // Closes an open dialog
 function closeDialog(element) {
   const dialogRef = element.closest('dialog');
-  dialogRef.close();
+  dialogRef.classList.remove('show');
+  setTimeout(() => {
+    dialogRef.close();
+  }, 300);
 }
 
 // Deletes a contact after confirming the action with the user, then re-renders the contact list and clears the contact details view

@@ -2,16 +2,12 @@ dialog {
   border: none;
   border-radius: 20px;
   padding: 0;
-  transform: translate(100%, 0);
+  transform: translate(120%, 0);
   transition: transform 0.3s ease-out;
 }
 
 dialog.show {
   transform: translate(0, 0);
-}
-
-dialog.close {
-  transform: translate(100%, 0);
 }
 
 dialog::backdrop {
