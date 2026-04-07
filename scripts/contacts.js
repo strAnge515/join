@@ -4,115 +4,54 @@ import {
   deleteContact,
   updateContact,
 } from './backend-contacts.js';
-// const contacts = [
-//   {
-//     firstName: 'Anton',
-//     lastName: 'Mayer',
-//     email: 'anton@gmail.com',
-//     phone: '+49 123 456789',
-//   },
-//   {
-//     firstName: 'Anja',
-//     lastName: 'Schulz',
-//     email: 'schulz@hotmail.com',
-//     phone: '+49 987 654321',
-//   },
-//   {
-//     firstName: 'Benedikt',
-//     lastName: 'Ziegler',
-//     email: 'benedikt@gmail.com',
-//     phone: '+49 555 222333',
-//   },
-//   {
-//     firstName: 'David',
-//     lastName: 'Eisenberg',
-//     email: 'davidberg@gmail.com',
-//     phone: '+49 444 111222',
-//   },
-//   {
-//     firstName: 'Eva',
-//     lastName: 'Fischer',
-//     email: 'eva@gmail.com',
-//     phone: '+49 777 888999',
-//   },
-//   {
-//     firstName: 'Emmanuel',
-//     lastName: 'Mauer',
-//     email: 'emmanuel@gmail.com',
-//     phone: '+49 666 333444',
-//   },
-//   {
-//     firstName: 'Felix',
-//     lastName: 'Krüger',
-//     email: 'felix.krueger@gmail.com',
-//     phone: '+49 111 222333',
-//   },
-//   {
-//     firstName: 'Greta',
-//     lastName: 'Wolf',
-//     email: 'greta.wolf@gmail.com',
-//     phone: '+49 222 333444',
-//   },
-//   {
-//     firstName: 'Hannah',
-//     lastName: 'Neumann',
-//     email: 'hannah.neumann@gmail.com',
-//     phone: '+49 333 444555',
-//   },
-//   {
-//     firstName: 'Jonas',
-//     lastName: 'Bauer',
-//     email: 'jonas.bauer@gmail.com',
-//     phone: '+49 444 555666',
-//   },
-//   {
-//     firstName: 'Klara',
-//     lastName: 'Becker',
-//     email: 'klara.becker@gmail.com',
-//     phone: '+49 555 666777',
-//   },
-//   {
-//     firstName: 'Leon',
-//     lastName: 'Hoffmann',
-//     email: 'leon.hoffmann@gmail.com',
-//     phone: '+49 666 777888',
-//   },
-//   {
-//     firstName: 'Marie',
-//     lastName: 'Schneider',
-//     email: 'marie.schneider@gmail.com',
-//     phone: '+49 777 888000',
-//   },
-//   {
-//     firstName: 'Niklas',
-//     lastName: 'Richter',
-//     email: 'niklas.richter@gmail.com',
-//     phone: '+49 888 999111',
-//   },
-//   {
-//     firstName: 'Olivia',
-//     lastName: 'Klein',
-//     email: 'olivia.klein@gmail.com',
-//     phone: '+49 999 000222',
-//   },
-//   {
-//     firstName: 'Paul',
-//     lastName: 'Zimmermann',
-//     email: 'paul.zimmermann@gmail.com',
-//     phone: '+49 101 202303',
-//   },
-// ].map((contact, index) => ({
-//   id: index + 1,
-//   ...contact,
-// }));
 
-// let nextId = contacts.length + 1;
+const colors = [
+  '#f44336',
+  '#e53935',
+  '#d32f2f',
+  '#c62828',
+  '#e91e63',
+  '#d81b60',
+  '#ad1457',
+  '#9c27b0',
+  '#8e24aa',
+  '#6a1b9a',
+  '#673ab7',
+  '#5e35b1',
+  '#4527a0',
+  '#3f51b5',
+  '#3949ab',
+  '#283593',
+  '#1e88e5',
+  '#1976d2',
+  '#1565c0',
+  '#039be5',
+  '#0288d1',
+  '#0277bd',
+  '#00897b',
+  '#00796b',
+  '#00695c',
+  '#43a047',
+  '#388e3c',
+  '#2e7d32',
+  '#7cb342',
+  '#689f38',
+  '#558b2f',
+  '#fbc02d',
+  '#f9a825',
+  '#f57f17',
+  '#fb8c00',
+  '#ef6c00',
+  '#e65100',
+  '#f4511e',
+  '#e64a19',
+  '#d84315',
+];
 
-// contacts.forEach((contact) => {
-//   contact.color = stringToColor(contact.email);
-// });
+let contacts = [];
+let activeContactId = null;
 
-// Kontakte nach Anfangsbuchstaben gruppieren
+// Group contacts by first letter
 function groupContactsByLetter(contacts) {
   const grouped = {};
   contacts.forEach((contact) => {
@@ -124,14 +63,11 @@ function groupContactsByLetter(contacts) {
   });
   return grouped;
 }
-
 window.addEventListener('load', () => {
   renderContacts();
 });
 
-let contacts = [];
-let activeContactId = null;
-
+// Creates a letter element for grouping contacts
 function createLetterElement(letter) {
   const el = document.createElement('div');
   el.className = 'letter';
@@ -139,87 +75,71 @@ function createLetterElement(letter) {
   return el;
 }
 
+// Creates a button for contact with avatar and information
 function createContactElement(contact) {
   const initials = contact.firstName[0] + contact.lastName[0];
-  const item = document.createElement('button');
-  item.className = 'contact';
-  item.dataset.id = contact.id;
-  item.addEventListener('click', () => {
-    showContactDetails(item, contact);
+  const contactBtn = document.createElement('button');
+  contactBtn.className = 'contact';
+  contactBtn.dataset.id = contact.id;
+  contactBtn.addEventListener('click', () => {
+    showContactDetails(contactBtn, contact);
   });
-  item.innerHTML = getContactTemplate(contact, initials);
-  return item;
+  contactBtn.innerHTML = getContactTemplate(contact, initials);
+  return contactBtn;
 }
 
-// function renderContacts() {
-//   const list = document.getElementById('contact-list');
-//   list.innerHTML = '';
-//   const grouped = groupContactsByLetter(contacts);
-//   Object.keys(grouped)
-//     .sort()
-//     .forEach((letter) => {
-//       list.appendChild(createLetterElement(letter));
-//       grouped[letter].forEach((contact) => {
-//         list.appendChild(createContactElement(contact));
-//       });
-//     });
-// }
-
-async function renderContacts() {
-  const list = document.getElementById('contact-list');
-  list.innerHTML = 'Lade Kontakte...';
+// Loads contacts from the database, prepares the data by splitting the name into first and last name and assigning a color based on the email, then returns the prepared contacts
+async function loadAndPrepareContacts() {
   contacts = await loadContacts();
-  list.innerHTML = '';
-  if (!contacts || contacts.length === 0) {
-    list.innerHTML = '<p>Keine Kontakte gefunden</p>';
-    return;
-  }
-  contacts = contacts.map((c) => {
-    const [firstName, ...rest] = c.name.split(' ');
+  if (!contacts || contacts.length === 0) return [];
+  return contacts.map((contact) => {
+    const [firstName, ...rest] = contact.name.split(' ');
     return {
-      ...c,
+      ...contact,
       firstName,
       lastName: rest.join(' '),
-      color: stringToColor(c.email),
+      color: stringToColor(contact.email),
     };
   });
-  const grouped = groupContactsByLetter(contacts);
-  Object.keys(grouped)
+}
+
+// Renders the contact list by grouping the contacts by the first letter of their first name and creating the corresponding elements for the letters and contacts, then adds event listeners to the contact buttons
+function renderContactList(contactlistRef, groupedContacts) {
+  contactlistRef.innerHTML = '';
+  if (Object.keys(groupedContacts).length === 0) {
+    contactlistRef.innerHTML = '<p>Keine Kontakte gefunden</p>';
+    return;
+  }
+  Object.keys(groupedContacts)
     .sort()
     .forEach((letter) => {
-      list.appendChild(createLetterElement(letter));
-      grouped[letter].forEach((contact) => {
-        list.appendChild(createContactElement(contact));
+      contactlistRef.appendChild(createLetterElement(letter));
+      groupedContacts[letter].forEach((contact) => {
+        contactlistRef.appendChild(createContactElement(contact));
       });
     });
   addEventListeners();
 }
 
-//Farben für die Avatare generieren
+//renders the contact list
+async function renderContacts() {
+  const contactlistRef = document.getElementById('contact-list');
+  contactlistRef.innerHTML = 'Lade Kontakte...';
+  contacts = await loadAndPrepareContacts();
+  const grouped = groupContactsByLetter(contacts);
+  renderContactList(contactlistRef, grouped);
+}
+
+// Converts a string (email) to a color for the avatar background
 function stringToColor(str) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const colors = [
-    '#f44336',
-    '#e91e63',
-    '#9c27b0',
-    '#673ab7',
-    '#3f51b5',
-    '#2196f3',
-    '#03a9f4',
-    '#00bcd4',
-    '#009688',
-    '#4caf50',
-    '#8bc34a',
-    '#ffc107',
-    '#ff9800',
-    '#ff5722',
-  ];
   return colors[Math.abs(hash) % colors.length];
 }
 
+//add onclick functions to the edit and delete buttons in the contact details view
 function addDetailEventListeners() {
   const editBtnRef = document.getElementById('editContactBtn');
   const deleteBtnRef = document.getElementById('deleteContactBtn');
@@ -237,6 +157,14 @@ function addDetailEventListeners() {
   }
 }
 
+// Toggles the active state of a contact in the list
+function toggleActiveContact(element) {
+  const allContacts = document.querySelectorAll('.contact');
+  allContacts.forEach((contact) => contact.classList.remove('active'));
+  element.classList.add('active');
+}
+
+// Displays the details of a contact when clicked and highlights the active contact in the list
 function showContactDetails(element, contact) {
   activeContactId = contact.id;
   const contactDetailsRef = document.getElementById('contact-details');
@@ -251,12 +179,7 @@ function showContactDetails(element, contact) {
   addDetailEventListeners();
 }
 
-function toggleActiveContact(element) {
-  const allContacts = document.querySelectorAll('.contact');
-  allContacts.forEach((contact) => contact.classList.remove('active'));
-  element.classList.add('active');
-}
-
+// Opens the dialog to add a new contact
 function openAddContactDialog() {
   const dialogRef = document.getElementById('addContactDialog');
   dialogRef.showModal();
@@ -266,6 +189,19 @@ function openAddContactDialog() {
   });
 }
 
+// Adds event listeners to the edit contact dialog form and close button
+function addEditDialogEventListeners() {
+  const dialogRef = document.getElementById('editContactDialog');
+  const form = dialogRef.querySelector('form');
+  form.addEventListener('submit', (event) => {
+    editContact(event, activeContactId);
+  });
+  dialogRef.addEventListener('close', () => {
+    dialogRef.classList.remove('show');
+  });
+}
+
+// Opens the dialog to edit an existing contact and pre-fills the form with the contact's current information
 function openEditContactDialog(contactId) {
   const contact = contacts.find((contact) => contact.id == contactId);
   const dialogRef = document.getElementById('editContactDialog');
@@ -275,149 +211,111 @@ function openEditContactDialog(contactId) {
   dialogRef.innerHTML = getEditContactTemplate(contact, initials, color);
   dialogRef.showModal();
   dialogRef.classList.add('show');
-  const form = dialogRef.querySelector('form');
-  form.addEventListener('submit', (event) => {
-    editContact(event, contactId);
-  });
-  dialogRef.addEventListener('close', () => {
-    dialogRef.classList.remove('show');
-  });
+  addEditDialogEventListeners();
   addEventListeners();
 }
 
+// Closes an open dialog
 function closeDialog(element) {
   const dialogRef = element.closest('dialog');
   dialogRef.close();
 }
 
-// function deleteContact(contactId) {
-//   const confirmDelete = confirm('Kontakt wirklich löschen?');
-//   if (!confirmDelete) return;
-//   const index = contacts.findIndex((c) => c.id === contactId);
-//   const contactDetailsRef = document.getElementById('contact-details');
-//   if (index !== -1) {
-//     contacts.splice(index, 1);
-//     renderContacts();
-//     contactDetailsRef.innerHTML = '';
-//   }
-// }
-
+// Deletes a contact after confirming the action with the user, then re-renders the contact list and clears the contact details view
 async function deleteThisContact(contactId) {
-  const confirmDelete = confirm('Kontakt wirklich löschen?');
+  const confirmDelete = confirm('Kontakt wirklich löschen?'); //isn't in the figma design, but it's a good idea to prevent accidental deletions. Maybe we find a more elegant solution for this in the future, like a confirmation dialog instead of the browser's built-in confirm function.
   if (!confirmDelete) return;
   await deleteContact(contactId);
   renderContacts();
   document.getElementById('contact-details').innerHTML = '';
 }
 
-// function handleAddContact(event) {
-//   event.preventDefault();
-//   const nameValue = document.getElementById('nameInput').value.trim();
-//   const email = document.getElementById('emailInput').value.trim();
-//   const phone = document.getElementById('phoneInput').value.trim();
-//   const [firstName, ...rest] = nameValue.split(' ');
-//   const lastName = rest.join(' ') || '';
-//   const newContact = {
-//     firstName,
-//     lastName,
-//     email,
-//     phone,
-//   };
-//   addContact(newContact);
-//   renderContacts();
-//   clearInputs();
-//   closeDialog(
-//     document.getElementById('addContactDialog').querySelector('.close-btn'),
-//   );
-// }
-
-async function handleAddContact(event) {
-  event.preventDefault();
+// Retrieves the data from the add contact form inputs and returns it as an object
+function getContactData() {
   const name = nameInput.value.trim();
   const email = emailInput.value.trim();
   const phone = phoneInput.value.trim();
-  const id = await saveContact({ name, email, phone });
-  await renderContacts();
+  return { name, email, phone };
+}
+
+// Shows the details of a newly added contact by finding the corresponding contact element in the list and calling the showContactDetails function with the new contact's data
+function showNewContactDetails(id, contactData) {
   const el = document.querySelector(`.contact[data-id="${id}"]`);
-  const [firstName, ...rest] = name.split(' ');
+  if (!el) return;
+  const [firstName, ...rest] = contactData.name.split(' ');
   const contact = {
     id,
     firstName,
     lastName: rest.join(' '),
-    email,
-    phone,
-    color: stringToColor(email),
+    email: contactData.email,
+    phone: contactData.phone,
+    color: stringToColor(contactData.email),
   };
-  if (el) showContactDetails(el, contact);
-  clearInputs();
-  closeDialog(addContactDialog.querySelector('.close-btn'));
+  showContactDetails(el, contact);
 }
 
+// Clears the input fields in the add contact form after a new contact has been added
 function clearInputs() {
   document.getElementById('nameInput').value = '';
   document.getElementById('emailInput').value = '';
   document.getElementById('phoneInput').value = '';
 }
 
-// function addContact(newContact) {
-//   contacts.push({
-//     id: nextId++,
-//     ...newContact,
-//     color: stringToColor(newContact.email),
-//   });
-// }
-
-// function editContact(event, contactId) {
-//   event.preventDefault();
-//   const contact = contacts.find((contact) => contact.id === contactId);
-//   const activeContactElement = document.querySelector('.contact.active');
-//   const dialogRef = document.getElementById('editContactDialog');
-//   const nameInput = dialogRef.querySelector('input[type="text"]');
-//   const emailInput = dialogRef.querySelector('input[type="email"]');
-//   const phoneInput = dialogRef.querySelector('input[type="tel"]');
-//   const [firstName, ...lastNameParts] = nameInput.value.trim().split(' ');
-//   const lastName = lastNameParts.join(' ');
-//   contact.firstName = firstName;
-//   contact.lastName = lastName;
-//   contact.email = emailInput.value.trim();
-//   contact.phone = phoneInput.value.trim();
-//   dialogRef.close();
-//   renderContacts();
-//   showContactDetails(activeContactElement, contact);
-// }
-
-async function editContact(event, contactId) {
+// Handles the submission of the add contact form, saves the new contact to the database, re-renders the contact list, and shows the details of the newly added contact
+async function handleAddContact(event) {
   event.preventDefault();
+  const contactData = getContactData();
+  const id = await saveContact(contactData);
+  await renderContacts();
+  showNewContactDetails(id, contactData);
+  clearInputs();
+  closeDialog(addContactDialog.querySelector('.close-btn'));
+}
 
-  const dialogRef = document.getElementById('editContactDialog');
-
+// Retrieves the data from the edit contact form inputs and returns it as an object
+function getContactFormData(dialogRef) {
   const nameInput = dialogRef.querySelector('input[type="text"]');
   const emailInput = dialogRef.querySelector('input[type="email"]');
   const phoneInput = dialogRef.querySelector('input[type="tel"]');
-
-  await updateContact(contactId, {
+  return {
     name: nameInput.value.trim(),
     email: emailInput.value.trim(),
     phone: phoneInput.value.trim(),
-  });
+  };
+}
+
+// Updates the contact data in the database with the new values from the edit contact form
+async function updateContactData(contactId, data) {
+  await updateContact(contactId, data);
+}
+
+// Closes the dialog and re-renders the contact list
+async function closeDialogAndRender(dialogRef) {
   dialogRef.close();
   await renderContacts();
-  const updatedContact = contacts.find((c) => c.id == activeContactId);
-  if (updatedContact) {
-    const allContacts = document.querySelectorAll('.contact');
+}
 
-    allContacts.forEach((el) => {
-      if (el.textContent.includes(updatedContact.firstName)) {
-        showContactDetails(el, updatedContact);
-      }
-    });
+// Shows the details of the updated contact
+function showUpdatedContactDetails(contactId) {
+  const updatedContact = contacts.find((c) => c.id == contactId);
+  if (!updatedContact) return;
+  const contactEl = document.querySelector(`.contact[data-id="${contactId}"]`);
+  if (contactEl) {
+    showContactDetails(contactEl, updatedContact);
   }
 }
 
-// window.openAddContactDialog = openAddContactDialog;
-// window.closeDialog = closeDialog;
-// window.handleAddContact = handleAddContact;
+// Handles the submission of the edit contact form, updates the contact in the database, re-renders the contact list, and shows the details of the updated contact
+async function editContact(event, contactId) {
+  event.preventDefault();
+  const dialogRef = document.getElementById('editContactDialog');
+  const data = getContactFormData(dialogRef);
+  await updateContactData(contactId, data);
+  await closeDialogAndRender(dialogRef);
+  showUpdatedContactDetails(contactId);
+}
 
+//Add event listeners to the add contact button, the close buttons in the dialogs, and the submit event of the add contact form
 function addEventListeners() {
   document
     .getElementById('addContactBtn')
