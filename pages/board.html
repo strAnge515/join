@@ -1,71 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Join - Board</title>
-  <link rel="stylesheet" href="styles/board.css">
-  <link rel="stylesheet" href="styles/summary.css">
+  
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../styles/sidebar.css">
+  <link rel="stylesheet" href="../styles/header.css">
+  <link rel="stylesheet" href="../styles/board.css">
+  <link rel="stylesheet" href="../styles/summary.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <script defer src="../scripts/sidebar.js"></script>
+  <script defer src="../scripts/header.js"></script>
 </head>
-
 <body>
-  <aside>
-    <div class="aside-logo">
-      <img src="./assets/img/join_logo_vector.svg" alt="Join Logo">
-    </div>
 
-    <nav class="navigation">
-      <a href="summary.html">
-        <span class="nav-icon"><img src="./assets/img/sumarry_icon.svg" alt="Summary"></span>
-        <span>Summary</span>
-      </a>
+  <div id="sidebar-container"></div>
+  <div id="header-container"></div>
 
-      <a href="board.html" class="active">
-        <span class="nav-icon"><img src="./assets/img/board.svg" alt="Board"></span>
-        <span>Board</span>
-      </a>
-
-      <a href="task.html">
-        <span class="nav-icon"><img src="./assets/img/add_task.svg" alt="Add Task"></span>
-        <span>Add Task</span>
-      </a>
-
-      <a href="contact.html">
-        <span class="nav-icon"><img src="./assets/img/contact.svg" alt="Contacts"></span>
-        <span>Contacts</span>
-      </a>
-    </nav>
-
-    <footer class="aside-footer">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Legal notice</a>
-    </footer>
-  </aside>
-
-  <main class="main">
-
-    <header class="topbar">
-      <div class="topbar-title">Kanban Project Management Tool</div>
-      <div class="topbar-right">
-        <div class="help">?</div>
-        <div class="profile">SM</div>
-      </div>
-    </header>
-
+  <main class="main-content">
     <header class="board-header">
       <h1 class="board-header__title">Board</h1>
-
       <div class="board-header__search">
         <input type="text" placeholder="Find Task" />
         <span class="board-header__search-icon">🔍</span>
       </div>
-
       <button class="board-header__add-btn">Add task +</button>
     </header>
 
@@ -104,8 +68,6 @@
     </div>
   </main>
 
-  <script src="./scripts/board.js"></script>
-  <script type="module" src="./scripts/board.js"></script>
+  <script type="module" src="../scripts/board.js"></script>
 </body>
-
 </html>
