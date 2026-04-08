@@ -1,0 +1,91 @@
+.help-page {
+    font-family: 'Inter', sans-serif;
+    color: #000000;
+}
+
+.help-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.help-header h1 {
+    font-size: 61px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.back-btn {
+    cursor: pointer;
+    transition: transform 0.125s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-btn img {
+    width: 32px;
+    height: 32px;
+}
+
+.back-btn:hover {
+    transform: scale(1.1);
+}
+
+.help-page h2 {
+    font-size: 27px;
+    font-weight: 700;
+    margin-top: 40px;
+    margin-bottom: 24px;
+}
+
+.help-page p {
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: 24px;
+}
+
+.help-highlight {
+    color: #29abe2;
+    text-decoration: none;
+}
+
+.help-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 24px;
+    margin-bottom: 48px;
+}
+
+.step {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.step-number {
+    font-size: 27px;
+    font-weight: 700;
+    min-width: 35px;
+}
+
+.step-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+}
+
+.step-content p {
+    margin: 0;
+}
+
+.help-footer-text {
+    margin-top: 48px;
+}
+
+.help-enjoy {
+    font-size: 32px;
+    margin-top: 32px;
+}
