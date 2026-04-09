@@ -1,15 +1,8 @@
-/* CONTACT PAGE */
-
-html {
-  overflow-y: scroll;
-}
-
 .contact-main {
   display: flex;
   height: 100%;
 }
 
-/* LEFT CONTACT LIST */
 .contact-list {
   width: 350px;
   background: #ffffff;
@@ -68,7 +61,6 @@ html {
   font-weight: 500;
 }
 
-/* RIGHT DETAIL VIEW */
 .contact-detail {
   flex: 1;
   padding: 48px;

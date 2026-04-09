@@ -1,21 +1,8 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
-}
-
-:root {
-    --primary-color: rgb(42, 54, 71);
-    ;
-}
-
 body {
-
     display: flex;
     width: 100vw;
-    background-color: rgb(245, 247, 247);
-
+    background-color: #f5f7f7;
+    margin: 0;
 }
 
 aside {
@@ -32,8 +19,6 @@ aside {
     opacity: 0;
     animation: opacity 1s ease-in-out forwards;
     width: 100%;
-
-
 }
 
 header {
@@ -64,7 +49,6 @@ form {
     background-color: white;
     border-radius: 15px;
     box-shadow: 0px 0px 7px 1px lightgrey;
-
 }
 
 h1 {
@@ -84,14 +68,12 @@ h1 {
 
 .checkbox-remember a {
     color: rgb(93, 175, 203);
-    ;
 }
 
 .login {
     display: flex;
     gap: 25px;
 }
-
 
 .aside-logo img {
     width: 100%;
@@ -115,7 +97,6 @@ h1 {
         width: 400px;
         opacity: 0;
     }
-
     to {
         top: 20px;
         left: 60px;
@@ -129,7 +110,6 @@ h1 {
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
@@ -137,24 +117,26 @@ h1 {
 
 .sign-up-button {
     border-radius: 5px;
-    background-color: var(--primary-color);
+    background-color: var(--color-primary);
     color: white;
     height: 35px;
     width: 100px;
     font-weight: bold;
     font-size: 20px;
     border: none;
+    cursor: pointer;
 }
 
 .log-in-button {
     border-radius: 5px;
-    background-color: var(--primary-color);
+    background-color: var(--color-primary);
     color: white;
     height: 45px;
     width: 150px;
     font-weight: bold;
     font-size: 20px;
     border: none;
+    cursor: pointer;
 }
 
 .guest-log-inbutton {
@@ -165,17 +147,8 @@ h1 {
     width: 150px;
     font-weight: bold;
     font-size: 20px;
-   
-}
-
-.button {
-    border-radius: 5px;
-    background-color: var(--primary-color);
-    color: white;
-    height: 45px;
-    width: 150px;
-    font-weight: bold;
-    font-size: 20px;
+    border: 1px solid gray;
+    cursor: pointer;
 }
 
 .input {
@@ -188,6 +161,5 @@ h1 {
     border-radius: 5px;
     height: 40px;
     width: 300px;
-    border-color: rgb(236, 230, 230);
-    border-style: groove;
+    border: 1px solid rgb(236, 230, 230);
 }

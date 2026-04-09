@@ -50,4 +50,4 @@ function updateSidebarVisibility(isLoggedIn) {
 }
 
 
-document.addEventListener('DOMContentLoaded', initSidebar);
+initSidebar();

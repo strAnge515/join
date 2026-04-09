@@ -96,4 +96,4 @@ function setupHeaderMenu() {
 }
 
 
-document.addEventListener('DOMContentLoaded', initHeader);
+initHeader();
