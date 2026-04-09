@@ -5,6 +5,23 @@
     text-decoration: none;
 }
 
+@font-face {
+    font-family: 'Inter';
+    src: url('./assets/font/Inter_18pt-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('./assets/font/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+    font-style: italic;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
 .main-content {
     margin-left: 232px;  
     margin-top: 80px;    
