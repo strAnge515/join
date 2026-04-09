@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
   <script type="module" defer src="../scripts/tasks.js"></script>
 
 </head>
+
 <body>
 
   <div id="sidebar-container"></div>
@@ -23,74 +25,93 @@
     <h1 class="main-title">Add Task</h1>
 
     <form class="task-form" id="task-form">
-
-      <div class="form-group">
-        <label class="task-form-label" for="task-title">Title</label>
-        <input class="task-form-input" type="text" id="task-title" placeholder="Enter a title" />
-      </div>
-
-      <div class="form-group">
-        <label class="task-form-label" for="task-date">Due date</label>
-        <input class="task-form-input" type="date" id="task-date" />
-      </div>
-
-      <div class="form-group">
-        <label class="task-form-label" for="task-description">Description</label>
-        <textarea class="task-form-textarea" id="task-description" placeholder="Enter a description"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label class="task-form-label">Prio</label>
-        <div class="task-form-prio-group" id="prio-group">
-          <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">Urgent<img
-              src="../assets/img/Property 1=Urgent.svg" alt="urgentimg"></button>
-          <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">Medium<img
-              src="../assets/img/Property 1=Medium.svg" alt="mediumimg"></button>
-          <button type="button" class="prio-btn prio-btn--low" data-prio="low">Low<img
-              src="../assets/img/Property 1=Low.svg" alt="lowimg"></button>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="task-form-label" for="task-category">Category</label>
-        <select class="task-form-select" id="task-category">
-          <option value="">Select task category</option>
-          <option value="technical-task">Technical Task</option>
-          <option value="user-story">User Story</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label class="task-form-label">Subtasks</label>
-        <div class="task-form-subtask-input-row">
-          <input class="task-form-input" type="text" id="subtask-input" placeholder="Add new subtask" />
-          <div class="button-wrapper">
-            <button type="button" class="subtask-button" id="btn-delete-subtask"><img
-                src="../assets/img/Property 1=close.svg" alt="closeicon"></button>
-                <div class="subtask-button-separator"></div>
-            <button type="button" class="subtask-button" id="btn-add-subtask"><img
-                src="../assets/img/Property 1=check.svg" alt="checkicon"></button>
+      <section class="wrapper-add-task">
+        <section class="wrapper-add-task-left-side">
+          <!-- Title -->
+          <div class="form-group">
+            <label class="task-form-label" for="task-title"><p>Title</p><p class="star">*</p></label>
+            <input class="task-form-input" type="text" id="task-title" placeholder="Enter a title" required />
           </div>
-        </div>
-        <ul class="task-form-subtask-list" id="subtask-list"></ul>
-      </div>
 
-      <div class="form-group form-group--full">
-        <label class="task-form-label" for="task-assigned">Assigned to</label>
-        <select class="task-form-select" id="task-assigned" multiple size="4">
-          <option value="denny">Denny</option>
-          <option value="ruslan">Ruslan</option>
-          <option value="kathleen">Kathleen</option>
-          <option value="juri">Juri</option>
-        </select>
-      </div>
+          <!-- Description -->
+          <div class="form-group">
+            <label class="task-form-label" for="task-description"><p>Description</p></label>
+            <textarea class="task-form-textarea" id="task-description" placeholder="Enter a description"></textarea>
+          </div>
 
+          <!-- Due Date -->
+          <div class="form-group">
+            <label class="task-form-label" for="task-date"><p>Due date</p><p class="star">*</p></label>
+            <input class="task-form-input" type="date" id="task-date" />
+          </div>
+        </section>
+
+        <div class="add-task-seperator"></div>
+        <section class="wrapper-add-task-right-side">
+          <!-- Prio -->
+          <div class="form-group">
+            <label class="task-form-label">Prio</label>
+            <div class="task-form-prio-group" id="prio-group">
+              <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">Urgend<img
+                  src="../assets/img/Property 1=Urgent.svg" alt="urgendimg"></button>
+              <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">Medium<img
+                  src="../assets/img/Property 1=Medium.svg" alt="mediumimg"></button>
+              <button type="button" class="prio-btn prio-btn--low" data-prio="low">Low<img
+                  src="../assets/img/Property 1=Low.svg" alt="lowimg"></button>
+            </div>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label class="task-form-label" for="task-category"><p>Category</p><p class="star">*</p></label>
+            <select class="task-form-select" id="task-category">
+              <option value="">Select task category</option>
+              <option value="technical-task">Technical Task</option>
+              <option value="user-story">User Story</option>
+            </select>
+          </div>
+
+          <!-- Subtasks -->
+          <div class="form-group">
+            <label class="task-form-label">Subtasks</label>
+            <div class="task-form-subtask-input-row">
+              <input class="task-form-input" type="text" id="subtask-input" placeholder="Add new subtask" />
+              <div class="button-wrapper">
+                <button type="button" class="subtask-button" id="btn-delete-subtask"><img
+                    src="../assets/img/Property 1=close.svg" alt="closeicon"></button>
+                <div class="subtask-button-separator"></div>
+                <button type="button" class="subtask-button" id="btn-add-subtask"><img
+                    src="../assets/img/Property 1=check.svg" alt="checkicon"></button>
+              </div>
+            </div>
+            <ul class="task-form-subtask-list" id="subtask-list"></ul>
+          </div>
+
+          <!-- Assigned To -->
+          <div class="form-group form-group--full">
+            <label class="task-form-label" for="task-assigned">Assigned to</label>
+            <select class="task-form-select" id="task-assigned" multiple size="4">
+              <option value="denny">Denny</option>
+              <option value="ruslan">Ruslan</option>
+              <option value="kathleen">Kathleen</option>
+              <option value="juri">Juri</option>
+            </select>
+          </div>
+
+        </section>
+      </section>
+      <!-- Actions -->
       <div class="task-form-actions">
         <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
         <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
       </div>
 
+
     </form>
+
+    <p class="star">*</p><p>This field is required</p>
+
+
   </main>
 </body>
 </html>
