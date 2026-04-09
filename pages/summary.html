@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Join 360 - Summary</title>
-  
+
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../styles/sidebar.css">
   <link rel="stylesheet" href="../styles/header.css">
   <link rel="stylesheet" href="../styles/board.css" />
   <link rel="stylesheet" href="../styles/summary.css" />
+  <link rel="stylesheet" href="../styles/responsive_summary.css" />
 
   <script defer src="../scripts/sidebar.js"></script>
   <script defer src="../scripts/header.js"></script>
 </head>
+
 <body>
+
+  <header class="mobile-topbar">
+    <img src="../assets/img/join_logo.svg" alt="Join Logo" class="mobile-topbar__logo">
+    <div class="mobile-topbar__profile">C</div>
+  </header>
 
   <div id="sidebar-container"></div>
   <div id="header-container"></div>
@@ -90,6 +98,26 @@
     </div>
   </main>
 
+  <nav class="mobile-bottom-nav">
+    <a href="summary.html" class="active">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/summary_icon.svg" alt=""></span>
+      <span>Summary</span>
+    </a>
+    <a href="task.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/add_task.svg" alt=""></span>
+      <span>Add Task</span>
+    </a>
+    <a href="board.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/board.svg" alt=""></span>
+      <span>Board</span>
+    </a>
+    <a href="contact.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/contact.svg" alt=""></span>
+      <span>Contacts</span>
+    </a>
+  </nav>
+
   <script type="module" src="../scripts/summary.js"></script>
 </body>
+
 </html>
