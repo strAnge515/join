@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .header-container {
     width: 100%;
     height: 100%;
@@ -5,33 +6,73 @@
     align-items: center;
     padding: 0 40px 0 348px;
     box-sizing: border-box;
+=======
+@font-face {
+  font-family: 'Inter';
+  src: url('./assets/fonts/Inter-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./assets/fonts/Inter-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+#header-container {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  /* background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;*/
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 18px 40px 18px 348px;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+>>>>>>> 0622061df6ed2514b56a3247e2967d3f093d79d8
 }
 
 .header-main {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .header-title {
-    font-size: 20px;
-    font-weight: 400;
-    margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
 }
 
 .header-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .help-link img {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 .account-circle {
+<<<<<<< HEAD
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -44,33 +85,47 @@
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
+=======
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  color: #091931;
+  border: 2px solid #091931;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+>>>>>>> 0622061df6ed2514b56a3247e2967d3f093d79d8
 }
 
 .account-menu {
-    display: none;
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    background-color: #091931;
-    color: white;
-    padding: 15px;
-    border-radius: 15px 0 15px 15px;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 6;
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  background-color: #091931;
+  color: white;
+  padding: 15px;
+  border-radius: 15px 0 15px 15px;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 6;
 }
 
 .account-menu--show {
-    display: flex;
+  display: flex;
 }
 
 .account-menu a {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-    transition: color 0.2s ease;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
 }
 
 .account-menu a:hover {
-    color: #29ABE2;
+  color: #29abe2;
 }
