@@ -1,4 +1,14 @@
+#sidebar-container {
+  width: 232px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
 .sidebar {
+<<<<<<< HEAD
     width: 100%;
     height: 100%;
     color: #A8B2C1;
@@ -6,21 +16,33 @@
     flex-direction: column;
     align-items: stretch; 
     box-sizing: border-box;
+=======
+  height: 100%;
+  width: 100%;
+  background-color: #2a3647;
+  color: #a8b2c1;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  z-index: 10;
+>>>>>>> 0622061df6ed2514b56a3247e2967d3f093d79d8
 }
 
 .sidebar-logo-container {
-    display: flex;
-    justify-content: center; 
-    padding: 64px 0; 
-    margin-bottom: 32px;
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+  margin-bottom: 32px;
 }
 
 .sidebar-logo {
-    width: 100px; 
-    height: auto;
+  width: 100px;
+  height: auto;
 }
 
 .sidebar-main-content {
+<<<<<<< HEAD
     flex-grow: 1;
     width: 100%;
 }
@@ -46,24 +68,50 @@
     width: 100%;
     box-sizing: border-box;
     transition: background-color 0.2s ease, color 0.2s ease;
+=======
+  flex-grow: 1;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin-bottom: 16px;
+}
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+>>>>>>> 0622061df6ed2514b56a3247e2967d3f093d79d8
 }
 
 .nav-item a:hover {
-    background-color: #091931;
+  background-color: #091931;
 }
 
 .nav-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 16px;
+  width: 24px;
+  height: 24px;
+  margin-right: 16px;
 }
 
 .nav-text {
-    font-size: 16px;
-    font-weight: 400;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .sidebar-footer {
+<<<<<<< HEAD
     margin-top: auto;
     margin-bottom: 48px;
     width: 100%;
@@ -93,3 +141,29 @@
 .nav-item-footer a:hover {
     background-color: #091931;
 }
+=======
+  margin-top: auto;
+  margin-bottom: 48px;
+  padding: 0 24px;
+}
+
+.sidebar-footer-nav ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item-footer {
+  margin-bottom: 12px;
+}
+
+.nav-item-footer a {
+  text-decoration: none;
+  color: #a8b2c1;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.nav-item-footer a:hover {
+  color: #29abe2;
+}
+>>>>>>> 0622061df6ed2514b56a3247e2967d3f093d79d8

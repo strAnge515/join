@@ -8,27 +8,27 @@
 }
 
 .header-main {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .header-title {
-    font-size: 20px;
-    font-weight: 400;
-    margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
 }
 
 .header-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .help-link img {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 .account-circle {
@@ -47,30 +47,30 @@
 }
 
 .account-menu {
-    display: none;
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    background-color: #091931;
-    color: white;
-    padding: 15px;
-    border-radius: 15px 0 15px 15px;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 6;
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  background-color: #091931;
+  color: white;
+  padding: 15px;
+  border-radius: 15px 0 15px 15px;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 6;
 }
 
 .account-menu--show {
-    display: flex;
+  display: flex;
 }
 
 .account-menu a {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-    transition: color 0.2s ease;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
 }
 
 .account-menu a:hover {
-    color: #29ABE2;
+  color: #29abe2;
 }
