@@ -61,6 +61,7 @@ body {
   padding: 15px 24px;
   width: 100%;
   cursor: pointer;
+  gap: 35px;
 }
 
 .contact:hover,
@@ -81,19 +82,22 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 35px;
   font-weight: 400;
 }
 
 .info {
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
 .name {
   font-weight: 400;
   font-size: 20px;
-  margin-bottom: 5px;
+  max-width: 208px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .email {
@@ -111,7 +115,6 @@ body {
   padding: 30px;
 }
 
-/* HEADER */
 .details-header {
   display: flex;
   align-items: center;

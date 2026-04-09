@@ -22,7 +22,7 @@ dialog::backdrop {
   display: flex;
 }
 
-/* LEFT */
+/* Left */
 .dialog-left {
   background: #2a3647;
   color: white;
@@ -55,7 +55,7 @@ dialog::backdrop {
   margin-top: 10px;
 }
 
-/* RIGHT */
+/* Right */
 .actions {
   box-sizing: border-box;
   display: flex;
@@ -94,7 +94,7 @@ dialog::backdrop {
   margin-bottom: 32px;
 }
 
-/* INPUTS */
+/* Inputs */
 .input-wrapper {
   width: 100%;
   position: relative;
@@ -125,7 +125,7 @@ input::placeholder {
   pointer-events: none;
 }
 
-/* BUTTONS */
+/* Buttons */
 .action-btns {
   display: flex;
   gap: 24px;

@@ -179,16 +179,29 @@ function showContactDetails(element, contact) {
   addDetailEventListeners();
 }
 
-// Opens the dialog to add a new contact
-function openAddContactDialog() {
-  const dialogRef = document.getElementById('addContactDialog');
-  dialogRef.showModal();
-  dialogRef.classList.add('show');
+// Adds event listeners to close a dialog when clicking outside of it or pressing the Escape key
+function addEventListenersToCloseDialog(dialogRef) {
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      if (dialogRef.open) {
+        event.preventDefault();
+        closeDialog(dialogRef);
+      }
+    }
+  });
   dialogRef.addEventListener('click', (event) => {
     if (event.target === dialogRef) {
       closeDialog(event.target);
     }
   });
+}
+
+// Opens the dialog to add a new contact
+function openAddContactDialog() {
+  const dialogRef = document.getElementById('addContactDialog');
+  dialogRef.showModal();
+  dialogRef.classList.add('show');
+  addEventListenersToCloseDialog(dialogRef);
 }
 
 // Adds event listeners to the edit contact dialog form and close button
@@ -198,11 +211,12 @@ function addEditDialogEventListeners() {
   form.addEventListener('submit', (event) => {
     editContact(event, activeContactId);
   });
-  dialogRef.addEventListener('click', (event) => {
-    if (event.target === dialogRef) {
-      closeDialog(event.target);
-    }
-  });
+  addEventListenersToCloseDialog(dialogRef);
+  // dialogRef.addEventListener('click', (event) => {
+  //   if (event.target === dialogRef) {
+  //     closeDialog(event.target);
+  //   }
+  // });
 }
 
 // Opens the dialog to edit an existing contact and pre-fills the form with the contact's current information
@@ -226,6 +240,7 @@ function closeDialog(element) {
   setTimeout(() => {
     dialogRef.close();
   }, 300);
+  clearInputs();
 }
 
 // Deletes a contact after confirming the action with the user, then re-renders the contact list and clears the contact details view
@@ -259,6 +274,7 @@ function showNewContactDetails(id, contactData) {
     color: stringToColor(contactData.email),
   };
   showContactDetails(el, contact);
+  el.scrollIntoView();
 }
 
 // Clears the input fields in the add contact form after a new contact has been added
@@ -268,13 +284,35 @@ function clearInputs() {
   document.getElementById('phoneInput').value = '';
 }
 
+// Capitalizes the first letter of a string and converts the rest to lowercase
+function capitalize(fullName) {
+  if (!fullName) return '';
+
+  // Jedes Wort im Namen (durch Leerzeichen getrennt)
+  return fullName
+    .toLowerCase()
+    .split(' ')
+    .map((word) =>
+      // jedes Teilstück bei Bindestrich großschreiben
+      word
+        .split('-')
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join('-'),
+    )
+    .join(' ');
+}
+
 // Handles the submission of the add contact form, saves the new contact to the database, re-renders the contact list, and shows the details of the newly added contact
 async function handleAddContact(event) {
   event.preventDefault();
   const contactData = getContactData();
-  const id = await saveContact(contactData);
+  const formattedData = {
+    ...contactData,
+    name: capitalize(contactData.name),
+  };
+  const id = await saveContact(formattedData);
   await renderContacts();
-  showNewContactDetails(id, contactData);
+  showNewContactDetails(id, formattedData);
   clearInputs();
   closeDialog(addContactDialog.querySelector('.close-btn'));
 }
@@ -316,10 +354,15 @@ function showUpdatedContactDetails(contactId) {
 async function editContact(event, contactId) {
   event.preventDefault();
   const dialogRef = document.getElementById('editContactDialog');
-  const data = getContactFormData(dialogRef);
-  await updateContactData(contactId, data);
+  const contactData = getContactFormData(dialogRef);
+  const formattedData = {
+    ...contactData,
+    name: capitalize(contactData.name),
+  };
+  await updateContactData(contactId, formattedData);
   await closeDialogAndRender(dialogRef);
   showUpdatedContactDetails(contactId);
+  el.scrollIntoView();
 }
 
 //Add event listeners to the add contact button, the close buttons in the dialogs, and the submit event of the add contact form
