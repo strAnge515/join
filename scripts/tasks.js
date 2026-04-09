@@ -1,4 +1,9 @@
 import { saveTask } from "./backend-tasks.js";
+
+const subtaskInput = document.getElementById('subtask-input');
+const addButtonSubtask = document.getElementById('btn-add-subtask');
+const deleteButtonSubtask = document.getElementById('btn-delete-subtask');
+
 function init() {
     addTask();
     setPriorityButtons();
@@ -32,10 +37,11 @@ function createTaskObjekt(data) {
         title: data.taskTitle,
         description: data.tastkDescription,
         category: data.taskCategory,
-        assignet_to: data.contact,
+        status: "to do",
+        assigned_to: data.contact,
         date: data.taskDate,
         prio: data.taskPrio,
-        subtask: [{ title: "drag and drop einbauen", state: false },
+        subtasks: [{ title: "drag and drop einbauen", state: false },
         { title: "Bispiel 2", state: false },
         { title: "Beispiel 3", state: false }
         ]
@@ -55,11 +61,9 @@ function setPriorityButtons() {
     });
 }
 
-const addButton = document.getElementById('btn-add-subtask');
-addButton.addEventListener('click', addSubtask);
+addButtonSubtask.addEventListener('click', addSubtask);
 
 function addSubtask() {
-    const subtaskInput = document.getElementById('subtask-input');
     const subtaskValue = subtaskInput.value;
     const subtaskList = document.getElementById('subtask-list');
     if (subtaskValue === "") return;
@@ -67,16 +71,14 @@ function addSubtask() {
     subtaskInput.value = "";
 }
 
-function subtaskAppearanceChangeByClick() {
-    const subtaskInput = document.getElementById('subtask-input');
-    const subtaskAddButton = document.getElementById('btn-add-subtask');
-    
-}
+subtaskInput.addEventListener('blur', () => {
+    deleteButtonSubtask.classList.add('subtask-button-hidden');
+    addButtonSubtask.classList.add('subtask-button-hidden');
+})
 
-
-
-
-
-
+subtaskInput.addEventListener('focus', () => {
+    deleteButtonSubtask.classList.remove('subtask-button-hidden');
+    addButtonSubtask.classList.remove('subtask-button-hidden');
+})
 
 document.addEventListener('DOMContentLoaded', init);

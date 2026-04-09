@@ -29,19 +29,27 @@
         <section class="wrapper-add-task-left-side">
           <!-- Title -->
           <div class="form-group">
-            <label class="task-form-label" for="task-title"><p>Title</p><p class="star">*</p></label>
+            <label class="task-form-label" for="task-title">
+              <p>Title</p>
+              <p class="star">*</p>
+            </label>
             <input class="task-form-input" type="text" id="task-title" placeholder="Enter a title" required />
           </div>
 
           <!-- Description -->
           <div class="form-group">
-            <label class="task-form-label" for="task-description"><p>Description</p></label>
+            <label class="task-form-label" for="task-description">
+              <p>Description</p>
+            </label>
             <textarea class="task-form-textarea" id="task-description" placeholder="Enter a description"></textarea>
           </div>
 
           <!-- Due Date -->
           <div class="form-group">
-            <label class="task-form-label" for="task-date"><p>Due date</p><p class="star">*</p></label>
+            <label class="task-form-label" for="task-date">
+              <p>Due date</p>
+              <p class="star">*</p>
+            </label>
             <input class="task-form-input" type="date" id="task-date" />
           </div>
         </section>
@@ -52,39 +60,13 @@
           <div class="form-group">
             <label class="task-form-label">Prio</label>
             <div class="task-form-prio-group" id="prio-group">
-              <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">Urgend<img
+              <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">Urgent<img
                   src="../assets/img/Property 1=Urgent.svg" alt="urgendimg"></button>
               <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">Medium<img
                   src="../assets/img/Property 1=Medium.svg" alt="mediumimg"></button>
               <button type="button" class="prio-btn prio-btn--low" data-prio="low">Low<img
                   src="../assets/img/Property 1=Low.svg" alt="lowimg"></button>
             </div>
-          </div>
-
-          <!-- Category -->
-          <div class="form-group">
-            <label class="task-form-label" for="task-category"><p>Category</p><p class="star">*</p></label>
-            <select class="task-form-select" id="task-category">
-              <option value="">Select task category</option>
-              <option value="technical-task">Technical Task</option>
-              <option value="user-story">User Story</option>
-            </select>
-          </div>
-
-          <!-- Subtasks -->
-          <div class="form-group">
-            <label class="task-form-label">Subtasks</label>
-            <div class="task-form-subtask-input-row">
-              <input class="task-form-input" type="text" id="subtask-input" placeholder="Add new subtask" />
-              <div class="button-wrapper">
-                <button type="button" class="subtask-button" id="btn-delete-subtask"><img
-                    src="../assets/img/Property 1=close.svg" alt="closeicon"></button>
-                <div class="subtask-button-separator"></div>
-                <button type="button" class="subtask-button" id="btn-add-subtask"><img
-                    src="../assets/img/Property 1=check.svg" alt="checkicon"></button>
-              </div>
-            </div>
-            <ul class="task-form-subtask-list" id="subtask-list"></ul>
           </div>
 
           <!-- Assigned To -->
@@ -98,6 +80,35 @@
             </select>
           </div>
 
+          <!-- Category -->
+          <div class="form-group">
+            <label class="task-form-label" for="task-category">
+              <p>Category</p>
+              <p class="star">*</p>
+            </label>
+            <select class="task-form-select" id="task-category">
+              <option value="">Select task category</option>
+              <option value="technical-task">Technical Task</option>
+              <option value="user-story">User Story</option>
+            </select>
+          </div>
+
+          <!-- Subtasks -->
+          <div class="form-group">
+            <label class="task-form-label">Subtasks</label>
+            <div class="task-form-subtask-input-row">
+              <input class="task-form-input" type="text" id="subtask-input" placeholder="Add new subtask" />
+              <div class="button-wrapper">
+                <button type="button" class="subtask-button subtask-button-hidden " id="btn-delete-subtask"><img
+                    src="../assets/img/Property 1=close.svg" alt="closeicon"></button>
+                <div class="subtask-button-separator"></div>
+                <button type="button" class="subtask-button subtask-button-hidden" id="btn-add-subtask"><img
+                    src="../assets/img/Property 1=check.svg" alt="checkicon"></button>
+              </div>
+            </div>
+            <ul class="task-form-subtask-list" id="subtask-list"></ul>
+          </div>
+
         </section>
       </section>
       <!-- Actions -->
@@ -109,9 +120,11 @@
 
     </form>
 
-    <p class="star">*</p><p>This field is required</p>
+    <p class="star">*</p>
+    <p>This field is required</p>
 
 
   </main>
 </body>
+
 </html>
