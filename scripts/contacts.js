@@ -6,46 +6,20 @@ import {
 } from './backend-contacts.js';
 
 const colors = [
-  '#f44336',
-  '#e53935',
-  '#d32f2f',
-  '#c62828',
-  '#e91e63',
-  '#d81b60',
-  '#ad1457',
-  '#9c27b0',
-  '#8e24aa',
-  '#6a1b9a',
-  '#673ab7',
-  '#5e35b1',
-  '#4527a0',
-  '#3f51b5',
-  '#3949ab',
-  '#283593',
-  '#1e88e5',
-  '#1976d2',
-  '#1565c0',
-  '#039be5',
-  '#0288d1',
-  '#0277bd',
-  '#00897b',
-  '#00796b',
-  '#00695c',
-  '#43a047',
-  '#388e3c',
-  '#2e7d32',
-  '#7cb342',
-  '#689f38',
-  '#558b2f',
-  '#fbc02d',
-  '#f9a825',
-  '#f57f17',
-  '#fb8c00',
-  '#ef6c00',
-  '#e65100',
-  '#f4511e',
-  '#e64a19',
-  '#d84315',
+  '#FF7A00',
+  '#FF5EB3',
+  '#6E52FF',
+  '#9327FF',
+  '#00BEE8',
+  '#1FD7C1',
+  '#FF745E',
+  '#FFA35E',
+  '#FC71FF',
+  '#FFC701',
+  '#0038FF',
+  '#FFE62B',
+  '#FF4646',
+  '#FF4646',
 ];
 
 let contacts = [];
@@ -164,8 +138,18 @@ function toggleActiveContact(element) {
   element.classList.add('active');
 }
 
+// Adds a slide-in animation to the contact details card when it is displayed
+function slideInContactDetails() {
+  const contactDetailsRef = document.getElementById('contact-details');
+  const card = contactDetailsRef.querySelector('.contact-detail-card');
+  setTimeout(() => {
+    card.classList.add('slide-in');
+  }, 10);
+}
+
 // Displays the details of a contact when clicked and highlights the active contact in the list
 function showContactDetails(element, contact) {
+  if (activeContactId === contact.id) return;
   activeContactId = contact.id;
   const contactDetailsRef = document.getElementById('contact-details');
   const initials = contact.firstName[0] + contact.lastName[0];
@@ -176,6 +160,7 @@ function showContactDetails(element, contact) {
     initials,
     color,
   );
+  slideInContactDetails();
   addDetailEventListeners();
 }
 
@@ -196,10 +181,18 @@ function addEventListenersToCloseDialog(dialogRef) {
   });
 }
 
+function focusElement(elementId) {
+  const focusElement = document.getElementById(elementId);
+  focusElement.focus();
+  const length = focusElement.value.length;
+  focusElement.setSelectionRange(length, length);
+}
+
 // Opens the dialog to add a new contact
 function openAddContactDialog() {
   const dialogRef = document.getElementById('addContactDialog');
   dialogRef.showModal();
+  focusElement('nameInput');
   dialogRef.classList.add('show');
   addEventListenersToCloseDialog(dialogRef);
 }
@@ -207,16 +200,15 @@ function openAddContactDialog() {
 // Adds event listeners to the edit contact dialog form and close button
 function addEditDialogEventListeners() {
   const dialogRef = document.getElementById('editContactDialog');
+  const deleteBtnRef = document.getElementById('deleteContactBtnEditDialog');
   const form = dialogRef.querySelector('form');
   form.addEventListener('submit', (event) => {
     editContact(event, activeContactId);
   });
+  deleteBtnRef.addEventListener('click', (event) => {
+    deleteThisContact(activeContactId);
+  });
   addEventListenersToCloseDialog(dialogRef);
-  // dialogRef.addEventListener('click', (event) => {
-  //   if (event.target === dialogRef) {
-  //     closeDialog(event.target);
-  //   }
-  // });
 }
 
 // Opens the dialog to edit an existing contact and pre-fills the form with the contact's current information
@@ -228,6 +220,7 @@ function openEditContactDialog(contactId) {
   dialogRef.innerHTML = '';
   dialogRef.innerHTML = getEditContactTemplate(contact, initials, color);
   dialogRef.showModal();
+  focusElement('nameInput');
   dialogRef.classList.add('show');
   addEditDialogEventListeners();
   addEventListeners();
@@ -256,14 +249,15 @@ async function deleteThisContact(contactId) {
 function getContactData() {
   const name = nameInput.value.trim();
   const email = emailInput.value.trim();
-  const phone = phoneInput.value.trim();
+  const rawPhone = phoneInput.value.trim();
+  const phone = rawPhone.replace(/[^\d+]/g, '');
   return { name, email, phone };
 }
 
 // Shows the details of a newly added contact by finding the corresponding contact element in the list and calling the showContactDetails function with the new contact's data
 function showNewContactDetails(id, contactData) {
-  const el = document.querySelector(`.contact[data-id="${id}"]`);
-  if (!el) return;
+  const element = document.querySelector(`.contact[data-id="${id}"]`);
+  if (!element) return;
   const [firstName, ...rest] = contactData.name.split(' ');
   const contact = {
     id,
@@ -273,8 +267,8 @@ function showNewContactDetails(id, contactData) {
     phone: contactData.phone,
     color: stringToColor(contactData.email),
   };
-  showContactDetails(el, contact);
-  el.scrollIntoView();
+  showContactDetails(element, contact);
+  element.scrollIntoView();
 }
 
 // Clears the input fields in the add contact form after a new contact has been added
@@ -322,10 +316,11 @@ function getContactFormData(dialogRef) {
   const nameInput = dialogRef.querySelector('input[type="text"]');
   const emailInput = dialogRef.querySelector('input[type="email"]');
   const phoneInput = dialogRef.querySelector('input[type="tel"]');
+  const rawPhone = phoneInput.value.trim();
   return {
     name: nameInput.value.trim(),
     email: emailInput.value.trim(),
-    phone: phoneInput.value.trim(),
+    phone: rawPhone.replace(/[^\d+]/g, ''),
   };
 }
 
@@ -342,6 +337,7 @@ async function closeDialogAndRender(dialogRef) {
 
 // Shows the details of the updated contact
 function showUpdatedContactDetails(contactId) {
+  activeContactId = '';
   const updatedContact = contacts.find((c) => c.id == contactId);
   if (!updatedContact) return;
   const contactEl = document.querySelector(`.contact[data-id="${contactId}"]`);
@@ -353,6 +349,7 @@ function showUpdatedContactDetails(contactId) {
 // Handles the submission of the edit contact form, updates the contact in the database, re-renders the contact list, and shows the details of the updated contact
 async function editContact(event, contactId) {
   event.preventDefault();
+  const element = document.querySelector(`.contact[data-id="${contactId}"]`);
   const dialogRef = document.getElementById('editContactDialog');
   const contactData = getContactFormData(dialogRef);
   const formattedData = {
@@ -362,7 +359,7 @@ async function editContact(event, contactId) {
   await updateContactData(contactId, formattedData);
   await closeDialogAndRender(dialogRef);
   showUpdatedContactDetails(contactId);
-  el.scrollIntoView();
+  element.scrollIntoView();
 }
 
 //Add event listeners to the add contact button, the close buttons in the dialogs, and the submit event of the add contact form
