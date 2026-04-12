@@ -190,6 +190,8 @@ body {
   margin-top: 5px;
   font-size: 14px;
   color: #666;
+  display: flex;
+  gap: 10px;
 }
 
 .detail-section {
@@ -216,11 +218,6 @@ body {
   font-size: 16px;
 }
 
-.detail-actions {
-  display: flex;
-  gap: 16px;
-}
-
 .edit-btn {
   display: flex;
   align-items: center;
@@ -228,6 +225,7 @@ body {
   cursor: pointer;
   font-size: 16px;
   gap: 13px;
+  min-width: 80px;
 }
 
 .edit-btn:hover {

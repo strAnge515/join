@@ -183,7 +183,7 @@ function focusElement(elementId) {
 function openAddContactDialog() {
   const dialogRef = document.getElementById('addContactDialog');
   dialogRef.showModal();
-  focusElement('nameInput');
+  focusElement('nameInputAdd');
   dialogRef.classList.add('show');
   addEventListenersToCloseDialog(dialogRef);
 }
@@ -211,7 +211,7 @@ function openEditContactDialog(contactId) {
   dialogRef.innerHTML = '';
   dialogRef.innerHTML = getEditContactTemplate(contact, initials, color);
   dialogRef.showModal();
-  focusElement('nameInput');
+  focusElement('nameInputEdit');
   dialogRef.classList.add('show');
   addEditDialogEventListeners();
   addEventListeners();
@@ -224,7 +224,8 @@ function closeDialog(element) {
   setTimeout(() => {
     dialogRef.close();
   }, 300);
-  clearInputs();
+  clearInputs('editContactForm');
+  clearInputs('newContactForm');
 }
 
 // Deletes a contact after confirming the action with the user, then re-renders the contact list and clears the contact details view
@@ -238,9 +239,9 @@ async function deleteThisContact(contactId) {
 
 // Retrieves the data from the add contact form inputs and returns it as an object
 function getContactData() {
-  const name = nameInput.value.trim();
-  const email = emailInput.value.trim();
-  const rawPhone = phoneInput.value.trim();
+  const name = nameInputAdd.value.trim();
+  const email = emailInputAdd.value.trim();
+  const rawPhone = phoneInputAdd.value.trim();
   const phone = rawPhone.replace(/[^\d+]/g, '');
   return { name, email, phone };
 }
@@ -263,10 +264,12 @@ function showNewContactDetails(id, contactData) {
 }
 
 // Clears the input fields in the add contact form after a new contact has been added
-function clearInputs() {
-  document.getElementById('nameInput').value = '';
-  document.getElementById('emailInput').value = '';
-  document.getElementById('phoneInput').value = '';
+function clearInputs(formId) {
+  const form = document.getElementById(formId);
+  const inputs = form.querySelectorAll('input');
+  inputs.forEach((input) => {
+    input.value = '';
+  });
 }
 
 // Capitalizes the first letter of a string and converts the rest to lowercase
@@ -316,7 +319,7 @@ async function handleAddContact(event) {
   showNewContactDetails(id, formattedData);
   addSlideInAnimation('#contactCreatedSignal', 500);
   removeSlideInAnimation('#contactCreatedSignal', 3000);
-  clearInputs();
+  clearInputs('newContactForm');
   closeDialog(addContactDialog.querySelector('.close-btn'));
 }
 
