@@ -195,6 +195,8 @@ input:focus {
 }
 
 .contact-created {
+  position: absolute;
+  margin-top: 70px;
   background-color: #2a3647;
   color: white;
   font-size: 20px;
@@ -202,6 +204,16 @@ input:focus {
   height: 74px;
   width: 326px;
   display: flex;
-  text-align: center;
+  justify-content: center;
   align-items: center;
+  transform: translateX(200%);
+  opacity: 0;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.contact-created.slide-in {
+  transform: translateX(0);
+  opacity: 1;
 }

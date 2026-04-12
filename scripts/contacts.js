@@ -138,15 +138,6 @@ function toggleActiveContact(element) {
   element.classList.add('active');
 }
 
-// Adds a slide-in animation to the contact details card when it is displayed
-function slideInContactDetails() {
-  const contactDetailsRef = document.getElementById('contact-details');
-  const card = contactDetailsRef.querySelector('.contact-detail-card');
-  setTimeout(() => {
-    card.classList.add('slide-in');
-  }, 10);
-}
-
 // Displays the details of a contact when clicked and highlights the active contact in the list
 function showContactDetails(element, contact) {
   if (activeContactId === contact.id) return;
@@ -160,7 +151,7 @@ function showContactDetails(element, contact) {
     initials,
     color,
   );
-  slideInContactDetails();
+  addSlideInAnimation('#contactDetailCard', 10);
   addDetailEventListeners();
 }
 
@@ -296,6 +287,22 @@ function capitalize(fullName) {
     .join(' ');
 }
 
+// Adds a slide-in animation to a container
+function addSlideInAnimation(ref, time) {
+  const element = document.querySelector(ref);
+  setTimeout(() => {
+    element.classList.add('slide-in');
+  }, time);
+}
+
+// Removes the slide-in animation class from a container
+function removeSlideInAnimation(ref, time) {
+  const element = document.querySelector(ref);
+  setTimeout(() => {
+    element.classList.remove('slide-in');
+  }, time);
+}
+
 // Handles the submission of the add contact form, saves the new contact to the database, re-renders the contact list, and shows the details of the newly added contact
 async function handleAddContact(event) {
   event.preventDefault();
@@ -307,6 +314,8 @@ async function handleAddContact(event) {
   const id = await saveContact(formattedData);
   await renderContacts();
   showNewContactDetails(id, formattedData);
+  addSlideInAnimation('#contactCreatedSignal', 500);
+  removeSlideInAnimation('#contactCreatedSignal', 3000);
   clearInputs();
   closeDialog(addContactDialog.querySelector('.close-btn'));
 }

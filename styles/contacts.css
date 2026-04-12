@@ -128,13 +128,12 @@ body {
 
 .detail-container {
   flex: 1;
-  padding: 30px;
+  padding: 110px 0 0 55px;
 }
 
 .details-header {
   display: flex;
   align-items: center;
-  margin-top: 83px;
   margin-bottom: 32px;
 }
 
