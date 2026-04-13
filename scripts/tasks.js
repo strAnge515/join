@@ -3,6 +3,7 @@ import { saveTask } from "./backend-tasks.js";
 const subtaskInput = document.getElementById('subtask-input');
 const addButtonSubtask = document.getElementById('btn-add-subtask');
 const deleteButtonSubtask = document.getElementById('btn-delete-subtask');
+const subtaskButtonWrapper = document.getElementById('subtask-button-wrapper');
 
 function init() {
     addTask();
@@ -61,24 +62,77 @@ function setPriorityButtons() {
     });
 }
 
-addButtonSubtask.addEventListener('click', addSubtask);
+addButtonSubtask.addEventListener('mousedown', addSubtask);
 
 function addSubtask() {
     const subtaskValue = subtaskInput.value;
     const subtaskList = document.getElementById('subtask-list');
     if (subtaskValue === "") return;
-    subtaskList.innerHTML += "<li>" + subtaskValue + "</li>";
+    const li = document.createElement('li')
+    li.innerHTML = getSubtaskTemplate(subtaskValue);
+    subtaskList.appendChild(li);
+    addSubtaskEventListeners(li);
     subtaskInput.value = "";
 }
 
+function getSubtaskTemplate(subtaskValue) {
+    return `<span>${subtaskValue}</span>
+                    <button class="edit-btn"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
+                     <button class="delete-btn"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>`;
+}
+
+function getEditTemplate(subtaskText) {
+    return `<input class="subtask-edit-value" type="text" value="${subtaskText}" />
+             <button class="edit-delete-btn"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
+             <button class="edit-confirm-btn"><img src="../assets/img/Property 1=check.svg" alt="checkicon"></button>`;
+}
+
+function addSubtaskEventListeners(li) {
+    let deleteBtn = li.querySelector('.delete-btn');
+    let editBtn = li.querySelector('.edit-btn');
+    deleteBtn.addEventListener('click', () => li.remove());
+    editBtn.addEventListener('click', () => {
+        let subtaskText = li.querySelector('span').textContent;
+        li.innerHTML = getEditTemplate(subtaskText);
+        li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
+        li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
+            subtaskText = li.querySelector('.subtask-edit-value').value;
+            li.innerHTML = getSubtaskTemplate(subtaskText);
+            addSubtaskEventListeners(li);
+        });
+    });
+}
+
+addButtonSubtask.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+        addSubtask();
+        subtaskInput.value = "";
+        subtaskInput.blur();
+    }
+})
+
 subtaskInput.addEventListener('blur', () => {
-    deleteButtonSubtask.classList.add('subtask-button-hidden');
-    addButtonSubtask.classList.add('subtask-button-hidden');
+    subtaskButtonWrapper.classList.remove('button-wrapper');
+    subtaskButtonWrapper.classList.add('subtask-button-hidden');
+
+
 })
 
 subtaskInput.addEventListener('focus', () => {
-    deleteButtonSubtask.classList.remove('subtask-button-hidden');
-    addButtonSubtask.classList.remove('subtask-button-hidden');
+    subtaskButtonWrapper.classList.remove('subtask-button-hidden');
+    subtaskButtonWrapper.classList.add('button-wrapper');
+})
+
+deleteButtonSubtask.addEventListener('mousedown', () => {
+    subtaskInput.value = "";
+    subtaskInput.blur();
+})
+
+deleteButtonSubtask.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+        subtaskInput.value = "";
+        subtaskInput.blur();
+    }
 })
 
 document.addEventListener('DOMContentLoaded', init);
