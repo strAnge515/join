@@ -29,6 +29,7 @@
   width: 1px;
   background-color: black;
   margin: 0 45px;
+  height: 425px;
 }
 
 .task-form {
@@ -47,7 +48,7 @@
 }
 
 .task-form-label {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 400;
   display: flex;
 }
@@ -130,6 +131,12 @@
   border-color: var(--color-low);
 }
 
+.prio-btn.selected-urgent img,
+.prio-btn.selected-medium img,
+.prio-btn.selected-low img {
+    filter: brightness(0) invert(1);
+}
+
 .task-form-subtask-input-row {
   display: flex;
   gap: 8px;
@@ -141,34 +148,44 @@
   flex: 1;
 }
 
+.subtask-button-hidden {
+  display: none;
+}
+
 .button-wrapper {
   display: flex;
   position: absolute;
+  align-items: center;
+  gap: 4px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .subtask-button {
-  width: 40px;
-  height: 40px;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius);
-  background: var(--color-white);
-  font-size: 20px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
   cursor: pointer;
-  color: var(--color-text);
-  transition: background 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.subtask-button-hidden {
-  display: none;
+  padding: 0;
+  border-radius: 4px;
+  transition: background 0.15s;
 }
 
 .subtask-button:hover {
   background: var(--color-accent);
   color: #fff;
-  border-color: var(--color-accent);
+  border-color: transparent;
+}
+
+.subtask-button-separator {
+  width: 1px;
+  height: 20px;
+  background-color: var(--color-border);
 }
 
 .task-form-subtask-list {
@@ -250,3 +267,4 @@
 .subtask-delete-btn:hover {
   color: var(--color-urgent);
 }
+
