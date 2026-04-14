@@ -27,9 +27,9 @@ function addInformations() {
     let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
     let taskAssignedTo = document.getElementById('task-assigned');
     let selectedContacts = Array.from(taskAssignedTo.selectedOptions);
-    let contact = selectedContacts.map((contact) => contact.value)
-
-    return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact }
+    let contact = selectedContacts.map((contact) => contact.value);
+    let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
+        return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks }
 
 }
 
@@ -42,10 +42,10 @@ function createTaskObjekt(data) {
         assigned_to: data.contact,
         date: data.taskDate,
         prio: data.taskPrio,
-        subtasks: [{ title: "drag and drop einbauen", state: false },
-        { title: "Bispiel 2", state: false },
-        { title: "Beispiel 3", state: false }
-        ]
+        subtasks: data.subtasks.map((subtask) => ({
+            title: subtask.querySelector('span').textContent, 
+            state: false
+        }))
     }
 }
 

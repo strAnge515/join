@@ -81,7 +81,7 @@
           </div>
 
           <!-- Category -->
-          <div class="form-group">
+       <!--   <div class="form-group">
             <label class="task-form-label" for="task-category">
               <p>Category</p>
               <p class="star">*</p>
@@ -91,18 +91,29 @@
               <option value="technical-task">Technical Task</option>
               <option value="user-story">User Story</option>
             </select>
-          </div>
+          </div>-->
 
           <div class="form-group">
-            <p>Category</p>
-            <p class="star">*</p>
-            <div class="task-form-select" id="task-category">
-              <div>
-                <button value="technical-task" class="technical-task-btn" id="technical-task-btn">Technical Task</button>
-                <button value="user-story"  class="technical-task-btn" id="technical-task-btn">User Story</button>
-              </div>
-            </div>
-          </div>
+    <p>Category <span class="star">*</span></p>
+
+    <div class="task-form-select" id="task-category">
+
+        <div class="selected-option" id="selected-category">
+            <p>Select task category</p>
+        </div>
+
+        <div class="dropdown-options d-none" id="category-options">
+            <button type="button" class="dropdown-option" value="technical-task">
+                Technical Task
+            </button>
+
+            <button type="button" class="dropdown-option" value="user-story">
+                User Story
+            </button>
+        </div>
+
+    </div>
+</div>
 
           <!-- Subtasks -->
           <div class="form-group">
