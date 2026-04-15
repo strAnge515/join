@@ -8,18 +8,19 @@
 <link rel="stylesheet" href="../styles/header.css">
 <script defer src="../scripts/sidebar.js"></script>
 <script defer src="../scripts/header.js"></script>
+<script type="module" src="../scripts/backend-contacts.js"></script>
     <link rel="stylesheet" href="../styles/contacts.css" />
     <link rel="stylesheet" href="../styles/contact-dialog.css">
     <script src="../scripts/contacts-template.js"></script>
-    <script src="../scripts/contacts.js"></script>
+    <script type="module" src="../scripts/contacts.js"></script>
   </head>
-  <body onload="renderContacts()">
+  <body>
     <!-- Sidenavigation -->
     <div id="sidebar-container"></div>
     <div id="header-container"></div>
     <div class="content">
     <div class="contact-container">
-      <button class="add-btn" onclick="openAddContactDialog()">
+      <button class="add-btn" id="addContactBtn">
         Add new contact
         <img src="../assets/img/contacts/person_add.svg" alt="">
       </button>
@@ -32,9 +33,10 @@
         <span class="subtitle">Better with a team</span>
       </div>
       <div id="contact-details"></div>
+          <div class="contact-created" id="contactCreatedSignal">Contact succesfully created </div>
     </div>
 </div>
-    <dialog id="addContactDialog" closedby="any">
+    <dialog id="addContactDialog">
       <div class="dialog">
         <div class="dialog-left">
           <img src="../assets/img/contacts/join-logo.svg" class="logo" />
@@ -45,22 +47,26 @@
         <div class="dialog-right">
           <img class="avatar-profile" src="../assets/img/contacts/avatar-profile.svg"></img>
           <div class="actions">
-            <button class="close-btn" onclick="closeDialog(this)">✕</button>
-            <form onsubmit="handleAddContact(event)">
+            <button class="close-btn btn-to-close">
+              <img class="close-icon" src="../assets/img/contacts/close.svg" alt="Close button">
+            </button>
+            <form id="newContactForm">
              <div class="input-wrapper">
-              <input id="nameInput" type="text" placeholder="Name" required />
+              <input id="nameInputAdd" type="text" placeholder="Vor- und Nachname" required 
+              pattern="^[A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)? [A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)?$"/>
               <img src="../assets/img/contacts/person.svg" alt="">
             </div>
             <div class="input-wrapper">
-              <input id="emailInput" type="email" placeholder="Email" required />
+              <input id="emailInputAdd" type="email" placeholder="Email" required />
               <img src="../assets/img/contacts/mail.svg" alt="">
             </div>
             <div class="input-wrapper">
-              <input id="phoneInput" type="tel" placeholder="Phone" required />
+              <input id="phoneInputAdd" type="tel" placeholder="Phone" required 
+               pattern="^\+?[0-9\s\-\/]{6,20}$" />
               <img src="../assets/img/contacts/call.svg" alt="">
             </div>
               <div class="action-btns">
-                <button type="button" class="cancel-btn" onclick="closeDialog(this)"> Cancel ✕</button>
+                <button type="button" class="cancel-btn btn-to-close"> Cancel ✕</button>
                 <button type="submit" class="create-btn">Create contact ✔</button>
               </div>
             </form>
@@ -68,7 +74,7 @@
         </div>
       </div>
     </dialog>
-        <dialog id="editContactDialog" closedby="any">
+        <dialog id="editContactDialog">
     </dialog>
   </body>
 </html>
