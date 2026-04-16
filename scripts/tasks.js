@@ -4,6 +4,9 @@ const subtaskInput = document.getElementById('subtask-input');
 const addButtonSubtask = document.getElementById('btn-add-subtask');
 const deleteButtonSubtask = document.getElementById('btn-delete-subtask');
 const subtaskButtonWrapper = document.getElementById('subtask-button-wrapper');
+const selectCategoryButton = document.getElementById('selected-category');
+const dropdownOptions = document.querySelectorAll('.dropdown-option');
+const dropdownOptionsContainer = document.getElementById('category-options');
 
 function init() {
     addTask();
@@ -22,14 +25,14 @@ function addTask() {
 function addInformations() {
     let taskTitle = document.getElementById('task-title').value;
     let tastkDescription = document.getElementById('task-description').value;
-    let taskCategory = document.getElementById('task-category').value;
+    let taskCategory = document.getElementById('selected-category').dataset.value;
     let taskDate = document.getElementById('task-date').value;
     let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
     let taskAssignedTo = document.getElementById('task-assigned');
     let selectedContacts = Array.from(taskAssignedTo.selectedOptions);
     let contact = selectedContacts.map((contact) => contact.value);
     let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
-        return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks }
+    return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks }
 
 }
 
@@ -43,7 +46,7 @@ function createTaskObjekt(data) {
         date: data.taskDate,
         prio: data.taskPrio,
         subtasks: data.subtasks.map((subtask) => ({
-            title: subtask.querySelector('span').textContent, 
+            title: subtask.querySelector('span').textContent,
             state: false
         }))
     }
@@ -113,13 +116,11 @@ addButtonSubtask.addEventListener('keydown', (event) => {
 
 subtaskInput.addEventListener('blur', () => {
     subtaskButtonWrapper.classList.remove('button-wrapper');
-    subtaskButtonWrapper.classList.add('subtask-button-hidden');
-
-
+    subtaskButtonWrapper.classList.add('d-none');
 })
 
 subtaskInput.addEventListener('focus', () => {
-    subtaskButtonWrapper.classList.remove('subtask-button-hidden');
+    subtaskButtonWrapper.classList.remove('d-none');
     subtaskButtonWrapper.classList.add('button-wrapper');
 })
 
@@ -134,5 +135,19 @@ deleteButtonSubtask.addEventListener('keydown', (event) => {
         subtaskInput.blur();
     }
 })
+
+selectCategoryButton.addEventListener('click', () => {
+        dropdownOptionsContainer.classList.toggle('d-none');
+})
+
+dropdownOptions.forEach(button => {
+    button.addEventListener('click', (event) => {
+       let selectedOption = document.getElementById('selected-category');
+        selectCategoryButton.textContent = event.currentTarget.textContent;
+        selectedOption.dataset.value = event.currentTarget.value;
+        dropdownOptionsContainer.classList.toggle('d-none');
+    })
+})
+
 
 document.addEventListener('DOMContentLoaded', init);

@@ -148,10 +148,6 @@
   flex: 1;
 }
 
-.subtask-button-hidden {
-  display: none;
-}
-
 .button-wrapper {
   display: flex;
   position: absolute;
@@ -267,4 +263,10 @@
 .subtask-delete-btn:hover {
   color: var(--color-urgent);
 }
+
+/* Utility class - must stay at bottom of file */
+.d-none {
+    display: none;
+}
+
 

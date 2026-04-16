@@ -81,7 +81,7 @@
           </div>
 
           <!-- Category -->
-       <!--   <div class="form-group">
+          <!--   <div class="form-group">
             <label class="task-form-label" for="task-category">
               <p>Category</p>
               <p class="star">*</p>
@@ -94,33 +94,33 @@
           </div>-->
 
           <div class="form-group">
-    <p>Category <span class="star">*</span></p>
+            <p>Category <span class="star">*</span></p>
 
-    <div class="task-form-select" id="task-category">
+            <div class="task-form-select" id="task-category">
 
-        <div class="selected-option" id="selected-category">
-            <p>Select task category</p>
-        </div>
+              <div class="selected-option" id="selected-category" data-value="">
+                <p>Select task category</p>
+              </div>
 
-        <div class="dropdown-options d-none" id="category-options">
-            <button type="button" class="dropdown-option" value="technical-task">
-                Technical Task
-            </button>
+              <div class="dropdown-options d-none" id="category-options">
+                <button type="button" class="dropdown-option" value="technical-task">
+                 <p>Technical Task</p>
+                </button>
 
-            <button type="button" class="dropdown-option" value="user-story">
-                User Story
-            </button>
-        </div>
+                <button type="button" class="dropdown-option" value="user-story">
+                 <p>User Story</p> 
+                </button>
+              </div>
 
-    </div>
-</div>
+            </div>
+          </div>
 
           <!-- Subtasks -->
           <div class="form-group">
             <label class="task-form-label">Subtasks</label>
             <div class="task-form-subtask-input-row">
               <input class="task-form-input" type="text" id="subtask-input" placeholder="Add new subtask" />
-              <div class=" subtask-button-hidden" id="subtask-button-wrapper">
+              <div class="d-none" id="subtask-button-wrapper">
                 <button type="button" class="subtask-button" id="btn-delete-subtask"><img
                     src="../assets/img/Property 1=close.svg" alt="closeicon"></button>
                 <div class="subtask-button-separator"></div>
