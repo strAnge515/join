@@ -3,12 +3,13 @@
   --color-primary: #2a3647;
   --color-accent: #29abe2;
   --color-white: #ffffff;
-  --color-border: #d1d7e0;
+  --color-border: #d1d1d1;
   --color-text: #2a3647;
   --color-muted: #a8b2c1;
   --color-urgent: #ff3d00;
   --color-medium: #ffa800;
   --color-low: #7ae229;
+  --color-error: #E60026;
   --radius: 10px;
 }
 

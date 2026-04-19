@@ -63,7 +63,7 @@ function createContactElement(contact) {
 }
 
 // Loads contacts from the database, prepares the data by splitting the name into first and last name and assigning a color based on the email, then returns the prepared contacts
-async function loadAndPrepareContacts() {
+export async function loadAndPrepareContacts() {
   contacts = await loadContacts();
   if (!contacts || contacts.length === 0) return [];
   return contacts.map((contact) => {

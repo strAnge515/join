@@ -1,22 +1,31 @@
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #d1d1d1;
+}
+
 .main-title {
   font-size: 60px;
   font-weight: 700;
-  margin-bottom: 32px;
-
+  margin-bottom: 40px;
+  margin-top: 80px;
 }
 
 .wrapper-add-task {
   display: flex;
 }
+
 .star {
-  color: #FF8190;
+  color: #ff8190;
 }
 
 .wrapper-add-task-left-side {
   width: 440px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   height: 380px;
 }
 
@@ -27,7 +36,7 @@
 
 .add-task-seperator {
   width: 1px;
-  background-color: black;
+  background-color: #d1d1d1;
   margin: 0 45px;
   height: 425px;
 }
@@ -41,6 +50,15 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
+  padding-bottom: 16px;
+}
+
+.resize-img {
+  position: absolute;
+  height: 20px;
+  bottom: 33px;
+  right: 5px;
 }
 
 .form-group--full {
@@ -59,11 +77,12 @@
   padding: 10px 14px;
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius);
-  font-size: 14px;
+  font-size: 20px;
   color: var(--color-text);
   background: var(--color-white);
   outline: none;
   transition: border-color 0.2s;
+  margin-bottom: 12px;
 }
 
 .task-form-input:focus,
@@ -75,11 +94,18 @@
 .task-form-textarea {
   resize: vertical;
   min-height: 110px;
+  resize: none;
 }
 
 .task-form-prio-group {
   display: flex;
   gap: 12px;
+}
+
+.flex-center-space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .prio-btn {
@@ -134,7 +160,7 @@
 .prio-btn.selected-urgent img,
 .prio-btn.selected-medium img,
 .prio-btn.selected-low img {
-    filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
 }
 
 .task-form-subtask-input-row {
@@ -264,9 +290,52 @@
   color: var(--color-urgent);
 }
 
-/* Utility class - must stay at bottom of file */
-.d-none {
-    display: none;
+.dropdown-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
+.dropdown-options button {
+  background-color: white;
+  border: none;
+}
 
+.assigned-options {
+  height: 340px;
+  overflow: auto;
+  background-color: white;
+}
+
+.assigned-option {
+  padding: 12px 16px;
+}
+
+.assigned-to-contacts-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.assigned-to-names {
+  display: flex;
+  align-items: center;
+}
+
+.assigned-to-names span {
+  font-size: 20px;
+}
+
+.avatar-small {
+  height: 45px;
+  width: 45px;
+  border-radius: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+/* Utility class - must stay at bottom of file */
+.d-none {
+  display: none;
+}
