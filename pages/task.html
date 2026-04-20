@@ -1,152 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join</title>
+    <link rel="stylesheet" href="../styles/sidebar.css" />
+    <link rel="stylesheet" href="../styles/task.css" />
+    <link rel="stylesheet" href="../styles/header.css" />
+    <link rel="stylesheet" href="../style.css" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Join</title>
-  <link rel="stylesheet" href="../styles/sidebar.css">
-  <link rel="stylesheet" href="../styles/task.css">
-  <link rel="stylesheet" href="../styles/header.css">
-  <link rel="stylesheet" href="../style.css">
+    <script defer src="../scripts/sidebar.js"></script>
+    <script defer src="../scripts/header.js"></script>
+    <script type="module" defer src="../scripts/tasks.js"></script>
+  </head>
 
-  <script defer src="../scripts/sidebar.js"></script>
-  <script defer src="../scripts/header.js"></script>
-  <script type="module" defer src="../scripts/tasks.js"></script>
+  <body>
+    <div id="sidebar-container"></div>
+    <div id="header-container"></div>
 
-</head>
+    <main class="main-content">
+      <h1 class="main-title">Add Task</h1>
 
-<body>
-
-  <div id="sidebar-container"></div>
-  <div id="header-container"></div>
-
-  <main class="main-content">
-    <h1 class="main-title">Add Task</h1>
-
-    <form class="task-form" id="task-form">
-      <section class="wrapper-add-task">
-        <section class="wrapper-add-task-left-side">
-          <!-- Title -->
-          <div class="form-group">
-            <label class="task-form-label" for="task-title">
-              <p>Title</p>
-              <p class="star">*</p>
-            </label>
-            <input class="task-form-input" type="text" id="task-title" placeholder="Enter a title" required />
-          </div>
-
-          <!-- Description -->
-          <div class="form-group">
-            <label class="task-form-label" for="task-description">
-              <p>Description</p>
-            </label>
-            <textarea class="task-form-textarea" id="task-description" placeholder="Enter a description"></textarea>
-          </div>
-
-          <!-- Due Date -->
-          <div class="form-group">
-            <label class="task-form-label" for="task-date">
-              <p>Due date</p>
-              <p class="star">*</p>
-            </label>
-            <input class="task-form-input" type="date" id="task-date" />
-          </div>
-        </section>
-
-        <div class="add-task-seperator"></div>
-        <section class="wrapper-add-task-right-side">
-          <!-- Prio -->
-          <div class="form-group">
-            <label class="task-form-label">Prio</label>
-            <div class="task-form-prio-group" id="prio-group">
-              <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">Urgent<img
-                  src="../assets/img/Property 1=Urgent.svg" alt="urgendimg"></button>
-              <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">Medium<img
-                  src="../assets/img/Property 1=Medium.svg" alt="mediumimg"></button>
-              <button type="button" class="prio-btn prio-btn--low" data-prio="low">Low<img
-                  src="../assets/img/Property 1=Low.svg" alt="lowimg"></button>
+      <form class="task-form" id="task-form">
+        <section class="wrapper-add-task">
+          <section class="wrapper-add-task-left-side">
+            <!-- Title -->
+            <div class="form-group">
+              <label class="task-form-label" for="task-title">
+                <p>Title</p>
+                <p class="star">*</p>
+              </label>
+              <input
+                class="task-form-input flex-center-space-between"
+                type="text"
+                id="task-title"
+                placeholder="Enter a title"
+                required />
             </div>
-          </div>
 
-          <!-- Assigned To -->
-          <div class="form-group form-group--full">
-            <label class="task-form-label" for="task-assigned">Assigned to</label>
-            <select class="task-form-select" id="task-assigned" multiple size="4">
-              <option value="denny">Denny</option>
-              <option value="ruslan">Ruslan</option>
-              <option value="kathleen">Kathleen</option>
-              <option value="juri">Juri</option>
-            </select>
-          </div>
+            <!-- Description -->
+            <div class="form-group">
+              <label class="task-form-label" for="task-description">
+                <p>Description</p>
+                              </label>
+              <textarea
+                class="task-form-textarea"
+                id="task-description"
+                placeholder="Enter a description"></textarea>
+                <img class="resize-img" src="../assets/img/Recurso 1 1.svg" alt="resizefield">
+            </div>
 
-          <!-- Category -->
-       <!--   <div class="form-group">
-            <label class="task-form-label" for="task-category">
-              <p>Category</p>
-              <p class="star">*</p>
-            </label>
-            <select class="task-form-select" id="task-category">
-              <option value="">Select task category</option>
-              <option value="technical-task">Technical Task</option>
-              <option value="user-story">User Story</option>
-            </select>
-          </div>-->
+            <!-- Due Date -->
+            <div class="form-group">
+              <label class="task-form-label" for="task-date">
+                <p>Due date</p>
+                <p class="star">*</p>
+              </label>
+              <input class="task-form-input" type="date" id="task-date" />
+            </div>
+          </section>
 
-          <div class="form-group">
-    <p>Category <span class="star">*</span></p>
-
-    <div class="task-form-select" id="task-category">
-
-        <div class="selected-option" id="selected-category">
-            <p>Select task category</p>
-        </div>
-
-        <div class="dropdown-options d-none" id="category-options">
-            <button type="button" class="dropdown-option" value="technical-task">
-                Technical Task
-            </button>
-
-            <button type="button" class="dropdown-option" value="user-story">
-                User Story
-            </button>
-        </div>
-
-    </div>
-</div>
-
-          <!-- Subtasks -->
-          <div class="form-group">
-            <label class="task-form-label">Subtasks</label>
-            <div class="task-form-subtask-input-row">
-              <input class="task-form-input" type="text" id="subtask-input" placeholder="Add new subtask" />
-              <div class=" subtask-button-hidden" id="subtask-button-wrapper">
-                <button type="button" class="subtask-button" id="btn-delete-subtask"><img
-                    src="../assets/img/Property 1=close.svg" alt="closeicon"></button>
-                <div class="subtask-button-separator"></div>
-                <button type="button" class="subtask-button" id="btn-add-subtask"><img
-                    src="../assets/img/Property 1=check.svg" alt="checkicon"></button>
+          <div class="add-task-seperator"></div>
+          <section class="wrapper-add-task-right-side">
+            <!-- Prio -->
+            <div class="form-group">
+              <label class="task-form-label">Priority</label>
+              <div class="task-form-prio-group" id="prio-group">
+                <button
+                  type="button"
+                  class="prio-btn prio-btn--urgent"
+                  data-prio="urgent">
+                  Urgent<img
+                    src="../assets/img/Property 1=Urgent.svg"
+                    alt="urgendimg" />
+                </button>
+                <button
+                  type="button"
+                  class="prio-btn prio-btn--medium selected-medium"
+                  data-prio="medium">
+                  Medium<img
+                    src="../assets/img/Property 1=Medium.svg"
+                    alt="mediumimg" />
+                </button>
+                <button
+                  type="button"
+                  class="prio-btn prio-btn--low"
+                  data-prio="low">
+                  Low<img src="../assets/img/Property 1=Low.svg" alt="lowimg" />
+                </button>
               </div>
             </div>
-            <ul class="task-form-subtask-list" id="subtask-list"></ul>
-          </div>
 
+            <!-- Assigned To -->
+            <div class="form-group form-group--full">
+              <label class="task-form-label">Assigned to</label>
+              <div class="assigned-dropdown">
+                <div
+                  class="task-form-input flex-center-space-between"
+                  id="assigned-toggle">
+                  <span id="assigned-placeholder"
+                    >Select contacts to assign</span
+                  >
+                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow" />
+                </div>
+                <ul class="assigned-options d-none" id="assigned-options"></ul>
+              </div>
+              <div class="assigned-avatars" id="assigned-avatars"></div>
+            </div>
+
+            <!-- Category -->
+            <div class="form-group">
+              <p>Category <span class="star">*</span></p>
+              <div class="task-form-select" id="task-category">
+                <div
+                  class="selected-option flex-center-space-between"
+                  id="selected-category"
+                  data-value="">
+                  <p>Select task category</p>
+                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow" />
+                </div>
+                <div class="dropdown-options d-none" id="category-options">
+                  <button
+                    type="button"
+                    class="dropdown-option"
+                    value="technical-task">
+                    <p>Technical Task</p>
+                  </button>
+                  <button
+                    type="button"
+                    class="dropdown-option"
+                    value="user-story">
+                    <p>User Story</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subtasks -->
+            <div class="form-group">
+              <label class="task-form-label">Subtasks</label>
+              <div class="task-form-subtask-input-row">
+                <input
+                  class="task-form-input"
+                  type="text"
+                  id="subtask-input"
+                  placeholder="Add new subtask" />
+                <div class="d-none" id="subtask-button-wrapper">
+                  <button
+                    type="button"
+                    class="subtask-button"
+                    id="btn-delete-subtask">
+                    <img
+                      src="../assets/img/Property 1=close.svg"
+                      alt="closeicon" />
+                  </button>
+                  <div class="subtask-button-separator"></div>
+                  <button
+                    type="button"
+                    class="subtask-button"
+                    id="btn-add-subtask">
+                    <img
+                      src="../assets/img/Property 1=check.svg"
+                      alt="checkicon" />
+                  </button>
+                </div>
+              </div>
+              <ul class="task-form-subtask-list" id="subtask-list"></ul>
+            </div>
+          </section>
         </section>
-      </section>
-      <!-- Actions -->
-      <div class="task-form-actions">
-        <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
-        <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
-      </div>
-
-
-    </form>
-
-    <p class="star">*</p>
-    <p>This field is required</p>
-
-
-  </main>
-</body>
-
+        <!-- Actions -->
+        <div class="task-form-actions">
+          <div>
+            <p class="star">*</p>
+            <p>This field is required</p>
+          </div>
+          <button type="button" class="btn btn--secondary" id="btn-clear">
+            Clear ✕
+          </button>
+          <button type="button" class="btn btn--primary" id="btn-create">
+            Create Task ✓
+          </button>
+        </div>
+      </form>
+    </main>
+  </body>
 </html>

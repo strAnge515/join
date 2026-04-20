@@ -12,7 +12,7 @@ function getContactTemplate(contact, initials) {
 
 function getContactDetailTemplate(contact, initials, color) {
   return `
-    <div class="contact-detail-card">      
+    <div class="contact-detail-card" id="contactDetailCard">      
       <div class="detail-header">
         <div class="detail-avatar" style="background:${color}">
           ${initials}
@@ -20,24 +20,28 @@ function getContactDetailTemplate(contact, initials, color) {
         <div>
           <div class="detail-name">${contact.firstName} ${contact.lastName}</div>
           <div class="detail-actions">
-          <button class="edit-btn" onclick="openEditContactDialog(${contact.id})">
-          <img src="../assets/img/contacts/edit.svg" alt="">
+          <button class="edit-btn" id="editContactBtn" data-id="${contact.id}">
+          <div class="edit-icon"></div>
           Edit </button>
-          <button class="edit-btn" onclick="deleteContact(${contact.id})">
-           <img src="../assets/img/contacts/delete.svg" alt="">
+          <button class="edit-btn" id="deleteContactBtn" data-id="${contact.id}">
+          <div class="delete-icon"></div>
            Delete</button>
            </div>
-        </div>
+           </div>
       </div>
       <div class="detail-section">
         <div class="detail-label">Contact Information</div>
         <div class="details">
           <div class="detail-label-email">Email</div>
-          <div class="email">${contact.email}</div>
+          <a href="mailto:${contact.email}" class="email">
+  ${contact.email}
+</a>
         </div>
         <div class="details">
           <div class="detail-label-phone">Phone</div>
-          <div>${contact.phone}</div>
+          <a href="tel:${contact.phone}" class="phone">
+  ${contact.phone}
+</a>
         </div>
       </div>
     </div>
@@ -56,25 +60,30 @@ function getEditContactTemplate(contact, initials, color) {
           ${initials}
         </div>
           <div class="actions">
-            <button class="close-btn" onclick="closeDialog(this)">✕</button>
+            <button class="close-btn btn-to-close">
+              <img class="close-icon" src="../assets/img/contacts/close.svg" alt="Close button"></button>
+            <form id="editContactForm">
             <div class="input-wrapper">
-              <input id="nameInput" type="text" placeholder="Name" value="${contact.firstName} ${contact.lastName}" required />
+              <input id="nameInputEdit" type="text" placeholder="Vor- und Nachname" value="${contact.firstName} ${contact.lastName}" required 
+              pattern="^[A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)? [A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)?$"/>
               <img src="../assets/img/contacts/person.svg" alt="">
             </div>
             <div class="input-wrapper">
-              <input id="emailInput" type="email" placeholder="Email" value="${contact.email}" required />
+              <input id="emailInputEdit" type="email" placeholder="Email" value="${contact.email}" required />
               <img src="../assets/img/contacts/mail.svg" alt="">
             </div>
             <div class="input-wrapper">
-              <input id="phoneInput" type="tel" placeholder="Phone" value="${contact.phone}" required />
+              <input id="phoneInputEdit" type="tel" placeholder="Phone" value="${contact.phone}" required 
+               pattern="^\\+?[0-9\\s\\-\\/]{6,20}$" />
               <img src="../assets/img/contacts/call.svg" alt="">
             </div>
             <div class="action-btns">
-              <button class="cancel-btn" onclick="closeDialog(this)">
-                Cancel ✕
+              <button id="deleteContactBtnEditDialog" class="delete-btn btn-to-close">
+                Delete
               </button>
-              <button class="create-btn save-btn" onclick="editContact(${contact.id})">Save ✔</button>
+              <button class="create-btn save-btn" type="submit">Save ✔</button>
             </div>
+            </form>
           </div>
         </div>
       </div>`;
