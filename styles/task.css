@@ -59,6 +59,7 @@ textarea::placeholder {
   height: 20px;
   bottom: 33px;
   right: 5px;
+  cursor: nwse-resize;
 }
 
 .form-group--full {

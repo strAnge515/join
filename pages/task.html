@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -42,12 +42,9 @@
             <div class="form-group">
               <label class="task-form-label" for="task-description">
                 <p>Description</p>
-                              </label>
-              <textarea
-                class="task-form-textarea"
-                id="task-description"
-                placeholder="Enter a description"></textarea>
-                <img class="resize-img" src="../assets/img/Recurso 1 1.svg" alt="resizefield">
+              </label>
+              <textarea class="task-form-textarea" id="task-description" placeholder="Enter a description"></textarea>
+              <img id="resize" class="resize-img" src="../assets/img/Recurso 1 1.svg" alt="resizefield" />
             </div>
 
             <!-- Due Date -->
@@ -66,26 +63,13 @@
             <div class="form-group">
               <label class="task-form-label">Priority</label>
               <div class="task-form-prio-group" id="prio-group">
-                <button
-                  type="button"
-                  class="prio-btn prio-btn--urgent"
-                  data-prio="urgent">
-                  Urgent<img
-                    src="../assets/img/Property 1=Urgent.svg"
-                    alt="urgendimg" />
+                <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">
+                  Urgent<img src="../assets/img/Property 1=Urgent.svg" alt="urgendimg" />
                 </button>
-                <button
-                  type="button"
-                  class="prio-btn prio-btn--medium selected-medium"
-                  data-prio="medium">
-                  Medium<img
-                    src="../assets/img/Property 1=Medium.svg"
-                    alt="mediumimg" />
+                <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">
+                  Medium<img src="../assets/img/Property 1=Medium.svg" alt="mediumimg" />
                 </button>
-                <button
-                  type="button"
-                  class="prio-btn prio-btn--low"
-                  data-prio="low">
+                <button type="button" class="prio-btn prio-btn--low" data-prio="low">
                   Low<img src="../assets/img/Property 1=Low.svg" alt="lowimg" />
                 </button>
               </div>
@@ -95,12 +79,8 @@
             <div class="form-group form-group--full">
               <label class="task-form-label">Assigned to</label>
               <div class="assigned-dropdown">
-                <div
-                  class="task-form-input flex-center-space-between"
-                  id="assigned-toggle">
-                  <span id="assigned-placeholder"
-                    >Select contacts to assign</span
-                  >
+                <div class="task-form-input flex-center-space-between" id="assigned-toggle">
+                  <span id="assigned-placeholder">Select contacts to assign</span>
                   <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow" />
                 </div>
                 <ul class="assigned-options d-none" id="assigned-options"></ul>
@@ -112,24 +92,15 @@
             <div class="form-group">
               <p>Category <span class="star">*</span></p>
               <div class="task-form-select" id="task-category">
-                <div
-                  class="selected-option flex-center-space-between"
-                  id="selected-category"
-                  data-value="">
+                <div class="selected-option flex-center-space-between" id="selected-category" data-value="">
                   <p>Select task category</p>
                   <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow" />
                 </div>
                 <div class="dropdown-options d-none" id="category-options">
-                  <button
-                    type="button"
-                    class="dropdown-option"
-                    value="technical-task">
+                  <button type="button" class="dropdown-option" value="technical-task">
                     <p>Technical Task</p>
                   </button>
-                  <button
-                    type="button"
-                    class="dropdown-option"
-                    value="user-story">
+                  <button type="button" class="dropdown-option" value="user-story">
                     <p>User Story</p>
                   </button>
                 </div>
@@ -140,28 +111,14 @@
             <div class="form-group">
               <label class="task-form-label">Subtasks</label>
               <div class="task-form-subtask-input-row">
-                <input
-                  class="task-form-input"
-                  type="text"
-                  id="subtask-input"
-                  placeholder="Add new subtask" />
+                <input class="task-form-input" type="text" id="subtask-input" placeholder="Add new subtask" />
                 <div class="d-none" id="subtask-button-wrapper">
-                  <button
-                    type="button"
-                    class="subtask-button"
-                    id="btn-delete-subtask">
-                    <img
-                      src="../assets/img/Property 1=close.svg"
-                      alt="closeicon" />
+                  <button type="button" class="subtask-button" id="btn-delete-subtask">
+                    <img src="../assets/img/Property 1=close.svg" alt="closeicon" />
                   </button>
                   <div class="subtask-button-separator"></div>
-                  <button
-                    type="button"
-                    class="subtask-button"
-                    id="btn-add-subtask">
-                    <img
-                      src="../assets/img/Property 1=check.svg"
-                      alt="checkicon" />
+                  <button type="button" class="subtask-button" id="btn-add-subtask">
+                    <img src="../assets/img/Property 1=check.svg" alt="checkicon" />
                   </button>
                 </div>
               </div>
@@ -175,12 +132,8 @@
             <p class="star">*</p>
             <p>This field is required</p>
           </div>
-          <button type="button" class="btn btn--secondary" id="btn-clear">
-            Clear ✕
-          </button>
-          <button type="button" class="btn btn--primary" id="btn-create">
-            Create Task ✓
-          </button>
+          <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
+          <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
         </div>
       </form>
     </main>
