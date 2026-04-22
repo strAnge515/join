@@ -49,11 +49,18 @@
 
             <!-- Due Date -->
             <div class="form-group">
-              <label class="task-form-label" for="task-date">
+              <label class="task-form-label" id="task-date">
                 <p>Due date</p>
                 <p class="star">*</p>
               </label>
-              <input class="task-form-input" type="date" id="task-date" />
+              <div class="task-form-input" id="task-date">
+                <input class="date-input-field" type="text" placeholder="DD" maxlength="2" />
+                <input class="date-input-field" type="text" placeholder="MM" maxlength="2" />
+                <input class="date-input-field" type="text" placeholder="YYYY" maxlength="4" />
+                <img src="../assets/img/event.svg" alt="eventsvg" />
+
+                <input type="date" id="date-input" style="display: none" />
+              </div>
             </div>
           </section>
 
