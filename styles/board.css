@@ -214,3 +214,103 @@
 .task-delete-btn:hover {
   color: #ff3d00;
 }
+
+/*From here on: styles for open task card*/
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  width: 500px;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .modal-content {
+  background: white;
+  width: 500px;
+  padding: 30px;
+  border-radius: 20px;
+  position: relative;
+} */
+
+.close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.badge {
+  background: #1e4ed8;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+h1 {
+  font-size: 32px;
+  margin: 20px 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 5px 0;
+}
+
+.info p {
+  margin: 5px 0;
+}
+
+#assignedList div {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+/* .avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+} */
+
+#subtaskList {
+  list-style: none;
+  padding: 0;
+}
+
+#subtaskList li {
+  margin: 5px 0;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

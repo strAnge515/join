@@ -1,9 +1,9 @@
-import { loadTasks, deleteTask } from "./backend-tasks.js";
+import { loadTasks, deleteTask } from './backend-tasks.js';
 
-const columnTodo = document.getElementById("column-todo");
-const columnInProgress = document.getElementById("column-inprogress");
-const columnAwaiting = document.getElementById("column-awaiting");
-const columnDone = document.getElementById("column-done");
+const columnTodo = document.getElementById('column-todo');
+const columnInProgress = document.getElementById('column-inprogress');
+const columnAwaiting = document.getElementById('column-awaiting');
+const columnDone = document.getElementById('column-done');
 
 initBoard();
 
@@ -23,31 +23,36 @@ async function renderBoard() {
       getColumnByCategory(task.category).appendChild(taskCard);
     });
   } catch (error) {
-    console.error("Fehler beim Laden des Boards:", error);
+    console.error('Fehler beim Laden des Boards:', error);
   }
 }
 
 function clearBoard() {
-  columnTodo.innerHTML = "";
-  columnInProgress.innerHTML = "";
-  columnAwaiting.innerHTML = "";
-  columnDone.innerHTML = "";
+  columnTodo.innerHTML = '';
+  columnInProgress.innerHTML = '';
+  columnAwaiting.innerHTML = '';
+  columnDone.innerHTML = '';
 }
 
 function getColumnByCategory(category) {
   const normalized = normalize(category);
 
-  if (normalized === "to do" || normalized === "todo") return columnTodo;
-  if (normalized === "in progress" || normalized === "inprogress") return columnInProgress;
-  if (normalized === "awaiting feedback" || normalized === "awaiting") return columnAwaiting;
-  if (normalized === "done") return columnDone;
+  if (normalized === 'to do' || normalized === 'todo') return columnTodo;
+  if (normalized === 'in progress' || normalized === 'inprogress')
+    return columnInProgress;
+  if (normalized === 'awaiting feedback' || normalized === 'awaiting')
+    return columnAwaiting;
+  if (normalized === 'done') return columnDone;
 
   return columnTodo;
 }
 
 function createTaskCard(task) {
-  const card = document.createElement("div");
-  card.className = "task-card";
+  const card = document.createElement('button');
+  card.className = 'task-card';
+  card.onclick = function () {
+    openTaskCard(task);
+  };
 
   const subtaskInfo = getSubtaskInfo(task.subtasks);
   const assignedUsers = Array.isArray(task.assigned_to) ? task.assigned_to : [];
@@ -59,9 +64,9 @@ function createTaskCard(task) {
       ${categoryBadge.label}
     </span>
 
-    <h3 class="task-card__title">${escapeHtml(task.title || "Untitled task")}</h3>
+    <h3 class="task-card__title">${escapeHtml(task.title || 'Untitled task')}</h3>
 
-    <p class="task-card__description">${escapeHtml(task.description || "No description")}</p>
+    <p class="task-card__description">${escapeHtml(task.description || 'No description')}</p>
 
     ${
       subtaskInfo.total > 0
@@ -73,7 +78,7 @@ function createTaskCard(task) {
           <span class="task-card__progress-label">${subtaskInfo.done}/${subtaskInfo.total} Done</span>
         </div>
       `
-        : ""
+        : ''
     }
 
     <div class="task-card__footer">
@@ -88,16 +93,18 @@ function createTaskCard(task) {
     </div>
   `;
 
-  const deleteButton = card.querySelector(".task-delete-btn");
-  deleteButton.addEventListener("click", async () => {
-    const confirmed = confirm(`Delete task "${task.title || "Untitled task"}"?`);
+  const deleteButton = card.querySelector('.task-delete-btn');
+  deleteButton.addEventListener('click', async () => {
+    const confirmed = confirm(
+      `Delete task "${task.title || 'Untitled task'}"?`,
+    );
     if (!confirmed) return;
 
     try {
       await deleteTask(task.id);
       await renderBoard();
     } catch (error) {
-      console.error("Fehler beim Löschen der Task:", error);
+      console.error('Fehler beim Löschen der Task:', error);
     }
   });
 
@@ -117,7 +124,7 @@ function getSubtaskInfo(subtasks) {
 }
 
 function renderAssignedUsers(users) {
-  if (!users.length) return "";
+  if (!users.length) return '';
 
   return users
     .map((user, index) => {
@@ -125,28 +132,28 @@ function renderAssignedUsers(users) {
       const color = getAvatarColor(index);
       return `<div class="avatar" style="background:${color};">${initials}</div>`;
     })
-    .join("");
+    .join('');
 }
 
 function getInitials(name) {
-  return String(name || "")
+  return String(name || '')
     .trim()
-    .split(" ")
+    .split(' ')
     .filter(Boolean)
     .slice(0, 2)
     .map((part) => part[0].toUpperCase())
-    .join("");
+    .join('');
 }
 
 function getAvatarColor(index) {
   const colors = [
-    "#29abe2",
-    "#9b59b6",
-    "#2ecc71",
-    "#e67e22",
-    "#e74c3c",
-    "#607d8b",
-    "#1565c0",
+    '#29abe2',
+    '#9b59b6',
+    '#2ecc71',
+    '#e67e22',
+    '#e74c3c',
+    '#607d8b',
+    '#1565c0',
   ];
 
   return colors[index % colors.length];
@@ -155,48 +162,58 @@ function getAvatarColor(index) {
 function getPriorityIcon(prio) {
   const normalized = normalize(prio);
 
-  if (normalized === "urgent" || normalized === "urgend") return "🔴";
-  if (normalized === "medium") return "🟡";
-  if (normalized === "low") return "🟢";
+  if (normalized === 'urgent' || normalized === 'urgend') return '🔴';
+  if (normalized === 'medium') return '🟡';
+  if (normalized === 'low') return '🟢';
 
-  return "⚪";
+  return '⚪';
 }
 
 function getCategoryBadge(category) {
   const normalized = normalize(category);
 
-  if (normalized === "to do" || normalized === "todo") {
-    return { label: "To do", color: "#ff7b00", textColor: "#ffffff" };
+  if (normalized === 'to do' || normalized === 'todo') {
+    return { label: 'To do', color: '#ff7b00', textColor: '#ffffff' };
   }
 
-  if (normalized === "in progress" || normalized === "inprogress") {
-    return { label: "In progress", color: "#e91e8c", textColor: "#ffffff" };
+  if (normalized === 'in progress' || normalized === 'inprogress') {
+    return { label: 'In progress', color: '#e91e8c', textColor: '#ffffff' };
   }
 
-  if (normalized === "awaiting feedback" || normalized === "awaiting") {
-    return { label: "Awaiting", color: "#00bcd4", textColor: "#ffffff" };
+  if (normalized === 'awaiting feedback' || normalized === 'awaiting') {
+    return { label: 'Awaiting', color: '#00bcd4', textColor: '#ffffff' };
   }
 
-  if (normalized === "done") {
-    return { label: "Done", color: "#1565c0", textColor: "#ffffff" };
+  if (normalized === 'done') {
+    return { label: 'Done', color: '#1565c0', textColor: '#ffffff' };
   }
 
-  return { label: category || "Task", color: "#2a3647", textColor: "#ffffff" };
+  return { label: category || 'Task', color: '#2a3647', textColor: '#ffffff' };
 }
 
 function normalize(value) {
-  return String(value || "")
+  return String(value || '')
     .trim()
     .toLowerCase()
-    .replaceAll("-", " ")
-    .replace(/\s+/g, " ");
+    .replaceAll('-', ' ')
+    .replace(/\s+/g, ' ');
 }
 
 function escapeHtml(value) {
   return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+//From here on: functions for opening the task card
+
+function openTaskCard(task) {
+  console.log(task);
+  const categoryBadge = getCategoryBadge(task.category);
+  const dialog = document.getElementById('taskModal');
+  dialog.innerHTML = getTaskCardHTML(categoryBadge, task);
+  dialog.showModal();
 }

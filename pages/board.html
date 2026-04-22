@@ -1,69 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Join - Board</title>
-  
-  <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../styles/sidebar.css">
-  <link rel="stylesheet" href="../styles/header.css">
-  <link rel="stylesheet" href="../styles/board.css">
-  <link rel="stylesheet" href="../styles/summary.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join - Board</title>
 
-  <script defer src="../scripts/sidebar.js"></script>
-  <script defer src="../scripts/header.js"></script>
-</head>
-<body>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/sidebar.css" />
+    <link rel="stylesheet" href="../styles/header.css" />
+    <link rel="stylesheet" href="../styles/board.css" />
+    <link rel="stylesheet" href="../styles/summary.css" />
 
-  <div id="sidebar-container"></div>
-  <div id="header-container"></div>
+    <script defer src="../scripts/sidebar.js"></script>
+    <script defer src="../scripts/header.js"></script>
+    <script defer src="../scripts/board-template.js"></script>
+  </head>
+  <body>
+    <div id="sidebar-container"></div>
+    <div id="header-container"></div>
 
-  <main class="main-content">
-    <header class="board-header">
-      <h1 class="board-header__title">Board</h1>
-      <div class="board-header__search">
-        <input type="text" placeholder="Find Task" />
-        <span class="board-header__search-icon">🔍</span>
+    <main class="main-content">
+      <header class="board-header">
+        <h1 class="board-header__title">Board</h1>
+        <div class="board-header__search">
+          <input type="text" placeholder="Find Task" />
+          <span class="board-header__search-icon">🔍</span>
+        </div>
+        <button class="board-header__add-btn">Add task +</button>
+      </header>
+
+      <div class="board">
+        <section class="board-column">
+          <div class="board-column__header">
+            <h2 class="board-column__title">To do</h2>
+            <button class="board-column__add-btn">+</button>
+          </div>
+          <div class="board-column__cards" id="column-todo"></div>
+        </section>
+
+        <section class="board-column">
+          <div class="board-column__header">
+            <h2 class="board-column__title">In progress</h2>
+            <button class="board-column__add-btn">+</button>
+          </div>
+          <div class="board-column__cards" id="column-inprogress"></div>
+        </section>
+
+        <section class="board-column">
+          <div class="board-column__header">
+            <h2 class="board-column__title">Awaiting feedback</h2>
+            <button class="board-column__add-btn">+</button>
+          </div>
+          <div class="board-column__cards" id="column-awaiting"></div>
+        </section>
+
+        <section class="board-column">
+          <div class="board-column__header">
+            <h2 class="board-column__title">Done</h2>
+            <button class="board-column__add-btn">+</button>
+          </div>
+          <div class="board-column__cards" id="column-done"></div>
+        </section>
       </div>
-      <button class="board-header__add-btn">Add task +</button>
-    </header>
-
-    <div class="board">
-      <section class="board-column">
-        <div class="board-column__header">
-          <h2 class="board-column__title">To do</h2>
-          <button class="board-column__add-btn">+</button>
-        </div>
-        <div class="board-column__cards" id="column-todo"></div>
-      </section>
-
-      <section class="board-column">
-        <div class="board-column__header">
-          <h2 class="board-column__title">In progress</h2>
-          <button class="board-column__add-btn">+</button>
-        </div>
-        <div class="board-column__cards" id="column-inprogress"></div>
-      </section>
-
-      <section class="board-column">
-        <div class="board-column__header">
-          <h2 class="board-column__title">Awaiting feedback</h2>
-          <button class="board-column__add-btn">+</button>
-        </div>
-        <div class="board-column__cards" id="column-awaiting"></div>
-      </section>
-
-      <section class="board-column">
-        <div class="board-column__header">
-          <h2 class="board-column__title">Done</h2>
-          <button class="board-column__add-btn">+</button>
-        </div>
-        <div class="board-column__cards" id="column-done"></div>
-      </section>
-    </div>
-  </main>
-
-  <script type="module" src="../scripts/board.js"></script>
-</body>
+    </main>
+    <dialog id="taskModal" class="modal"></dialog>
+    <script type="module" src="../scripts/board.js"></script>
+  </body>
 </html>
