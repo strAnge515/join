@@ -53,14 +53,18 @@
                 <p>Due date</p>
                 <p class="star">*</p>
               </label>
-              <div class="task-form-input" id="task-date">
-                <input class="date-input-field" type="text" placeholder="DD" maxlength="2" />
-                <input class="date-input-field" type="text" placeholder="MM" maxlength="2" />
-                <input class="date-input-field" type="text" placeholder="YYYY" maxlength="4" />
+              <section class="task-form-input" id="task-date">
+                <div class="input-wrapper">
+                  <input class="date-input-field" type="text" placeholder="DD" maxlength="2" />
+                  <span>/</span>
+                  <input class="date-input-field" type="text" placeholder="MM" maxlength="2" />
+                  <span>/</span>
+                  <input class="date-input-field" type="text" placeholder="YYYY" maxlength="4" />
+                </div>
                 <img src="../assets/img/event.svg" alt="eventsvg" />
 
                 <input type="date" id="date-input" style="display: none" />
-              </div>
+              </section>
             </div>
           </section>
 
