@@ -1,4 +1,6 @@
-import { loadTasks } from "./backend-tasks.js";
+import { loadTasks } from "../scripts/backend-tasks.js";
+
+initSummary();
 
 async function initSummary() {
   try {
@@ -28,8 +30,8 @@ function updateSummary(tasks) {
 }
 
 function setText(id, value) {
-  const element = document.getElementById(id);
-  if (element) element.textContent = value;
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
 }
 
 function normalize(value) {
@@ -42,74 +44,59 @@ function normalize(value) {
 
 function isTodo(task) {
   const category = normalize(task.category);
-  const status = normalize(task.status);
-  return category === "to do" || category === "todo" || status === "todo";
+  return (
+    category === "to do" ||
+    category === "todo" ||
+    category === "technical task" ||
+    category === "technical-task" ||
+    category === "user story" ||
+    category === "user-story" ||
+    category === ""
+  );
 }
 
 function isDone(task) {
-  const category = normalize(task.category);
-  const status = normalize(task.status);
-  return category === "done" || status === "done";
+  return normalize(task.category) === "done";
 }
 
 function isInProgress(task) {
   const category = normalize(task.category);
-  const status = normalize(task.status);
-  return (
-    category === "in progress" ||
-    category === "inprogress" ||
-    status === "in progress" ||
-    status === "inprogress"
-  );
+  return category === "in progress" || category === "inprogress";
 }
 
 function isAwaiting(task) {
   const category = normalize(task.category);
-  const status = normalize(task.status);
-  return (
-    category === "awaiting feedback" ||
-    category === "awaiting" ||
-    status === "awaiting feedback" ||
-    status === "awaiting"
-  );
+  return category === "awaiting feedback" || category === "awaiting";
 }
 
 function isUrgent(task) {
-  const prio = normalize(task.prio);
-  const priority = normalize(task.priority);
-
-  return (
-    prio === "urgent" ||
-    prio === "urgend" ||
-    priority === "urgent"
-  );
+  return normalize(task.prio) === "urgent" || normalize(task.prio) === "urgend";
 }
 
 function updateUrgentDate(urgentTasks) {
-  const dateElement = document.getElementById("current-date");
-  if (!dateElement) return;
+  const el = document.getElementById("current-date");
+  if (!el) return;
 
   const tasksWithDate = urgentTasks
-    .map((task) => task.date || task.dueDate || "")
-    .filter((date) => !!date)
+    .map((task) => task.date || "")
+    .filter(Boolean)
     .sort((a, b) => new Date(a) - new Date(b));
 
-  if (tasksWithDate.length === 0) {
-    dateElement.textContent = "No deadline";
+  if (!tasksWithDate.length) {
+    el.textContent = "No deadline";
     return;
   }
 
   const nextDate = new Date(tasksWithDate[0]);
+
   if (Number.isNaN(nextDate.getTime())) {
-    dateElement.textContent = "No deadline";
+    el.textContent = "No deadline";
     return;
   }
 
-  dateElement.textContent = nextDate.toLocaleDateString("de-DE", {
+  el.textContent = nextDate.toLocaleDateString("de-DE", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
 }
-
-initSummary();
