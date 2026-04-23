@@ -40,11 +40,9 @@ body {
   min-width: 1000px;
 }
 
-
-
 .main-content {
   margin-left: 232px;  
-  margin-top: 80px;    
+  margin-top: 80px;
   padding: 40px 60px;  
   min-height: calc(100vh - 80px);
   box-sizing: border-box;
