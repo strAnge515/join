@@ -11,6 +11,8 @@ const dropdownOptionsContainer = document.getElementById('category-options');
 let selectedContacts = [];
 const textarea = document.getElementById('task-description');
 const handle = document.getElementById('resize');
+const dateInput = document.getElementById('date-input');
+const calendarIcon = document.querySelector('#task-date img');
 
 let isResizing = false;
 let startY = 0;
@@ -38,12 +40,11 @@ function addInformations() {
   let taskTitle = document.getElementById('task-title').value;
   let tastkDescription = document.getElementById('task-description').value;
   let taskCategory = document.getElementById('selected-category').dataset.value;
-  let taskDate = document.getElementById('task-date').value;
+  let taskDate = insertDate();
   let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
-  let taskAssignedTo = document.getElementById('task-assigned');
-  let selectedContacts = Array.from(taskAssignedTo.selectedOptions);
   let contact = selectedContacts.map((contact) => contact.name);
   let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
+  console.log(taskDate);
   // prettier-ignore
   return {taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks,};
 }
@@ -244,6 +245,25 @@ function resizeHandleMouseUp() {
   document.addEventListener('mouseup', () => {
     isResizing = false;
   });
+}
+
+calendarIcon.addEventListener('click', () => {
+  dateInput.showPicker();
+});
+
+dateInput.addEventListener('change', () => {
+  let formatedDate = dateInput.value.split('-');
+  const dateInputField = document.querySelectorAll('.date-input-field');
+  dateInputField[0].value = formatedDate[2];
+  dateInputField[1].value = formatedDate[1];
+  dateInputField[2].value = formatedDate[0];
+});
+
+function insertDate() {
+  const dateInputField = document.querySelectorAll('.date-input-field');
+  let completeDate = `${dateInputField[0].value}/${dateInputField[1].value}/${dateInputField[2].value}`;
+  console.log(completeDate);
+  return completeDate;
 }
 
 document.addEventListener('DOMContentLoaded', init);
