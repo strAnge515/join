@@ -141,7 +141,7 @@ deleteButtonSubtask.addEventListener('mousedown', () => {
   subtaskInput.blur();
 });
 
-deleteButtonSubtask.addEventListener('keydown', (event) => {
+deleteButtonSubtask.addEventListener('keydown', (event) => {      
   if (event.key === 'Enter' || event.key === ' ') {
     subtaskInput.value = '';
     subtaskInput.blur();
