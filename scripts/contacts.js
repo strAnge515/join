@@ -98,6 +98,7 @@ function renderContactList(contactlistRef, groupedContacts) {
 //renders the contact list
 async function renderContacts() {
   const contactlistRef = document.getElementById('contact-list');
+  if (!contactlistRef) return;
   contactlistRef.innerHTML = 'Lade Kontakte...';
   contacts = await loadAndPrepareContacts();
   const grouped = groupContactsByLetter(contacts);
