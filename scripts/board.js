@@ -124,7 +124,7 @@ function getSubtaskInfo(subtasks) {
 }
 
 function renderAssignedUsers(users) {
-  if (!users.length) return '';
+  if (!users) return '';
   return users
     .map((user, index) => {
       const initials = getInitials(user);
@@ -207,23 +207,39 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
-//From here on: functions for opening the task card
+//From here on: functions for opening and using the task card
 
 function openTaskCard(task) {
+  console.log(task);
   console.log(renderAssignedUsers(task.assigned_to));
   const categoryBadgeRef = getCategoryBadge(task.category);
   const dialogRef = document.getElementById('taskModal');
   dialogRef.innerHTML = getTaskCardHTML(categoryBadgeRef, task);
   fillTaskCardInitials(task);
+  fillTaskCardSubtasks(task);
   dialogRef.showModal();
 }
 
 function fillTaskCardInitials(task) {
   const assignedListRef = document.getElementById('assignedList');
+  if (!task.assigned_to || task.assigned_to.length === 0) {
+    return;
+  }
   for (let i = 0; i < task.assigned_to.length; i++) {
     const user = task.assigned_to[i];
     const initials = getInitials(user);
     const color = getAvatarColor(i);
     assignedListRef.innerHTML += getAssignedUsersHTML(color, initials, user);
+  }
+}
+
+function fillTaskCardSubtasks(task) {
+  const subtaskListRef = document.getElementById('subtaskList');
+  if (!task.subtasks || task.subtasks.length === 0) {
+    return;
+  }
+  for (let i = 0; i < task.subtasks.length; i++) {
+    const subtask = task.subtasks[i];
+    subtaskListRef.innerHTML += getSubtaskList(i, subtask);
   }
 }
