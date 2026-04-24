@@ -209,17 +209,19 @@ function escapeHtml(value) {
 
 //From here on: functions for opening and using the task card
 
+// Generates the HTML for the task card modal based on the task data and category badge
 function openTaskCard(task) {
-  console.log(task);
-  console.log(renderAssignedUsers(task.assigned_to));
   const categoryBadgeRef = getCategoryBadge(task.category);
   const dialogRef = document.getElementById('taskModal');
+  document.body.classList.add('no-scroll');
   dialogRef.innerHTML = getTaskCardHTML(categoryBadgeRef, task);
   fillTaskCardInitials(task);
   fillTaskCardSubtasks(task);
+  addTaskCardEventListeners();
   dialogRef.showModal();
 }
 
+//Fill the Initials of the assigned users in the task card modal
 function fillTaskCardInitials(task) {
   const assignedListRef = document.getElementById('assignedList');
   if (!task.assigned_to || task.assigned_to.length === 0) {
@@ -233,6 +235,7 @@ function fillTaskCardInitials(task) {
   }
 }
 
+//Fill the subtasks of the task card modal
 function fillTaskCardSubtasks(task) {
   const subtaskListRef = document.getElementById('subtaskList');
   if (!task.subtasks || task.subtasks.length === 0) {
@@ -242,4 +245,42 @@ function fillTaskCardSubtasks(task) {
     const subtask = task.subtasks[i];
     subtaskListRef.innerHTML += getSubtaskList(i, subtask);
   }
+}
+
+// Closes the task card modal when the close button is clicked
+function closeModal() {
+  const dialogRef = document.getElementById('taskModal');
+  document.body.classList.remove('no-scroll');
+  dialogRef.close();
+}
+
+// Adds event listeners to the close button and the modal background to allow closing the modal when clicking outside the content area or on the close button
+function addTaskCardEventListeners() {
+  const closeBtnRef = document.querySelector('.close');
+  const dialogRef = document.getElementById('taskModal');
+  if (closeBtnRef) {
+    closeBtnRef.addEventListener('click', closeModal);
+    dialogRef.addEventListener('click', (e) => {
+      if (e.target === dialogRef) {
+        closeModal();
+      }
+    });
+  }
+}
+
+//copied from contacts.js, can be used for the slide-in animation of the task card modal
+// Adds a slide-in animation to a container
+function addSlideInAnimation(ref, time) {
+  const element = document.querySelector(ref);
+  setTimeout(() => {
+    element.classList.add('slide-in');
+  }, time);
+}
+
+// Removes the slide-in animation class from a container
+function removeSlideInAnimation(ref, time) {
+  const element = document.querySelector(ref);
+  setTimeout(() => {
+    element.classList.remove('slide-in');
+  }, time);
 }

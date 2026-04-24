@@ -1,8 +1,10 @@
 function getTaskCardHTML(categoryBadge, task) {
   return `
+  <div class="modal-content">
   <div class="modal-top">
-      <button class="close" onclick="closeModal()">×</button>
       <span class="task-category" style="background:${categoryBadge.color}">${task.category}</span>
+      <button class="close ">
+        <img class="close-icon" src="../assets/img/contacts/close.svg" alt="Close button"></button>
       </div>
       <h1 id="taskTitle">${task.title}</h1>
       <p id="taskDescription" class="task-description">${task.description}</p>
@@ -22,6 +24,7 @@ function getTaskCardHTML(categoryBadge, task) {
           <div class="edit-icon"></div>
           Edit </button>
           </div>
+          </div>
   `;
 }
 
@@ -38,9 +41,13 @@ function getSubtaskList(index, subtask) {
   return `
   <div class="subtask-item">
   <input
-      type="checkbox"
-      id="subtask-${index}"
-      name="subscribe" />
-    <label class="subtask-label" for="subtask-${index}">${subtask.title}</label>
+    type="checkbox"
+    id="subtask-${index}"
+    class="custom-checkbox"
+  />
+  <label class="subtask-label" for="subtask-${index}">
+    ${subtask.title}
+  </label>
+</div>
     `;
 }

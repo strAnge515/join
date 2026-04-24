@@ -216,19 +216,31 @@
 }
 
 /*From here on: styles for open task card*/
+body.no-scroll {
+  overflow: hidden;
+}
 
-.hidden {
-  display: none;
+dialog {
+  margin: auto;
+  padding: 0;
 }
 
 .modal {
+  width: 500px;
+  padding: 30px;
+  border-radius: 20px;
+  border: none;
+}
+
+.modal:open {
+  overflow: hidden;
+}
+
+.modal-content {
   display: flex;
   flex-direction: column;
   background: white;
   gap: 24px;
-  width: 500px;
-  padding: 30px;
-  border-radius: 20px;
 }
 
 .modal-top {
@@ -251,13 +263,22 @@
 }
 
 .close {
-  position: absolute;
-  right: 20px;
-  top: 20px;
+  background: transparent;
   border: none;
-  background: none;
-  font-size: 24px;
   cursor: pointer;
+  margin-bottom: 60px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  align-self: end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close:hover {
+  background-color: #eeeeee;
+  border-radius: 50%;
 }
 
 .badge {
@@ -327,13 +348,9 @@ h2 {
   font-weight: 400;
 }
 
-#subtaskList {
+.subtask-list {
   list-style: none;
   padding: 0;
-}
-
-#subtaskList li {
-  margin: 5px 0;
 }
 
 .actions {
@@ -388,4 +405,50 @@ h2 {
 
 .delete-icon {
   background: url('../assets/img/contacts/delete.svg') no-repeat center center;
+}
+
+.custom-checkbox {
+  display: none;
+}
+
+.subtask-label {
+  position: relative;
+  padding-left: 32px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.subtask-item {
+  position: relative;
+}
+
+.subtask-item .subtask-label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-image: url('../assets/img/taskcard/unchecked.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.subtask-item .subtask-label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-image: url('../assets/img/taskcard/unchecked.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.subtask-item:has(.custom-checkbox:checked) .subtask-label::before {
+  background-image: url('../assets/img/taskcard/checked.svg');
+}
+
+.subtask-item:hover {
+  background-color: #eeeeee;
+  border-radius: 10px;
 }
