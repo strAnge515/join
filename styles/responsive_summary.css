@@ -1,13 +1,5 @@
-@media (max-width: 768px) {
-    * {
-        max-width: 100%;
-    }
-
-    html,
-    body {
-        overflow-x: hidden;
-    }
-
+    @media (max-width: 768px) {
+    
     #sidebar-container,
     #header-container,
     aside,
@@ -58,19 +50,6 @@
         display: none;
     }
 
-
-    html,
-    body {
-        min-width: 0;
-        width: 100%;
-        overflow-x: hidden;
-    }
-
-    body {
-        display: block;
-        padding-bottom: 80px;
-        background: #f6f7f8;
-    }
 
     #sidebar-container,
     #header-container,

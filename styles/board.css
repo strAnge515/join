@@ -47,7 +47,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.1s;
 }
 
 .board-header__add-btn:hover {
@@ -91,7 +91,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s;
+  transition: background 0.1s;
 }
 
 .board-column__add-btn:hover {
@@ -107,6 +107,21 @@
   min-height: 100px;
 }
 
+.board-column__empty {
+  color: var(--color-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 24px 16px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius);
+}
+
+.board-no-results {
+  color: var(--color-muted);
+  font-size: 14px;
+  padding: 16px;
+}
+
 .task-card {
   background: var(--color-white);
   border-radius: var(--radius);
@@ -116,6 +131,9 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  border: none;
+  text-align: left;
+  font-family: inherit;
 }
 
 .task-card__category {
@@ -212,88 +230,144 @@
 }
 
 .task-delete-btn:hover {
-  color: #ff3d00;
+  color: var(--color-urgent);
 }
 
-/*From here on: styles for open task card*/
+#taskModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 30px;
+  background: var(--color-white);
+  max-height: 90vh;
+  width: 525px;
+  overflow-y: auto;
+  z-index: 100;
+}
 
-.hidden {
+#taskModal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+#taskModal[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+#taskModal:not([open]) {
   display: none;
 }
 
-.modal {
+.modal-content {
+  padding: 48px;
   display: flex;
   flex-direction: column;
-  background: white;
   gap: 24px;
-  width: 500px;
-  padding: 30px;
-  border-radius: 20px;
 }
 
 .modal-top {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
-.close {
-  position: absolute;
-  right: 20px;
-  top: 20px;
+.modal-category {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 23px;
+  font-weight: 400;
+  color: #fff;
+}
+
+.modal-close {
   border: none;
-  background: none;
-  font-size: 24px;
+  background: transparent;
+  font-size: 28px;
   cursor: pointer;
+  color: var(--color-text);
+  line-height: 1;
+  padding: 0 4px;
 }
 
-.badge {
-  background: #1e4ed8;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 10px;
-  font-size: 14px;
+.modal-close:hover {
+  color: var(--color-accent);
 }
 
-h1 {
-  font-size: 61px;
+.modal-title {
+  font-size: 44px;
   font-weight: 700;
+  line-height: 1.1;
 }
 
-h2 {
+.modal-description {
   font-size: 20px;
   font-weight: 400;
-  color: #2a3647;
+  color: var(--color-text);
+  line-height: 1.4;
 }
 
-.info {
+.modal-info {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+}
+
+.modal-info-row {
+  display: flex;
+  align-items: center;
   gap: 24px;
 }
 
-.info-item {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
-
-.info-item--assigned {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.info p {
+.modal-info-label {
   font-size: 20px;
+  font-weight: 400;
+  color: var(--color-muted);
+  min-width: 130px;
 }
 
-#assignedList div {
+.modal-info-value {
+  font-size: 20px;
+  font-weight: 400;
   display: flex;
   align-items: center;
+  gap: 8px;
+  text-transform: capitalize;
+}
+
+.prio-icon-modal {
+  width: 20px;
+  height: 14px;
+}
+
+.modal-section-label {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+}
+
+.assigned-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 16px;
 }
 
 .assigned-user {
+  display: flex;
+  align-items: center;
   gap: 16px;
+}
+
+.assigned-user .avatar {
+  width: 42px;
+  height: 42px;
+  font-size: 12px;
 }
 
 .user-name {
@@ -301,65 +375,94 @@ h2 {
   font-weight: 400;
 }
 
-#subtaskList {
+.modal-subtask-list {
   list-style: none;
   padding: 0;
-}
-
-#subtaskList li {
-  margin: 5px 0;
-}
-
-.actions {
-  margin-top: 20px;
   display: flex;
-  justify-content: flex-end;
-  gap: 8px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.edit-divider {
-  height: 24px;
-  background: #d1d1d1;
-  width: 1px;
-}
-
-.edit-btn {
-  background-color: transparent;
+.modal-subtask-item {
   display: flex;
   align-items: center;
+  gap: 16px;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.modal-subtask-item:hover {
+  background: var(--color-bg);
+}
+
+.modal-subtask-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.modal-subtask-item label {
+  cursor: pointer;
+  flex: 1;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.modal-action-btn {
+  background: transparent;
   border: none;
   cursor: pointer;
   font-size: 16px;
+  display: flex;
+  align-items: center;
   gap: 8px;
-  min-width: 80px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--color-text);
+  transition: color 0.1s;
 }
 
-.edit-btn:hover {
-  color: #29abe2;
-  font-weight: bold;
+.modal-action-btn:hover {
+  color: var(--color-accent);
+  font-weight: 700;
 }
 
-.edit-icon,
-.delete-icon {
-  width: 24px;
+.modal-action-divider {
+  width: 1px;
   height: 24px;
+  background: var(--color-border);
+}
+
+.modal-action-icon {
+  width: 20px;
+  height: 20px;
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.edit-icon {
-  background: url('../assets/img/contacts/edit.svg') no-repeat center center;
+.modal-action-icon--delete {
+  background-image: url('../assets/img/contacts/delete.svg');
 }
 
-.edit-btn:hover .edit-icon {
-  background: url('../assets/img/contacts/edit-hover.svg') no-repeat center
-    center;
+.modal-action-btn:hover .modal-action-icon--delete {
+  background-image: url('../assets/img/contacts/delete-hover.svg');
 }
 
-.edit-btn:hover .delete-icon {
-  background: url('../assets/img/contacts/delete-hover.svg') no-repeat center
-    center;
+.modal-action-icon--edit {
+  background-image: url('../assets/img/contacts/edit.svg');
 }
 
-.delete-icon {
-  background: url('../assets/img/contacts/delete.svg') no-repeat center center;
+.modal-action-btn:hover .modal-action-icon--edit {
+  background-image: url('../assets/img/contacts/edit-hover.svg');
 }
