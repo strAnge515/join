@@ -226,7 +226,7 @@ textarea::placeholder {
   font-size: 14px;
 }
 
-.subtask-item input[type="checkbox"] {
+.subtask-item input[type='checkbox'] {
   accent-color: var(--color-accent);
   width: 16px;
   height: 16px;
@@ -334,6 +334,52 @@ textarea::placeholder {
   justify-content: center;
   align-items: center;
   margin-right: 10px;
+}
+
+.task-form-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  justify-content: space-between;
+}
+
+.input-wrapper {
+  display: flex;
+  gap: 2px;
+}
+
+.date-input-field {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: fit-content;
+  font-size: 20px;
+}
+.date-input-field:placeholder-shown + span {
+  color: var(--color-border);
+}
+.date-input-field:first-child {
+  width: 2ch;
+}
+.date-input-field:nth-child(3) {
+  width: 2ch;
+}
+.date-input-field:last-child {
+  width: 4ch;
+}
+.date-input-field::placeholder {
+  font-size: 20px;
+}
+
+.task-form-input img {
+  width: 20px;
+  cursor: pointer;
+}
+
+.input-wrapper span {
+  align-self: center;
 }
 
 /* Utility class - must stay at bottom of file */
