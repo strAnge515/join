@@ -343,11 +343,13 @@ textarea::placeholder {
   border-radius: 8px;
   padding: 8px 12px;
   justify-content: space-between;
+  position: relative;
 }
 
 .input-wrapper {
   display: flex;
   gap: 2px;
+  width: 120px;
 }
 
 .date-input-field {
@@ -361,21 +363,32 @@ textarea::placeholder {
   color: var(--color-border);
 }
 .date-input-field:first-child {
-  width: 2ch;
+  width: 22px;
 }
 .date-input-field:nth-child(3) {
-  width: 2ch;
+  width: 33px;
 }
+
+.date-input-field:nth-child(3):not(:placeholder-shown) {
+  width: 22px;
+}
+
 .date-input-field:last-child {
-  width: 4ch;
-}
-.date-input-field::placeholder {
-  font-size: 20px;
+  width: 45px;
 }
 
 .task-form-input img {
   width: 20px;
   cursor: pointer;
+  position: absolute;
+  left: 403px;
+  z-index: 1;
+}
+
+.old-calender {
+  display: block;
+    opacity: 0;
+    z-index: 0;
 }
 
 .input-wrapper span {
