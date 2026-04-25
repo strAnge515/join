@@ -3,6 +3,8 @@ import {
   getInitials, getAvatarColor, getPriorityIcon, getCategoryBadge,
   renderAssignedUsers, getSubtaskInfo, getProgressBarHTML, getTaskCardInnerHTML
 } from './board-utils.js';
+import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
+
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -19,8 +21,8 @@ let allTasks = [];
 async function initBoard() {
   await renderBoard();
   initSearch();
+  initDragDrop(handleTaskMove);
 }
-
 
 /**
  * Loads all tasks from Firebase and renders them on the board.
@@ -30,6 +32,7 @@ async function renderBoard() {
   try {
     allTasks = await loadTasks() || [];
     displayTasks(allTasks);
+    refreshCardListeners();
   } catch (error) {
     console.error('Fehler beim Laden des Boards:', error);
   }
@@ -163,7 +166,8 @@ function addDeleteListenerToCard(card, task) {
 
 
 /**
- * Opens the task detail modal and populates it with the given task's data.
+ * Opens the task detail modal, populates it with the given task's data,
+ * disables background scrolling and sets up close listeners.
  * @param {Object} task - The task data object to display in the modal.
  */
 function openTaskCard(task) {
@@ -172,6 +176,7 @@ function openTaskCard(task) {
   dialogRef.innerHTML = getTaskCardHTML(categoryBadge, task);
   fillTaskCardInitials(task);
   addModalEventListeners(task);
+  document.body.classList.add('no-scroll');
   dialogRef.showModal();
 }
 
@@ -190,13 +195,24 @@ function fillTaskCardInitials(task) {
 
 
 /**
- * Attaches event listeners to the modal's delete button and subtask checkboxes.
+ * Attaches event listeners to the modal's close button, backdrop click,
+ * delete button and subtask checkboxes.
  * @param {Object} task - The task data object.
  */
 function addModalEventListeners(task) {
+  const dialogRef = document.getElementById('taskModal');
   const deleteBtn = document.getElementById('deleteTaskBtn');
+  const closeBtn = dialogRef.querySelector('.modal-close');
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+  dialogRef.addEventListener('click', (e) => {
+    if (e.target === dialogRef) closeModal();
+  });
+
   if (deleteBtn) deleteBtn.addEventListener('click', () => handleModalDelete(task));
-  document.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
+
+  dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
     checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
   });
 }
@@ -244,15 +260,33 @@ async function handleSubtaskToggle(e, task) {
 
 
 /**
- * Closes the task detail modal dialog and clears its content.
+ * Closes the task detail modal, re-enables background scrolling and clears modal content.
  */
 function closeModal() {
   const dialogRef = document.getElementById('taskModal');
   if (!dialogRef) return;
+  document.body.classList.remove('no-scroll');
   dialogRef.close();
   dialogRef.innerHTML = '';
 }
 
+
 window.closeModal = closeModal;
+
+
+/**
+ * Moves a task to a new status column and persists the change to Firebase.
+ * @param {string} taskId - The Firebase ID of the task to move.
+ * @param {string} newStatus - The new status string matching a column's data-status value.
+ */
+async function handleTaskMove(taskId, newStatus) {
+  try {
+    await updateTask(taskId, { status: newStatus });
+    await renderBoard();
+  } catch (error) {
+    console.error('Fehler beim Verschieben der Task:', error);
+  }
+}
+
 
 initBoard();
