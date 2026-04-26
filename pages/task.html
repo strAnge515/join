@@ -90,9 +90,10 @@
             <div class="form-group form-group--full">
               <label class="task-form-label">Assigned to</label>
               <div class="assigned-dropdown">
-                <div class="task-form-input flex-center-space-between" id="assigned-toggle">
+                <div class="task-form-input flex-center-space-between assigned-to" id="assigned-toggle">
                   <span id="assigned-placeholder">Select contacts to assign</span>
-                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow" />
+                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-assignet-to"/>
+                  <img src="../assets/img/arrow_drop_down.svg" alt="arrow-up" id="arrow-up-assigned-to" class="d-none">
                 </div>
                 <ul class="assigned-options d-none" id="assigned-options"></ul>
               </div>
@@ -105,7 +106,8 @@
               <div class="task-form-select" id="task-category">
                 <div class="selected-option flex-center-space-between" id="selected-category" data-value="">
                   <p>Select task category</p>
-                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow" />
+                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-category"/>
+                  <img src="../assets/img/arrow_drop_down.svg" alt="arrow-up" id="arrow-up-category" class="d-none">
                 </div>
                 <div class="dropdown-options d-none" id="category-options">
                   <button type="button" class="dropdown-option" value="technical-task">
