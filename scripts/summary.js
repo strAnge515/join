@@ -119,8 +119,8 @@ function formatUserName(name) {
 
   let cleanName = name.includes("@") ? name.split("@")[0] : name;
 
-  if (cleanName.toLowerCase() === "volskijuri") {
-    return "Volski Juri";
+  if (cleanName.toLowerCase() === "maxmustermann") {
+    return "Max Mustermann";
   }
 
   let formatted = cleanName.replace(/([a-z])([A-Z])/g, "$1 $2");
