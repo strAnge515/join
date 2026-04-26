@@ -20,12 +20,12 @@ function updateSummary(tasks) {
     done: 0,
   };
 
-  tasks.forEach(task => {
+  tasks.forEach((task) => {
     const column = getTaskColumn(task);
     counts[column]++;
   });
 
-  const urgentTasks = tasks.filter(task => isUrgent(task));
+  const urgentTasks = tasks.filter((task) => isUrgent(task));
 
   setText("todo-count", counts.todo);
   setText("done-count", counts.done);
@@ -59,79 +59,94 @@ function isUrgent(task) {
   return prio.includes("urgent") || prio.includes("urgend");
 }
 
-
 function updateUrgentDate(urgentTasks) {
   const el = document.getElementById("current-date");
   if (!el) return;
-  console.log("URGENT TASKS:", urgentTasks);
 
   const tasksWithDate = urgentTasks
     .map((task) => task.dueDate || task.date || "")
     .filter(Boolean)
-    .sort((a, b) => new Date(a) - new Date(b));
+    .map(parseTaskDate)
+    .filter((date) => !Number.isNaN(date.getTime()))
+    .sort((a, b) => a - b);
 
   if (!tasksWithDate.length) {
     el.textContent = "No deadline";
     return;
   }
 
-  const nextDate = new Date(tasksWithDate[0]);
-
-  if (Number.isNaN(nextDate.getTime())) {
-  el.textContent = "No deadline";
-  return;
-}
-
-  el.textContent = nextDate.toLocaleDateString("de-DE", {
+  el.textContent = tasksWithDate[0].toLocaleDateString("de-DE", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
 }
 
+function parseTaskDate(value) {
+  if (value.includes("/")) {
+    const [day, month, year] = value.split("/");
+    return new Date(`${year}-${month}-${day}`);
+  }
+
+  return new Date(value);
+}
+
 function updateGreeting() {
-  const user = localStorage.getItem("currentUser");
-const formattedName = formatUserName(user);
+  const user = getCurrentUser();
+
   if (!user) {
     window.location.href = "../index.html";
     return;
   }
 
   const hour = new Date().getHours();
-
   let greeting = "";
 
-  if (hour < 12) greeting = "Good Morning";
-  else if (hour < 18) greeting = "Good Afternoon";
-  else greeting = "Good Evening";
+  if (hour < 12) greeting = "Good morning";
+  else if (hour < 18) greeting = "Good afternoon";
+  else greeting = "Good evening";
 
-document.getElementById("greeting-text").textContent = greeting + ",";
-document.getElementById("greeting-name").textContent = formattedName;
+  setText("greeting-text", greeting + ",");
+  setText("greeting-name", getFullName(user));
+}
+
+function getCurrentUser() {
+  const savedUser = localStorage.getItem("currentUser");
+  if (!savedUser) return null;
+
+  try {
+    const user = JSON.parse(savedUser);
+
+    if (user && user.firstName) {
+      return {
+        firstName: formatNamePart(user.firstName),
+        lastName: formatNamePart(user.lastName || ""),
+      };
+    }
+  } catch {
+    return {
+      firstName: formatNamePart(savedUser),
+      lastName: "",
+    };
+  }
+
+  return null;
+}
+
+function getFullName(user) {
+  return `${user.firstName} ${user.lastName}`.trim();
+}
+
+function formatNamePart(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/^\w/, (firstLetter) => firstLetter.toUpperCase());
 }
 
 function setText(id, value) {
   const element = document.getElementById(id);
   if (element) element.textContent = value;
-}
-
-function formatUserName(name) {
-  if (!name) return "";
-
-  let cleanName = name.includes("@") ? name.split("@")[0] : name;
-
-  if (cleanName.toLowerCase() === "maxmustermann") {
-    return "Max Mustermann";
-  }
-
-  let formatted = cleanName.replace(/([a-z])([A-Z])/g, "$1 $2");
-
-  formatted = formatted
-    .toLowerCase()
-    .split(" ")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-
-  return formatted;
 }
 
 function normalize(value) {
