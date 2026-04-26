@@ -28,3 +28,20 @@ signUpButton.addEventListener("click", function () {
 guestButton.addEventListener("click", function () {
   window.location.href = "./pages/summary.html";
 });
+
+document.getElementById("login-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const email = document.querySelector('input[type="email"]').value;
+  const name = email.split("@")[0];
+
+  localStorage.setItem("currentUser", name);
+  window.location.href = "./pages/summary.html";
+});
+
+const guestLoginButton = document.querySelector(".guest-log-inbutton");
+
+guestLoginButton.addEventListener("click", () => {
+  localStorage.setItem("currentUser", "Guest");
+  window.location.href = "./pages/summary.html";
+});

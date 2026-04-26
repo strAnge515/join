@@ -45,7 +45,6 @@ function addInformations() {
   let contact = selectedContacts.map((contact) => contact.name);
   let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
   console.log(taskDate);
-  // prettier-ignore
   return {taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks,};
 }
 
@@ -261,9 +260,14 @@ dateInput.addEventListener('change', () => {
 
 function insertDate() {
   const dateInputField = document.querySelectorAll('.date-input-field');
-  let completeDate = `${dateInputField[0].value}/${dateInputField[1].value}/${dateInputField[2].value}`;
-  console.log(completeDate);
-  return completeDate;
+
+  const day = dateInputField[0].value;
+  const month = dateInputField[1].value;
+  const year = dateInputField[2].value;
+
+  if (!day || !month || !year) return "";
+
+  return `${year}-${month}-${day}`;
 }
 
 document.addEventListener('DOMContentLoaded', init);

@@ -6,79 +6,67 @@ async function initSummary() {
   try {
     const tasks = await loadTasks();
     updateSummary(tasks || []);
+    updateGreeting();
   } catch (error) {
     console.error("Fehler beim Laden der Summary:", error);
   }
 }
 
 function updateSummary(tasks) {
-  const todoCount = tasks.filter((task) => isTodo(task)).length;
-  const doneCount = tasks.filter((task) => isDone(task)).length;
-  const inprogressCount = tasks.filter((task) => isInProgress(task)).length;
-  const awaitingCount = tasks.filter((task) => isAwaiting(task)).length;
-  const urgentTasks = tasks.filter((task) => isUrgent(task));
-  const boardCount = tasks.length;
+  const counts = {
+    todo: 0,
+    inprogress: 0,
+    awaiting: 0,
+    done: 0,
+  };
 
-  setText("todo-count", todoCount);
-  setText("done-count", doneCount);
+  tasks.forEach(task => {
+    const column = getTaskColumn(task);
+    counts[column]++;
+  });
+
+  const urgentTasks = tasks.filter(task => isUrgent(task));
+
+  setText("todo-count", counts.todo);
+  setText("done-count", counts.done);
   setText("urgent-count", urgentTasks.length);
-  setText("board-count", boardCount);
-  setText("inprogress-count", inprogressCount);
-  setText("awaiting-count", awaitingCount);
+  setText("board-count", tasks.length);
+  setText("inprogress-count", counts.inprogress);
+  setText("awaiting-count", counts.awaiting);
 
   updateUrgentDate(urgentTasks);
 }
 
-function setText(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = value;
-}
-
-function normalize(value) {
-  return String(value || "")
-    .trim()
-    .toLowerCase()
-    .replaceAll("-", " ")
-    .replace(/\s+/g, " ");
-}
-
-function isTodo(task) {
-  const category = normalize(task.category);
-  return (
-    category === "to do" ||
-    category === "todo" ||
-    category === "technical task" ||
-    category === "technical-task" ||
-    category === "user story" ||
-    category === "user-story" ||
-    category === ""
+function getTaskColumn(task) {
+  const value = normalize(
+    task.status ||
+    task.column ||
+    task.boardColumn ||
+    task.category ||
+    ""
   );
-}
 
-function isDone(task) {
-  return normalize(task.category) === "done";
-}
+  if (value.includes("done")) return "done";
+  if (value.includes("awaiting")) return "awaiting";
+  if (value.includes("progress")) return "inprogress";
+  if (value.includes("todo") || value.includes("to do")) return "todo";
 
-function isInProgress(task) {
-  const category = normalize(task.category);
-  return category === "in progress" || category === "inprogress";
-}
-
-function isAwaiting(task) {
-  const category = normalize(task.category);
-  return category === "awaiting feedback" || category === "awaiting";
+  return "todo";
 }
 
 function isUrgent(task) {
-  return normalize(task.prio) === "urgent" || normalize(task.prio) === "urgend";
+  const prio = normalize(task.prio || task.priority);
+  return prio.includes("urgent") || prio.includes("urgend");
 }
+
 
 function updateUrgentDate(urgentTasks) {
   const el = document.getElementById("current-date");
   if (!el) return;
+  console.log("URGENT TASKS:", urgentTasks);
 
   const tasksWithDate = urgentTasks
-    .map((task) => task.date || "")
+    .map((task) => task.dueDate || task.date || "")
     .filter(Boolean)
     .sort((a, b) => new Date(a) - new Date(b));
 
@@ -90,13 +78,68 @@ function updateUrgentDate(urgentTasks) {
   const nextDate = new Date(tasksWithDate[0]);
 
   if (Number.isNaN(nextDate.getTime())) {
-    el.textContent = "No deadline";
-    return;
-  }
+  el.textContent = "No deadline";
+  return;
+}
 
   el.textContent = nextDate.toLocaleDateString("de-DE", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
+}
+
+function updateGreeting() {
+  const user = localStorage.getItem("currentUser");
+const formattedName = formatUserName(user);
+  if (!user) {
+    window.location.href = "../index.html";
+    return;
+  }
+
+  const hour = new Date().getHours();
+
+  let greeting = "";
+
+  if (hour < 12) greeting = "Good Morning";
+  else if (hour < 18) greeting = "Good Afternoon";
+  else greeting = "Good Evening";
+
+document.getElementById("greeting-text").textContent = greeting + ",";
+document.getElementById("greeting-name").textContent = formattedName;
+}
+
+function setText(id, value) {
+  const element = document.getElementById(id);
+  if (element) element.textContent = value;
+}
+
+function formatUserName(name) {
+  if (!name) return "";
+
+  let cleanName = name.includes("@") ? name.split("@")[0] : name;
+
+  if (cleanName.toLowerCase() === "volskijuri") {
+    return "Volski Juri";
+  }
+
+  let formatted = cleanName.replace(/([a-z])([A-Z])/g, "$1 $2");
+
+  formatted = formatted
+    .toLowerCase()
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+  return formatted;
+}
+
+function normalize(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replaceAll("-", " ")
+    .replaceAll("_", " ")
+    .replace(/\s+/g, " ");
 }

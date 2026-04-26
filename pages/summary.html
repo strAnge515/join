@@ -35,65 +35,83 @@
       </section>
 
       <section class="summary-layout">
+
+
         <div class="cards-grid">
-          <div class="card small-card">
-            <div class="card-icon dark-circle">✎</div>
-            <div class="card-text">
-              <h2 id="todo-count">0</h2>
-              <span>To-do</span>
-            </div>
-          </div>
 
-          <div class="card small-card">
-            <div class="card-icon dark-circle">✓</div>
-            <div class="card-text">
-              <h2 id="done-count">0</h2>
-              <span>Done</span>
-            </div>
-          </div>
-
-          <div class="card urgent-card">
-            <div class="urgent-left">
-              <div class="card-icon orange-circle">
-                <img src="../assets/img/Prio alta.svg" alt="Urgent">
-              </div>
+          <a href="board.html" class="card-link">
+            <div class="card small-card">
+              <div class="card-icon dark-circle">✎</div>
               <div class="card-text">
-                <h2 id="urgent-count">0</h2>
-                <span>Urgent</span>
+                <h2 id="todo-count">0</h2>
+                <span>To-do</span>
               </div>
             </div>
+          </a>
 
-            <div class="card-separator"></div>
-
-            <div class="urgent-right">
-              <h3 id="current-date">No deadline</h3>
-              <p>Upcoming Deadline</p>
+          <a href="board.html" class="card-link">
+            <div class="card small-card">
+              <div class="card-icon dark-circle">✓</div>
+              <div class="card-text">
+                <h2 id="done-count">0</h2>
+                <span>Done</span>
+              </div>
             </div>
-          </div>
+          </a>
+
+          <a href="board.html" class="card-link card-link--wide">
+            <div class="card urgent-card">
+              <div class="urgent-left">
+                <div class="card-icon orange-circle">
+                  <img src="../assets/img/Prio alta.svg" alt="Urgent">
+                </div>
+                <div class="card-text">
+                  <h2 id="urgent-count">0</h2>
+                  <span>Urgent</span>
+                </div>
+              </div>
+
+              <div class="card-separator"></div>
+
+              <div class="urgent-right">
+                <h3 id="current-date">No deadline</h3>
+                <p>Upcoming Deadline</p>
+              </div>
+            </div>
+          </a>
 
           <div class="bottom-cards">
-            <div class="card bottom-card">
-              <h2 id="board-count">0</h2>
-              <span>Tasks in Board</span>
-            </div>
+            <a href="board.html" class="card-link bottom-card-link">
+              <div class="card bottom-card">
+                <h2 id="board-count">0</h2>
+                <span>Tasks in Board</span>
+              </div>
+            </a>
 
-            <div class="card bottom-card active-progress">
-              <h2 id="inprogress-count">0</h2>
-              <span>Tasks In Progress</span>
-            </div>
+            <a href="board.html" class="card-link bottom-card-link">
+              <div class="card bottom-card active-progress">
+                <h2 id="inprogress-count">0</h2>
+                <span>Tasks In Progress</span>
+              </div>
+            </a>
 
-            <div class="card bottom-card">
-              <h2 id="awaiting-count">0</h2>
-              <span>Awaiting Feedback</span>
-            </div>
+            <a href="board.html" class="card-link bottom-card-link">
+              <div class="card bottom-card">
+                <h2 id="awaiting-count">0</h2>
+                <span>Awaiting Feedback</span>
+              </div>
+            </a>
           </div>
+
         </div>
 
-        <div class="greeting">
-          <p>Good morning,</p>
-          <h2>Ihr Lieben!😉✌️</h2>
-        </div>
-      </section>
+    </div>
+
+    <div class="greeting">
+      <p id="greeting-text"></p>
+      <h2 id="greeting-name"></h2>
+    </div>
+    </section>
     </div>
   </main>
 
