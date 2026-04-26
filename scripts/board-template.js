@@ -8,39 +8,39 @@ function getTaskCardHTML(categoryBadge, task) {
   return `
     <div class="modal-content">
       <div class="modal-top">
-        <span class="modal-category" style="background:${categoryBadge.color}">${categoryBadge.label}</span>
-        <button type="button" class="modal-close">
+        <span class="task-category" style="background:${categoryBadge.color}">${task.category || 'Task'}</span>
+        <button class="close">
           <img class="close-icon" src="../assets/img/contacts/close.svg" alt="Close button">
         </button>
       </div>
-      <h1 class="modal-title">${task.title || 'Untitled task'}</h1>
-      <p class="modal-description">${task.description || 'No description'}</p>
-      <div class="modal-info">
-        <div class="modal-info-row">
-          <span class="modal-info-label">Due date:</span>
-          <span class="modal-info-value">${task.date || '—'}</span>
+      <h1 id="taskTitle">${task.title || 'Untitled task'}</h1>
+      <p id="taskDescription" class="task-description">${task.description || 'No description'}</p>
+      <div class="info">
+        <div class="info-item">
+          <h2>Due date:</h2>
+          <p id="taskDate">${task.date || '—'}</p>
         </div>
-        <div class="modal-info-row">
-          <span class="modal-info-label">Priority:</span>
-          <span class="modal-info-value">${task.prio || '—'} ${getPriorityIconForModal(task.prio)}</span>
+        <div class="info-item">
+          <h2>Priority:</h2>
+          <p id="taskPrio">${task.prio || '—'} ${getPriorityIconForModal(task.prio)}</p>
+        </div>
+        <div class="info-item info-item--assigned">
+          <h2>Assigned To:</h2>
+          <div class="assigned-list" id="assignedList"></div>
+        </div>
+        <div class="info-item info-item--subtasks">
+          <h2>Subtasks</h2>
+          <div class="subtask-list" id="subtaskList"></div>
         </div>
       </div>
-      <div>
-        <div class="modal-section-label">Assigned To:</div>
-        <div class="assigned-list" id="assignedList"></div>
-      </div>
-      <div>
-        <div class="modal-section-label">Subtasks</div>
-        <div class="modal-subtask-list" id="subtaskList">${getSubtaskListHTML(task.subtasks, task.id)}</div>
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="modal-action-btn" id="deleteTaskBtn" data-id="${task.id}">
-          <span class="modal-action-icon modal-action-icon--delete"></span>
+      <div class="actions">
+        <button class="edit-btn" id="deleteTaskBtn" data-id="${task.id}">
+          <div class="delete-icon"></div>
           Delete
         </button>
-        <div class="modal-action-divider"></div>
-        <button type="button" class="modal-action-btn" id="editTaskBtn" data-id="${task.id}">
-          <span class="modal-action-icon modal-action-icon--edit"></span>
+        <div class="edit-divider"></div>
+        <button class="edit-btn" id="editTaskBtn" data-id="${task.id}">
+          <div class="edit-icon"></div>
           Edit
         </button>
       </div>
@@ -64,27 +64,34 @@ function getPriorityIconForModal(prio) {
 
 
 /**
- * Returns HTML subtask items with custom SVG checkboxes for the modal.
- * @param {Array} subtasks - Array of subtask objects with title and state.
+ * Returns the HTML for a single subtask item with a custom SVG checkbox.
+ * @param {Object} subtask - Subtask object with title and state.
  * @param {string} taskId - The Firebase ID of the parent task.
- * @returns {string} HTML string of subtask items with custom checkboxes.
+ * @param {number} index - The index of the subtask in the array.
+ * @returns {string} HTML string for a single subtask item.
  */
-function getSubtaskListHTML(subtasks, taskId) {
-  if (!Array.isArray(subtasks) || subtasks.length === 0) {
-    return '<div class="subtask-item"><span class="subtask-label">No subtasks</span></div>';
-  }
-  return subtasks.map((subtask, index) => `
+function getSubtaskItemHTML(subtask, taskId, index) {
+  return `
     <div class="subtask-item">
       <input
         type="checkbox"
         id="subtask-${taskId}-${index}"
-        class="modal-subtask-checkbox custom-checkbox"
+        class="custom-checkbox modal-subtask-checkbox"
         data-index="${index}"
         ${subtask.state === true ? 'checked' : ''}
       />
       <label class="subtask-label" for="subtask-${taskId}-${index}">${subtask.title}</label>
     </div>
-  `).join('');
+  `;
+}
+
+
+/**
+ * Returns the HTML for the empty subtask placeholder.
+ * @returns {string} HTML string for the empty subtask state.
+ */
+function getEmptySubtaskHTML() {
+  return '<div class="subtask-item"><span class="subtask-label">No subtasks</span></div>';
 }
 
 
