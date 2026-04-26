@@ -5,7 +5,6 @@ import {
 } from './board-utils.js';
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
 
-
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
 const columnAwaiting = document.getElementById('column-awaiting');
@@ -16,13 +15,14 @@ let allTasks = [];
 
 
 /**
- * Initializes the board by rendering tasks and setting up the search listener.
+ * Initializes the board by rendering tasks, setting up search and drag-and-drop.
  */
 async function initBoard() {
   await renderBoard();
   initSearch();
   initDragDrop(handleTaskMove);
 }
+
 
 /**
  * Loads all tasks from Firebase and renders them on the board.
@@ -173,10 +173,11 @@ function addDeleteListenerToCard(card, task) {
 function openTaskCard(task) {
   const categoryBadge = getCategoryBadge(task.category);
   const dialogRef = document.getElementById('taskModal');
+  document.body.classList.add('no-scroll');
   dialogRef.innerHTML = getTaskCardHTML(categoryBadge, task);
   fillTaskCardInitials(task);
-  addModalEventListeners(task);
-  document.body.classList.add('no-scroll');
+  fillTaskCardSubtasks(task);
+  addTaskCardEventListeners(task);
   dialogRef.showModal();
 }
 
@@ -187,10 +188,27 @@ function openTaskCard(task) {
  */
 function fillTaskCardInitials(task) {
   const assignedListRef = document.getElementById('assignedList');
-  const users = Array.isArray(task.assigned_to) ? task.assigned_to : [];
-  users.forEach((user, i) => {
+  if (!task.assigned_to || task.assigned_to.length === 0) return;
+  for (let i = 0; i < task.assigned_to.length; i++) {
+    const user = task.assigned_to[i];
     assignedListRef.innerHTML += getAssignedUsersHTML(getAvatarColor(i), getInitials(user), user);
-  });
+  }
+}
+
+
+/**
+ * Fills the subtask list inside the open task modal.
+ * @param {Object} task - The task data object containing subtasks.
+ */
+function fillTaskCardSubtasks(task) {
+  const subtaskListRef = document.getElementById('subtaskList');
+  if (!task.subtasks || task.subtasks.length === 0) {
+    subtaskListRef.innerHTML = getEmptySubtaskHTML();
+    return;
+  }
+  for (let i = 0; i < task.subtasks.length; i++) {
+    subtaskListRef.innerHTML += getSubtaskItemHTML(task.subtasks[i], task.id, i);
+  }
 }
 
 
@@ -199,12 +217,12 @@ function fillTaskCardInitials(task) {
  * delete button and subtask checkboxes.
  * @param {Object} task - The task data object.
  */
-function addModalEventListeners(task) {
+function addTaskCardEventListeners(task) {
+  const closeBtnRef = document.querySelector('.close');
   const dialogRef = document.getElementById('taskModal');
   const deleteBtn = document.getElementById('deleteTaskBtn');
-  const closeBtn = dialogRef.querySelector('.modal-close');
 
-  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (closeBtnRef) closeBtnRef.addEventListener('click', closeModal);
 
   dialogRef.addEventListener('click', (e) => {
     if (e.target === dialogRef) closeModal();
@@ -271,9 +289,6 @@ function closeModal() {
 }
 
 
-window.closeModal = closeModal;
-
-
 /**
  * Moves a task to a new status column and persists the change to Firebase.
  * @param {string} taskId - The Firebase ID of the task to move.
@@ -286,6 +301,32 @@ async function handleTaskMove(taskId, newStatus) {
   } catch (error) {
     console.error('Fehler beim Verschieben der Task:', error);
   }
+}
+
+
+/**
+ * Adds a slide-in animation class to a DOM element after a delay.
+ * @param {string} ref - CSS selector string for the target element.
+ * @param {number} time - Delay in milliseconds before the class is added.
+ */
+function addSlideInAnimation(ref, time) {
+  const element = document.querySelector(ref);
+  setTimeout(() => {
+    element.classList.add('slide-in');
+  }, time);
+}
+
+
+/**
+ * Removes the slide-in animation class from a DOM element after a delay.
+ * @param {string} ref - CSS selector string for the target element.
+ * @param {number} time - Delay in milliseconds before the class is removed.
+ */
+function removeSlideInAnimation(ref, time) {
+  const element = document.querySelector(ref);
+  setTimeout(() => {
+    element.classList.remove('slide-in');
+  }, time);
 }
 
 

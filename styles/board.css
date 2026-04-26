@@ -233,8 +233,29 @@
   color: var(--color-urgent);
 }
 
+.task-card[draggable="true"]:hover {
+  cursor: grab;
+}
+
+.task-card.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+  cursor: grabbing;
+}
+
+.board-column__cards.drag-over {
+  border: 2px dashed var(--color-accent);
+  border-radius: var(--radius);
+  background: rgba(41, 171, 226, 0.05);
+}
+
 body.no-scroll {
   overflow: hidden;
+}
+
+dialog {
+  margin: auto;
+  padding: 0;
 }
 
 #taskModal {
@@ -267,43 +288,48 @@ body.no-scroll {
 }
 
 .modal-content {
-  padding: 48px;
   display: flex;
   flex-direction: column;
+  background: white;
   gap: 24px;
+  padding: 30px;
 }
 
 .modal-top {
   display: flex;
-  align-items: center;
   justify-content: space-between;
 }
 
-.modal-category {
+.task-category {
   display: inline-block;
-  padding: 4px 16px;
-  border-radius: 8px;
+  padding: 4px 12px;
+  border-radius: 6px;
   font-size: 23px;
-  font-weight: 400;
+  font-weight: 600;
   color: #fff;
+  align-self: flex-start;
 }
 
-.modal-close {
+.task-description {
+  font-size: 20px;
+}
+
+.close {
   background: transparent;
   border: none;
   cursor: pointer;
   width: 30px;
   height: 30px;
   padding: 0;
+  align-self: start;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: background 0.1s;
 }
 
-.modal-close:hover {
+.close:hover {
   background-color: #eeeeee;
+  border-radius: 50%;
 }
 
 .close-icon {
@@ -311,69 +337,66 @@ body.no-scroll {
   height: 16px;
 }
 
-.modal-title {
-  font-size: 44px;
+h1 {
+  font-size: 61px;
   font-weight: 700;
-  line-height: 1.1;
 }
 
-.modal-description {
+h2 {
   font-size: 20px;
   font-weight: 400;
-  color: var(--color-text);
-  line-height: 1.4;
+  color: #2a3647;
 }
 
-.modal-info {
+.info {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-
-.modal-info-row {
-  display: flex;
-  align-items: center;
   gap: 24px;
 }
 
-.modal-info-label {
-  font-size: 20px;
-  font-weight: 400;
-  color: var(--color-muted);
-  min-width: 130px;
-}
-
-.modal-info-value {
-  font-size: 20px;
-  font-weight: 400;
+.info-item {
   display: flex;
   align-items: center;
+  gap: 25px;
+}
+
+.info-item--assigned,
+.info-item--subtasks {
+  flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
-  text-transform: capitalize;
+}
+
+.info p {
+  font-size: 20px;
 }
 
 .prio-icon-modal {
-  width: 20px;
-  height: 14px;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-left: 6px;
 }
 
-.modal-section-label {
-  font-size: 20px;
-  font-weight: 400;
-  color: var(--color-muted);
-  margin-bottom: 8px;
-}
-
-.assigned-list {
+.assigned-list,
+.subtask-list {
   display: flex;
-  flex-direction: column;
   gap: 4px;
+  flex-direction: column;
 }
 
 .assigned-user {
+  gap: 16px;
   display: flex;
   align-items: center;
+  padding: 7px 16px;
+}
+
+.subtask-item {
+  position: relative;
   gap: 16px;
+  display: flex;
+  align-items: center;
   padding: 7px 16px;
 }
 
@@ -382,24 +405,56 @@ body.no-scroll {
   font-weight: 400;
 }
 
-.modal-subtask-list {
+.actions {
+  margin-top: 20px;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
-.subtask-item {
+.edit-divider {
+  height: 24px;
+  background: #d1d1d1;
+  width: 1px;
+}
+
+.edit-btn {
+  background-color: transparent;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 7px 16px;
-  border-radius: 10px;
+  border: none;
   cursor: pointer;
-  transition: background 0.1s;
+  font-size: 16px;
+  gap: 8px;
+  min-width: 80px;
 }
 
-.subtask-item:hover {
-  background-color: #eeeeee;
+.edit-btn:hover {
+  color: #29abe2;
+  font-weight: bold;
+}
+
+.edit-icon,
+.delete-icon {
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+}
+
+.edit-icon {
+  background: url('../assets/img/contacts/edit.svg') no-repeat center center;
+}
+
+.edit-btn:hover .edit-icon {
+  background: url('../assets/img/contacts/edit-hover.svg') no-repeat center center;
+}
+
+.edit-btn:hover .delete-icon {
+  background: url('../assets/img/contacts/delete-hover.svg') no-repeat center center;
+}
+
+.delete-icon {
+  background: url('../assets/img/contacts/delete.svg') no-repeat center center;
 }
 
 .custom-checkbox {
@@ -429,75 +484,8 @@ body.no-scroll {
   background-image: url('../assets/img/taskcard/checked.svg');
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 8px;
-  padding-top: 8px;
-}
-
-.modal-action-btn {
-  background: transparent;
-  border: none;
+.subtask-item:hover {
+  background-color: #eeeeee;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  color: var(--color-text);
-  transition: color 0.1s;
-}
-
-.modal-action-btn:hover {
-  color: var(--color-accent);
-  font-weight: 700;
-}
-
-.modal-action-divider {
-  width: 1px;
-  height: 24px;
-  background: var(--color-border);
-}
-
-.modal-action-icon {
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.modal-action-icon--delete {
-  background-image: url('../assets/img/contacts/delete.svg');
-}
-
-.modal-action-btn:hover .modal-action-icon--delete {
-  background-image: url('../assets/img/contacts/delete-hover.svg');
-}
-
-.modal-action-icon--edit {
-  background-image: url('../assets/img/contacts/edit.svg');
-}
-
-.modal-action-btn:hover .modal-action-icon--edit {
-  background-image: url('../assets/img/contacts/edit-hover.svg');
-}
-
-.task-card[draggable="true"] {
-  cursor: grab;
-}
-
-.task-card.dragging {
-  opacity: 0.5;
-  transform: rotate(2deg);
-  cursor: grabbing;
-}
-
-.board-column__cards.drag-over {
-  border: 2px dashed var(--color-accent);
-  border-radius: var(--radius);
-  background: rgba(41, 171, 226, 0.05);
 }
