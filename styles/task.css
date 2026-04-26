@@ -90,6 +90,7 @@ textarea::placeholder {
 .task-form-textarea:focus,
 .task-form-select:focus {
   border-color: var(--color-accent);
+ 
 }
 
 .task-form-textarea {
@@ -181,7 +182,7 @@ textarea::placeholder {
   align-items: center;
   gap: 4px;
   right: 10px;
-  top: 50%;
+  top: 20px;
   transform: translateY(-50%);
 }
 
