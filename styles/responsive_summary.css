@@ -5,6 +5,7 @@
 
 @media (max-width: 1500px) {
     .greeting {
+        width: 420px;
         margin: auto;
         transform: translateY(0px);
     }
@@ -85,7 +86,7 @@
 
     body {
         display: block;
-        padding-bottom: 76px;
+        padding-bottom: 0px;
     }
 
     #sidebar-container,
@@ -127,8 +128,8 @@
 
     .summary-main {
         width: 100%;
+        margin: 0;
         padding: 0;
-        overflow: visible;
         display: block;
     }
 
