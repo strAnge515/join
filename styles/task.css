@@ -84,6 +84,8 @@ textarea::placeholder {
   outline: none;
   transition: border-color 0.2s;
   margin-bottom: 12px;
+  height: 48px;
+  width: 440px;
 }
 
 .task-form-input:focus,
@@ -130,8 +132,6 @@ textarea::placeholder {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-
-
 .prio-btn.selected-urgent {
   background: var(--color-urgent);
   color: #fff;
@@ -150,6 +150,12 @@ textarea::placeholder {
   border-color: var(--color-low);
 }
 
+.prio-btn.selected-urgent:hover,
+.prio-btn.selected-medium:hover,
+.prio-btn.selected-low:hover {
+  box-shadow: none;
+}
+
 .prio-btn.selected-urgent img,
 .prio-btn.selected-medium img,
 .prio-btn.selected-low img {
@@ -162,6 +168,8 @@ textarea::placeholder {
   position: relative;
   justify-content: flex-end;
 }
+
+
 
 .task-form-subtask-input-row .task-form-input {
   flex: 1;
@@ -385,6 +393,14 @@ textarea::placeholder {
 
 .input-wrapper span {
   align-self: center;
+}
+
+.assigned-to {
+  margin-bottom: 0;
+}
+
+.category-height {
+height: auto;
 }
 
 /* Utility class - must stay at bottom of file */
