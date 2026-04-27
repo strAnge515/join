@@ -265,8 +265,6 @@ function showNewContactDetails(id, contactData) {
 
 // Clears the input fields in the add contact form after a new contact has been added
 function clearInputs(formId) {
-  console.log(formId);
-
   const form = document.getElementById(formId);
   const inputs = form.querySelectorAll('input');
   inputs.forEach((input) => {
