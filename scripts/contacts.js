@@ -276,13 +276,10 @@ function clearInputs(formId) {
 // Capitalizes the first letter of a string and converts the rest to lowercase
 function capitalize(fullName) {
   if (!fullName) return '';
-
-  // Jedes Wort im Namen (durch Leerzeichen getrennt)
   return fullName
     .toLowerCase()
     .split(' ')
     .map((word) =>
-      // jedes Teilstück bei Bindestrich großschreiben
       word
         .split('-')
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -294,7 +291,15 @@ function capitalize(fullName) {
 // Adds a slide-in animation to a container
 function addSlideInAnimation(ref, time) {
   const element = document.querySelector(ref);
+  document.body.classList.add('no-scroll');
   setTimeout(() => {
+    element.addEventListener(
+      'transitionend',
+      () => {
+        document.body.classList.remove('no-scroll');
+      },
+      { once: true },
+    );
     element.classList.add('slide-in');
   }, time);
 }
