@@ -225,8 +225,7 @@ function closeDialog(element) {
   setTimeout(() => {
     dialogRef.close();
   }, 300);
-  clearInputs('editContactForm');
-  clearInputs('newContactForm');
+  clearInputs(element.id);
 }
 
 // Deletes a contact after confirming the action with the user, then re-renders the contact list and clears the contact details view
@@ -266,6 +265,8 @@ function showNewContactDetails(id, contactData) {
 
 // Clears the input fields in the add contact form after a new contact has been added
 function clearInputs(formId) {
+  console.log(formId);
+
   const form = document.getElementById(formId);
   const inputs = form.querySelectorAll('input');
   inputs.forEach((input) => {
@@ -386,7 +387,10 @@ function addEventListeners() {
     .getElementById('addContactBtn')
     .addEventListener('click', openAddContactDialog);
   document.querySelectorAll('.btn-to-close').forEach((btn) => {
-    btn.addEventListener('click', (e) => closeDialog(e.target));
+    btn.addEventListener('click', (e) => {
+      const dialog = e.target.closest('dialog');
+      closeDialog(dialog);
+    });
   });
   document
     .getElementById('newContactForm')
