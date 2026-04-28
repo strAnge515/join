@@ -92,7 +92,6 @@ textarea::placeholder {
 .task-form-textarea:focus,
 .task-form-select:focus {
   border-color: var(--color-accent);
- 
 }
 
 .task-form-textarea {
@@ -168,8 +167,6 @@ textarea::placeholder {
   position: relative;
   justify-content: flex-end;
 }
-
-
 
 .task-form-subtask-input-row .task-form-input {
   flex: 1;
@@ -326,14 +323,19 @@ textarea::placeholder {
   font-size: 20px;
 }
 
-.avatar-small {
+.assigned-avatars {
+  display: flex;
+  gap: 10px;
+}
+
+.avatar {
   height: 45px;
   width: 45px;
   border-radius: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10px;
+  border: 2px solid white;
 }
 
 .task-form-input {
@@ -377,8 +379,16 @@ textarea::placeholder {
   width: 45px;
 }
 
+.arrow-img {
+   width: 24px;
+  cursor: pointer;
+  position: absolute;
+  left: 403px;
+  z-index: 1;
+}
+
 .task-form-input img {
-  width: 20px;
+  width: 24px;
   cursor: pointer;
   position: absolute;
   left: 403px;
@@ -387,8 +397,8 @@ textarea::placeholder {
 
 .old-calender {
   display: block;
-    opacity: 0;
-    z-index: 0;
+  opacity: 0;
+  z-index: 0;
 }
 
 .input-wrapper span {
@@ -400,7 +410,7 @@ textarea::placeholder {
 }
 
 .category-height {
-height: auto;
+  height: auto;
 }
 
 /* Utility class - must stay at bottom of file */

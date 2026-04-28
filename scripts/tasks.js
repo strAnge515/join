@@ -45,7 +45,7 @@ function addInformations() {
   let contact = selectedContacts.map((contact) => contact.name);
   let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
   console.log(taskDate);
-  return {taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks,};
+  return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
 }
 
 function createTaskObjekt(data) {
@@ -170,10 +170,10 @@ async function renderAssignedDropdown() {
     const initials = contact.firstName[0] + contact.lastName[0];
     const li = document.createElement('li');
     li.className = 'assigned-option';
-   li.innerHTML = `
+    li.innerHTML = `
   <section class="assigned-to-contacts-wrapper">
     <div class="assigned-to-names">
-      <div class="avatar-small" style="background:${contact.color}">${initials}</div>
+      <div class="avatar" style="background:${contact.color}">${initials}</div>
       <span>${contact.firstName} ${contact.lastName}</span>
     </div>
     <img src="../assets/img/Check button.svg" alt="checkbox" class="checkbox-unchecked" data-id="${contact.id}"/>
@@ -206,14 +206,21 @@ function toggleContact(li, contact) {
 function renderSelectedAvatars() {
   const container = document.getElementById('assigned-avatars');
   container.innerHTML = '';
-  selectedContacts.forEach((contact) => {
+  selectedContacts.slice(0, 3).forEach((contact) => {
     const initials = contact.firstName[0] + contact.lastName[0];
     const div = document.createElement('div');
-    div.className = 'avatar-small';
+    div.className = 'avatar';
     div.style.background = contact.color;
     div.textContent = initials;
     container.appendChild(div);
   });
+  if (selectedContacts.length > 3) {
+    const numberOfChoosenMembers = selectedContacts.length - 3;
+    const extraAvatar = document.createElement('div');
+    extraAvatar.className = 'avatar';
+    extraAvatar.textContent = '+' + numberOfChoosenMembers;
+    container.appendChild(extraAvatar);
+  }
 }
 
 function initDropdownsEventlistener() {
@@ -276,13 +283,10 @@ dateInput.addEventListener('change', () => {
 
 function insertDate() {
   const dateInputField = document.querySelectorAll('.date-input-field');
-
   const day = dateInputField[0].value;
   const month = dateInputField[1].value;
   const year = dateInputField[2].value;
-
-  if (!day || !month || !year) return "";
-
+  if (!day || !month || !year) return '';
   return `${year}-${month}-${day}`;
 }
 

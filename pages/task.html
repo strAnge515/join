@@ -30,12 +30,7 @@
                 <p>Title</p>
                 <p class="star">*</p>
               </label>
-              <input
-                class="task-form-input flex-center-space-between"
-                type="text"
-                id="task-title"
-                placeholder="Enter a title"
-                required />
+              <input class="task-form-input flex-center-space-between" type="text" id="task-title" placeholder="Enter a title" required />
             </div>
 
             <!-- Description -->
@@ -55,15 +50,15 @@
               </label>
               <section class="task-form-input" id="task-date">
                 <div class="input-wrapper">
-                  <input class="date-input-field" type="text" placeholder="dd" maxlength="2" size="2"/>
+                  <input class="date-input-field" type="text" placeholder="dd" maxlength="2" size="2" />
                   <span>/</span>
-                  <input class="date-input-field" type="text" placeholder="mm" maxlength="2" size="2"/>
+                  <input class="date-input-field" type="text" placeholder="mm" maxlength="2" size="2" />
                   <span>/</span>
-                  <input class="date-input-field" type="text" placeholder="yyyy" maxlength="4" size="4"/>
+                  <input class="date-input-field" type="text" placeholder="yyyy" maxlength="4" size="4" />
                 </div>
                 <img src="../assets/img/event.svg" alt="eventsvg" />
 
-                <input class="old-calender" type="date" id="date-input"/>
+                <input class="old-calender" type="date" id="date-input" />
               </section>
             </div>
           </section>
@@ -74,40 +69,34 @@
             <div class="form-group">
               <label class="task-form-label">Priority</label>
               <div class="task-form-prio-group" id="prio-group">
-                <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">
-                  Urgent<img src="../assets/img/Property 1=Urgent.svg" alt="urgendimg" />
-                </button>
-                <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">
-                  Medium<img src="../assets/img/Property 1=Medium.svg" alt="mediumimg" />
-                </button>
-                <button type="button" class="prio-btn prio-btn--low" data-prio="low">
-                  Low<img src="../assets/img/Property 1=Low.svg" alt="lowimg" />
-                </button>
+                <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">Urgent<img src="../assets/img/Property 1=Urgent.svg" alt="urgendimg" /></button>
+                <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">Medium<img src="../assets/img/Property 1=Medium.svg" alt="mediumimg" /></button>
+                <button type="button" class="prio-btn prio-btn--low" data-prio="low">Low<img src="../assets/img/Property 1=Low.svg" alt="lowimg" /></button>
               </div>
             </div>
 
             <!-- Assigned To -->
-            <div class="form-group form-group--full">
+            <section class="form-group form-group--full">
               <label class="task-form-label">Assigned to</label>
               <div class="assigned-dropdown">
                 <div class="task-form-input flex-center-space-between assigned-to" id="assigned-toggle">
                   <span id="assigned-placeholder">Select contacts to assign</span>
-                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-assignet-to"/>
-                  <img src="../assets/img/arrow_drop_down.svg" alt="arrow-up" id="arrow-up-assigned-to" class="d-none">
+                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-assignet-to" class="arrow-img" />
+                  <img src="../assets/img/arrow_drop_down.svg" alt="arrow-up" id="arrow-up-assigned-to" class="d-none arrow-img" />
                 </div>
                 <ul class="assigned-options d-none" id="assigned-options"></ul>
               </div>
               <div class="assigned-avatars" id="assigned-avatars"></div>
-            </div>
+            </section>
 
             <!-- Category -->
-            <div class="form-group">
+            <section class="form-group">
               <p>Category <span class="star">*</span></p>
               <div class="task-form-select" id="task-category">
                 <div class="selected-option flex-center-space-between" id="selected-category" data-value="">
                   <p>Select task category</p>
-                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-category"/>
-                  <img src="../assets/img/arrow_drop_down.svg" alt="arrow-up" id="arrow-up-category" class="d-none">
+                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-category" class="arrow-img" />
+                  <img src="../assets/img/arrow_drop_down.svg" alt="arrow-up" id="arrow-up-category" class="d-none arrow-img" />
                 </div>
                 <div class="dropdown-options d-none" id="category-options">
                   <button type="button" class="dropdown-option" value="technical-task">
@@ -118,10 +107,10 @@
                   </button>
                 </div>
               </div>
-            </div>
+            </section>
 
             <!-- Subtasks -->
-            <div class="form-group">
+            <section class="form-group">
               <label class="task-form-label">Subtasks</label>
               <div class="task-form-subtask-input-row">
                 <input class="task-form-input" type="text" id="subtask-input" placeholder="Add new subtask" />
@@ -136,7 +125,7 @@
                 </div>
               </div>
               <ul class="task-form-subtask-list" id="subtask-list"></ul>
-            </div>
+            </section>
           </section>
         </section>
         <!-- Actions -->
