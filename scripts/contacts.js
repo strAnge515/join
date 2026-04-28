@@ -366,7 +366,6 @@ function showUpdatedContactDetails(contactId) {
 // Handles the submission of the edit contact form, updates the contact in the database, re-renders the contact list, and shows the details of the updated contact
 async function editContact(event, contactId) {
   event.preventDefault();
-  const element = document.querySelector(`.contact[data-id="${contactId}"]`);
   const dialogRef = document.getElementById('editContactDialog');
   const contactData = getContactFormData(dialogRef);
   const formattedData = {
@@ -376,6 +375,7 @@ async function editContact(event, contactId) {
   await updateContactData(contactId, formattedData);
   await closeDialogAndRender(dialogRef);
   showUpdatedContactDetails(contactId);
+  const element = document.querySelector(`.contact[data-id="${contactId}"]`);
   element.scrollIntoView();
 }
 
