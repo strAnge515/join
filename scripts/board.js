@@ -72,9 +72,14 @@ function renderEmptyPlaceholders() {
   const columns = [columnTodo, columnInProgress, columnAwaiting, columnDone];
   columns.forEach((column) => {
     if (column.children.length === 0) {
+      const status = column.dataset.status;
+      const formattedStatus = status
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
       const placeholder = document.createElement('div');
       placeholder.className = 'board-column__empty';
-      placeholder.textContent = 'No tasks here';
+      placeholder.textContent = `No tasks ${formattedStatus}`;
       column.appendChild(placeholder);
     }
   });
@@ -146,7 +151,7 @@ function createTaskCard(task) {
     assignedUsers,
     priorityIcon,
   );
-  addDeleteListenerToCard(card, task);
+  // addDeleteListenerToCard(card, task);
   return card;
 }
 
@@ -155,22 +160,22 @@ function createTaskCard(task) {
  * @param {HTMLElement} card - The task card element.
  * @param {Object} task - The task data object.
  */
-function addDeleteListenerToCard(card, task) {
-  const deleteButton = card.querySelector('.task-delete-btn');
-  deleteButton.addEventListener('click', async (e) => {
-    e.stopPropagation();
-    const confirmed = confirm(
-      `Delete task "${task.title || 'Untitled task'}"?`,
-    );
-    if (!confirmed) return;
-    try {
-      await deleteTask(task.id);
-      await renderBoard();
-    } catch (error) {
-      console.error('Fehler beim Löschen der Task:', error);
-    }
-  });
-}
+// function addDeleteListenerToCard(card, task) {
+//   const deleteButton = card.querySelector('.task-delete-btn');
+//   deleteButton.addEventListener('click', async (e) => {
+//     e.stopPropagation();
+//     const confirmed = confirm(
+//       `Delete task "${task.title || 'Untitled task'}"?`,
+//     );
+//     if (!confirmed) return;
+//     try {
+//       await deleteTask(task.id);
+//       await renderBoard();
+//     } catch (error) {
+//       console.error('Fehler beim Löschen der Task:', error);
+//     }
+//   });
+// }
 
 /**
  * Opens the task detail modal, populates it with the given task's data,

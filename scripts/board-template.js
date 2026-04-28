@@ -106,7 +106,7 @@ function getEmptySubtaskHTML() {
 function getAssignedUsersHTML(color, initials, user) {
   return `
     <div class="assigned-user">
-      <div class="avatar" style="background:${color};">${initials}</div>
+      <div class="avatar big-card__avatar" style="background:${color};">${initials}</div>
       <span class="user-name">${user}</span>
     </div>
   `;
