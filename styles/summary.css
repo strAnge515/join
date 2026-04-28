@@ -1,62 +1,18 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .summary-main {
   padding: 0;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 96px);
-}
-
-.topbar {
-  height: 96px;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px 0 116px;
-}
-
-.topbar-title {
-  font-size: 20px;
-  font-weight: 400;
-  color: #000;
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.help {
-  width: 24px;
-  height: 24px;
-  border: 2px solid #a8a8a8;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #a8a8a8;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.profile {
-  width: 56px;
-  height: 56px;
-  border: 3px solid #2a3647;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #29abe2;
-  font-weight: 700;
-  font-size: 20px;
-  background: white;
+  min-height: calc(100vh - 80px);
 }
 
 .content {
   padding: 60px 80px;
-  height: calc(100% - 96px);
 }
 
 .headline-row {
@@ -87,22 +43,64 @@
 .summary-layout {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 80px;
-  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .cards-grid {
   width: 560px;
+  min-width: 560px;
   display: flex;
   flex-wrap: wrap;
   gap: 28px;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card-link--wide {
+  width: 560px;
+}
+
+.bottom-card-link {
+  width: 168px;
 }
 
 .card {
   background: white;
   border-radius: 30px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-link:hover .card {
+  background-color: #2a3647;
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.card-link:hover .card h2,
+.card-link:hover .card span,
+.card-link:hover .card h3,
+.card-link:hover .card p {
+  color: #ffffff;
+}
+
+.card-link:hover .card-icon {
+  background: #ffffff;
+  color: #2a3647;
+}
+
+.card-link:hover .orange-circle {
+  background: #ff5c00;
+}
+
+.card-link:hover .card-separator {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .small-card {
@@ -132,62 +130,12 @@
   object-fit: contain;
 }
 
-.card-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-.card-link--wide {
-  width: 560px;
-}
-
-.bottom-card-link {
-  width: 168px;
-}
-
-.card-link:hover .card {
-  background-color: #2a3647;
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-}
-
-.card-link:hover .card h2,
-.card-link:hover .card span,
-.card-link:hover .card h3,
-.card-link:hover .card p {
-  color: #ffffff;
-}
-
-.card-link:hover .card * {
-  color: #ffffff !important;
-}
-
-.card-link:hover .card-icon {
-  background: #ffffff;
-  color: #2a3647 !important;
-}
-
-.card-link:hover .orange-circle {
-  background: #ff5c00;
-}
-
-.card-link:hover .card-separator {
-  background: rgba(255, 255, 255, 0.4);
-}
-
-.card {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
 .dark-circle {
   background: #2a3647;
 }
 
 .orange-circle {
   background: #ff5c00;
-  font-size: 22px;
 }
 
 .card-text {
@@ -205,7 +153,6 @@
 
 .card-text span {
   font-size: 21px;
-  font-weight: 400;
   color: #2a3647;
 }
 
@@ -245,7 +192,6 @@
 .bottom-cards {
   width: 560px;
   display: flex;
-  justify-content: space-between;
   gap: 28px;
 }
 
@@ -276,16 +222,13 @@
 
 .active-progress h2,
 .active-progress span {
-  color: rgb(0, 0, 0);
+  color: black;
 }
 
 .greeting {
   min-width: 360px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-self: center;
-  margin: 0;
 }
 
 .greeting p {
@@ -302,17 +245,15 @@
 }
 
 @media (min-width: 901px) {
-  .cards-grid {
-    width: 560px;
-    min-width: 560px;
-    flex-shrink: 0;
+  .summary-layout {
+    position: relative;
   }
 
   .greeting {
+    position: absolute;
+    left: 930px;
+    top: 475px;
     width: 420px;
-    min-width: 360px;
-    flex-shrink: 0;
-    margin-left: 450px;
-    transform: translateY(-410px);
+    margin: 0;
   }
 }
