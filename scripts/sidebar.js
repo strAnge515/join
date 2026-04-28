@@ -11,7 +11,8 @@ async function initSidebar() {
             let htmlText = await response.text();
             htmlText = adjustSidebarPaths(htmlText, isRoot);
             document.getElementById('sidebar-container').innerHTML = htmlText;
-            updateSidebarVisibility(true);
+            const isLoggedIn = sessionStorage.getItem('currentUser') !== null;
+            updateSidebarVisibility(isLoggedIn);
         }
     } catch (error) {
         console.error(error);

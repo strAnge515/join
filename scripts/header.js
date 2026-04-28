@@ -1,13 +1,4 @@
 /**
- * Test user data to generate initials.
- * Replace this later with data from Firebase.
- */
-let testUser = {
-    name: "Anton Mayer"
-};
-
-
-/**
  * Initializes the header, loads the HTML template, handles paths, and sets up UI.
  */
 async function initHeader() {
@@ -20,13 +11,23 @@ async function initHeader() {
             let htmlText = await response.text();
             htmlText = adjustHeaderPaths(htmlText, isRoot);
             document.getElementById('header-container').innerHTML = htmlText;
-            
-            updateHeaderUI(testUser, true);
+            const currentUser = getCurrentUser();
+            updateHeaderUI(currentUser, currentUser !== null);
             setupHeaderMenu();
         }
     } catch (error) {
         console.error(error);
     }
+}
+
+
+/**
+ * Reads the currently logged-in user from sessionStorage.
+ * @returns {Object|null} The user object or null if not logged in.
+ */
+function getCurrentUser() {
+    const stored = sessionStorage.getItem('currentUser');
+    return stored ? JSON.parse(stored) : null;
 }
 
 
@@ -48,7 +49,7 @@ function adjustHeaderPaths(htmlText, isRoot) {
 
 /**
  * Updates the header UI elements based on login status and user data.
- * @param {Object} user - The user object containing the name.
+ * @param {Object|null} user - The user object containing the name.
  * @param {boolean} isLoggedIn - The current login status.
  */
 function updateHeaderUI(user, isLoggedIn) {
@@ -82,6 +83,7 @@ function generateInitials(name) {
 function setupHeaderMenu() {
     const accountCircle = document.getElementById('header-account-circle');
     const accountMenu = document.getElementById('header-account-menu');
+    const logoutLink = accountMenu ? accountMenu.querySelector('a[href*="index.html"]') : null;
 
     if (accountCircle && accountMenu) {
         accountCircle.addEventListener('click', () => {
@@ -93,7 +95,13 @@ function setupHeaderMenu() {
             }
         });
     }
+    if (logoutLink) {
+        logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem('currentUser');
+            window.location.href = logoutLink.href;
+        });
+    }
 }
-
 
 initHeader();

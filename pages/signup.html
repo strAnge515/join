@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - Sign up</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../styles/startseite.css">
+    <script type="module" src="../scripts/signup.js" defer></script>
+</head>
+<body>
+    <aside>
+        <div class="aside-logo">
+            <img src="../assets/img/join_logo.svg" alt="joinlogo">
+        </div>
+    </aside>
+    <div class="wrapper">
+        <main>
+            <form id="signup-form">
+                <a href="../index.html" class="back-arrow">&#8592;</a>
+                <h1>Sign up</h1>
+                <div class="seperator"></div>
+                <div class="input">
+                    <div class="input-field-wrapper">
+                        <input type="text" id="signup-name" placeholder="Name">
+                        <img src="../assets/img/contacts/person.svg" alt="" class="input-icon">
+                    </div>
+                    <div class="input-field-wrapper">
+                        <input type="email" id="signup-email" placeholder="Email">
+                        <img src="../assets/img/contacts/mail.svg" alt="" class="input-icon">
+                    </div>
+                    <div class="input-field-wrapper">
+                        <input type="password" id="signup-password" placeholder="Password">
+                        <img src="../assets/img/lock.svg" alt="" class="input-icon input-icon--toggle" id="toggle-signup-password">
+                    </div>
+                    <div class="input-field-wrapper">
+                        <input type="password" id="signup-confirm-password" placeholder="Confirm Password">
+                        <img src="../assets/img/lock.svg" alt="" class="input-icon input-icon--toggle" id="toggle-confirm-password">
+                    </div>
+                </div>
+                <p class="error-message" id="signup-error"></p>
+                <div class="privacy-policy-wrapper">
+                    <input type="checkbox" id="accept-privacy">
+                    <label for="accept-privacy">I accept the <a href="./privacy_policy.html" class="privacy-link">Privacy policy</a></label>
+                </div>
+                <button type="submit" class="log-in-button" id="signup-btn" disabled>Sign up</button>
+            </form>
+        </main>
+        <footer class="login-footer">
+            <a href="./privacy_policy.html">Privacy Policy</a>
+            <a href="./legal_notice.html">Legal notice</a>
+        </footer>
+    </div>
+    <div class="toast-message" id="signup-toast">You Signed Up successfully</div>
+</body>
+</html>
