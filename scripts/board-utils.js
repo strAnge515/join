@@ -13,17 +13,23 @@ export function getInitials(name) {
     .join('');
 }
 
-
 /**
  * Returns a color from a fixed palette based on a given index.
  * @param {number} index - Position index used to select the color.
  * @returns {string} Hex color string.
  */
 export function getAvatarColor(index) {
-  const colors = ['#29abe2', '#9b59b6', '#2ecc71', '#e67e22', '#e74c3c', '#607d8b', '#1565c0'];
+  const colors = [
+    '#29abe2',
+    '#9b59b6',
+    '#2ecc71',
+    '#e67e22',
+    '#e74c3c',
+    '#607d8b',
+    '#1565c0',
+  ];
   return colors[index % colors.length];
 }
-
 
 /**
  * Returns an emoji icon representing the given task priority.
@@ -37,7 +43,6 @@ export function getPriorityIcon(prio) {
   if (normalized === 'low') return '🟢';
   return '⚪';
 }
-
 
 /**
  * Returns a category badge config object based on the task category.
@@ -55,7 +60,6 @@ export function getCategoryBadge(category) {
   return { label: category || 'Task', color: '#2a3647', textColor: '#ffffff' };
 }
 
-
 /**
  * Normalizes a string to lowercase with trimmed whitespace and no hyphens.
  * @param {string} value - The input string to normalize.
@@ -68,7 +72,6 @@ export function normalize(value) {
     .replaceAll('-', ' ')
     .replace(/\s+/g, ' ');
 }
-
 
 /**
  * Escapes HTML special characters to prevent XSS injection.
@@ -84,7 +87,6 @@ export function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
-
 /**
  * Renders avatar HTML elements for a list of assigned users.
  * @param {Array} users - Array of user name strings.
@@ -92,13 +94,14 @@ export function escapeHtml(value) {
  */
 export function renderAssignedUsers(users) {
   if (!users.length) return '';
-  return users.map((user, index) => {
-    const initials = getInitials(user);
-    const color = getAvatarColor(index);
-    return `<div class="avatar" style="background:${color};">${initials}</div>`;
-  }).join('');
+  return users
+    .map((user, index) => {
+      const initials = getInitials(user);
+      const color = getAvatarColor(index);
+      return `<div class="avatar" style="background:${color};">${initials}</div>`;
+    })
+    .join('');
 }
-
 
 /**
  * Calculates subtask completion progress from a subtasks array.
@@ -115,7 +118,6 @@ export function getSubtaskInfo(subtasks) {
   return { total, done, percent };
 }
 
-
 /**
  * Returns the HTML string for the subtask progress bar.
  * @param {Object} subtaskInfo - Object containing done, total and percent values.
@@ -127,11 +129,10 @@ export function getProgressBarHTML(subtaskInfo) {
       <div class="progress-bar">
         <div class="progress-bar__fill" style="width: ${subtaskInfo.percent}%"></div>
       </div>
-      <span class="task-card__progress-label">${subtaskInfo.done}/${subtaskInfo.total} Done</span>
+      <span class="task-card__progress-label">${subtaskInfo.done}/${subtaskInfo.total} Subtasks</span>
     </div>
   `;
 }
-
 
 /**
  * Returns the inner HTML string for a task card.
@@ -142,19 +143,25 @@ export function getProgressBarHTML(subtaskInfo) {
  * @param {string} priorityIcon - Emoji string representing task priority.
  * @returns {string} HTML string for the task card's inner content.
  */
-export function getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedUsers, priorityIcon) {
+export function getTaskCardInnerHTML(
+  categoryBadge,
+  task,
+  subtaskInfo,
+  assignedUsers,
+) {
   return `
     <span class="task-card__category" style="background:${categoryBadge.color}; color:${categoryBadge.textColor};">
       ${categoryBadge.label}
     </span>
-    <h3 class="task-card__title">${escapeHtml(task.title || 'Untitled task')}</h3>
-    <p class="task-card__description">${escapeHtml(task.description || 'No description')}</p>
+    <div class="task-card__text">
+      <h3 class="task-card__title">${escapeHtml(task.title || 'Untitled task')}</h3>
+      <p class="task-card__description">${escapeHtml(task.description || 'No description')}</p>
+    </div>
     ${subtaskInfo.total > 0 ? getProgressBarHTML(subtaskInfo) : ''}
     <div class="task-card__footer">
       <div class="avatar-group">${renderAssignedUsers(assignedUsers)}</div>
       <div class="task-card__actions">
-        <span class="prio-icon">${priorityIcon}</span>
-        <button class="task-delete-btn" type="button" title="Delete task">✕</button>
+        <span class="prio-icon">${getPriorityIconForModal(task.prio)}</span>
       </div>
     </div>
   `;

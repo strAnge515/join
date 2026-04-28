@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join - Board</title>
-
+    <link rel="icon" type="image/png" href="../assets/img/join_logo.svg" />
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../styles/sidebar.css" />
     <link rel="stylesheet" href="../styles/header.css" />
@@ -21,11 +21,22 @@
     <main class="main-content">
       <header class="board-header">
         <h1 class="board-header__title">Board</h1>
-        <div class="board-header__search">
-          <input type="text" placeholder="Find Task" />
-          <span class="board-header__search-icon">🔍</span>
+        <div class="board-header__actions">
+          <div class="board-header__search">
+            <input type="text" placeholder="Find Task" />
+            <div class="search-right">
+              <div class="search-divider"></div>
+              <img
+                class="board-header__search-icon"
+                src="../assets/img/search.svg"
+                alt="search icon"
+              />
+            </div>
+          </div>
+          <button class="board-header__add-btn">
+            Add task <span class="plus">+</span>
+          </button>
         </div>
-        <button class="board-header__add-btn">Add task +</button>
       </header>
 
       <div class="board">
@@ -34,7 +45,11 @@
             <h2 class="board-column__title">To do</h2>
             <button class="board-column__add-btn">+</button>
           </div>
-          <div class="board-column__cards" id="column-todo" data-status="to do"></div>
+          <div
+            class="board-column__cards"
+            id="column-todo"
+            data-status="to do"
+          ></div>
         </section>
 
         <section class="board-column">
@@ -42,7 +57,11 @@
             <h2 class="board-column__title">In progress</h2>
             <button class="board-column__add-btn">+</button>
           </div>
-          <div class="board-column__cards" id="column-inprogress" data-status="in progress"></div>
+          <div
+            class="board-column__cards"
+            id="column-inprogress"
+            data-status="in progress"
+          ></div>
         </section>
 
         <section class="board-column">
@@ -50,15 +69,22 @@
             <h2 class="board-column__title">Awaiting feedback</h2>
             <button class="board-column__add-btn">+</button>
           </div>
-          <div class="board-column__cards" id="column-awaiting" data-status="awaiting feedback"></div>
+          <div
+            class="board-column__cards"
+            id="column-awaiting"
+            data-status="awaiting feedback"
+          ></div>
         </section>
 
         <section class="board-column">
           <div class="board-column__header">
             <h2 class="board-column__title">Done</h2>
-            <button class="board-column__add-btn">+</button>
           </div>
-          <div class="board-column__cards" id="column-done" data-status="done"></div>
+          <div
+            class="board-column__cards"
+            id="column-done"
+            data-status="done"
+          ></div>
         </section>
       </div>
     </main>

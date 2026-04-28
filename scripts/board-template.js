@@ -48,20 +48,23 @@ function getTaskCardHTML(categoryBadge, task) {
   `;
 }
 
-
 /**
  * Returns an img tag for the priority icon displayed in the modal.
  * @param {string} prio - The priority value (urgent, medium, low).
  * @returns {string} HTML img tag string or empty string if unrecognized.
  */
 function getPriorityIconForModal(prio) {
-  const normalized = String(prio || '').trim().toLowerCase();
-  if (normalized === 'urgent') return '<img src="../assets/img/Property 1=Urgent.svg" alt="urgent" class="prio-icon-modal">';
-  if (normalized === 'medium') return '<img src="../assets/img/Property 1=Medium.svg" alt="medium" class="prio-icon-modal">';
-  if (normalized === 'low') return '<img src="../assets/img/Property 1=Low.svg" alt="low" class="prio-icon-modal">';
+  const normalized = String(prio || '')
+    .trim()
+    .toLowerCase();
+  if (normalized === 'urgent')
+    return '<img src="../assets/img/Property 1=Urgent.svg" alt="urgent" class="prio-icon-modal">';
+  if (normalized === 'medium')
+    return '<img src="../assets/img/Property 1=Medium.svg" alt="medium" class="prio-icon-modal">';
+  if (normalized === 'low')
+    return '<img src="../assets/img/Property 1=Low.svg" alt="low" class="prio-icon-modal">';
   return '';
 }
-
 
 /**
  * Returns the HTML for a single subtask item with a custom SVG checkbox.
@@ -85,7 +88,6 @@ function getSubtaskItemHTML(subtask, taskId, index) {
   `;
 }
 
-
 /**
  * Returns the HTML for the empty subtask placeholder.
  * @returns {string} HTML string for the empty subtask state.
@@ -93,7 +95,6 @@ function getSubtaskItemHTML(subtask, taskId, index) {
 function getEmptySubtaskHTML() {
   return '<div class="subtask-item"><span class="subtask-label">No subtasks</span></div>';
 }
-
 
 /**
  * Returns the HTML for a single assigned user row in the modal.
@@ -105,7 +106,7 @@ function getEmptySubtaskHTML() {
 function getAssignedUsersHTML(color, initials, user) {
   return `
     <div class="assigned-user">
-      <div class="avatar" style="background:${color};">${initials}</div>
+      <div class="avatar big-card__avatar" style="background:${color};">${initials}</div>
       <span class="user-name">${user}</span>
     </div>
   `;

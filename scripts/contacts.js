@@ -225,8 +225,7 @@ function closeDialog(element) {
   setTimeout(() => {
     dialogRef.close();
   }, 300);
-  clearInputs('editContactForm');
-  clearInputs('newContactForm');
+  clearInputs(element.id);
 }
 
 // Deletes a contact after confirming the action with the user, then re-renders the contact list and clears the contact details view
@@ -276,13 +275,10 @@ function clearInputs(formId) {
 // Capitalizes the first letter of a string and converts the rest to lowercase
 function capitalize(fullName) {
   if (!fullName) return '';
-
-  // Jedes Wort im Namen (durch Leerzeichen getrennt)
   return fullName
     .toLowerCase()
     .split(' ')
     .map((word) =>
-      // jedes Teilstück bei Bindestrich großschreiben
       word
         .split('-')
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -294,7 +290,15 @@ function capitalize(fullName) {
 // Adds a slide-in animation to a container
 function addSlideInAnimation(ref, time) {
   const element = document.querySelector(ref);
+  document.body.classList.add('no-scroll');
   setTimeout(() => {
+    element.addEventListener(
+      'transitionend',
+      () => {
+        document.body.classList.remove('no-scroll');
+      },
+      { once: true },
+    );
     element.classList.add('slide-in');
   }, time);
 }
@@ -362,7 +366,6 @@ function showUpdatedContactDetails(contactId) {
 // Handles the submission of the edit contact form, updates the contact in the database, re-renders the contact list, and shows the details of the updated contact
 async function editContact(event, contactId) {
   event.preventDefault();
-  const element = document.querySelector(`.contact[data-id="${contactId}"]`);
   const dialogRef = document.getElementById('editContactDialog');
   const contactData = getContactFormData(dialogRef);
   const formattedData = {
@@ -372,6 +375,7 @@ async function editContact(event, contactId) {
   await updateContactData(contactId, formattedData);
   await closeDialogAndRender(dialogRef);
   showUpdatedContactDetails(contactId);
+  const element = document.querySelector(`.contact[data-id="${contactId}"]`);
   element.scrollIntoView();
 }
 
@@ -381,7 +385,10 @@ function addEventListeners() {
     .getElementById('addContactBtn')
     .addEventListener('click', openAddContactDialog);
   document.querySelectorAll('.btn-to-close').forEach((btn) => {
-    btn.addEventListener('click', (e) => closeDialog(e.target));
+    btn.addEventListener('click', (e) => {
+      const dialog = e.target.closest('dialog');
+      closeDialog(dialog);
+    });
   });
   document
     .getElementById('newContactForm')

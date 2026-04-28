@@ -9,7 +9,7 @@
   --color-urgent: #ff3d00;
   --color-medium: #ffa800;
   --color-low: #7ae229;
-  --color-error: #E60026;
+  --color-error: #e60026;
   --radius: 10px;
 }
 
@@ -21,49 +21,50 @@
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('./assets/font/Inter_18pt-Regular.ttf') format('truetype');
+  font-family: "Inter";
+  src: url("./assets/font/Inter_18pt-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'Inter';
-  src: url('./assets/font/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
-  font-style: italic;
-}
-
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
-  min-width: 1000px;
+  min-width: 0;
 }
 
-
+@media (min-width: 901px) {
+  body {
+    min-width: 1000px;
+  }
+}
 
 .main-content {
-  margin-left: 232px;  
-  margin-top: 80px;    
-  padding: 40px 60px;  
+  margin-left: 232px;
+  margin-top: 80px;
+  padding: 40px 60px;
   min-height: calc(100vh - 80px);
-  box-sizing: border-box;
-  max-width: 1440px; 
+  max-width: 1440px;
 }
 
-@media (max-width: 768px) {
-    * {
-        max-width: 100%;
-    }
+@media (max-width: 900px) {
+  html,
+  body {
+    width: 100%;
+    min-width: 0;
+  }
 
-    html, body {
-        min-width: 0;
-        width: 100%;
-        overflow-x: hidden;
-    }
+  body {
+    display: block;
+    padding-bottom: 80px;
+  }
 
-    body {
-        display: block;
-        padding-bottom: 80px;
-    }
+  .main-content {
+    margin-left: 0;
+    margin-top: 80px;
+    width: 100%;
+    max-width: 100%;
+    padding: 24px 16px;
+  }
 }
