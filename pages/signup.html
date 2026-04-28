@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join - Sign Up</title>
+  <link rel="icon" type="image/png" href="../assets/img/join_logo.svg">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../styles/signup.css">
+
+  <script src="../scripts/signup.js" defer></script>
+</head>
+
+<body>
+  <img class="signup-logo" src="../assets/img/join_logo.svg" alt="Join Logo">
+
+  <main class="signup-page">
+    <form id="signup-form" class="signup-card">
+      <a href="../index.html" class="back-arrow">←</a>
+
+      <h1>Sign up</h1>
+      <div class="signup-divider"></div>
+
+      <div class="signup-input-wrapper">
+        <input id="signup-name" type="text" placeholder="Name" required>
+        <span>♙</span>
+      </div>
+
+      <div class="signup-input-wrapper">
+        <input id="signup-email" type="email" placeholder="Email" required>
+        <span>✉</span>
+      </div>
+
+      <div class="signup-input-wrapper">
+        <input id="signup-password" type="password" placeholder="Password" required>
+        <span>🔒</span>
+      </div>
+
+      <div class="signup-input-wrapper">
+        <input id="signup-confirm-password" type="password" placeholder="Confirm Password" required>
+        <span>🔒</span>
+      </div>
+
+      <label class="privacy-row">
+        <input id="privacy-check" type="checkbox" required>
+        <span>I accept the <a href="./privacy_policy.html">Privacy policy</a></span>
+      </label>
+
+      <button type="submit" class="signup-submit">Sign up</button>
+    </form>
+  </main>
+
+  <footer class="signup-footer">
+    <a href="./privacy_policy.html">Privacy Policy</a>
+    <a href="./legal_notice.html">Legal notice</a>
+  </footer>
+</body>
+</html>

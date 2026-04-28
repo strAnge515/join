@@ -84,12 +84,15 @@ textarea::placeholder {
   outline: none;
   transition: border-color 0.2s;
   margin-bottom: 12px;
+  height: 48px;
+  width: 440px;
 }
 
 .task-form-input:focus,
 .task-form-textarea:focus,
 .task-form-select:focus {
   border-color: var(--color-accent);
+ 
 }
 
 .task-form-textarea {
@@ -125,19 +128,8 @@ textarea::placeholder {
   gap: 6px;
 }
 
-.prio-btn--urgent:hover {
-  border-color: var(--color-urgent);
-  color: var(--color-urgent);
-}
-
-.prio-btn--medium:hover {
-  border-color: var(--color-medium);
-  color: var(--color-medium);
-}
-
-.prio-btn--low:hover {
-  border-color: var(--color-low);
-  color: var(--color-low);
+.prio-btn:hover {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .prio-btn.selected-urgent {
@@ -158,6 +150,12 @@ textarea::placeholder {
   border-color: var(--color-low);
 }
 
+.prio-btn.selected-urgent:hover,
+.prio-btn.selected-medium:hover,
+.prio-btn.selected-low:hover {
+  box-shadow: none;
+}
+
 .prio-btn.selected-urgent img,
 .prio-btn.selected-medium img,
 .prio-btn.selected-low img {
@@ -171,6 +169,8 @@ textarea::placeholder {
   justify-content: flex-end;
 }
 
+
+
 .task-form-subtask-input-row .task-form-input {
   flex: 1;
 }
@@ -181,7 +181,7 @@ textarea::placeholder {
   align-items: center;
   gap: 4px;
   right: 10px;
-  top: 50%;
+  top: 20px;
   transform: translateY(-50%);
 }
 
@@ -343,11 +343,13 @@ textarea::placeholder {
   border-radius: 8px;
   padding: 8px 12px;
   justify-content: space-between;
+  position: relative;
 }
 
 .input-wrapper {
   display: flex;
   gap: 2px;
+  width: 120px;
 }
 
 .date-input-field {
@@ -361,25 +363,44 @@ textarea::placeholder {
   color: var(--color-border);
 }
 .date-input-field:first-child {
-  width: 2ch;
+  width: 22px;
 }
 .date-input-field:nth-child(3) {
-  width: 2ch;
+  width: 33px;
 }
+
+.date-input-field:nth-child(3):not(:placeholder-shown) {
+  width: 22px;
+}
+
 .date-input-field:last-child {
-  width: 4ch;
-}
-.date-input-field::placeholder {
-  font-size: 20px;
+  width: 45px;
 }
 
 .task-form-input img {
   width: 20px;
   cursor: pointer;
+  position: absolute;
+  left: 403px;
+  z-index: 1;
+}
+
+.old-calender {
+  display: block;
+    opacity: 0;
+    z-index: 0;
 }
 
 .input-wrapper span {
   align-self: center;
+}
+
+.assigned-to {
+  margin-bottom: 0;
+}
+
+.category-height {
+height: auto;
 }
 
 /* Utility class - must stay at bottom of file */

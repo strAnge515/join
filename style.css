@@ -50,3 +50,20 @@ body {
   box-sizing: border-box;
   max-width: 1440px; 
 }
+
+@media (max-width: 768px) {
+    * {
+        max-width: 100%;
+    }
+
+    html, body {
+        min-width: 0;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    body {
+        display: block;
+        padding-bottom: 80px;
+    }
+}

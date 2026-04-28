@@ -2,7 +2,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  height: calc(100vh - 96px);
 }
 
 .topbar {
@@ -55,7 +55,8 @@
 }
 
 .content {
-  padding: 72px 80px;
+  padding: 60px 80px;
+  height: calc(100% - 96px);
 }
 
 .headline-row {
@@ -88,6 +89,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 80px;
+  flex-wrap: nowrap;
 }
 
 .cards-grid {
@@ -128,6 +130,55 @@
   width: 32px;
   height: 32px;
   object-fit: contain;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card-link--wide {
+  width: 560px;
+}
+
+.bottom-card-link {
+  width: 168px;
+}
+
+.card-link:hover .card {
+  background-color: #2a3647;
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.card-link:hover .card h2,
+.card-link:hover .card span,
+.card-link:hover .card h3,
+.card-link:hover .card p {
+  color: #ffffff;
+}
+
+.card-link:hover .card * {
+  color: #ffffff !important;
+}
+
+.card-link:hover .card-icon {
+  background: #ffffff;
+  color: #2a3647 !important;
+}
+
+.card-link:hover .orange-circle {
+  background: #ff5c00;
+}
+
+.card-link:hover .card-separator {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .dark-circle {
@@ -223,20 +274,18 @@
   line-height: 1.2;
 }
 
-.active-progress {
-  background: #2a3647;
-}
-
 .active-progress h2,
 .active-progress span {
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .greeting {
   min-width: 360px;
   display: flex;
   flex-direction: column;
-  margin-right: 30%;
+  justify-content: center;
+  align-self: center;
+  margin: 0;
 }
 
 .greeting p {
@@ -252,42 +301,18 @@
   color: #29abe2;
 }
 
-@media (max-width: 1400px) {
-  .summary-layout {
-    flex-direction: column;
-    align-items: flex-start;
+@media (min-width: 901px) {
+  .cards-grid {
+    width: 560px;
+    min-width: 560px;
+    flex-shrink: 0;
   }
 
   .greeting {
-    min-width: unset;
-  }
-}
-
-@media (max-width: 900px) {
-  .topbar {
-    padding-left: 32px;
-  }
-
-  .content {
-    padding: 40px 24px;
-  }
-
-  .headline-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .cards-grid,
-  .urgent-card,
-  .bottom-cards {
-    width: 100%;
-  }
-
-  .small-card {
-    width: calc(50% - 14px);
-  }
-
-  .bottom-card {
-    width: calc(33.333% - 18.7px);
+    width: 420px;
+    min-width: 360px;
+    flex-shrink: 0;
+    margin-left: 450px;
+    transform: translateY(-410px);
   }
 }

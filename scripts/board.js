@@ -1,32 +1,63 @@
-import { loadTasks, deleteTask } from './backend-tasks.js';
+import { loadTasks, deleteTask, updateTask } from './backend-tasks.js';
+import {
+  getInitials,
+  getAvatarColor,
+  getPriorityIcon,
+  getCategoryBadge,
+  renderAssignedUsers,
+  getSubtaskInfo,
+  getProgressBarHTML,
+  getTaskCardInnerHTML,
+} from './board-utils.js';
+import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
 const columnAwaiting = document.getElementById('column-awaiting');
 const columnDone = document.getElementById('column-done');
+const searchInput = document.querySelector('.board-header__search input');
 
-initBoard();
+let allTasks = [];
 
+/**
+ * Initializes the board by rendering tasks, setting up search and drag-and-drop.
+ */
 async function initBoard() {
   await renderBoard();
+  initSearch();
+  initDragDrop(handleTaskMove);
 }
 
+/**
+ * Loads all tasks from Firebase and renders them on the board.
+ */
 async function renderBoard() {
   clearBoard();
-
   try {
-    const tasks = await loadTasks();
-    const safeTasks = tasks || [];
-
-    safeTasks.forEach((task) => {
-      const taskCard = createTaskCard(task);
-      getColumnByCategory(task.category).appendChild(taskCard);
-    });
+    allTasks = (await loadTasks()) || [];
+    displayTasks(allTasks);
+    refreshCardListeners();
   } catch (error) {
     console.error('Fehler beim Laden des Boards:', error);
   }
 }
 
+/**
+ * Renders a given list of tasks into the correct board columns.
+ * @param {Array} tasks - Array of task objects to display.
+ */
+function displayTasks(tasks) {
+  clearBoard();
+  tasks.forEach((task) => {
+    const taskCard = createTaskCard(task);
+    getColumnByStatus(task.status).appendChild(taskCard);
+  });
+  renderEmptyPlaceholders();
+}
+
+/**
+ * Clears all task cards from every board column.
+ */
 function clearBoard() {
   columnTodo.innerHTML = '';
   columnInProgress.innerHTML = '';
@@ -34,72 +65,104 @@ function clearBoard() {
   columnDone.innerHTML = '';
 }
 
-function getColumnByCategory(category) {
-  const normalized = normalize(category);
+/**
+ * Adds a "No tasks here" placeholder to each column that has no tasks.
+ */
+function renderEmptyPlaceholders() {
+  const columns = [columnTodo, columnInProgress, columnAwaiting, columnDone];
+  columns.forEach((column) => {
+    if (column.children.length === 0) {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'board-column__empty';
+      placeholder.textContent = 'No tasks here';
+      column.appendChild(placeholder);
+    }
+  });
+}
 
-  if (normalized === 'to do' || normalized === 'todo') return columnTodo;
-  if (normalized === 'in progress' || normalized === 'inprogress')
-    return columnInProgress;
-  if (normalized === 'awaiting feedback' || normalized === 'awaiting')
-    return columnAwaiting;
-  if (normalized === 'done') return columnDone;
+/**
+ * Attaches the input event listener to the search field.
+ */
+function initSearch() {
+  searchInput.addEventListener('input', handleSearch);
+}
 
+/**
+ * Filters and displays tasks based on the current search input value.
+ */
+function handleSearch() {
+  const query = searchInput.value.trim().toLowerCase();
+  if (!query) {
+    displayTasks(allTasks);
+    return;
+  }
+  const filtered = allTasks.filter(
+    (task) =>
+      task.title?.toLowerCase().includes(query) ||
+      task.description?.toLowerCase().includes(query),
+  );
+  displayTasks(filtered);
+  if (filtered.length === 0) {
+    clearBoard();
+    columnTodo.innerHTML = '<p class="board-no-results">No tasks found</p>';
+  }
+}
+
+/**
+ * Returns the correct board column element based on the task's status.
+ * @param {string} status - The status value of the task.
+ * @returns {HTMLElement} The matching column DOM element.
+ */
+function getColumnByStatus(status) {
+  const s = String(status || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+  if (s === 'to do' || s === 'todo') return columnTodo;
+  if (s === 'in progress' || s === 'inprogress') return columnInProgress;
+  if (s === 'awaiting feedback' || s === 'awaiting') return columnAwaiting;
+  if (s === 'done') return columnDone;
   return columnTodo;
 }
 
+/**
+ * Creates and returns a task card button element for the board.
+ * @param {Object} task - The task data object.
+ * @returns {HTMLElement} The rendered task card element.
+ */
 function createTaskCard(task) {
   const card = document.createElement('button');
   card.className = 'task-card';
-  card.onclick = function () {
-    openTaskCard(task);
-  };
-
+  card.dataset.id = task.id;
+  card.onclick = () => openTaskCard(task);
   const subtaskInfo = getSubtaskInfo(task.subtasks);
   const assignedUsers = Array.isArray(task.assigned_to) ? task.assigned_to : [];
   const priorityIcon = getPriorityIcon(task.prio);
   const categoryBadge = getCategoryBadge(task.category);
+  card.innerHTML = getTaskCardInnerHTML(
+    categoryBadge,
+    task,
+    subtaskInfo,
+    assignedUsers,
+    priorityIcon,
+  );
+  addDeleteListenerToCard(card, task);
+  return card;
+}
 
-  card.innerHTML = `
-    <span class="task-card__category" style="background:${categoryBadge.color}; color:${categoryBadge.textColor};">
-      ${categoryBadge.label}
-    </span>
-
-    <h3 class="task-card__title">${escapeHtml(task.title || 'Untitled task')}</h3>
-
-    <p class="task-card__description">${escapeHtml(task.description || 'No description')}</p>
-
-    ${
-      subtaskInfo.total > 0
-        ? `
-        <div class="task-card__progress">
-          <div class="progress-bar">
-            <div class="progress-bar__fill" style="width: ${subtaskInfo.percent}%"></div>
-          </div>
-          <span class="task-card__progress-label">${subtaskInfo.done}/${subtaskInfo.total} Done</span>
-        </div>
-      `
-        : ''
-    }
-
-    <div class="task-card__footer">
-      <div class="avatar-group">
-        ${renderAssignedUsers(assignedUsers)}
-      </div>
-
-      <div class="task-card__actions">
-        <span class="prio-icon">${priorityIcon}</span>
-        <button class="task-delete-btn" type="button" title="Delete task">✕</button>
-      </div>
-    </div>
-  `;
-
+/**
+ * Attaches a click listener to the delete button inside a task card.
+ * @param {HTMLElement} card - The task card element.
+ * @param {Object} task - The task data object.
+ */
+function addDeleteListenerToCard(card, task) {
   const deleteButton = card.querySelector('.task-delete-btn');
-  deleteButton.addEventListener('click', async () => {
+  deleteButton.addEventListener('click', async (e) => {
+    e.stopPropagation();
     const confirmed = confirm(
       `Delete task "${task.title || 'Untitled task'}"?`,
     );
     if (!confirmed) return;
-
     try {
       await deleteTask(task.id);
       await renderBoard();
@@ -107,169 +170,156 @@ function createTaskCard(task) {
       console.error('Fehler beim Löschen der Task:', error);
     }
   });
-
-  return card;
 }
 
-function getSubtaskInfo(subtasks) {
-  if (!Array.isArray(subtasks) || subtasks.length === 0) {
-    return { total: 0, done: 0, percent: 0 };
-  }
-
-  const done = subtasks.filter((subtask) => subtask.state === true).length;
-  const total = subtasks.length;
-  const percent = Math.round((done / total) * 100);
-
-  return { total, done, percent };
-}
-
-function renderAssignedUsers(users) {
-  if (!users) return '';
-  return users
-    .map((user, index) => {
-      const initials = getInitials(user);
-      const color = getAvatarColor(index);
-      return `<div class="avatar" style="background:${color};">${initials}</div>`;
-    })
-    .join('');
-}
-
-function getInitials(name) {
-  return String(name || '')
-    .trim()
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0].toUpperCase())
-    .join('');
-}
-
-function getAvatarColor(index) {
-  const colors = [
-    '#29abe2',
-    '#9b59b6',
-    '#2ecc71',
-    '#e67e22',
-    '#e74c3c',
-    '#607d8b',
-    '#1565c0',
-  ];
-
-  return colors[index % colors.length];
-}
-
-function getPriorityIcon(prio) {
-  const normalized = normalize(prio);
-
-  if (normalized === 'urgent' || normalized === 'urgend') return '🔴';
-  if (normalized === 'medium') return '🟡';
-  if (normalized === 'low') return '🟢';
-
-  return '⚪';
-}
-
-function getCategoryBadge(category) {
-  const normalized = normalize(category);
-
-  if (normalized === 'to do' || normalized === 'todo') {
-    return { label: 'To do', color: '#ff7b00', textColor: '#ffffff' };
-  }
-
-  if (normalized === 'in progress' || normalized === 'inprogress') {
-    return { label: 'In progress', color: '#e91e8c', textColor: '#ffffff' };
-  }
-
-  if (normalized === 'awaiting feedback' || normalized === 'awaiting') {
-    return { label: 'Awaiting', color: '#00bcd4', textColor: '#ffffff' };
-  }
-
-  if (normalized === 'done') {
-    return { label: 'Done', color: '#1565c0', textColor: '#ffffff' };
-  }
-
-  return { label: category || 'Task', color: '#2a3647', textColor: '#ffffff' };
-}
-
-function normalize(value) {
-  return String(value || '')
-    .trim()
-    .toLowerCase()
-    .replaceAll('-', ' ')
-    .replace(/\s+/g, ' ');
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
-}
-
-//From here on: functions for opening and using the task card
-
-// Generates the HTML for the task card modal based on the task data and category badge
+/**
+ * Opens the task detail modal, populates it with the given task's data,
+ * disables background scrolling and sets up close listeners.
+ * @param {Object} task - The task data object to display in the modal.
+ */
 function openTaskCard(task) {
-  const categoryBadgeRef = getCategoryBadge(task.category);
+  const categoryBadge = getCategoryBadge(task.category);
   const dialogRef = document.getElementById('taskModal');
   document.body.classList.add('no-scroll');
-  dialogRef.innerHTML = getTaskCardHTML(categoryBadgeRef, task);
+  dialogRef.innerHTML = getTaskCardHTML(categoryBadge, task);
   fillTaskCardInitials(task);
   fillTaskCardSubtasks(task);
-  addTaskCardEventListeners();
+  addTaskCardEventListeners(task);
   dialogRef.showModal();
 }
 
-//Fill the Initials of the assigned users in the task card modal
+/**
+ * Fills the assigned users list inside the open task modal.
+ * @param {Object} task - The task data object containing assigned_to.
+ */
 function fillTaskCardInitials(task) {
   const assignedListRef = document.getElementById('assignedList');
-  if (!task.assigned_to || task.assigned_to.length === 0) {
-    return;
-  }
+  if (!task.assigned_to || task.assigned_to.length === 0) return;
   for (let i = 0; i < task.assigned_to.length; i++) {
     const user = task.assigned_to[i];
-    const initials = getInitials(user);
-    const color = getAvatarColor(i);
-    assignedListRef.innerHTML += getAssignedUsersHTML(color, initials, user);
+    assignedListRef.innerHTML += getAssignedUsersHTML(
+      getAvatarColor(i),
+      getInitials(user),
+      user,
+    );
   }
 }
 
-//Fill the subtasks of the task card modal
+/**
+ * Fills the subtask list inside the open task modal.
+ * @param {Object} task - The task data object containing subtasks.
+ */
 function fillTaskCardSubtasks(task) {
   const subtaskListRef = document.getElementById('subtaskList');
   if (!task.subtasks || task.subtasks.length === 0) {
+    subtaskListRef.innerHTML = getEmptySubtaskHTML();
     return;
   }
   for (let i = 0; i < task.subtasks.length; i++) {
-    const subtask = task.subtasks[i];
-    subtaskListRef.innerHTML += getSubtaskList(i, subtask);
+    subtaskListRef.innerHTML += getSubtaskItemHTML(
+      task.subtasks[i],
+      task.id,
+      i,
+    );
   }
 }
 
-// Closes the task card modal when the close button is clicked
-function closeModal() {
-  const dialogRef = document.getElementById('taskModal');
-  document.body.classList.remove('no-scroll');
-  dialogRef.close();
-}
-
-// Adds event listeners to the close button and the modal background to allow closing the modal when clicking outside the content area or on the close button
-function addTaskCardEventListeners() {
+/**
+ * Attaches event listeners to the modal's close button, backdrop click,
+ * delete button and subtask checkboxes.
+ * @param {Object} task - The task data object.
+ */
+function addTaskCardEventListeners(task) {
   const closeBtnRef = document.querySelector('.close');
   const dialogRef = document.getElementById('taskModal');
-  if (closeBtnRef) {
-    closeBtnRef.addEventListener('click', closeModal);
-    dialogRef.addEventListener('click', (e) => {
-      if (e.target === dialogRef) {
-        closeModal();
-      }
-    });
+  const deleteBtn = document.getElementById('deleteTaskBtn');
+
+  if (closeBtnRef) closeBtnRef.addEventListener('click', closeModal);
+
+  dialogRef.addEventListener('click', (e) => {
+    if (e.target === dialogRef) closeModal();
+  });
+
+  if (deleteBtn)
+    deleteBtn.addEventListener('click', () => handleModalDelete(task));
+
+  dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
+    checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
+  });
+}
+
+/**
+ * Handles task deletion triggered from the modal with user confirmation.
+ * @param {Object} task - The task to delete.
+ */
+async function handleModalDelete(task) {
+  const confirmed = confirm(`Delete task "${task.title || 'Untitled task'}"?`);
+  if (!confirmed) return;
+  try {
+    await deleteTask(task.id);
+    closeModal();
+    await renderBoard();
+  } catch (error) {
+    console.error('Fehler beim Löschen:', error);
   }
 }
 
-//copied from contacts.js, can be used for the slide-in animation of the task card modal
-// Adds a slide-in animation to a container
+/**
+ * Toggles a subtask's state and saves the updated subtasks array to Firebase.
+ * @param {Event} e - The change event fired by the checkbox.
+ * @param {Object} task - The parent task containing the subtasks array.
+ */
+async function handleSubtaskToggle(e, task) {
+  const index = parseInt(e.target.dataset.index);
+  const updatedSubtasks = [...task.subtasks];
+  updatedSubtasks[index] = {
+    ...updatedSubtasks[index],
+    state: e.target.checked,
+  };
+  task.subtasks = updatedSubtasks;
+  try {
+    await updateTask(task.id, { subtasks: updatedSubtasks });
+    const cardRef = document.querySelector(`.task-card[data-id="${task.id}"]`);
+    if (cardRef) {
+      const subtaskInfo = getSubtaskInfo(updatedSubtasks);
+      const progressEl = cardRef.querySelector('.task-card__progress');
+      if (progressEl) progressEl.outerHTML = getProgressBarHTML(subtaskInfo);
+    }
+  } catch (error) {
+    console.error('Fehler beim Speichern des Subtasks:', error);
+  }
+}
+
+/**
+ * Closes the task detail modal, re-enables background scrolling and clears modal content.
+ */
+function closeModal() {
+  const dialogRef = document.getElementById('taskModal');
+  if (!dialogRef) return;
+  document.body.classList.remove('no-scroll');
+  dialogRef.close();
+  dialogRef.innerHTML = '';
+}
+
+/**
+ * Moves a task to a new status column and persists the change to Firebase.
+ * @param {string} taskId - The Firebase ID of the task to move.
+ * @param {string} newStatus - The new status string matching a column's data-status value.
+ */
+async function handleTaskMove(taskId, newStatus) {
+  try {
+    await updateTask(taskId, { status: newStatus });
+    await renderBoard();
+  } catch (error) {
+    console.error('Fehler beim Verschieben der Task:', error);
+  }
+}
+
+/**
+ * Adds a slide-in animation class to a DOM element after a delay.
+ * @param {string} ref - CSS selector string for the target element.
+ * @param {number} time - Delay in milliseconds before the class is added.
+ */
 function addSlideInAnimation(ref, time) {
   const element = document.querySelector(ref);
   setTimeout(() => {
@@ -277,10 +327,16 @@ function addSlideInAnimation(ref, time) {
   }, time);
 }
 
-// Removes the slide-in animation class from a container
+/**
+ * Removes the slide-in animation class from a DOM element after a delay.
+ * @param {string} ref - CSS selector string for the target element.
+ * @param {number} time - Delay in milliseconds before the class is removed.
+ */
 function removeSlideInAnimation(ref, time) {
   const element = document.querySelector(ref);
   setTimeout(() => {
     element.classList.remove('slide-in');
   }, time);
 }
+
+initBoard();

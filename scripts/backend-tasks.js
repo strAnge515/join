@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBmuTnjiq0SjSKXwtFK1DDu25UQ2VKzBUw",
@@ -20,7 +20,6 @@ const db = getFirestore(app);
  * @returns {Promise<string>} The ID of the newly created document.
  */
 export async function saveTask(taskData) {
-    console.log(taskData)
     try {
         const docRef = await addDoc(collection(db, "tasks"), taskData);
         return docRef.id;
@@ -55,6 +54,21 @@ export async function loadTasks() {
 export async function deleteTask(taskId) {
     try {
         await deleteDoc(doc(db, "tasks", taskId));
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+/**
+ * Updates a specific task in the Firestore database.
+ * @param {string} taskId - The unique Firebase ID of the task.
+ * @param {Object} updatedData - The fields to update.
+ */
+export async function updateTask(taskId, updatedData) {
+    try {
+        const taskRef = doc(db, "tasks", taskId);
+        await updateDoc(taskRef, updatedData);
     } catch (error) {
         console.error(error);
     }

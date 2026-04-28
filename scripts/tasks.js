@@ -22,7 +22,7 @@ function init() {
   addTask();
   setPriorityButtons();
   renderAssignedDropdown();
-  initAssignedDropdown();
+  initDropdownsEventlistener();
   initResizeHandle();
 }
 
@@ -45,7 +45,6 @@ function addInformations() {
   let contact = selectedContacts.map((contact) => contact.name);
   let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
   console.log(taskDate);
-  // prettier-ignore
   return {taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks,};
 }
 
@@ -141,7 +140,7 @@ deleteButtonSubtask.addEventListener('mousedown', () => {
   subtaskInput.blur();
 });
 
-deleteButtonSubtask.addEventListener('keydown', (event) => {      
+deleteButtonSubtask.addEventListener('keydown', (event) => {
   if (event.key === 'Enter' || event.key === ' ') {
     subtaskInput.value = '';
     subtaskInput.blur();
@@ -155,9 +154,11 @@ selectCategoryButton.addEventListener('click', () => {
 dropdownOptions.forEach((button) => {
   button.addEventListener('click', (event) => {
     let selectedOption = document.getElementById('selected-category');
-    selectCategoryButton.textContent = event.currentTarget.textContent;
+    selectCategoryButton.querySelector('p').textContent = event.currentTarget.textContent;
     selectedOption.dataset.value = event.currentTarget.value;
     dropdownOptionsContainer.classList.toggle('d-none');
+    document.getElementById('arrow-down-category').classList.toggle('d-none');
+    document.getElementById('arrow-up-category').classList.toggle('d-none');
   });
 });
 
@@ -169,30 +170,34 @@ async function renderAssignedDropdown() {
     const initials = contact.firstName[0] + contact.lastName[0];
     const li = document.createElement('li');
     li.className = 'assigned-option';
-    li.innerHTML = `
-    <section class="assigned-to-contacts-wrapper">
+   li.innerHTML = `
+  <section class="assigned-to-contacts-wrapper">
     <div class="assigned-to-names">
       <div class="avatar-small" style="background:${contact.color}">${initials}</div>
       <span>${contact.firstName} ${contact.lastName}</span>
     </div>
-      <input type="checkbox" value="${contact.id}">
-    </section>
-    `;
+    <img src="../assets/img/Check button.svg" alt="checkbox" class="checkbox-unchecked" data-id="${contact.id}"/>
+    <img src="../assets/img/Check button checked.svg" alt="checkbox-checked" class="checkbox-checked d-none" data-id="${contact.id}">
+  </section>
+`;
     li.addEventListener('click', () => toggleContact(li, contact));
     list.appendChild(li);
   });
 }
 
 function toggleContact(li, contact) {
-  const checkbox = li.querySelector('input');
+  const checkboxUnchecked = li.querySelector('.checkbox-unchecked');
+  const checkboxChecked = li.querySelector('.checkbox-checked');
   const already = selectedContacts.find((c) => c.id === contact.id);
   if (already) {
     selectedContacts = selectedContacts.filter((c) => c.id !== contact.id);
-    checkbox.checked = false;
+    checkboxUnchecked.classList.remove('d-none');
+    checkboxChecked.classList.add('d-none');
     li.classList.remove('selected');
   } else {
     selectedContacts.push(contact);
-    checkbox.checked = true;
+    checkboxUnchecked.classList.add('d-none');
+    checkboxChecked.classList.remove('d-none');
     li.classList.add('selected');
   }
   renderSelectedAvatars();
@@ -211,9 +216,19 @@ function renderSelectedAvatars() {
   });
 }
 
-function initAssignedDropdown() {
+function initDropdownsEventlistener() {
   document.getElementById('assigned-toggle').addEventListener('click', () => {
     document.getElementById('assigned-options').classList.toggle('d-none');
+    document.getElementById('arrow-down-assignet-to').classList.toggle('d-none');
+    document.getElementById('arrow-up-assigned-to').classList.toggle('d-none');
+  });
+  document.getElementById('selected-category').addEventListener('click', () => {
+    document.getElementById('arrow-down-category').classList.toggle('d-none');
+    document.getElementById('arrow-up-category').classList.toggle('d-none');
+  });
+  let taskCategory = document.getElementById('task-category');
+  taskCategory.addEventListener('click', () => {
+    taskCategory.classList.toggle('category-height');
   });
 }
 
@@ -261,9 +276,14 @@ dateInput.addEventListener('change', () => {
 
 function insertDate() {
   const dateInputField = document.querySelectorAll('.date-input-field');
-  let completeDate = `${dateInputField[0].value}/${dateInputField[1].value}/${dateInputField[2].value}`;
-  console.log(completeDate);
-  return completeDate;
+
+  const day = dateInputField[0].value;
+  const month = dateInputField[1].value;
+  const year = dateInputField[2].value;
+
+  if (!day || !month || !year) return "";
+
+  return `${year}-${month}-${day}`;
 }
 
 document.addEventListener('DOMContentLoaded', init);

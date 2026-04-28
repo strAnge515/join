@@ -47,7 +47,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.1s;
 }
 
 .board-header__add-btn:hover {
@@ -91,7 +91,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s;
+  transition: background 0.1s;
 }
 
 .board-column__add-btn:hover {
@@ -107,6 +107,21 @@
   min-height: 100px;
 }
 
+.board-column__empty {
+  color: var(--color-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 24px 16px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius);
+}
+
+.board-no-results {
+  color: var(--color-muted);
+  font-size: 14px;
+  padding: 16px;
+}
+
 .task-card {
   background: var(--color-white);
   border-radius: var(--radius);
@@ -116,6 +131,9 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  border: none;
+  text-align: left;
+  font-family: inherit;
 }
 
 .task-card__category {
@@ -212,10 +230,25 @@
 }
 
 .task-delete-btn:hover {
-  color: #ff3d00;
+  color: var(--color-urgent);
 }
 
-/*From here on: styles for open task card*/
+.task-card[draggable='true']:hover {
+  cursor: grab;
+}
+
+.task-card.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+  cursor: grabbing;
+}
+
+.board-column__cards.drag-over {
+  border: 2px dashed var(--color-accent);
+  border-radius: var(--radius);
+  background: rgba(41, 171, 226, 0.05);
+}
+
 body.no-scroll {
   overflow: hidden;
 }
@@ -225,15 +258,33 @@ dialog {
   padding: 0;
 }
 
-.modal {
-  width: 500px;
-  padding: 30px;
-  border-radius: 20px;
+#taskModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 0;
   border: none;
+  border-radius: 20px;
+  background: var(--color-white);
+  max-height: 90vh;
+  width: 525px;
+  overflow-y: auto;
+  z-index: 100;
 }
 
-.modal:open {
-  overflow: hidden;
+#taskModal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+#taskModal[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+#taskModal:not([open]) {
+  display: none;
 }
 
 .modal-content {
@@ -241,6 +292,7 @@ dialog {
   flex-direction: column;
   background: white;
   gap: 24px;
+  padding: 30px;
 }
 
 .modal-top {
@@ -266,11 +318,10 @@ dialog {
   background: transparent;
   border: none;
   cursor: pointer;
-  margin-bottom: 60px;
   width: 30px;
   height: 30px;
   padding: 0;
-  align-self: end;
+  align-self: start;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,12 +332,9 @@ dialog {
   border-radius: 50%;
 }
 
-.badge {
-  background: #1e4ed8;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 10px;
-  font-size: 14px;
+.close-icon {
+  width: 16px;
+  height: 16px;
 }
 
 h1 {
@@ -323,6 +371,13 @@ h2 {
   font-size: 20px;
 }
 
+.prio-icon-modal {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
 .assigned-list,
 .subtask-list {
   display: flex;
@@ -338,19 +393,17 @@ h2 {
   padding: 7px 16px;
 }
 
+.subtask-item {
+  position: relative;
+  gap: 16px;
+  display: flex;
+  align-items: center;
+  padding: 7px 16px;
+}
+
 .user-name {
   font-size: 19px;
   font-weight: 400;
-}
-
-.subtask-label {
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.subtask-list {
-  list-style: none;
-  padding: 0;
 }
 
 .actions {
@@ -416,24 +469,10 @@ h2 {
   padding-left: 32px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: 400;
 }
 
-.subtask-item {
-  position: relative;
-}
-
-.subtask-item .subtask-label::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  background-image: url('../assets/img/taskcard/unchecked.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-.subtask-item .subtask-label::before {
+.subtask-label::before {
   content: '';
   position: absolute;
   left: 0;
@@ -451,4 +490,5 @@ h2 {
 .subtask-item:hover {
   background-color: #eeeeee;
   border-radius: 10px;
+  cursor: pointer;
 }
