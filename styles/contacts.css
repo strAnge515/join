@@ -32,7 +32,7 @@
   background: #2f3b4a;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   font-weight: bold;
   font-size: 21px;
   margin-bottom: 8px;
@@ -70,12 +70,12 @@
 .active {
   background: #2f3b4a;
   color: white;
-  border-radius: 6px;
+  border-radius: 10px;
 }
 
 .contact:not(.active):hover {
-  background: #f0f0f0;
-  border-radius: 6px;
+  background: linear-gradient(#f9f9f9, #f0f0f0);
+  border-radius: 10px;
 }
 
 .avatar {
