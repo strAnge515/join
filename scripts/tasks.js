@@ -232,10 +232,7 @@ function initDropdownsEventlistener() {
   document.getElementById('selected-category').addEventListener('click', () => {
     document.getElementById('arrow-down-category').classList.toggle('d-none');
     document.getElementById('arrow-up-category').classList.toggle('d-none');
-  });
-  let taskCategory = document.getElementById('task-category');
-  taskCategory.addEventListener('click', () => {
-    taskCategory.classList.toggle('category-height');
+    document.getElementById('task-category').classList.toggle('category-height');
   });
 }
 

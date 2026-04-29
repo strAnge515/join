@@ -1,26 +1,32 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Join</title>
-    <link rel="icon" type="image/png" href="../assets/img/join_logo.svg">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../styles/sidebar.css">
-    <link rel="stylesheet" href="../styles/header.css">
-    <script defer src="../scripts/sidebar.js"></script>
-    <script defer src="../scripts/header.js"></script>
-    <script type="module" src="../scripts/backend-contacts.js"></script>
-    <link rel="stylesheet" href="../styles/contacts.css" />
-    <link rel="stylesheet" href="../styles/contact-dialog.css">
-    <script src="../scripts/contacts-template.js"></script>
-    <script type="module" src="../scripts/contacts.js"></script>
-  </head>
-  <body>
-    <!-- Sidenavigation -->
-    <div id="sidebar-container"></div>
-    <div id="header-container"></div>
-    <div class="content">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join</title>
+  <link rel="icon" type="image/png" href="../assets/img/join_logo.svg">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../styles/sidebar.css">
+  <link rel="stylesheet" href="../styles/header.css">
+  <script defer src="../scripts/sidebar.js"></script>
+  <script defer src="../scripts/header.js"></script>
+  <script type="module" src="../scripts/backend-contacts.js"></script>
+  <link rel="stylesheet" href="../styles/contacts.css" />
+  <link rel="stylesheet" href="../styles/contact-dialog.css">
+  <script src="../scripts/contacts-template.js"></script>
+  <script type="module" src="../scripts/contacts.js"></script>
+</head>
+
+<body>
+  <header class="mobile-topbar">
+    <img src="../assets/img/join_logo.svg" alt="Join Logo" class="mobile-topbar__logo">
+    <div class="mobile-topbar__profile">C</div>
+  </header>
+
+  <div id="sidebar-container"></div>
+  <div id="header-container"></div>
+  <div class="content">
     <div class="contact-container">
       <button class="add-btn" id="addContactBtn">
         Add new contact
@@ -35,27 +41,27 @@
         <span class="subtitle">Better with a team</span>
       </div>
       <div id="contact-details"></div>
-          <div class="contact-created" id="contactCreatedSignal">Contact succesfully created </div>
+      <div class="contact-created" id="contactCreatedSignal">Contact succesfully created </div>
     </div>
-</div>
-    <dialog id="addContactDialog">
-      <div class="dialog">
-        <div class="dialog-left">
-          <img src="../assets/img/contacts/join-logo.svg" class="logo" />
-          <h1>Add contact</h1>
-          <p>Tasks are better with a team!</p>
-          <div class="underline"></div>
-        </div>
-        <div class="dialog-right">
-          <img class="avatar-profile" src="../assets/img/contacts/avatar-profile.svg"></img>
-          <div class="actions">
-            <button class="close-btn btn-to-close">
-              <img class="close-icon" src="../assets/img/contacts/close.svg" alt="Close button">
-            </button>
-            <form id="newContactForm">
-             <div class="input-wrapper">
-              <input id="nameInputAdd" type="text" placeholder="Vor- und Nachname" required 
-              pattern="^[A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)? [A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)?$"/>
+  </div>
+  <dialog id="addContactDialog">
+    <div class="dialog">
+      <div class="dialog-left">
+        <img src="../assets/img/contacts/join-logo.svg" class="logo" />
+        <h1>Add contact</h1>
+        <p>Tasks are better with a team!</p>
+        <div class="underline"></div>
+      </div>
+      <div class="dialog-right">
+        <img class="avatar-profile" src="../assets/img/contacts/avatar-profile.svg"></img>
+        <div class="actions">
+          <button class="close-btn btn-to-close">
+            <img class="close-icon" src="../assets/img/contacts/close.svg" alt="Close button">
+          </button>
+          <form id="newContactForm">
+            <div class="input-wrapper">
+              <input id="nameInputAdd" type="text" placeholder="Vor- und Nachname" required
+                pattern="^[A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)? [A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)?$" />
               <img src="../assets/img/contacts/person.svg" alt="">
             </div>
             <div class="input-wrapper">
@@ -63,20 +69,40 @@
               <img src="../assets/img/contacts/mail.svg" alt="">
             </div>
             <div class="input-wrapper">
-              <input id="phoneInputAdd" type="tel" placeholder="Phone" required 
-               pattern="^\+?[0-9\s\-\/]{6,20}$" />
+              <input id="phoneInputAdd" type="tel" placeholder="Phone" required pattern="^\+?[0-9\s\-\/]{6,20}$" />
               <img src="../assets/img/contacts/call.svg" alt="">
             </div>
-              <div class="action-btns">
-                <button type="button" class="cancel-btn btn-to-close"> Cancel ✕</button>
-                <button type="submit" class="create-btn">Create contact ✔</button>
-              </div>
-            </form>
-          </div>
+            <div class="action-btns">
+              <button type="button" class="cancel-btn btn-to-close"> Cancel ✕</button>
+              <button type="submit" class="create-btn">Create contact ✔</button>
+            </div>
+          </form>
         </div>
       </div>
-    </dialog>
-        <dialog id="editContactDialog">
-    </dialog>
-  </body>
+    </div>
+
+  </dialog>
+  <dialog id="editContactDialog">
+  </dialog>
+
+  <nav class="mobile-bottom-nav">
+    <a href="summary.html" class="active">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/summary_icon.svg" alt=""></span>
+      <span>Summary</span>
+    </a>
+    <a href="task.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/add_task.svg" alt=""></span>
+      <span>Add Task</span>
+    </a>
+    <a href="board.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/board.svg" alt=""></span>
+      <span>Board</span>
+    </a>
+    <a href="./contacts.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/contact.svg" alt=""></span>
+      <span>Contacts</span>
+    </a>
+  </nav>
+</body>
+
 </html>
