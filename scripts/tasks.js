@@ -44,7 +44,6 @@ function addInformations() {
   let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
   let contact = selectedContacts.map((contact) => contact.name);
   let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
-  console.log(taskDate);
   return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
 }
 
@@ -156,9 +155,11 @@ dropdownOptions.forEach((button) => {
     let selectedOption = document.getElementById('selected-category');
     selectCategoryButton.querySelector('p').textContent = event.currentTarget.textContent;
     selectedOption.dataset.value = event.currentTarget.value;
-    dropdownOptionsContainer.classList.toggle('d-none');
-    document.getElementById('arrow-down-category').classList.toggle('d-none');
-    document.getElementById('arrow-up-category').classList.toggle('d-none');
+    dropdownOptionsContainer.classList.add('d-none');
+    document.getElementById('arrow-down-category').classList.remove('d-none');
+    document.getElementById('arrow-up-category').classList.add('d-none');
+    document.getElementById('task-category').classList.remove('category-height');
+    document.getElementById('task-category').classList.remove('open');
   });
 });
 
@@ -228,16 +229,15 @@ function initDropdownsEventlistener() {
     document.getElementById('assigned-options').classList.toggle('d-none');
     document.getElementById('arrow-down-assignet-to').classList.toggle('d-none');
     document.getElementById('arrow-up-assigned-to').classList.toggle('d-none');
+    document.getElementById('assigned-toggle').classList.toggle('open');
   });
   document.getElementById('selected-category').addEventListener('click', () => {
     document.getElementById('arrow-down-category').classList.toggle('d-none');
     document.getElementById('arrow-up-category').classList.toggle('d-none');
+    document.getElementById('task-category').classList.toggle('category-height');
+     document.getElementById('task-category').classList.toggle('open');
   });
-  let taskCategory = document.getElementById('task-category');
-  taskCategory.addEventListener('click', () => {
-    taskCategory.classList.toggle('category-height');
-  });
-}
+ }
 
 function initResizeHandle() {
   resizeHandleMouseDown();
