@@ -16,7 +16,7 @@
     aside,
     .topbar,
     .greeting {
-        display: none !important;
+        display: none;
     }
 
     html,
@@ -32,11 +32,11 @@
 
     .main-content,
     .summary-main {
-        margin-left: 0 !important;
-        padding-left: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
+        margin-left: 0;
+        padding-left: 0;
+        width: 100%;
+        max-width: 100% ;
+        min-width: 0;
     }
 
     .mobile-topbar {

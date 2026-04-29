@@ -413,7 +413,6 @@ textarea::placeholder {
   height: auto;
 }
 
-/* Utility class - must stay at bottom of file */
 .d-none {
   display: none;
 }
