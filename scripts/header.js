@@ -75,35 +75,16 @@ function setupHeaderMenu() {
 }
 
 function getCurrentUser() {
-  const savedUser = localStorage.getItem("currentUser");
-
-  if (!savedUser) {
-    return {
-      firstName: "Guest",
-      lastName: "",
-    };
-  }
-
+  const savedUser = sessionStorage.getItem("currentUser");
+  if (!savedUser) return { firstName: "Guest", lastName: "" };
   try {
     const user = JSON.parse(savedUser);
-
-    if (user && user.firstName) {
-      return {
-        firstName: formatNamePart(user.firstName),
-        lastName: formatNamePart(user.lastName || ""),
-      };
-    }
+    if (!user || !user.name) return { firstName: "Guest", lastName: "" };
+    const [first, ...rest] = user.name.trim().split(" ");
+    return { firstName: formatNamePart(first || ""), lastName: formatNamePart(rest.join(" ")) };
   } catch {
-    return {
-      firstName: formatNamePart(savedUser),
-      lastName: "",
-    };
+    return { firstName: formatNamePart(savedUser), lastName: "" };
   }
-
-  return {
-    firstName: "Guest",
-    lastName: "",
-  };
 }
 
 function formatNamePart(value) {
@@ -114,7 +95,7 @@ function formatNamePart(value) {
 }
 
 function logout() {
-  localStorage.removeItem("currentUser");
+  sessionStorage.removeItem("currentUser");
 }
 
 initHeader();

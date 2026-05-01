@@ -111,26 +111,16 @@ function updateGreeting() {
 }
 
 function getCurrentUser() {
-  const savedUser = localStorage.getItem("currentUser");
+  const savedUser = sessionStorage.getItem("currentUser");
   if (!savedUser) return null;
-
   try {
     const user = JSON.parse(savedUser);
-
-    if (user && user.firstName) {
-      return {
-        firstName: formatNamePart(user.firstName),
-        lastName: formatNamePart(user.lastName || ""),
-      };
-    }
+    if (!user || !user.name) return null;
+    const [first, ...rest] = user.name.trim().split(" ");
+    return { firstName: formatNamePart(first || ""), lastName: formatNamePart(rest.join(" ")) };
   } catch {
-    return {
-      firstName: formatNamePart(savedUser),
-      lastName: "",
-    };
+    return null;
   }
-
-  return null;
 }
 
 function getFullName(user) {

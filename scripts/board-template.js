@@ -97,6 +97,24 @@ function getEmptySubtaskHTML() {
 }
 
 /**
+ * Returns the HTML for the task delete confirmation overlay.
+ * @param {string} title - The title of the task to be deleted.
+ * @returns {string} HTML string for the confirmation dialog.
+ */
+function getConfirmDialogHTML(title) {
+  return `
+    <div class="confirm-dialog">
+      <p class="confirm-dialog__text">Delete "${title}"?</p>
+      <div class="confirm-dialog__actions">
+        <button class="confirm-btn confirm-btn--cancel" id="confirmCancel">Cancel</button>
+        <button class="confirm-btn confirm-btn--delete" id="confirmDelete">Delete</button>
+      </div>
+    </div>
+  `;
+}
+
+
+/**
  * Returns the HTML for a single assigned user row in the modal.
  * @param {string} color - Background color hex string for the avatar.
  * @param {string} initials - The user's initials to display in the avatar.

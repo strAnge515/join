@@ -10,31 +10,31 @@ form.addEventListener("submit", (event) => {
   const privacyAccepted = document.getElementById("privacy-check").checked;
 
   if (!privacyAccepted) {
-    alert("Please accept the privacy policy.");
+    document.getElementById("signup-error").textContent = "Please accept the privacy policy.";
     return;
   }
 
   if (password !== confirmPassword) {
-    alert("Passwords do not match!");
+    document.getElementById("signup-error").textContent = "Passwords do not match!";
     return;
   }
 
   const nameParts = fullName.split(" ").filter(Boolean);
 
   if (nameParts.length < 2) {
-    alert("Please enter first name and last name.");
+    document.getElementById("signup-error").textContent = "Please enter first name and last name.";
     return;
   }
 
   const firstName = capitalizeName(nameParts[0]);
   const lastName = capitalizeName(nameParts.slice(1).join(" "));
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const users = JSON.parse(sessionStorage.getItem("users")) || [];
 
   const userExists = users.some((user) => user.email === email);
 
   if (userExists) {
-    alert("User already exists!");
+    document.getElementById("signup-error").textContent = "User already exists!";
     return;
   }
 
@@ -46,8 +46,8 @@ form.addEventListener("submit", (event) => {
   };
 
   users.push(newUser);
-  localStorage.setItem("users", JSON.stringify(users));
-  localStorage.setItem("currentUser", JSON.stringify(newUser));
+  sessionStorage.setItem("users", JSON.stringify(users));
+  sessionStorage.setItem("currentUser", JSON.stringify(newUser));
 
   window.location.href = "./summary.html";
 });

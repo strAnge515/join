@@ -548,3 +548,63 @@ h2 {
   border-radius: 10px;
   cursor: pointer;
 }
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.confirm-dialog {
+  background: var(--color-white);
+  border-radius: 20px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 320px;
+}
+
+.confirm-dialog__text {
+  font-size: 20px;
+  color: var(--color-text);
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.confirm-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.confirm-btn--cancel {
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.confirm-btn--cancel:hover {
+  background: #eeeeee;
+}
+
+.confirm-btn--delete {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.confirm-btn--delete:hover {
+  background: var(--color-accent);
+}

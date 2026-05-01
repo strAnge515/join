@@ -228,13 +228,30 @@ function closeDialog(element) {
   clearInputs(element.id);
 }
 
-// Deletes a contact after confirming the action with the user, then re-renders the contact list and clears the contact details view
-async function deleteThisContact(contactId) {
-  const confirmDelete = confirm('Kontakt wirklich löschen?'); //isn't in the figma design, but it's a good idea to prevent accidental deletions. Maybe we find a more elegant solution for this in the future, like a confirmation dialog instead of the browser's built-in confirm function.
-  if (!confirmDelete) return;
+/**
+ * Executes contact deletion and clears the detail view after the overlay is removed.
+ * @param {HTMLElement} overlay - The confirm overlay element to remove.
+ * @param {string} contactId - The Firebase ID of the contact to delete.
+ */
+async function executeContactDelete(overlay, contactId) {
+  overlay.remove();
   await deleteContact(contactId);
   renderContacts();
   document.getElementById('contact-details').innerHTML = '';
+}
+
+
+/**
+ * Shows a custom confirmation overlay before deleting a contact.
+ * @param {string} contactId - The Firebase ID of the contact to delete.
+ */
+function deleteThisContact(contactId) {
+  const overlay = document.createElement('div');
+  overlay.className = 'confirm-overlay';
+  overlay.innerHTML = getContactConfirmHTML();
+  document.body.appendChild(overlay);
+  overlay.querySelector('#confirmCancelContact').addEventListener('click', () => overlay.remove());
+  overlay.querySelector('#confirmDeleteContact').addEventListener('click', () => executeContactDelete(overlay, contactId));
 }
 
 // Retrieves the data from the add contact form inputs and returns it as an object

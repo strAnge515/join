@@ -139,7 +139,7 @@ function createTaskCard(task) {
   const card = document.createElement('button');
   card.className = 'task-card';
   card.dataset.id = task.id;
-  card.onclick = () => openTaskCard(task);
+  card.addEventListener('click', () => openTaskCard(task));
   const subtaskInfo = getSubtaskInfo(task.subtasks);
   const assignedUsers = Array.isArray(task.assigned_to) ? task.assigned_to : [];
   const priorityIcon = getPriorityIcon(task.prio);
@@ -254,12 +254,12 @@ function addTaskCardEventListeners(task) {
 }
 
 /**
- * Handles task deletion triggered from the modal with user confirmation.
+ * Executes task deletion and closes the modal after the overlay is removed.
+ * @param {HTMLElement} overlay - The confirm overlay element to remove.
  * @param {Object} task - The task to delete.
  */
-async function handleModalDelete(task) {
-  const confirmed = confirm(`Delete task "${task.title || 'Untitled task'}"?`);
-  if (!confirmed) return;
+async function executeTaskDelete(overlay, task) {
+  overlay.remove();
   try {
     await deleteTask(task.id);
     closeModal();
@@ -267,6 +267,20 @@ async function handleModalDelete(task) {
   } catch (error) {
     console.error('Fehler beim Löschen:', error);
   }
+}
+
+
+/**
+ * Shows a custom confirmation overlay before deleting a task from the modal.
+ * @param {Object} task - The task to delete.
+ */
+function handleModalDelete(task) {
+  const overlay = document.createElement('div');
+  overlay.className = 'confirm-overlay';
+  overlay.innerHTML = getConfirmDialogHTML(task.title || 'Untitled task');
+  document.body.appendChild(overlay);
+  overlay.querySelector('#confirmCancel').addEventListener('click', () => overlay.remove());
+  overlay.querySelector('#confirmDelete').addEventListener('click', () => executeTaskDelete(overlay, task));
 }
 
 /**
