@@ -13,7 +13,6 @@
     <script defer src="../scripts/sidebar.js"></script>
     <script defer src="../scripts/header.js"></script>
     <script type="module" defer src="../scripts/tasks.js"></script>
-    
 
   </head>
 
@@ -27,7 +26,6 @@
       <form class="task-form" id="task-form">
         <section class="wrapper-add-task">
           <section class="wrapper-add-task-left-side">
-            <!-- Title -->
             <div class="form-group">
               <label class="task-form-label" for="task-title">
                 <p>Title</p>
@@ -37,11 +35,9 @@
                 class="task-form-input flex-center-space-between"
                 type="text"
                 id="task-title"
-                placeholder="Enter a title"
-                required />
+                placeholder="Enter a title" />
             </div>
 
-            <!-- Description -->
             <div class="form-group">
               <label class="task-form-label" for="task-description">
                 <p>Description</p>
@@ -50,9 +46,8 @@
               <img id="resize" class="resize-img" src="../assets/img/Recurso 1 1.svg" alt="resizefield" />
             </div>
 
-            <!-- Due Date -->
             <div class="form-group">
-              <label class="task-form-label" id="task-date">
+              <label class="task-form-label">
                 <p>Due date</p>
                 <p class="star">*</p>
               </label>
@@ -73,7 +68,6 @@
 
           <div class="add-task-seperator"></div>
           <section class="wrapper-add-task-right-side">
-            <!-- Prio -->
             <div class="form-group">
               <label class="task-form-label">Priority</label>
               <div class="task-form-prio-group" id="prio-group">
@@ -89,7 +83,6 @@
               </div>
             </div>
 
-            <!-- Assigned To -->
             <section class="form-group form-group--full">
               <label class="task-form-label">Assigned to</label>
               <div class="assigned-dropdown">
@@ -103,7 +96,6 @@
               <div class="assigned-avatars" id="assigned-avatars"></div>
             </section>
 
-            <!-- Category -->
             <section class="form-group">
               <p>Category <span class="star">*</span></p>
               <div class="task-form-select" id="task-category">
@@ -123,7 +115,6 @@
               </div>
             </section>
 
-            <!-- Subtasks -->
             <section class="form-group">
               <label class="task-form-label">Subtasks</label>
               <div class="task-form-subtask-input-row">
@@ -142,7 +133,6 @@
             </section>
           </section>
         </section>
-        <!-- Actions -->
         <div class="task-form-actions">
           <div>
             <p class="star">*</p>

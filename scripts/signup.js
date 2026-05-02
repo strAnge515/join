@@ -73,6 +73,10 @@ function toggleVisibility(input, icon) {
 }
 
 
+document.addEventListener("DOMContentLoaded", () => {
+    signupBtn.disabled = !privacyCheckbox.checked;
+});
+
 privacyCheckbox.addEventListener("change", () => {
     signupBtn.disabled = !privacyCheckbox.checked;
 });

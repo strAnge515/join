@@ -4,7 +4,6 @@ import {
   getAvatarColor,
   getPriorityIcon,
   getCategoryBadge,
-  renderAssignedUsers,
   getSubtaskInfo,
   getProgressBarHTML,
   getTaskCardInnerHTML,
@@ -151,31 +150,8 @@ function createTaskCard(task) {
     assignedUsers,
     priorityIcon,
   );
-  // addDeleteListenerToCard(card, task);
   return card;
 }
-
-/**
- * Attaches a click listener to the delete button inside a task card.
- * @param {HTMLElement} card - The task card element.
- * @param {Object} task - The task data object.
- */
-// function addDeleteListenerToCard(card, task) {
-//   const deleteButton = card.querySelector('.task-delete-btn');
-//   deleteButton.addEventListener('click', async (e) => {
-//     e.stopPropagation();
-//     const confirmed = confirm(
-//       `Delete task "${task.title || 'Untitled task'}"?`,
-//     );
-//     if (!confirmed) return;
-//     try {
-//       await deleteTask(task.id);
-//       await renderBoard();
-//     } catch (error) {
-//       console.error('Fehler beim Löschen der Task:', error);
-//     }
-//   });
-// }
 
 /**
  * Opens the task detail modal, populates it with the given task's data,

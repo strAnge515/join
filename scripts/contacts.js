@@ -209,7 +209,6 @@ function openEditContactDialog(contactId) {
   const dialogRef = document.getElementById('editContactDialog');
   const initials = contact.firstName[0] + contact.lastName[0];
   const color = contact.color;
-  dialogRef.innerHTML = '';
   dialogRef.innerHTML = getEditContactTemplate(contact, initials, color);
   dialogRef.showModal();
   focusElement('nameInputEdit');
@@ -225,7 +224,7 @@ function closeDialog(element) {
   setTimeout(() => {
     dialogRef.close();
   }, 300);
-  clearInputs(element.id);
+  clearInputs(dialogRef);
 }
 
 /**
@@ -281,8 +280,9 @@ function showNewContactDetails(id, contactData) {
 }
 
 // Clears the input fields in the add contact form after a new contact has been added
-function clearInputs(formId) {
-  const form = document.getElementById(formId);
+function clearInputs(dialogRef) {
+  const form = dialogRef.querySelector('form');
+  if (!form) return;
   const inputs = form.querySelectorAll('input');
   inputs.forEach((input) => {
     input.value = '';
@@ -341,7 +341,6 @@ async function handleAddContact(event) {
   showNewContactDetails(id, formattedData);
   addSlideInAnimation('#contactCreatedSignal', 500);
   removeSlideInAnimation('#contactCreatedSignal', 3000);
-  clearInputs('newContactForm');
   closeDialog(addContactDialog.querySelector('.close-btn'));
 }
 
