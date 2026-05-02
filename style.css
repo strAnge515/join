@@ -42,7 +42,6 @@ body {
 
 .main-content {
   margin-left: 232px;
-  margin-top: 80px;
   padding: 40px 60px;
   min-height: calc(100vh - 80px);
   max-width: 1440px;

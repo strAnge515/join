@@ -1,5 +1,7 @@
 .content {
-  margin: 80px 0 0 232px;
+  position: relative;
+  bottom: 60px;
+  margin: 0px 0 0 232px;
   display: flex;
 }
 
@@ -239,13 +241,11 @@
 }
 
 .edit-btn:hover .edit-icon {
-  background: url('../assets/img/contacts/edit-hover.svg') no-repeat center
-    center;
+  background: url('../assets/img/contacts/edit-hover.svg') no-repeat center center;
 }
 
 .edit-btn:hover .delete-icon {
-  background: url('../assets/img/contacts/delete-hover.svg') no-repeat center
-    center;
+  background: url('../assets/img/contacts/delete-hover.svg') no-repeat center center;
 }
 
 .delete-icon {
