@@ -249,19 +249,6 @@ async function executeTaskDelete(overlay, task) {
  * Shows a custom confirmation overlay before deleting a task from the modal.
  * @param {Object} task - The task to delete.
  */
-// function handleModalDelete(task) {
-//   const overlay = document.createElement('dialog');
-//   overlay.className = 'confirm-overlay';
-//   overlay.innerHTML = getConfirmDialogHTML(task.title || 'Untitled task');
-//   document.body.appendChild(overlay);
-//   overlay
-//     .querySelector('#confirmCancel')
-//     .addEventListener('click', () => overlay.remove());
-//   overlay
-//     .querySelector('#confirmDelete')
-//     .addEventListener('click', () => executeTaskDelete(overlay, task));
-// }
-
 function handleModalDelete(task) {
   const dialog = document.createElement('dialog');
   dialog.className = 'confirm-overlay';
