@@ -9,7 +9,10 @@
   height: 3px;
   background: #29abe2;
   margin: 15px;
-  z-index: -1;
+}
+
+.horizontal-line {
+  display: none;
 }
 
 .contact-container {
@@ -111,6 +114,10 @@
   color: #29abe2;
   font-size: 16px;
   text-decoration: none;
+  max-width: 208px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .phone {
@@ -177,6 +184,7 @@
 .detail-name {
   font-size: 47px;
   font-weight: normal;
+  max-width: clamp(280px, calc(-742.632px + 88.158vw), 950px);
 }
 
 .detail-actions {
