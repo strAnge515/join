@@ -48,6 +48,23 @@ function getContactDetailTemplate(contact, initials, color) {
   `;
 }
 
+/**
+ * Returns the HTML for the contact delete confirmation overlay.
+ * @returns {string} HTML string for the confirmation dialog.
+ */
+function getContactConfirmHTML() {
+  return `
+    <div class="confirm-dialog">
+      <p class="confirm-dialog__text">Delete this contact?</p>
+      <div class="confirm-dialog__actions">
+        <button class="cancel-btn" id="confirmCancelContact">Cancel</button>
+        <button class="delete-btn" id="confirmDeleteContact">Delete</button>
+      </div>
+    </div>
+  `;
+}
+
+
 function getEditContactTemplate(contact, initials, color) {
   return `<div class="dialog">
         <div class="dialog-left">

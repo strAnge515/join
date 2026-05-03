@@ -1,4 +1,4 @@
-import { loadTasks } from "../scripts/backend-tasks.js";
+import { loadTasks } from "./backend-tasks.js";
 
 initSummary();
 
@@ -7,6 +7,7 @@ async function initSummary() {
     const tasks = await loadTasks();
     updateSummary(tasks || []);
     updateGreeting();
+    updateMobileProfile();
   } catch (error) {
     console.error("Fehler beim Laden der Summary:", error);
   }
@@ -102,39 +103,50 @@ function updateGreeting() {
   const hour = new Date().getHours();
   let greeting = "";
 
-  if (hour < 12) greeting = "Good morning";
-  else if (hour < 18) greeting = "Good afternoon";
-  else greeting = "Good evening";
+  if (hour >= 5 && hour <= 11) greeting = "Good morning";
+  else if (hour >= 12 && hour <= 17) greeting = "Good afternoon";
+  else if (hour >= 18 && hour <= 21) greeting = "Good evening";
+  else greeting = "Good night";
 
   setText("greeting-text", greeting + ",");
-  setText("greeting-name", getFullName(user));
+  setText("greeting-name", getFirstName(user));
 }
 
-function getCurrentUser() {
-  const savedUser = localStorage.getItem("currentUser");
-  if (!savedUser) return null;
 
+/**
+ * Updates the mobile topbar profile circle with the current user's initials.
+ */
+function updateMobileProfile() {
+  const el = document.getElementById("mobile-profile");
+  if (!el) return;
+  const savedUser = sessionStorage.getItem("currentUser");
+  if (!savedUser) return;
   try {
     const user = JSON.parse(savedUser);
-
-    if (user && user.firstName) {
-      return {
-        firstName: formatNamePart(user.firstName),
-        lastName: formatNamePart(user.lastName || ""),
-      };
-    }
+    const parts = String(user.name || "").trim().split(" ");
+    const initials = (parts[0]?.[0] || "") + (parts[1]?.[0] || "");
+    el.textContent = initials.toUpperCase() || "?";
   } catch {
-    return {
-      firstName: formatNamePart(savedUser),
-      lastName: "",
-    };
+    el.textContent = "?";
   }
-
-  return null;
 }
 
-function getFullName(user) {
-  return `${user.firstName} ${user.lastName}`.trim();
+
+function getCurrentUser() {
+  const savedUser = sessionStorage.getItem("currentUser");
+  if (!savedUser) return null;
+  try {
+    const user = JSON.parse(savedUser);
+    if (!user || !user.name) return null;
+    const [first, ...rest] = user.name.trim().split(" ");
+    return { firstName: formatNamePart(first || ""), lastName: formatNamePart(rest.join(" ")) };
+  } catch {
+    return null;
+  }
+}
+
+function getFirstName(user) {
+  return user.firstName || "Guest";
 }
 
 function formatNamePart(value) {

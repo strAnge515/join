@@ -1,16 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  min-height: 100vh;
-  margin: 0;
-  background: #f6f7f8;
-  font-family: "Inter", sans-serif;
-  color: #2a3647;
-  position: relative;
-}
-
 .signup-logo {
   position: absolute;
   top: 64px;

@@ -307,6 +307,7 @@ textarea::placeholder {
 .dropdown-options button {
   background-color: white;
   border: none;
+  cursor: pointer;
 }
 
 .input-assigned-to {
@@ -326,6 +327,7 @@ textarea::placeholder {
 .assigned-option {
   padding: 12px 16px;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .assigned-to-contacts-wrapper {

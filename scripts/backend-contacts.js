@@ -18,7 +18,7 @@ const firebaseConfig = {
   appId: '1:767040328238:web:e78b51dcb15c516304c5bf',
 };
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig, 'contacts-app');
 const db = getFirestore(app);
 
 /**
