@@ -8,13 +8,19 @@ function openContactDetails() {
   contactDetailsRef.style.display = 'block';
 }
 
-function addBackwardsBtnFunction() {
-  const allContacts = document.querySelectorAll('.contact');
+function removeActiveStateFromContact() {
+  const activeContact = document.querySelector('.contact.active');
+  if (activeContact) {
+    activeContact.classList.remove('active');
+  }
+}
+
+function addBackwardsBtnListener() {
   const backwardsBtnRef = document.getElementById('backwardsBtn');
   if (backwardsBtnRef) {
     backwardsBtnRef.addEventListener('click', () => {
       closeContactDetails();
+      removeActiveStateFromContact();
     });
   }
-  allContacts.forEach((contact) => contact.classList.remove('active'));
 }

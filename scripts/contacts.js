@@ -130,7 +130,7 @@ function addDetailEventListeners() {
       deleteThisContact(id);
     });
   }
-  addBackwardsBtnFunction();
+  addBackwardsBtnListener();
 }
 
 // Toggles the active state of a contact in the list
@@ -142,7 +142,7 @@ function toggleActiveContact(element) {
 
 // Displays the details of a contact when clicked and highlights the active contact in the list
 function showContactDetails(element, contact) {
-  if (activeContactId === contact.id) return;
+  if (activeContactId === contact.id && window.innerWidth > 900) return;
   activeContactId = contact.id;
   const contactDetailsRef = document.getElementById('contact-details');
   const initials = contact.firstName[0] + contact.lastName[0];
