@@ -185,3 +185,15 @@
     line-height: unset;
   }
 }
+
+@media (max-width: 1250px) {
+  .dialog {
+    width: unset;
+  }
+  .dialog-right {
+    padding-left: clamp(16px, calc(-156.286px + 19.143vw), 83px);
+  }
+  .actions {
+    padding-left: clamp(16px, calc(-148.571px + 18.286vw), 80px);
+  }
+}
