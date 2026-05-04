@@ -2,7 +2,8 @@
   .content {
     margin: 80px 0 0 0;
   }
-  .contact-container {
+  /* .contact-container, */
+  .detail-container {
     height: calc(100vh - 160px);
   }
   .header-main {
@@ -25,18 +26,28 @@
   }
   .contact-container {
     width: 100%;
-    z-index: unset;
   }
   .add-btn-text {
     display: none;
   }
-  .add-btn {
+  .add-btn,
+  .detail-contact-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2a3647;
     position: fixed;
     bottom: 112px;
     right: 16px;
     width: 56px;
     height: 56px;
     border-radius: 46px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    margin-bottom: 0;
+  }
+  .detail-menu-icon {
+    height: 24px;
+    width: 6px;
   }
   .detail-actions {
     display: none;
@@ -101,7 +112,6 @@
     z-index: 1;
     background-color: #f6f7f8;
     width: 100%;
-    height: calc(100vh - 160px);
     padding: 48px 16px;
   }
   .detail-name {
