@@ -2,6 +2,9 @@
   .content {
     margin: 80px 0 0 0;
   }
+  .contact-container {
+    height: calc(100vh - 160px);
+  }
   .header-main {
     display: none;
   }
@@ -11,17 +14,121 @@
 }
 
 @media (max-width: 900px) {
-  .detail-container {
-    display: none;
+  dialog {
+    max-width: 600px;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  dialog::backdrop {
+    margin: 0;
   }
   .contact-container {
     width: 100%;
     z-index: unset;
   }
-  .add-btn {
+  .add-btn-text {
     display: none;
   }
+  .add-btn {
+    position: fixed;
+    bottom: 112px;
+    right: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 46px;
+  }
+  .detail-actions {
+    display: none;
+  }
+  .dialog {
+    position: relative;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+  .dialog-left {
+    width: 100%;
+    height: 46%;
+  }
+  .logo {
+    display: none;
+  }
+  .close-icon {
+    position: fixed;
+    top: 29px;
+    right: 21px;
+    filter: brightness(0) invert(1);
+  }
+  .avatar-profile,
+  .dialog-detail-avatar {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  input {
+    margin-bottom: 15px;
+  }
+  .actions {
+    padding: 0;
+    width: 100%;
+    padding: 0;
+  }
+  .action-btns {
+    justify-content: center;
+  }
+  .input-wrapper img {
+    top: 38%;
+  }
+  .dialog-right {
+    position: unset;
+    padding: 0 16px;
+    width: 100%;
+  }
+  .cancel-btn {
+    display: none;
+  }
+  .dialog-left h1 {
+    font-size: 47px;
+  }
+  .dialog-left p {
+    font-size: 20px;
+  }
+  .detail-container {
+    position: fixed;
+    z-index: 1;
+    background-color: #f6f7f8;
+    width: 100%;
+    height: calc(100vh - 160px);
+    padding: 48px 16px;
+  }
+  .detail-name {
+    font-weight: bold;
+    max-width: calc(100vw - 125px);
+  }
+  .contacts-detail-avatar {
+    height: 80px;
+    width: 80px;
+  }
+  .details-header {
+    gap: 13px;
+  }
+  .backwards-btn {
+    display: block;
+    position: fixed;
+    top: 128px;
+    right: 16px;
+    background-color: unset;
+    border: unset;
+  }
 }
+
+/* @media (max-width: 800px) {
+  .detail-name {
+    white-space: normal;
+  }
+} */
 
 @media (max-width: 437px) {
   .contact-container {

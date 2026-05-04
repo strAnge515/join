@@ -4,7 +4,7 @@
   --color-accent: #29abe2;
   --color-white: #ffffff;
   --color-border: #d1d1d1;
-  --color-text: #2a3647;
+  --color-text: #000000;
   --color-muted: #a8b2c1;
   --color-urgent: #ff3d00;
   --color-medium: #ffa800;
@@ -21,14 +21,14 @@
 }
 
 @font-face {
-  font-family: "Inter";
-  src: url("./assets/font/Inter_18pt-Regular.ttf") format("truetype");
+  font-family: 'Inter';
+  src: url('./assets/font/Inter_18pt-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
   min-width: 0;

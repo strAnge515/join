@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../styles/responsive_contacts.css" />
     <script src="../scripts/contacts-template.js"></script>
     <script type="module" src="../scripts/contacts.js"></script>
+    <script src="../scripts/contacts-responsive.js"></script>
   </head>
   <body>
     <!-- Sidenavigation -->
@@ -24,17 +25,19 @@
     <div class="content">
     <div class="contact-container">
       <button class="add-btn" id="addContactBtn">
-        Add new contact
+       <span class="add-btn-text">Add new contact</span> 
         <img src="../assets/img/contacts/person_add.svg" alt="">
       </button>
       <div id="contact-list"></div>
     </div>
-    <div class="detail-container">
+    <div class="detail-container" id="detailContainer">
       <div class="details-header">
         <h1>Contacts</h1>
         <div class="vertical-line"></div>
         <span class="subtitle">Better with a team</span>
                 <div class="horizontal-line"></div>
+                <button class="backwards-btn" id="backwardsBtn">
+      <img src="../assets/img/contacts/arrow-left.svg" alt="Close button"></button>      
       </div>
       <div id="contact-details"></div>
           <div class="contact-created" id="contactCreatedSignal">Contact succesfully created </div>

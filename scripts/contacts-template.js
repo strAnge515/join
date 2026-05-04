@@ -12,9 +12,9 @@ function getContactTemplate(contact, initials) {
 
 function getContactDetailTemplate(contact, initials, color) {
   return `
-    <div class="contact-detail-card" id="contactDetailCard">      
-      <div class="detail-header">
-        <div class="detail-avatar" style="background:${color}">
+    <div class="contact-detail-card" id="contactDetailCard">
+          <div class="detail-header">
+        <div class="detail-avatar contacts-detail-avatar" style="background:${color}">
           ${initials}
         </div>
         <div>

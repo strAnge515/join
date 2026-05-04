@@ -15,6 +15,10 @@
   display: none;
 }
 
+.backwards-btn {
+  display: none;
+}
+
 .contact-container {
   width: 456px;
   height: calc(100vh - 80px);
