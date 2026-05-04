@@ -292,12 +292,13 @@ function capitalize(fullName) {
 // Adds a slide-in animation to a container
 function addSlideInAnimation(ref, time) {
   const element = document.querySelector(ref);
-  document.body.classList.add('no-scroll');
+  const detailContainerRef = document.getElementById('detailContainer');
+  detailContainerRef.classList.add('no-scroll');
   setTimeout(() => {
     element.addEventListener(
       'transitionend',
       () => {
-        document.body.classList.remove('no-scroll');
+        detailContainerRef.classList.remove('no-scroll');
       },
       { once: true },
     );

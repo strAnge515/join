@@ -128,7 +128,7 @@
 }
 
 .phone {
-  font-size: 12px;
+  font-size: 16px;
   color: #000;
   text-decoration: none;
 }
@@ -138,11 +138,11 @@
   padding: 110px 0 0 55px;
 }
 
-/* .detail-container,
+.detail-container,
 .contact-container {
   height: calc(100vh - 80px);
   overflow-y: auto;
-} */
+}
 
 .details-header {
   display: flex;
