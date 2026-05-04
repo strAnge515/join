@@ -83,15 +83,21 @@ function addSubtask() {
   if (subtaskValue === '') return;
   const li = document.createElement('li');
   li.innerHTML = getSubtaskTemplate(subtaskValue);
+  li.className = `subtask-item`;
   subtaskList.appendChild(li);
   addSubtaskEventListeners(li);
   subtaskInput.value = '';
 }
 
 function getSubtaskTemplate(subtaskValue) {
-  return `<span>${subtaskValue}</span>
-                    <button class="edit-btn"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
-                     <button class="delete-btn"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>`;
+  return `<div class="subtask-left">
+            <span>${subtaskValue}</span>
+          </div>
+          <div>
+            <button class="edit-btn"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
+            <button class="delete-btn"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
+          </div>`;
+                   
 }
 
 function getEditTemplate(subtaskText) {
@@ -158,8 +164,7 @@ dropdownOptions.forEach((button) => {
     dropdownOptionsContainer.classList.add('d-none');
     document.getElementById('arrow-down-category').classList.remove('d-none');
     document.getElementById('arrow-up-category').classList.add('d-none');
-    document.getElementById('task-category').classList.remove('category-height');
-    document.getElementById('task-category').classList.remove('open');
+    document.getElementById('selected-category').classList.remove('open');
   });
 });
 
@@ -257,8 +262,7 @@ function toggleCategoryDropdown() {
   document.getElementById('selected-category').addEventListener('click', () => {
     document.getElementById('arrow-down-category').classList.toggle('d-none');
     document.getElementById('arrow-up-category').classList.toggle('d-none');
-    document.getElementById('task-category').classList.toggle('category-height');
-    document.getElementById('task-category').classList.toggle('open');
+    document.getElementById('selected-category').classList.toggle('open');
   });
 }
 
@@ -267,7 +271,7 @@ function stopAssignedInputBubbling() {
   assigendToInput.addEventListener('click', (event) => {
     event.stopPropagation();
   });
-assigendToInput.addEventListener('input', (filterContacts));
+  assigendToInput.addEventListener('input', filterContacts);
 }
 
 function initResizeHandle() {

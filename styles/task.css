@@ -23,14 +23,16 @@ textarea::placeholder {
 }
 
 .wrapper-add-task-left-side {
-  width: 440px;
+  width: 100%;
+  max-width: 440px;
   display: flex;
   flex-direction: column;
   height: 380px;
 }
 
 .wrapper-add-task-right-side {
-  width: 440px;
+  width: 100%;
+  max-width: 440px;
   height: 400px;
 }
 
@@ -179,7 +181,7 @@ textarea::placeholder {
   align-items: center;
   gap: 4px;
   right: 10px;
-  top: 20px;
+  top: 24px;
   transform: translateY(-50%);
 }
 
@@ -198,9 +200,10 @@ textarea::placeholder {
 }
 
 .subtask-button:hover {
-  background: var(--color-accent);
+  background: #d9d9d9;
   color: #fff;
   border-color: transparent;
+  border-radius: 50px;
 }
 
 .subtask-button-separator {
@@ -217,11 +220,18 @@ textarea::placeholder {
   margin-top: 8px;
 }
 
+.subtask-left span::before {
+  content: '•';
+}
+
 .subtask-item {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 14px;
+  list-style-type: disc;
+  justify-content: space-between;
+  margin: 0 16px;
 }
 
 .subtask-item input[type='checkbox'] {
@@ -240,11 +250,11 @@ textarea::placeholder {
 }
 
 .task-form-actions {
-  grid-column: 1 / -1;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 12px;
-  margin-top: 8px;
+  margin-top: 120px;
+  max-width: 971px;
 }
 
 .btn {
@@ -293,16 +303,28 @@ textarea::placeholder {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  
- }
+  margin-top: -4px;
+  padding: 16px 12px 12px;
+  background: white;
+  gap: 12px;
+  border-radius: 0 0 10px 10px;
+}
 
- .dropdown-option {
-   font-size: 20px;
- }
+.dropdown-option {
+  font-size: 20px;
+}
 
- .selected-option {
+.selected-option {
   color: black;
- }
+}
+
+.category {
+  margin-bottom: 0;
+}
+
+.category:hover {
+  border: 1px solid #a8a8a8;
+}
 
 .dropdown-options button {
   background-color: white;
@@ -312,16 +334,19 @@ textarea::placeholder {
 
 .input-assigned-to {
   border: none;
-    width: 100%;
-    height: 100%;
-    outline: 0;
-    font-size: 20px;
+  width: 100%;
+  height: 100%;
+  outline: 0;
+  font-size: 20px;
 }
 
 .assigned-options {
   height: 340px;
-  overflow: auto;
+  overflow-y: auto;
   background-color: white;
+  margin-top: -4px;
+  padding-top: 4px;
+  border-radius: 0 0 10px 10px;
 }
 
 .assigned-option {
@@ -349,13 +374,16 @@ textarea::placeholder {
   margin-bottom: 0;
 }
 
+.assigned-to:hover {
+  border: 1px solid #a8a8a8;
+}
+
 .assigned-option:hover {
   background: #eeeeee;
-  
 }
 
 .assigned-option.selected {
-  background: #2A3647;
+  background: #2a3647;
   color: white;
 }
 
@@ -436,6 +464,11 @@ textarea::placeholder {
   z-index: 1;
 }
 
+.arrow-img:hover {
+  background-color: #d9d9d9;
+  border-radius: 50px;
+}
+
 .task-form-input img {
   width: 24px;
   cursor: pointer;
@@ -452,10 +485,6 @@ textarea::placeholder {
 
 .input-wrapper span {
   align-self: center;
-}
-
-.category-height {
-  height: auto;
 }
 
 #task-date:focus-within {

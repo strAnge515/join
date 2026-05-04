@@ -13,13 +13,11 @@
     <script defer src="../scripts/sidebar.js"></script>
     <script defer src="../scripts/header.js"></script>
     <script type="module" defer src="../scripts/tasks.js"></script>
-
   </head>
 
   <body>
     <div id="sidebar-container"></div>
     <div id="header-container"></div>
-
     <main class="main-content">
       <h1 class="main-title">Add Task</h1>
 
@@ -31,11 +29,7 @@
                 <p>Title</p>
                 <p class="star">*</p>
               </label>
-              <input
-                class="task-form-input flex-center-space-between"
-                type="text"
-                id="task-title"
-                placeholder="Enter a title" />
+              <input class="task-form-input flex-center-space-between" type="text" id="task-title" placeholder="Enter a title" required />
             </div>
 
             <div class="form-group">
@@ -71,15 +65,9 @@
             <div class="form-group">
               <label class="task-form-label">Priority</label>
               <div class="task-form-prio-group" id="prio-group">
-                <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">
-                  Urgent<img src="../assets/img/Property 1=Urgent.svg" alt="urgendimg" />
-                </button>
-                <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">
-                  Medium<img src="../assets/img/Property 1=Medium.svg" alt="mediumimg" />
-                </button>
-                <button type="button" class="prio-btn prio-btn--low" data-prio="low">
-                  Low<img src="../assets/img/Property 1=Low.svg" alt="lowimg" />
-                </button>
+                <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">Urgent<img src="../assets/img/Property 1=Urgent.svg" alt="urgendimg" /></button>
+                <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">Medium<img src="../assets/img/Property 1=Medium.svg" alt="mediumimg" /></button>
+                <button type="button" class="prio-btn prio-btn--low" data-prio="low">Low<img src="../assets/img/Property 1=Low.svg" alt="lowimg" /></button>
               </div>
             </div>
 
@@ -87,8 +75,8 @@
               <label class="task-form-label">Assigned to</label>
               <div class="assigned-dropdown">
                 <div class="task-form-input flex-center-space-between assigned-to" id="assigned-toggle">
-                  <input id="assigned-placeholder" placeholder="Select contacts to assign" class="input-assigned-to"></input>
-                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-assignet-to" class="arrow-img"/>
+                  <input id="assigned-placeholder" placeholder="Select contacts to assign" class="input-assigned-to" />
+                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-assignet-to" class="arrow-img" />
                   <img src="../assets/img/arrow_drop_down.svg" alt="arrow-up" id="arrow-up-assigned-to" class="d-none arrow-img" />
                 </div>
                 <ul class="assigned-options d-none" id="assigned-options"></ul>
@@ -98,10 +86,10 @@
 
             <section class="form-group">
               <p>Category <span class="star">*</span></p>
-              <div class="task-form-select" id="task-category">
-                <div class="selected-option flex-center-space-between" id="selected-category" data-value="">
+              <div id="task-category">
+                <div class="task-form-input flex-center-space-between task-form-select category" id="selected-category" data-value="">
                   <p>Select task category</p>
-                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-category" class="arrow-img"/>
+                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-category" class="arrow-img" />
                   <img src="../assets/img/arrow_drop_down.svg" alt="arrow-up" id="arrow-up-category" class="d-none arrow-img" />
                 </div>
                 <div class="dropdown-options d-none" id="category-options">
@@ -133,14 +121,16 @@
             </section>
           </section>
         </section>
-        <div class="task-form-actions">
+        <section class="task-form-actions">
           <div>
             <p class="star">*</p>
             <p>This field is required</p>
           </div>
-          <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
-          <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
-        </div>
+          <div>
+            <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
+            <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
+          </div>
+        </section>
       </form>
     </main>
   </body>
