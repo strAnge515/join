@@ -130,6 +130,7 @@ function addDetailEventListeners() {
       deleteThisContact(id);
     });
   }
+  addBackwardsBtnFunction();
 }
 
 // Toggles the active state of a contact in the list
@@ -152,6 +153,7 @@ function showContactDetails(element, contact) {
     initials,
     color,
   );
+  openContactDetails();
   addSlideInAnimation('#contactDetailCard', 10);
   addDetailEventListeners();
 }
