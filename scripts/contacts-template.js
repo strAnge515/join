@@ -41,7 +41,7 @@ function getContactDetailTemplate(contact, initials, color) {
         </div>
       </div>
     </div>
-    <div class="detail-actions-mobile" id="detailActionsMobile">
+    <div class="detail-actions-mobile close" id="detailActionsMobile">
           <button class="edit-btn" id="editContactBtnMobile" data-id="${contact.id}">
           <div class="edit-icon"></div>
           Edit </button>

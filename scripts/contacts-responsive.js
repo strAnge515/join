@@ -1,6 +1,6 @@
 import { openEditContactDialog, deleteThisContact } from './contacts.js';
 
-function closeContactDetails() {
+export function closeContactDetails() {
   const contactDetailsRef = document.getElementById('detailContainer');
   contactDetailsRef.style.display = 'none';
 }
@@ -10,7 +10,7 @@ export function openContactDetails() {
   contactDetailsRef.style.display = 'block';
 }
 
-function removeActiveStateFromContact() {
+export function removeActiveStateFromContact() {
   const activeContact = document.querySelector('.contact.active');
   if (activeContact) {
     activeContact.classList.remove('active');
@@ -19,14 +19,10 @@ function removeActiveStateFromContact() {
 
 function toggleDetailActionButtons() {
   const detailActionsRef = document.getElementById('detailActionsMobile');
-  if (detailActionsRef && detailActionsRef.style.display === 'none') {
-    detailActionsRef.style.display = 'flex';
-  } else {
-    detailActionsRef.style.display = 'none';
-  }
+  detailActionsRef.classList.toggle('close');
 }
 
-function addBackwardsBtnListener() {
+export function addBackwardsBtnListener() {
   const backwardsBtnRef = document.getElementById('backwardsBtn');
   if (backwardsBtnRef) {
     backwardsBtnRef.addEventListener('click', () => {
@@ -56,7 +52,7 @@ function addDeleteBtnListener() {
   }
 }
 
-function addMobileMenuBtnListener() {
+export function addMobileMenuBtnListener() {
   const mobileMenuBtnRef = document.getElementById('detailContactMenuBtn');
   if (mobileMenuBtnRef) {
     mobileMenuBtnRef.addEventListener('click', () => {
@@ -67,8 +63,11 @@ function addMobileMenuBtnListener() {
 
 //add onclick functions to the edit and delete buttons in the contact details view
 export function addMobileDetailEventListeners() {
-  addBackwardsBtnListener();
   addEditBtnListeners();
   addDeleteBtnListener();
-  addMobileMenuBtnListener();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  addBackwardsBtnListener();
+  addMobileMenuBtnListener();
+});

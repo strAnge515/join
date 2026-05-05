@@ -8,6 +8,10 @@ import {
 import {
   openContactDetails,
   addMobileDetailEventListeners,
+  addBackwardsBtnListener,
+  addMobileMenuBtnListener,
+  closeContactDetails,
+  removeActiveStateFromContact,
 } from './contacts-responsive.js';
 
 const colors = [
@@ -249,6 +253,10 @@ export async function deleteThisContact(contactId) {
   await deleteContact(contactId);
   renderContacts();
   document.getElementById('contact-details').innerHTML = '';
+  if (window.innerWidth <= 900) {
+    closeContactDetails();
+    removeActiveStateFromContact();
+  }
 }
 
 // Retrieves the data from the add contact form inputs and returns it as an object

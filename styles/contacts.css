@@ -23,7 +23,7 @@
   display: none;
 }
 
-.detail-actions-mobile {
+.detail-actions-mobile.close {
   display: none;
 }
 
