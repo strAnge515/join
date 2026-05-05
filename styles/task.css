@@ -224,6 +224,26 @@ textarea::placeholder {
   content: '•';
 }
 
+.subtask-eddit-buttons {
+  opacity: 0;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.subtask-item:hover {
+background: #EEEEEE;
+border-radius: 10px;
+}
+
+.subtask-item:hover .subtask-eddit-buttons {
+  opacity: 1;
+}
+
+.subtask-item:focus-within .subtask-eddit-buttons  {
+  opacity: 1;
+}
+
 .subtask-item {
   display: flex;
   align-items: center;
@@ -231,7 +251,7 @@ textarea::placeholder {
   font-size: 14px;
   list-style-type: disc;
   justify-content: space-between;
-  margin: 0 16px;
+  padding: 0 16px;
 }
 
 .subtask-item input[type='checkbox'] {
@@ -247,6 +267,17 @@ textarea::placeholder {
 .subtask-item__label.done {
   text-decoration: line-through;
   color: var(--color-muted);
+}
+
+.subtask-buttons {
+  background: none;
+  border: none;
+}
+
+.subtask-button-seperator {
+  width: 1px;
+  height: 24px;
+  background: #a8a8a8;
 }
 
 .task-form-actions {
@@ -304,14 +335,17 @@ textarea::placeholder {
   flex-direction: column;
   align-items: flex-start;
   margin-top: -4px;
-  padding: 16px 12px 12px;
   background: white;
-  gap: 12px;
   border-radius: 0 0 10px 10px;
+  padding-top: 4px;
 }
 
 .dropdown-option {
   font-size: 20px;
+}
+
+.dropdown-option:hover {
+  background: #eeeeee;
 }
 
 .selected-option {
@@ -326,10 +360,18 @@ textarea::placeholder {
   border: 1px solid #a8a8a8;
 }
 
+.category.open:hover {
+  border-color: var(--color-accent);
+}
+
 .dropdown-options button {
   background-color: white;
   border: none;
   cursor: pointer;
+  padding: 12px 12px 12px;
+  width: 100%;
+  display: flex;
+  border-radius: 10px;
 }
 
 .input-assigned-to {
@@ -376,6 +418,10 @@ textarea::placeholder {
 
 .assigned-to:hover {
   border: 1px solid #a8a8a8;
+}
+
+.assigned-to.open:hover {
+  border-color: var(--color-accent);
 }
 
 .assigned-option:hover {

@@ -93,17 +93,23 @@ function getSubtaskTemplate(subtaskValue) {
   return `<div class="subtask-left">
             <span>${subtaskValue}</span>
           </div>
-          <div>
-            <button class="edit-btn"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
-            <button class="delete-btn"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
+          <div class="subtask-eddit-buttons">
+            <button class="edit-btn subtask-buttons"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
+            <div class="subtask-button-seperator"></div>
+            <button class="delete-btn subtask-buttons"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
           </div>`;
-                   
 }
 
 function getEditTemplate(subtaskText) {
-  return `<input class="subtask-edit-value" type="text" value="${subtaskText}" />
-             <button class="edit-delete-btn"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
-             <button class="edit-confirm-btn"><img src="../assets/img/Property 1=check.svg" alt="checkicon"></button>`;
+  return `<div>
+            <input class="subtask-edit-value" type="text" value="${subtaskText}" />
+          </div>
+          <div class="subtask-eddit-buttons">
+            <button class="edit-delete-btn subtask-buttons"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol" /></button>
+            <div class="subtask-button-seperator"></div>
+            <button class="edit-confirm-btn subtask-buttons"><img src="../assets/img/Property 1=check.svg" alt="checkicon" /></button>
+          </div>
+`;
 }
 
 function addSubtaskEventListeners(li) {
@@ -113,6 +119,8 @@ function addSubtaskEventListeners(li) {
   editBtn.addEventListener('click', () => {
     let subtaskText = li.querySelector('span').textContent;
     li.innerHTML = getEditTemplate(subtaskText);
+    let inputSubtask = li.querySelector('.subtask-edit-value');
+    inputSubtask.focus();
     li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
     li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
       subtaskText = li.querySelector('.subtask-edit-value').value;
