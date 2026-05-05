@@ -146,6 +146,11 @@
 
   .urgent-left {
     gap: 12px;
+    margin:auto;
+  }
+
+  .urgent-right {
+    margin: auto;
   }
 
   .card-separator {
