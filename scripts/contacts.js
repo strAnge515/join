@@ -5,6 +5,11 @@ import {
   updateContact,
 } from './backend-contacts.js';
 
+import {
+  openContactDetails,
+  addMobileDetailEventListeners,
+} from './contacts-responsive.js';
+
 const colors = [
   '#FF7A00',
   '#FF5EB3',
@@ -130,7 +135,6 @@ function addDetailEventListeners() {
       deleteThisContact(id);
     });
   }
-  addBackwardsBtnListener();
 }
 
 // Toggles the active state of a contact in the list
@@ -138,6 +142,14 @@ function toggleActiveContact(element) {
   const allContacts = document.querySelectorAll('.contact');
   allContacts.forEach((contact) => contact.classList.remove('active'));
   element.classList.add('active');
+}
+
+function addEventListenersToDetailContact() {
+  if (window.innerWidth <= 900) {
+    addMobileDetailEventListeners();
+  } else {
+    addDetailEventListeners();
+  }
 }
 
 // Displays the details of a contact when clicked and highlights the active contact in the list
@@ -155,7 +167,7 @@ function showContactDetails(element, contact) {
   );
   openContactDetails();
   addSlideInAnimation('#contactDetailCard', 10);
-  addDetailEventListeners();
+  addEventListenersToDetailContact();
 }
 
 // Adds event listeners to close a dialog when clicking outside of it or pressing the Escape key
@@ -206,7 +218,7 @@ function addEditDialogEventListeners() {
 }
 
 // Opens the dialog to edit an existing contact and pre-fills the form with the contact's current information
-function openEditContactDialog(contactId) {
+export function openEditContactDialog(contactId) {
   const contact = contacts.find((contact) => contact.id == contactId);
   const dialogRef = document.getElementById('editContactDialog');
   const initials = contact.firstName[0] + contact.lastName[0];
@@ -231,7 +243,7 @@ function closeDialog(element) {
 }
 
 // Deletes a contact after confirming the action with the user, then re-renders the contact list and clears the contact details view
-async function deleteThisContact(contactId) {
+export async function deleteThisContact(contactId) {
   const confirmDelete = confirm('Kontakt wirklich löschen?'); //isn't in the figma design, but it's a good idea to prevent accidental deletions. Maybe we find a more elegant solution for this in the future, like a confirmation dialog instead of the browser's built-in confirm function.
   if (!confirmDelete) return;
   await deleteContact(contactId);

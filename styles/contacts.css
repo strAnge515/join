@@ -23,6 +23,10 @@
   display: none;
 }
 
+.detail-actions-mobile {
+  display: none;
+}
+
 .contact-container {
   width: 456px;
   height: calc(100vh - 80px);
@@ -202,8 +206,6 @@
 
 .detail-actions {
   margin-top: 5px;
-  font-size: 14px;
-  color: #666;
   display: flex;
   gap: 10px;
 }
@@ -241,6 +243,7 @@
   font-size: 16px;
   gap: 13px;
   min-width: 80px;
+  color: #2a3647;
 }
 
 .edit-btn:hover {

@@ -19,7 +19,7 @@ function getContactDetailTemplate(contact, initials, color) {
         </div>
         <div>
           <div class="detail-name">${contact.firstName} ${contact.lastName}</div>
-          <div class="detail-actions">
+          <div class="detail-actions" id="detailActions">
           <button class="edit-btn" id="editContactBtn" data-id="${contact.id}">
           <div class="edit-icon"></div>
           Edit </button>
@@ -33,18 +33,23 @@ function getContactDetailTemplate(contact, initials, color) {
         <div class="detail-label">Contact Information</div>
         <div class="details">
           <div class="detail-label-email">Email</div>
-          <a href="mailto:${contact.email}" class="email">
-  ${contact.email}
-</a>
+          <a href="mailto:${contact.email}" class="email">${contact.email}</a>
         </div>
         <div class="details">
           <div class="detail-label-phone">Phone</div>
-          <a href="tel:${contact.phone}" class="phone">
-  ${contact.phone}
-</a>
+          <a href="tel:${contact.phone}" class="phone">${contact.phone}</a>
         </div>
       </div>
     </div>
+    <div class="detail-actions-mobile" id="detailActionsMobile">
+          <button class="edit-btn" id="editContactBtnMobile" data-id="${contact.id}">
+          <div class="edit-icon"></div>
+          Edit </button>
+          <button class="edit-btn" id="deleteContactBtnMobile" data-id="${contact.id}">
+          <div class="delete-icon"></div>
+           Delete</button>
+           </div>
+           </div>
   `;
 }
 
