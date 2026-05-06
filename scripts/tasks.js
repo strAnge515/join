@@ -101,7 +101,7 @@ function getSubtaskTemplate(subtaskValue) {
 }
 
 function getEditTemplate(subtaskText) {
-  return `<div>
+  return `<div class="input-wrapper-edit">
             <input class="subtask-edit-value" type="text" value="${subtaskText}" />
           </div>
           <div class="subtask-eddit-buttons">
@@ -119,12 +119,14 @@ function addSubtaskEventListeners(li) {
   editBtn.addEventListener('click', () => {
     let subtaskText = li.querySelector('span').textContent;
     li.innerHTML = getEditTemplate(subtaskText);
+    li.classList.add('is-editing');
     let inputSubtask = li.querySelector('.subtask-edit-value');
     inputSubtask.focus();
     li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
     li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
       subtaskText = li.querySelector('.subtask-edit-value').value;
       li.innerHTML = getSubtaskTemplate(subtaskText);
+      li.classList.remove('is-editing');
       addSubtaskEventListeners(li);
     });
   });
@@ -270,7 +272,6 @@ function toggleCategoryDropdown() {
   document.getElementById('selected-category').addEventListener('click', () => {
     document.getElementById('arrow-down-category').classList.toggle('d-none');
     document.getElementById('arrow-up-category').classList.toggle('d-none');
-<<<<<<< HEAD
     document.getElementById('selected-category').classList.toggle('open');
   });
 }
@@ -279,9 +280,6 @@ function stopAssignedInputBubbling() {
   let assigendToInput = document.getElementById('assigned-placeholder');
   assigendToInput.addEventListener('click', (event) => {
     event.stopPropagation();
-=======
-    document.getElementById('task-category').classList.toggle('category-height');
->>>>>>> Juri-2
   });
   assigendToInput.addEventListener('input', filterContacts);
 }

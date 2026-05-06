@@ -232,15 +232,15 @@ textarea::placeholder {
 }
 
 .subtask-item:hover {
-background: #EEEEEE;
-border-radius: 10px;
+  background: #eeeeee;
+  border-radius: 10px;
 }
 
 .subtask-item:hover .subtask-eddit-buttons {
   opacity: 1;
 }
 
-.subtask-item:focus-within .subtask-eddit-buttons  {
+.subtask-item:focus-within .subtask-eddit-buttons {
   opacity: 1;
 }
 
@@ -258,6 +258,31 @@ border-radius: 10px;
   accent-color: var(--color-accent);
   width: 16px;
   height: 16px;
+}
+
+.subtask-item.is-editing {
+  background: white;
+  border-bottom: #005dff 1px solid;
+  border-radius: 0;
+}
+
+.input-wrapper-edit {
+  width: 100%;
+}
+
+.subtask-edit-value {
+  width: 100%;
+  border: none;
+}
+
+.subtask-edit-value:focus {
+  border: none;
+ outline: none;
+}
+
+.subtask-item.is-editing .subtask-buttons:hover {
+  background: #d9d9d9;
+  border-radius: 50px;
 }
 
 .subtask-item__label {
