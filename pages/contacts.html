@@ -37,7 +37,7 @@
         <span class="subtitle">Better with a team</span>
       </div>
       <div id="contact-details"></div>
-          <div class="contact-created" id="contactCreatedSignal">Contact succesfully created </div>
+      <div class="contact-created" id="contactCreatedSignal">Contact succesfully created </div>
     </div>
     </main>
     <dialog id="addContactDialog">
@@ -69,16 +69,37 @@
                pattern="^\+?[0-9\s\-\/]{6,20}$" />
               <img src="../assets/img/contacts/call.svg" alt="">
             </div>
-              <div class="action-btns">
-                <button type="button" class="cancel-btn btn-to-close"> Cancel ✕</button>
-                <button type="submit" class="create-btn">Create contact ✔</button>
-              </div>
-            </form>
-          </div>
+            <div class="action-btns">
+              <button type="button" class="cancel-btn btn-to-close"> Cancel ✕</button>
+              <button type="submit" class="create-btn">Create contact ✔</button>
+            </div>
+          </form>
         </div>
       </div>
-    </dialog>
-        <dialog id="editContactDialog">
-    </dialog>
-  </body>
+    </div>
+
+  </dialog>
+  <dialog id="editContactDialog">
+  </dialog>
+
+  <nav class="mobile-bottom-nav">
+    <a href="summary.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/summary_icon.svg" alt=""></span>
+      <span>Summary</span>
+    </a>
+    <a href="task.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/add_task.svg" alt=""></span>
+      <span>Add Task</span>
+    </a>
+    <a href="board.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/board.svg" alt=""></span>
+      <span>Board</span>
+    </a>
+    <a href="contacts.html" class="active">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/contact.svg" alt=""></span>
+      <span>Contacts</span>
+    </a>
+  </nav>
+</body>
+
 </html>

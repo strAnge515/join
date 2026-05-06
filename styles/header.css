@@ -87,3 +87,39 @@
 .account-menu a:hover {
   color: #29abe2;
 }
+
+@media (max-width: 900px) {
+  #header-container,
+  #sidebar-container {
+    display: none !important;
+  }
+
+.mobile-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    padding: 0 16px;
+    background: #ffffff;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-topbar__logo {
+    width: 32px;
+    height: 40px;
+  }
+
+  .mobile-topbar__profile {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #2a3647;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #29abe2;
+    font-weight: 700;
+    font-size: 16px;
+    background: #ffffff;
+  }
+}

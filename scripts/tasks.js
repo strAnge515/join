@@ -270,6 +270,7 @@ function toggleCategoryDropdown() {
   document.getElementById('selected-category').addEventListener('click', () => {
     document.getElementById('arrow-down-category').classList.toggle('d-none');
     document.getElementById('arrow-up-category').classList.toggle('d-none');
+<<<<<<< HEAD
     document.getElementById('selected-category').classList.toggle('open');
   });
 }
@@ -278,6 +279,9 @@ function stopAssignedInputBubbling() {
   let assigendToInput = document.getElementById('assigned-placeholder');
   assigendToInput.addEventListener('click', (event) => {
     event.stopPropagation();
+=======
+    document.getElementById('task-category').classList.toggle('category-height');
+>>>>>>> Juri-2
   });
   assigendToInput.addEventListener('input', filterContacts);
 }

@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 .contacts-layout {
+=======
+.content {
+  position: relative;
+  bottom: 60px;
+  margin: 0px 0 0 232px;
+>>>>>>> Juri-2
   display: flex;
   padding: 0;
 }
@@ -65,12 +72,6 @@
   width: 100%;
   cursor: pointer;
   gap: 35px;
-}
-
-.active {
-  background: #2f3b4a;
-  color: white;
-  border-radius: 10px;
 }
 
 .contact:not(.active):hover {
@@ -239,13 +240,11 @@
 }
 
 .edit-btn:hover .edit-icon {
-  background: url('../assets/img/contacts/edit-hover.svg') no-repeat center
-    center;
+  background: url('../assets/img/contacts/edit-hover.svg') no-repeat center center;
 }
 
 .edit-btn:hover .delete-icon {
-  background: url('../assets/img/contacts/delete-hover.svg') no-repeat center
-    center;
+  background: url('../assets/img/contacts/delete-hover.svg') no-repeat center center;
 }
 
 .delete-icon {

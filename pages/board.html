@@ -1,95 +1,101 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Join - Board</title>
-    <link rel="icon" type="image/png" href="../assets/img/join_logo.svg" />
-    <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="../styles/sidebar.css" />
-    <link rel="stylesheet" href="../styles/header.css" />
-    <link rel="stylesheet" href="../styles/board.css" />
 
-    <script defer src="../scripts/auth-guard.js"></script>
-    <script defer src="../scripts/sidebar.js"></script>
-    <script defer src="../scripts/header.js"></script>
-    <script defer src="../scripts/board-template.js"></script>
-  </head>
-  <body>
-    <div id="sidebar-container"></div>
-    <div id="header-container"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join - Board</title>
+  <link rel="icon" type="image/png" href="../assets/img/join_logo.svg" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles/sidebar.css" />
+  <link rel="stylesheet" href="../styles/header.css" />
+  <link rel="stylesheet" href="../styles/board.css" />
+  <script defer src="../scripts/sidebar.js"></script>
+  <script defer src="../scripts/header.js"></script>
+  <script defer src="../scripts/board-template.js"></script>
+</head>
 
-    <main class="main-content">
-      <header class="board-header">
-        <h1 class="board-header__title">Board</h1>
-        <div class="board-header__actions">
-          <div class="board-header__search">
-            <input type="text" placeholder="Find Task" />
-            <div class="search-right">
-              <div class="search-divider"></div>
-              <img
-                class="board-header__search-icon"
-                src="../assets/img/search.svg"
-                alt="search icon"
-              />
-            </div>
+<body>
+  <header class="mobile-topbar">
+    <img src="../assets/img/join_logo.svg" alt="Join Logo" class="mobile-topbar__logo">
+    <div class="mobile-topbar__profile">C</div>
+  </header>
+
+  <div id="sidebar-container"></div>
+  <div id="header-container"></div>
+
+  <main class="main-content">
+    <header class="board-header">
+      <h1 class="board-header__title">Board</h1>
+      <div class="board-header__actions">
+        <div class="board-header__search">
+          <input type="text" placeholder="Find Task" />
+          <div class="search-right">
+            <div class="search-divider"></div>
+            <img class="board-header__search-icon" src="../assets/img/search.svg" alt="search icon" />
           </div>
-          <button class="board-header__add-btn">
-            Add task <span class="plus">+</span>
-          </button>
         </div>
-      </header>
-
-      <div class="board">
-        <section class="board-column">
-          <div class="board-column__header">
-            <h2 class="board-column__title">To do</h2>
-            <button class="board-column__add-btn">+</button>
-          </div>
-          <div
-            class="board-column__cards"
-            id="column-todo"
-            data-status="to do"
-          ></div>
-        </section>
-
-        <section class="board-column">
-          <div class="board-column__header">
-            <h2 class="board-column__title">In progress</h2>
-            <button class="board-column__add-btn">+</button>
-          </div>
-          <div
-            class="board-column__cards"
-            id="column-inprogress"
-            data-status="in progress"
-          ></div>
-        </section>
-
-        <section class="board-column">
-          <div class="board-column__header">
-            <h2 class="board-column__title">Awaiting feedback</h2>
-            <button class="board-column__add-btn">+</button>
-          </div>
-          <div
-            class="board-column__cards"
-            id="column-awaiting"
-            data-status="awaiting feedback"
-          ></div>
-        </section>
-
-        <section class="board-column">
-          <div class="board-column__header">
-            <h2 class="board-column__title">Done</h2>
-          </div>
-          <div
-            class="board-column__cards"
-            id="column-done"
-            data-status="done"
-          ></div>
-        </section>
+        <button class="board-header__add-btn">
+          Add task <span class="plus">+</span>
+        </button>
       </div>
-    </main>
-    <dialog id="taskModal"></dialog>
-    <script type="module" src="../scripts/board.js"></script>
-  </body>
+    </header>
+
+    <div class="board">
+      <section class="board-column">
+        <div class="board-column__header">
+          <h2 class="board-column__title">To do</h2>
+          <button class="board-column__add-btn">+</button>
+        </div>
+        <div class="board-column__cards" id="column-todo" data-status="to do"></div>
+      </section>
+
+      <section class="board-column">
+        <div class="board-column__header">
+          <h2 class="board-column__title">In progress</h2>
+          <button class="board-column__add-btn">+</button>
+        </div>
+        <div class="board-column__cards" id="column-inprogress" data-status="in progress"></div>
+      </section>
+
+      <section class="board-column">
+        <div class="board-column__header">
+          <h2 class="board-column__title">Awaiting feedback</h2>
+          <button class="board-column__add-btn">+</button>
+        </div>
+        <div class="board-column__cards" id="column-awaiting" data-status="awaiting feedback"></div>
+      </section>
+
+      <section class="board-column">
+        <div class="board-column__header">
+          <h2 class="board-column__title">Done</h2>
+        </div>
+        <div class="board-column__cards" id="column-done" data-status="done"></div>
+      </section>
+    </div>
+  </main>
+
+  <nav class="mobile-bottom-nav">
+    <a href="summary.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/summary_icon.svg" alt=""></span>
+      <span>Summary</span>
+    </a>
+    <a href="task.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/add_task.svg" alt=""></span>
+      <span>Add Task</span>
+    </a>
+    <a href="board.html" class="active">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/board.svg" alt=""></span>
+      <span>Board</span>
+    </a>
+    <a href="contacts.html">
+      <span class="mobile-bottom-nav__icon"><img src="../assets/img/contact.svg" alt=""></span>
+      <span>Contacts</span>
+    </a>
+  </nav>
+
+  <dialog id="taskModal"></dialog>
+  <script type="module" src="../scripts/board.js"></script>
+</body>
+
 </html>
