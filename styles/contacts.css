@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 .contacts-layout {
-=======
-.content {
-  position: relative;
-  bottom: 60px;
-  margin: 0px 0 0 232px;
->>>>>>> Juri-2
   display: flex;
   padding: 0;
 }
@@ -20,6 +13,7 @@
 }
 
 .contact-container {
+  position: relative;
   width: 456px;
   height: calc(100vh - 80px);
   background: #fff;
@@ -27,6 +21,7 @@
   padding: 22px 52px;
   z-index: 1;
   box-shadow: 4px -1px 4px rgba(0, 0, 0, 0.1);
+  top: 80px;
 }
 
 .add-btn {
