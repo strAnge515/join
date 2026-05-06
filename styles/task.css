@@ -281,13 +281,6 @@ border-radius: 10px;
 }
 
 .task-form-actions {
-<<<<<<< HEAD
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 120px;
-  max-width: 971px;
-=======
   width: 100%;
   display: flex;
   align-items: center;
@@ -302,7 +295,6 @@ border-radius: 10px;
   display: flex;
   align-items: center;
   gap: 4px;
->>>>>>> Juri-2
 }
 
 .btn {
