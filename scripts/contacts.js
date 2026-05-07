@@ -170,7 +170,7 @@ function showContactDetails(element, contact) {
     color,
   );
   openContactDetails();
-  addSlideInAnimation('#contactDetailCard', 10);
+  addSlideInAnimation('#contactDetailCard', 100);
   addEventListenersToDetailContact();
 }
 

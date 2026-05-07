@@ -4,7 +4,7 @@ dialog {
   border-radius: 30px;
   padding: 0;
   transform: translate(120%, 0);
-  transition: transform 0.3s ease-out;
+  transition: transform 0.1s ease-out;
 }
 
 dialog.show {
@@ -213,8 +213,8 @@ input:focus {
   transform: translateX(250%);
   opacity: 0;
   transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
+    transform 0.1s ease,
+    opacity 0.1s ease;
   box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.1);
 }
 

@@ -170,8 +170,8 @@
   transform: translateX(100%);
   opacity: 0;
   transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
+    transform 0.1s ease,
+    opacity 0.1s ease;
 }
 
 .contact-detail-card.slide-in {
