@@ -33,6 +33,10 @@ function addTask() {
     let object = createTaskObjekt(informartionsFromInput);
 
     await saveTask(object);
+    document.getElementById('subtask-added').showModal();
+    setTimeout(() => {
+      window.location.href = 'board.html'
+    }, 900);
   });
 }
 
@@ -334,5 +338,22 @@ function insertDate() {
   if (!day || !month || !year) return '';
   return `${year}-${month}-${day}`;
 }
+
+function clearTask() {
+  document.getElementById('task-title').value = '';
+  document.getElementById('task-description').value = '';
+  document.querySelectorAll('.date-input-field').forEach(input => input.value = '');
+  document.querySelectorAll('.prio-btn').forEach(btn => btn.classList.remove('selected-urgent', 'selected-medium', 'selected-low'));
+  document.querySelector('.prio-btn--medium').classList.add('selected-medium');
+  document.getElementById('subtask-input').value = '';
+  document.getElementById('subtask-list').innerHTML = '';
+  document.getElementById('selected-category').querySelector('p').textContent = 'Select task category';
+  document.getElementById('selected-category').dataset.value = '';
+  selectedContacts = [];
+  document.getElementById('assigned-avatars').innerHTML = '';
+  document.getElementById('assigned-placeholder').value = '';
+}
+
+document.getElementById('btn-clear').addEventListener('click', clearTask);
 
 document.addEventListener('DOMContentLoaded', init);
