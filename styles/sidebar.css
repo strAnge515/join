@@ -50,7 +50,7 @@
   align-items: center;
   text-decoration: none;
   color: white;
-  padding: 12px 24px;   
+  padding: 12px 24px;
 }
 
 .nav-item a.active {
@@ -102,7 +102,7 @@
   #sidebar-container {
     display: none !important;
   }
-   .mobile-bottom-nav {
+  .mobile-bottom-nav {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     position: fixed;
@@ -110,8 +110,8 @@
     right: 0;
     bottom: 0;
     width: 100%;
-    height: 76px;
-    background: #2A3647;
+    height: 80px;
+    background: #2a3647;
     z-index: 1000;
   }
 

@@ -22,12 +22,6 @@
     <div class="mobile-topbar__profile" id="mobile-profile"></div>
   </header>
 
-  <div class="mobile-account-menu" id="mobile-account-menu">
-    <a href="legal_notice.html">Legal Notice</a>
-    <a href="privacy_policy.html">Privacy Policy</a>
-    <button type="button" id="mobile-logout-btn">Log out</button>
-  </div>
-
   <div id="sidebar-container"></div>
   <div id="header-container"></div>
   <main class="main-content">
@@ -141,19 +135,24 @@
             <ul class="task-form-subtask-list" id="subtask-list"></ul>
           </section>
         </section>
-      </section>
-      <section class="task-form-actions">
-        <div>
-          <p class="star">*</p>
-          <p>This field is required</p>
-        </div>
-        <div>
-          <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
-          <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
-        </div>
-      </section>
-    </form>
-  </main>
-</body>
+        <section class="task-form-actions">
+          <div>
+            <p class="star star-required">*</p>
+            <p>This field is required</p>
+          </div>
+          <div class="btn-action-wrapper">
+            <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
+            <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
+          </div>
+        </section>
+      </form>
+    </main>
 
+    <dialog class="subtask-added" id="subtask-added">
+      <div class="added-dialog-content-wrapper">
+        <p>Task added to board</p>
+        <img src="../assets/img/Icons.svg" alt="icon">
+      </div>
+    </dialog>
+  </body>
 </html>

@@ -4,7 +4,7 @@ dialog {
   border-radius: 30px;
   padding: 0;
   transform: translate(120%, 0);
-  transition: transform 0.3s ease-out;
+  transition: transform 0.1s ease-out;
 }
 
 dialog.show {
@@ -108,15 +108,15 @@ dialog::backdrop {
 .input-wrapper {
   width: 100%;
   position: relative;
+  margin-bottom: 32px;
 }
 
 input {
   width: 100%;
   padding: 0 0px 0 21px;
-  margin-bottom: 32px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 14px;
+  font-size: 20px;
   height: 50px;
   box-sizing: border-box;
 }
@@ -134,7 +134,7 @@ input:focus {
 .input-wrapper img {
   position: absolute;
   right: 21px;
-  top: 25%;
+  top: 48%;
   transform: translatey(-50%);
   width: 18px;
   pointer-events: none;
@@ -156,6 +156,7 @@ input:focus {
   border-radius: 10px;
   cursor: pointer;
   font-size: 20px;
+  white-space: nowrap;
 }
 
 .cancel-btn:hover,
@@ -185,6 +186,7 @@ input:focus {
   font-size: 20px;
   font-weight: bold;
   width: 214px;
+  white-space: nowrap;
 }
 
 .create-btn:hover {
@@ -213,8 +215,8 @@ input:focus {
   transform: translateX(250%);
   opacity: 0;
   transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
+    transform 0.1s ease,
+    opacity 0.1s ease;
   box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.1);
 }
 
@@ -256,4 +258,13 @@ input:focus {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+}
+
+.error {
+  color: #e60026;
+  font-size: 16px;
+}
+
+.input-error {
+  border: 1px solid #e60026;
 }

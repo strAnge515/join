@@ -1,5 +1,5 @@
 import { saveTask } from './backend-tasks.js';
-import { loadAndPrepareContacts } from './contacts.js';
+import { loadAndPrepareContacts } from './contacts-render.js';
 
 const subtaskInput = document.getElementById('subtask-input');
 const addButtonSubtask = document.getElementById('btn-add-subtask');
@@ -33,6 +33,10 @@ function addTask() {
     let object = createTaskObjekt(informartionsFromInput);
 
     await saveTask(object);
+    document.getElementById('subtask-added').showModal();
+    setTimeout(() => {
+      window.location.href = 'board.html';
+    }, 900);
   });
 }
 
@@ -44,7 +48,15 @@ function addInformations() {
   let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
   let contact = selectedContacts.map((contact) => contact.name);
   let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
-  return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
+  return {
+    taskTitle,
+    tastkDescription,
+    taskCategory,
+    taskDate,
+    taskPrio,
+    contact,
+    subtasks,
+  };
 }
 
 function createTaskObjekt(data) {
@@ -68,7 +80,11 @@ function setPriorityButtons() {
   activeButton.forEach((button) => {
     button.addEventListener('click', () => {
       activeButton.forEach((button) => {
-        button.classList.remove('selected-urgent', 'selected-medium', 'selected-low');
+        button.classList.remove(
+          'selected-urgent',
+          'selected-medium',
+          'selected-low',
+        );
       });
       button.classList.add('selected-' + button.dataset.prio);
     });
@@ -122,7 +138,9 @@ function addSubtaskEventListeners(li) {
     li.classList.add('is-editing');
     let inputSubtask = li.querySelector('.subtask-edit-value');
     inputSubtask.focus();
-    li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
+    li.querySelector('.edit-delete-btn').addEventListener('click', () =>
+      li.remove(),
+    );
     li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
       subtaskText = li.querySelector('.subtask-edit-value').value;
       li.innerHTML = getSubtaskTemplate(subtaskText);
@@ -169,7 +187,8 @@ selectCategoryButton.addEventListener('click', () => {
 dropdownOptions.forEach((button) => {
   button.addEventListener('click', (event) => {
     let selectedOption = document.getElementById('selected-category');
-    selectCategoryButton.querySelector('p').textContent = event.currentTarget.textContent;
+    selectCategoryButton.querySelector('p').textContent =
+      event.currentTarget.textContent;
     selectedOption.dataset.value = event.currentTarget.value;
     dropdownOptionsContainer.classList.add('d-none');
     document.getElementById('arrow-down-category').classList.remove('d-none');
@@ -179,7 +198,9 @@ dropdownOptions.forEach((button) => {
 });
 
 function filterContacts() {
-  let registeredPersons = Array.from(document.querySelectorAll('.assigned-option'));
+  let registeredPersons = Array.from(
+    document.querySelectorAll('.assigned-option'),
+  );
   let filerInput = document.getElementById('assigned-placeholder').value;
   for (let i = 0; i < registeredPersons.length; i++) {
     const person = registeredPersons[i];
@@ -262,7 +283,9 @@ function initDropdownsEventlistener() {
 function toggleAssignedDropdown() {
   document.getElementById('assigned-toggle').addEventListener('click', () => {
     document.getElementById('assigned-options').classList.toggle('d-none');
-    document.getElementById('arrow-down-assignet-to').classList.toggle('d-none');
+    document
+      .getElementById('arrow-down-assignet-to')
+      .classList.toggle('d-none');
     document.getElementById('arrow-up-assigned-to').classList.toggle('d-none');
     document.getElementById('assigned-toggle').classList.toggle('open');
   });
@@ -334,5 +357,33 @@ function insertDate() {
   if (!day || !month || !year) return '';
   return `${year}-${month}-${day}`;
 }
+
+function clearTask() {
+  document.getElementById('task-title').value = '';
+  document.getElementById('task-description').value = '';
+  document
+    .querySelectorAll('.date-input-field')
+    .forEach((input) => (input.value = ''));
+  document
+    .querySelectorAll('.prio-btn')
+    .forEach((btn) =>
+      btn.classList.remove(
+        'selected-urgent',
+        'selected-medium',
+        'selected-low',
+      ),
+    );
+  document.querySelector('.prio-btn--medium').classList.add('selected-medium');
+  document.getElementById('subtask-input').value = '';
+  document.getElementById('subtask-list').innerHTML = '';
+  document.getElementById('selected-category').querySelector('p').textContent =
+    'Select task category';
+  document.getElementById('selected-category').dataset.value = '';
+  selectedContacts = [];
+  document.getElementById('assigned-avatars').innerHTML = '';
+  document.getElementById('assigned-placeholder').value = '';
+}
+
+document.getElementById('btn-clear').addEventListener('click', clearTask);
 
 document.addEventListener('DOMContentLoaded', init);

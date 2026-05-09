@@ -222,6 +222,7 @@ textarea::placeholder {
 
 .subtask-left span::before {
   content: '•';
+  padding-right: 5px;
 }
 
 .subtask-eddit-buttons {
@@ -251,7 +252,8 @@ textarea::placeholder {
   font-size: 14px;
   list-style-type: disc;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 4px 16px;
+  height: 32px;
 }
 
 .subtask-item input[type='checkbox'] {
@@ -264,10 +266,14 @@ textarea::placeholder {
   background: white;
   border-bottom: #005dff 1px solid;
   border-radius: 0;
+  display: flex;
+  height: 32px;
 }
 
 .input-wrapper-edit {
   width: 100%;
+  height: 100%;
+  display: flex;
 }
 
 .subtask-edit-value {
@@ -277,7 +283,7 @@ textarea::placeholder {
 
 .subtask-edit-value:focus {
   border: none;
- outline: none;
+  outline: none;
 }
 
 .subtask-item.is-editing .subtask-buttons:hover {
@@ -297,6 +303,7 @@ textarea::placeholder {
 .subtask-buttons {
   background: none;
   border: none;
+  cursor: pointer;
 }
 
 .subtask-button-seperator {
@@ -309,17 +316,14 @@ textarea::placeholder {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 20px;
+  justify-content: space-between;
   margin-top: 110px;
-  padding-right: 350px;
+  max-width: 970px;
 }
 
 .task-form-actions > div {
-  margin-right: auto;
   display: flex;
   align-items: center;
-  gap: 4px;
 }
 
 .btn {
@@ -333,13 +337,14 @@ textarea::placeholder {
 }
 
 .btn--secondary {
-  background: var(--color-white);
-  border-color: var(--color-border);
-  color: var(--color-text);
+  background: var(--color-bg);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .btn--secondary:hover {
-  border-color: var(--color-text);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .btn--primary {
@@ -563,12 +568,66 @@ textarea::placeholder {
   z-index: 0;
 }
 
+.btn-action-wrapper {
+  gap: 16px;
+}
+
 .input-wrapper span {
   align-self: center;
 }
 
+.btn-action-wrapper button:hover {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.star-required {
+  margin-top: -3px;
+}
+
 #task-date:focus-within {
   border-color: var(--color-accent);
+}
+
+@keyframes subtask-added {
+ from {
+  transform: translateY(100%);
+ }
+ to {
+ transform: translateY(0); }
+ }
+
+
+.subtask-added {
+  width: 330px;
+  height: 75px;
+  border-radius: 20px;
+  background-color: var(--color-primary);
+  box-shadow: 0px 0px 4px 0px #00000026;
+  position: absolute;
+  top: 45%;
+  left: 45%;
+  border: none;
+  animation: subtask-added 0.3s ease-out;
+}
+
+.added-dialog-content-wrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.added-dialog-content-wrapper p {
+  font-size: 20px;
+  color: white;
+}
+
+.added-dialog-content-wrapper img {
+  margin-left: 40px;
+}
+
+.subtask-added::backdrop {
+  background: transparent;
 }
 
 .open {

@@ -58,30 +58,25 @@ function getInitials(user) {
 }
 
 function setupHeaderMenu() {
-  const accountCircle = document.getElementById("header-account-circle");
-  const accountMenu = document.getElementById("header-account-menu");
-  const logoutLink = accountMenu ? accountMenu.querySelector('a[href*="index.html"]') : null;
-
-  if (accountCircle && accountMenu) {
-    accountCircle.addEventListener("click", (event) => {
-      event.stopPropagation();
-      accountMenu.classList.toggle("account-menu--show");
+    const accountCircle = document.getElementById('header-account-circle');
+    const accountMenu = document.getElementById('header-account-menu');
+    if (!accountCircle || !accountMenu) return;
+    const logoutLink = accountMenu.querySelector('a[href*="index.html"]');
+    accountCircle.addEventListener('click', () => {
+        accountMenu.classList.toggle('account-menu--show');
     });
-
-    document.addEventListener("click", (event) => {
-      if (!accountMenu.contains(event.target) && !accountCircle.contains(event.target)) {
-        accountMenu.classList.remove("account-menu--show");
-      }
+    document.addEventListener('click', (event) => {
+        if (!accountCircle.contains(event.target)) {
+            accountMenu.classList.remove('account-menu--show');
+        }
     });
-  }
-
-  if (logoutLink) {
-    logoutLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      sessionStorage.removeItem("currentUser");
-      window.location.href = logoutLink.href;
-    });
-  }
+    if (logoutLink) {
+        logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem('currentUser');
+            window.location.href = logoutLink.href;
+        });
+    }
 }
 
 function setupMobileAccountMenu() {
