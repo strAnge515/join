@@ -87,13 +87,25 @@
   color: #29abe2;
 }
 
+.mobile-account-menu {
+  display: none;
+}
+
 @media (max-width: 900px) {
-  #header-container,
-  #sidebar-container {
+  #header-container {
+    display: block;
+    position: static;
+    height: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  #header-container .header-main,
+  #header-container .account-menu {
     display: none !important;
   }
 
-.mobile-topbar {
+  .mobile-topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -101,6 +113,8 @@
     padding: 0 16px;
     background: #ffffff;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 3000;
   }
 
   .mobile-topbar__logo {
@@ -120,5 +134,41 @@
     font-weight: 700;
     font-size: 16px;
     background: #ffffff;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .mobile-account-menu {
+    display: none;
+    position: fixed;
+    top: 70px;
+    right: 16px;
+    width: 160px;
+    background: #091931;
+    border-radius: 16px 0 16px 16px;
+    padding: 14px 0;
+    z-index: 4000;
+    flex-direction: column;
+  }
+
+  .mobile-account-menu--show {
+    display: flex;
+  }
+
+  .mobile-account-menu a,
+  .mobile-account-menu button {
+    padding: 12px 24px;
+    color: #cdcdcd;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .mobile-account-menu a:hover,
+  .mobile-account-menu button:hover {
+    color: #ffffff;
   }
 }

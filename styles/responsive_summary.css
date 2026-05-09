@@ -5,8 +5,18 @@
 }
 
 @media (max-width: 900px) {
-  #sidebar-container,
-  #header-container,
+  #sidebar-container {
+    display: none !important;
+  }
+
+  #header-container {
+    display: block;
+    position: static;
+    height: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
   .topbar,
   .greeting {
     display: none;
@@ -146,7 +156,7 @@
 
   .urgent-left {
     gap: 12px;
-    margin:auto;
+    margin: auto;
   }
 
   .urgent-right {

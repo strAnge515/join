@@ -99,7 +99,6 @@
 }
 
 @media (max-width: 900px) {
-  #header-container,
   #sidebar-container {
     display: none !important;
   }

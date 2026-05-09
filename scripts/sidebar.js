@@ -1,6 +1,3 @@
-/**
- * Initializes the sidebar by fetching the template and applying path corrections.
- */
 async function initSidebar() {
   try {
     const isRoot = !window.location.pathname.includes('/pages/');
@@ -31,13 +28,6 @@ function setActiveSidebar() {
   });
 }
 
-
-/**
- * Adjusts the asset and link paths in the loaded HTML based on the current directory.
- * @param {string} htmlText - The loaded HTML string.
- * @param {boolean} isRoot - True if the current page is in the root directory.
- * @returns {string} The HTML string with corrected paths.
- */
 function adjustSidebarPaths(htmlText, isRoot) {
     if (isRoot) {
         return htmlText.replace(/href="\.\/(?!assets)/g, 'href="./pages/');
@@ -47,11 +37,6 @@ function adjustSidebarPaths(htmlText, isRoot) {
     }
 }
 
-
-/**
- * Updates the visibility of the sidebar navigation based on login status.
- * @param {boolean} isLoggedIn - The current login status.
- */
 function updateSidebarVisibility(isLoggedIn) {
     const loggedInNav = document.getElementById('sidebar-nav-logged-in');
     const guestNav = document.getElementById('sidebar-nav-guest');
@@ -60,6 +45,16 @@ function updateSidebarVisibility(isLoggedIn) {
         loggedInNav.style.display = isLoggedIn ? 'block' : 'none';
         guestNav.style.display = isLoggedIn ? 'none' : 'block';
     }
+}
+
+function setActiveMobileNav() {
+  const links = document.querySelectorAll('.mobile-bottom-nav a');
+  const currentPage = window.location.pathname.split('/').pop();
+
+  links.forEach((link) => {
+    const href = link.getAttribute('href').split('/').pop();
+    link.classList.toggle('active', href === currentPage);
+  });
 }
 
 initSidebar();
