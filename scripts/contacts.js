@@ -50,23 +50,39 @@ window.addEventListener('load', () => {
 });
 
 /**
- * Adds event listeners to the edit and delete buttons in the contact details view.
+ * Adds a click event listener to the edit contact button
+ * and opens the edit contact dialog for the selected contact.
  */
-function addDetailEventListeners() {
+function editBtnListener() {
   const editBtnRef = document.getElementById('editContactBtn');
-  const deleteBtnRef = document.getElementById('deleteContactBtn');
   if (editBtnRef) {
     editBtnRef.addEventListener('click', (e) => {
       const id = e.currentTarget.dataset.id;
       openEditContactDialog(id);
     });
   }
+}
+
+/**
+ * Adds a click event listener to the delete contact button
+ * and deletes the selected contact.
+ */
+function deleteBtnListener() {
+  const deleteBtnRef = document.getElementById('deleteContactBtn');
   if (deleteBtnRef) {
     deleteBtnRef.addEventListener('click', (e) => {
       const id = e.currentTarget.dataset.id;
       deleteThisContact(id);
     });
   }
+}
+
+/**
+ * Adds event listeners to the edit and delete buttons in the contact details view.
+ */
+function addDetailEventListeners() {
+  editBtnListener();
+  deleteBtnListener();
 }
 
 /**
@@ -97,6 +113,7 @@ function addEventListenersToDetailContact() {
  * @param {HTMLElement} element - The clicked contact element.
  * @param {Object} contact - The selected contact data.
  */
+// prettier-ignore
 export function showContactDetails(element, contact) {
   if (state.activeContactId === contact.id && window.innerWidth > 900) return;
   state.activeContactId = contact.id;
@@ -104,11 +121,7 @@ export function showContactDetails(element, contact) {
   const initials = contact.firstName[0] + contact.lastName[0];
   const color = contact.color;
   toggleActiveContact(element);
-  contactDetailsRef.innerHTML = getContactDetailTemplate(
-    contact,
-    initials,
-    color,
-  );
+  contactDetailsRef.innerHTML = getContactDetailTemplate(contact, initials, color);
   openContactDetails();
   addSlideInAnimation('#contactDetailCard', 100);
   addEventListenersToDetailContact();
