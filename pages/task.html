@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join</title>
+    <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../styles/sidebar.css" />
     <link rel="stylesheet" href="../styles/task.css" />
     <link rel="stylesheet" href="../styles/header.css" />
-    <link rel="stylesheet" href="../style.css" />
 
+    <script defer src="../scripts/auth-guard.js"></script>
     <script defer src="../scripts/sidebar.js"></script>
     <script defer src="../scripts/header.js"></script>
     <script type="module" defer src="../scripts/tasks.js"></script>
@@ -17,28 +18,20 @@
   <body>
     <div id="sidebar-container"></div>
     <div id="header-container"></div>
-
     <main class="main-content">
       <h1 class="main-title">Add Task</h1>
 
       <form class="task-form" id="task-form">
         <section class="wrapper-add-task">
           <section class="wrapper-add-task-left-side">
-            <!-- Title -->
             <div class="form-group">
               <label class="task-form-label" for="task-title">
                 <p>Title</p>
                 <p class="star">*</p>
               </label>
-              <input
-                class="task-form-input flex-center-space-between"
-                type="text"
-                id="task-title"
-                placeholder="Enter a title"
-                required />
+              <input class="task-form-input flex-center-space-between" type="text" id="task-title" placeholder="Enter a title" required />
             </div>
 
-            <!-- Description -->
             <div class="form-group">
               <label class="task-form-label" for="task-description">
                 <p>Description</p>
@@ -47,9 +40,8 @@
               <img id="resize" class="resize-img" src="../assets/img/Recurso 1 1.svg" alt="resizefield" />
             </div>
 
-            <!-- Due Date -->
             <div class="form-group">
-              <label class="task-form-label" id="task-date">
+              <label class="task-form-label">
                 <p>Due date</p>
                 <p class="star">*</p>
               </label>
@@ -70,29 +62,21 @@
 
           <div class="add-task-seperator"></div>
           <section class="wrapper-add-task-right-side">
-            <!-- Prio -->
             <div class="form-group">
               <label class="task-form-label">Priority</label>
               <div class="task-form-prio-group" id="prio-group">
-                <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">
-                  Urgent<img src="../assets/img/Property 1=Urgent.svg" alt="urgendimg" />
-                </button>
-                <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">
-                  Medium<img src="../assets/img/Property 1=Medium.svg" alt="mediumimg" />
-                </button>
-                <button type="button" class="prio-btn prio-btn--low" data-prio="low">
-                  Low<img src="../assets/img/Property 1=Low.svg" alt="lowimg" />
-                </button>
+                <button type="button" class="prio-btn prio-btn--urgent" data-prio="urgent">Urgent<img src="../assets/img/Property 1=Urgent.svg" alt="urgendimg" /></button>
+                <button type="button" class="prio-btn prio-btn--medium selected-medium" data-prio="medium">Medium<img src="../assets/img/Property 1=Medium.svg" alt="mediumimg" /></button>
+                <button type="button" class="prio-btn prio-btn--low" data-prio="low">Low<img src="../assets/img/Property 1=Low.svg" alt="lowimg" /></button>
               </div>
             </div>
 
-            <!-- Assigned To -->
             <section class="form-group form-group--full">
               <label class="task-form-label">Assigned to</label>
               <div class="assigned-dropdown">
                 <div class="task-form-input flex-center-space-between assigned-to" id="assigned-toggle">
-                  <input id="assigned-placeholder" placeholder="Select contacts to assign" class="input-assigned-to"></input>
-                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-assignet-to" class="arrow-img"/>
+                  <input id="assigned-placeholder" placeholder="Select contacts to assign" class="input-assigned-to" />
+                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-assignet-to" class="arrow-img" />
                   <img src="../assets/img/arrow_drop_down.svg" alt="arrow-up" id="arrow-up-assigned-to" class="d-none arrow-img" />
                 </div>
                 <ul class="assigned-options d-none" id="assigned-options"></ul>
@@ -100,13 +84,12 @@
               <div class="assigned-avatars" id="assigned-avatars"></div>
             </section>
 
-            <!-- Category -->
             <section class="form-group">
               <p>Category <span class="star">*</span></p>
-              <div class="task-form-select" id="task-category">
-                <div class="selected-option flex-center-space-between" id="selected-category" data-value="">
+              <div id="task-category">
+                <div class="task-form-input flex-center-space-between task-form-select category" id="selected-category" data-value="">
                   <p>Select task category</p>
-                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-category" class="arrow-img"/>
+                  <img src="../assets/img/arrow_drop_downaa.svg" alt="arrow-down" id="arrow-down-category" class="arrow-img" />
                   <img src="../assets/img/arrow_drop_down.svg" alt="arrow-up" id="arrow-up-category" class="d-none arrow-img" />
                 </div>
                 <div class="dropdown-options d-none" id="category-options">
@@ -120,7 +103,6 @@
               </div>
             </section>
 
-            <!-- Subtasks -->
             <section class="form-group">
               <label class="task-form-label">Subtasks</label>
               <div class="task-form-subtask-input-row">
@@ -139,16 +121,24 @@
             </section>
           </section>
         </section>
-        <!-- Actions -->
-        <div class="task-form-actions">
+        <section class="task-form-actions">
           <div>
-            <p class="star">*</p>
+            <p class="star star-required">*</p>
             <p>This field is required</p>
           </div>
-          <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
-          <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
-        </div>
+          <div class="btn-action-wrapper">
+            <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
+            <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
+          </div>
+        </section>
       </form>
     </main>
+
+    <dialog class="subtask-added" id="subtask-added">
+      <div class="added-dialog-content-wrapper">
+        <p>Task added to board</p>
+        <img src="../assets/img/Icons.svg" alt="icon">
+      </div>
+    </dialog>
   </body>
 </html>

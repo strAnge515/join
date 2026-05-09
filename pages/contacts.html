@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../styles/sidebar.css" />
     <link rel="stylesheet" href="../styles/header.css" />
+
+    <script defer src="../scripts/auth-guard.js"></script>
     <script defer src="../scripts/sidebar.js"></script>
     <script defer src="../scripts/header.js"></script>
-    <script type="module" src="../scripts/backend-contacts.js"></script>
     <link rel="stylesheet" href="../styles/contacts.css" />
     <link rel="stylesheet" href="../styles/contact-dialog.css" />
     <link rel="stylesheet" href="../styles/responsive_contacts.css" />
@@ -19,10 +20,9 @@
     <script type="module" src="../scripts/contacts-responsive.js"></script>
   </head>
   <body>
-    <!-- Sidenavigation -->
     <div id="sidebar-container"></div>
     <div id="header-container"></div>
-    <div class="content">
+    <main class="main-content contacts-layout">
       <div class="contact-container">
         <button class="add-btn" id="addContactBtn">
           <span class="add-btn-text">Add new contact</span>
@@ -55,7 +55,7 @@
           Contact succesfully created
         </div>
       </div>
-    </div>
+    </main>
     <dialog id="addContactDialog">
       <div class="dialog">
         <div class="dialog-left">
@@ -111,5 +111,31 @@
       </div>
     </dialog>
     <dialog id="editContactDialog"></dialog>
+    <nav class="mobile-bottom-nav">
+      <a href="summary.html">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/summary_icon.svg" alt=""
+        /></span>
+        <span>Summary</span>
+      </a>
+      <a href="task.html">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/add_task.svg" alt=""
+        /></span>
+        <span>Add Task</span>
+      </a>
+      <a href="board.html">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/board.svg" alt=""
+        /></span>
+        <span>Board</span>
+      </a>
+      <a href="contacts.html" class="active">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/contact.svg" alt=""
+        /></span>
+        <span>Contacts</span>
+      </a>
+    </nav>
   </body>
 </html>

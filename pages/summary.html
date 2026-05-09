@@ -13,15 +13,18 @@
   <link rel="stylesheet" href="../styles/summary.css" />
   <link rel="stylesheet" href="../styles/responsive_summary.css" />
 
+  <script defer src="../scripts/auth-guard.js"></script>
   <script defer src="../scripts/sidebar.js"></script>
   <script defer src="../scripts/header.js"></script>
+
+
 </head>
 
 <body>
 
   <header class="mobile-topbar">
     <img src="../assets/img/join_logo.svg" alt="Join Logo" class="mobile-topbar__logo">
-    <div class="mobile-topbar__profile">C</div>
+    <div class="mobile-topbar__profile" id="mobile-profile"></div>
   </header>
 
   <div id="sidebar-container"></div>
@@ -129,7 +132,7 @@
       <span class="mobile-bottom-nav__icon"><img src="../assets/img/board.svg" alt=""></span>
       <span>Board</span>
     </a>
-    <a href="contact.html">
+    <a href="contacts.html">
       <span class="mobile-bottom-nav__icon"><img src="../assets/img/contact.svg" alt=""></span>
       <span>Contacts</span>
     </a>

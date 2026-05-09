@@ -2,20 +2,33 @@
  * Initializes the sidebar by fetching the template and applying path corrections.
  */
 async function initSidebar() {
-    try {
-        const isRoot = !window.location.pathname.includes('/pages/');
-        const templatePath = isRoot ? './pages/sidebar.html' : 'sidebar.html';
-        const response = await fetch(templatePath);
-        
-        if (response.ok) {
-            let htmlText = await response.text();
-            htmlText = adjustSidebarPaths(htmlText, isRoot);
-            document.getElementById('sidebar-container').innerHTML = htmlText;
-            updateSidebarVisibility(true);
-        }
-    } catch (error) {
-        console.error(error);
+  try {
+    const isRoot = !window.location.pathname.includes('/pages/');
+    const templatePath = isRoot ? './pages/sidebar.html' : 'sidebar.html';
+    const response = await fetch(templatePath);
+
+    if (response.ok) {
+      let htmlText = await response.text();
+      htmlText = adjustSidebarPaths(htmlText, isRoot);
+      document.getElementById('sidebar-container').innerHTML = htmlText;
+
+      updateSidebarVisibility(true);
+      setActiveSidebar();
+      setActiveMobileNav();
     }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function setActiveSidebar() {
+  const links = document.querySelectorAll('.nav-item a');
+  const currentPage = window.location.pathname.split('/').pop();
+
+  links.forEach((link) => {
+    const href = link.getAttribute('href').split('/').pop();
+    link.classList.toggle('active', href === currentPage);
+  });
 }
 
 
@@ -48,6 +61,5 @@ function updateSidebarVisibility(isLoggedIn) {
         guestNav.style.display = isLoggedIn ? 'none' : 'block';
     }
 }
-
 
 initSidebar();

@@ -33,6 +33,10 @@ function addTask() {
     let object = createTaskObjekt(informartionsFromInput);
 
     await saveTask(object);
+    document.getElementById('subtask-added').showModal();
+    setTimeout(() => {
+      window.location.href = 'board.html'
+    }, 900);
   });
 }
 
@@ -83,21 +87,33 @@ function addSubtask() {
   if (subtaskValue === '') return;
   const li = document.createElement('li');
   li.innerHTML = getSubtaskTemplate(subtaskValue);
+  li.className = `subtask-item`;
   subtaskList.appendChild(li);
   addSubtaskEventListeners(li);
   subtaskInput.value = '';
 }
 
 function getSubtaskTemplate(subtaskValue) {
-  return `<span>${subtaskValue}</span>
-                    <button class="edit-btn"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
-                     <button class="delete-btn"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>`;
+  return `<div class="subtask-left">
+            <span>${subtaskValue}</span>
+          </div>
+          <div class="subtask-eddit-buttons">
+            <button class="edit-btn subtask-buttons"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
+            <div class="subtask-button-seperator"></div>
+            <button class="delete-btn subtask-buttons"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
+          </div>`;
 }
 
 function getEditTemplate(subtaskText) {
-  return `<input class="subtask-edit-value" type="text" value="${subtaskText}" />
-             <button class="edit-delete-btn"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
-             <button class="edit-confirm-btn"><img src="../assets/img/Property 1=check.svg" alt="checkicon"></button>`;
+  return `<div class="input-wrapper-edit">
+            <input class="subtask-edit-value" type="text" value="${subtaskText}" />
+          </div>
+          <div class="subtask-eddit-buttons">
+            <button class="edit-delete-btn subtask-buttons"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol" /></button>
+            <div class="subtask-button-seperator"></div>
+            <button class="edit-confirm-btn subtask-buttons"><img src="../assets/img/Property 1=check.svg" alt="checkicon" /></button>
+          </div>
+`;
 }
 
 function addSubtaskEventListeners(li) {
@@ -107,10 +123,14 @@ function addSubtaskEventListeners(li) {
   editBtn.addEventListener('click', () => {
     let subtaskText = li.querySelector('span').textContent;
     li.innerHTML = getEditTemplate(subtaskText);
+    li.classList.add('is-editing');
+    let inputSubtask = li.querySelector('.subtask-edit-value');
+    inputSubtask.focus();
     li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
     li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
       subtaskText = li.querySelector('.subtask-edit-value').value;
       li.innerHTML = getSubtaskTemplate(subtaskText);
+      li.classList.remove('is-editing');
       addSubtaskEventListeners(li);
     });
   });
@@ -158,8 +178,7 @@ dropdownOptions.forEach((button) => {
     dropdownOptionsContainer.classList.add('d-none');
     document.getElementById('arrow-down-category').classList.remove('d-none');
     document.getElementById('arrow-up-category').classList.add('d-none');
-    document.getElementById('task-category').classList.remove('category-height');
-    document.getElementById('task-category').classList.remove('open');
+    document.getElementById('selected-category').classList.remove('open');
   });
 });
 
@@ -257,8 +276,7 @@ function toggleCategoryDropdown() {
   document.getElementById('selected-category').addEventListener('click', () => {
     document.getElementById('arrow-down-category').classList.toggle('d-none');
     document.getElementById('arrow-up-category').classList.toggle('d-none');
-    document.getElementById('task-category').classList.toggle('category-height');
-    document.getElementById('task-category').classList.toggle('open');
+    document.getElementById('selected-category').classList.toggle('open');
   });
 }
 
@@ -267,7 +285,7 @@ function stopAssignedInputBubbling() {
   assigendToInput.addEventListener('click', (event) => {
     event.stopPropagation();
   });
-assigendToInput.addEventListener('input', (filterContacts));
+  assigendToInput.addEventListener('input', filterContacts);
 }
 
 function initResizeHandle() {
@@ -320,5 +338,22 @@ function insertDate() {
   if (!day || !month || !year) return '';
   return `${year}-${month}-${day}`;
 }
+
+function clearTask() {
+  document.getElementById('task-title').value = '';
+  document.getElementById('task-description').value = '';
+  document.querySelectorAll('.date-input-field').forEach(input => input.value = '');
+  document.querySelectorAll('.prio-btn').forEach(btn => btn.classList.remove('selected-urgent', 'selected-medium', 'selected-low'));
+  document.querySelector('.prio-btn--medium').classList.add('selected-medium');
+  document.getElementById('subtask-input').value = '';
+  document.getElementById('subtask-list').innerHTML = '';
+  document.getElementById('selected-category').querySelector('p').textContent = 'Select task category';
+  document.getElementById('selected-category').dataset.value = '';
+  selectedContacts = [];
+  document.getElementById('assigned-avatars').innerHTML = '';
+  document.getElementById('assigned-placeholder').value = '';
+}
+
+document.getElementById('btn-clear').addEventListener('click', clearTask);
 
 document.addEventListener('DOMContentLoaded', init);
