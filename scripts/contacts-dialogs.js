@@ -173,6 +173,11 @@ async function closeDialogAndRender(dialogRef) {
   await renderContacts();
 }
 
+/**
+ * Focuses an input element and places the cursor at the end.
+ *
+ * @param {string} elementId - The ID of the element to focus.
+ */
 function focusElement(elementId) {
   const focusElement = document.getElementById(elementId);
   focusElement.focus();
