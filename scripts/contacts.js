@@ -265,7 +265,7 @@ async function executeContactDelete(overlay, contactId) {
  * Shows a custom confirmation overlay before deleting a contact.
  * @param {string} contactId - The Firebase ID of the contact to delete.
  */
-function deleteThisContact(contactId) {
+export function deleteThisContact(contactId) {
   const overlay = document.createElement('div');
   overlay.className = 'confirm-overlay';
   overlay.innerHTML = getContactConfirmHTML();
