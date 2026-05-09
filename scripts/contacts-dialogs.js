@@ -62,6 +62,22 @@ function addEditDialogEventListeners() {
   addEventListenersToCloseDialog(dialogRef);
 }
 
+export function addEventListenersToCloseDialog(dialogRef) {
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      if (dialogRef.open) {
+        event.preventDefault();
+        closeDialog(dialogRef);
+      }
+    }
+  });
+  dialogRef.addEventListener('click', (event) => {
+    if (event.target === dialogRef) {
+      closeDialog(event.target);
+    }
+  });
+}
+
 /**
  * Opens the dialog to edit an existing contact and pre-fills the form with the contact's current information.
  *
@@ -141,26 +157,6 @@ export function deleteThisContact(contactId) {
     .addEventListener('click', () => executeContactDelete(overlay, contactId));
 }
 
-/**
- * Adds event listeners to close a dialog when clicking outside of it or pressing the Escape key.
- *
- * @param {HTMLElement} dialogRef - The dialog element.
- */
-function addEventListenersToCloseDialog(dialogRef) {
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      if (dialogRef.open) {
-        event.preventDefault();
-        closeDialog(dialogRef);
-      }
-    }
-  });
-  dialogRef.addEventListener('click', (event) => {
-    if (event.target === dialogRef) {
-      closeDialog(event.target);
-    }
-  });
-}
 
 /**
  * Closes a dialog and re-renders the contact list.
