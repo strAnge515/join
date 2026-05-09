@@ -142,11 +142,10 @@ export function deleteThisContact(contactId) {
 }
 
 /**
- * Adds event listeners to close a dialog when clicking outside of it or pressing the Escape key.
- *
+ * Closes a dialog when the Esc key is pressed.
  * @param {HTMLElement} dialogRef - The dialog element.
  */
-function addEventListenersToCloseDialog(dialogRef) {
+function closeWithEscKey(dialogRef) {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
       if (dialogRef.open) {
@@ -155,11 +154,28 @@ function addEventListenersToCloseDialog(dialogRef) {
       }
     }
   });
+}
+
+/**
+ * Closes a dialog when clicking outside of it.
+ * @param {HTMLElement} dialogRef - The dialog element.
+ */
+function closeWithOutsideClick(dialogRef) {
   dialogRef.addEventListener('click', (event) => {
     if (event.target === dialogRef) {
       closeDialog(event.target);
     }
   });
+}
+
+/**
+ * Adds event listeners to close a dialog when clicking outside of it or pressing the Escape key.
+ *
+ * @param {HTMLElement} dialogRef - The dialog element.
+ */
+function addEventListenersToCloseDialog(dialogRef) {
+  closeWithEscKey(dialogRef);
+  closeWithOutsideClick(dialogRef);
 }
 
 /**
