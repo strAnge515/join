@@ -69,17 +69,18 @@ function getEditContactTemplate(contact, initials, color) {
               <img class="close-icon" src="../assets/img/contacts/close.svg" alt="Close button"></button>
             <form id="editContactForm">
             <div class="input-wrapper">
-              <input id="nameInputEdit" type="text" placeholder="Vor- und Nachname" value="${contact.firstName} ${contact.lastName}" required 
-              pattern="^[A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)? [A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)?$"/>
+              <input id="nameInputEdit" type="text" placeholder="Vor- und Nachname" value="${contact.firstName} ${contact.lastName}" />
+              <small id="nameErrorEdit" class="error"></small>
               <img src="../assets/img/contacts/person.svg" alt="">
             </div>
             <div class="input-wrapper">
-              <input id="emailInputEdit" type="email" placeholder="Email" value="${contact.email}" required />
+              <input id="emailInputEdit" type="text" placeholder="Email" value="${contact.email}"  />
+              <small id="emailErrorEdit" class="error"></small>
               <img src="../assets/img/contacts/mail.svg" alt="">
             </div>
             <div class="input-wrapper">
-              <input id="phoneInputEdit" type="tel" placeholder="Phone" value="${contact.phone}" required 
-               pattern="^\\+?[0-9\\s\\-\\/]{6,20}$" />
+              <input id="phoneInputEdit" type="text" placeholder="Phone" value="${contact.phone}"/>
+              <small id="phoneErrorEdit" class="error"></small>
               <img src="../assets/img/contacts/call.svg" alt="">
             </div>
             <div class="action-btns">

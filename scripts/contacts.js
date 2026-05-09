@@ -336,16 +336,108 @@ function removeSlideInAnimation(ref, time) {
 }
 
 // Handles the submission of the add contact form, saves the new contact to the database, re-renders the contact list, and shows the details of the newly added contact
+// async function handleAddContact(event) {
+//   event.preventDefault();
+//   const contactData = getContactData();
+//   const formattedData = {
+//     ...contactData,
+//     name: capitalize(contactData.name),
+//   };
+//   const id = await saveContact(formattedData);
+//   await renderContacts();
+//   showNewContactDetails(id, formattedData);
+//   addSlideInAnimation('#contactCreatedSignal', 500);
+//   removeSlideInAnimation('#contactCreatedSignal', 3000);
+//   clearInputs('newContactForm');
+//   closeDialog(addContactDialog.querySelector('.close-btn'));
+// }
+
 async function handleAddContact(event) {
   event.preventDefault();
-  const contactData = getContactData();
-  const formattedData = {
-    ...contactData,
-    name: capitalize(contactData.name),
+  if (!validateForm()) return;
+  const contactData = formatContactData();
+  const id = await saveContact(contactData);
+  finishContactCreation(id, contactData);
+}
+
+function validateForm() {
+  let valid = true;
+  valid &= checkInput('nameInputAdd', 'nameError', 'Name fehlt');
+  valid &= checkName('nameInputAdd', 'nameError');
+  valid &= checkInput('emailInputAdd', 'emailError', 'Email fehlt');
+  valid &= checkEmail('emailInputAdd', 'emailError');
+  valid &= checkInput('phoneInputAdd', 'phoneError', 'Telefon fehlt');
+  valid &= checkPhone('phoneInputAdd', 'phoneError');
+  return Boolean(valid);
+}
+
+function checkName(inputId, errorId) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+  const regex =
+    /^[A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)? [A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)?$/;
+  if (!regex.test(input.value.trim())) {
+    error.innerText = 'Vor- und Nachname eingeben';
+    input.classList.add('input-error');
+    return false;
+  }
+  error.innerText = '';
+  input.classList.remove('input-error');
+  return true;
+}
+
+function checkEmail(inputId, errorId) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!regex.test(input.value.trim())) {
+    error.innerText = 'Ungültige Email';
+    input.classList.add('input-error');
+    return false;
+  }
+  error.innerText = '';
+  input.classList.remove('input-error');
+  return true;
+}
+
+function checkPhone(inputId, errorId) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+  const regex = /^\+?[0-9]+$/;
+  if (!regex.test(input.value.trim())) {
+    error.innerText = 'Ungültige Telefonnummer';
+    input.classList.add('input-error');
+    return false;
+  }
+  error.innerText = '';
+  input.classList.remove('input-error');
+  return true;
+}
+
+function checkInput(inputId, errorId, message) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+  if (!input.value.trim()) {
+    error.innerText = message;
+    input.classList.add('input-error');
+    return false;
+  }
+  error.innerText = '';
+  input.classList.remove('input-error');
+  return true;
+}
+
+function formatContactData() {
+  const data = getContactData();
+  return {
+    ...data,
+    name: capitalize(data.name),
   };
-  const id = await saveContact(formattedData);
+}
+
+async function finishContactCreation(id, contactData) {
   await renderContacts();
-  showNewContactDetails(id, formattedData);
+  showNewContactDetails(id, contactData);
   addSlideInAnimation('#contactCreatedSignal', 500);
   removeSlideInAnimation('#contactCreatedSignal', 3000);
   clearInputs('newContactForm');
@@ -387,9 +479,9 @@ function showUpdatedContactDetails(contactId) {
   }
 }
 
-// Handles the submission of the edit contact form, updates the contact in the database, re-renders the contact list, and shows the details of the updated contact
 async function editContact(event, contactId) {
   event.preventDefault();
+  if (!validateEditForm()) return;
   const dialogRef = document.getElementById('editContactDialog');
   const contactData = getContactFormData(dialogRef);
   const formattedData = {
@@ -402,6 +494,33 @@ async function editContact(event, contactId) {
   const element = document.querySelector(`.contact[data-id="${contactId}"]`);
   element.scrollIntoView();
 }
+
+function validateEditForm() {
+  let valid = true;
+  valid &= checkInput('nameInputEdit', 'nameErrorEdit', 'Name fehlt');
+  valid &= checkName('nameInputEdit', 'nameErrorEdit');
+  valid &= checkInput('emailInputEdit', 'emailErrorEdit', 'Email fehlt');
+  valid &= checkEmail('emailInputEdit', 'emailErrorEdit');
+  valid &= checkInput('phoneInputEdit', 'phoneErrorEdit', 'Telefon fehlt');
+  valid &= checkPhone('phoneInputEdit', 'phoneErrorEdit');
+  return Boolean(valid);
+}
+
+// Handles the submission of the edit contact form, updates the contact in the database, re-renders the contact list, and shows the details of the updated contact
+// async function editContact(event, contactId) {
+//   event.preventDefault();
+//   const dialogRef = document.getElementById('editContactDialog');
+//   const contactData = getContactFormData(dialogRef);
+//   const formattedData = {
+//     ...contactData,
+//     name: capitalize(contactData.name),
+//   };
+//   await updateContactData(contactId, formattedData);
+//   await closeDialogAndRender(dialogRef);
+//   showUpdatedContactDetails(contactId);
+//   const element = document.querySelector(`.contact[data-id="${contactId}"]`);
+//   element.scrollIntoView();
+// }
 
 //Add event listeners to the add contact button, the close buttons in the dialogs, and the submit event of the add contact form
 function addEventListeners() {

@@ -108,12 +108,12 @@ dialog::backdrop {
 .input-wrapper {
   width: 100%;
   position: relative;
+  margin-bottom: 32px;
 }
 
 input {
   width: 100%;
   padding: 0 0px 0 21px;
-  margin-bottom: 32px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 20px;
@@ -134,7 +134,7 @@ input:focus {
 .input-wrapper img {
   position: absolute;
   right: 21px;
-  top: 25%;
+  top: 48%;
   transform: translatey(-50%);
   width: 18px;
   pointer-events: none;
@@ -225,4 +225,13 @@ input:focus {
 
 .no-scroll {
   overflow: hidden;
+}
+
+.error {
+  color: #e60026;
+  font-size: 16px;
+}
+
+.input-error {
+  border: 1px solid #e60026;
 }
