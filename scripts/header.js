@@ -80,19 +80,21 @@ function setupHeaderMenu() {
 }
 
 function setupMobileAccountMenu() {
-  const mobileProfile = document.getElementById("mobile-profile");
   const mobileMenu = document.getElementById("mobile-account-menu");
   const logoutBtn = document.getElementById("mobile-logout-btn");
 
-  if (!mobileProfile || !mobileMenu) return;
-
-  mobileProfile.addEventListener("click", (event) => {
-    event.stopPropagation();
-    mobileMenu.classList.toggle("mobile-account-menu--show");
-  });
-
   document.addEventListener("click", (event) => {
-    if (!mobileMenu.contains(event.target) && !mobileProfile.contains(event.target)) {
+    const mobileProfile = event.target.closest("#mobile-profile");
+
+    if (!mobileMenu) return;
+
+    if (mobileProfile) {
+      event.stopPropagation();
+      mobileMenu.classList.toggle("mobile-account-menu--show");
+      return;
+    }
+
+    if (!mobileMenu.contains(event.target)) {
       mobileMenu.classList.remove("mobile-account-menu--show");
     }
   });

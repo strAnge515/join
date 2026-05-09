@@ -102,7 +102,7 @@
 
   #header-container .header-main,
   #header-container .account-menu {
-    display: none !important;
+    display: none;
   }
 
   .mobile-topbar {
@@ -151,9 +151,9 @@
     flex-direction: column;
   }
 
-  .mobile-account-menu--show {
-    display: flex;
-  }
+.mobile-account-menu.mobile-account-menu--show {
+  display: flex !important;
+}
 
   .mobile-account-menu a,
   .mobile-account-menu button {
