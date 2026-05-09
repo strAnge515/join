@@ -145,16 +145,15 @@ async function executeContactDelete(overlay, contactId) {
  * @param {string} contactId - The Firebase ID of the contact to delete.
  */
 export function deleteThisContact(contactId) {
-  const overlay = document.createElement('div');
-  overlay.className = 'confirm-overlay';
-  overlay.innerHTML = getContactConfirmHTML();
-  document.body.appendChild(overlay);
-  overlay
-    .querySelector('#confirmCancelContact')
-    .addEventListener('click', () => overlay.remove());
-  overlay
-    .querySelector('#confirmDeleteContact')
-    .addEventListener('click', () => executeContactDelete(overlay, contactId));
+  const dialog = document.createElement('dialog');
+  dialog.className = 'confirm-overlay';
+  dialog.innerHTML = getContactConfirmHTML();
+  document.body.appendChild(dialog);
+  dialog.showModal();
+  dialog.addEventListener('close', () => dialog.remove());
+  addEventListenersToCloseDialog(dialog);
+  dialog.querySelector('#confirmCancelContact').addEventListener('click', () => dialog.close());
+  dialog.querySelector('#confirmDeleteContact').addEventListener('click', () => executeContactDelete(dialog, contactId));
 }
 
 

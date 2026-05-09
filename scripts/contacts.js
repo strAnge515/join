@@ -129,3 +129,25 @@ export function addEventListeners() {
       newContactForm.addEventListener('submit', handleAddContact);
   }
 }
+
+
+/**
+ * Shows the details of a newly added contact by finding it in the rendered list.
+ * @param {string} id - The Firebase ID of the new contact.
+ * @param {{name: string, email: string, phone: string}} contactData - The contact data.
+ */
+export function showNewContactDetails(id, contactData) {
+  const element = document.querySelector(`.contact[data-id="${id}"]`);
+  if (!element) return;
+  const [firstName, ...rest] = contactData.name.split(' ');
+  const contact = {
+    id,
+    firstName,
+    lastName: rest.join(' '),
+    email: contactData.email,
+    phone: contactData.phone,
+    color: stringToColor(contactData.email),
+  };
+  showContactDetails(element, contact);
+  element.scrollIntoView();
+}

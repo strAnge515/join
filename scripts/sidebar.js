@@ -32,6 +32,16 @@ function setActiveSidebar() {
 }
 
 
+function setActiveMobileNav() {
+  const links = document.querySelectorAll('.mobile-bottom-nav a');
+  const currentPage = window.location.pathname.split('/').pop();
+  links.forEach((link) => {
+    const href = link.getAttribute('href').split('/').pop();
+    link.classList.toggle('active', href === currentPage);
+  });
+}
+
+
 /**
  * Adjusts the asset and link paths in the loaded HTML based on the current directory.
  * @param {string} htmlText - The loaded HTML string.
