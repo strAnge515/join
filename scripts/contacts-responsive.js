@@ -1,4 +1,8 @@
-import { openEditContactDialog, deleteThisContact } from './contacts.js';
+import {
+  openAddContactDialog,
+  openEditContactDialog,
+  deleteThisContact,
+} from './contacts-dialogs.js';
 
 /**
  * Closes the contact details view on mobile devices.

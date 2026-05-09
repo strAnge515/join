@@ -1,11 +1,4 @@
 import {
-  saveContact,
-  loadContacts,
-  deleteContact,
-  updateContact,
-} from './backend-contacts.js';
-
-import {
   openContactDetails,
   addMobileDetailEventListeners,
   addBackwardsBtnListener,
@@ -14,7 +7,23 @@ import {
   removeActiveStateFromContact,
 } from './contacts-responsive.js';
 
-const colors = [
+import {
+  renderContactList,
+  loadAndPrepareContacts,
+  renderContacts,
+  stringToColor,
+  addSlideInAnimation,
+} from './contacts-render.js';
+
+import {
+  openAddContactDialog,
+  openEditContactDialog,
+  deleteThisContact,
+  handleAddContact,
+  closeDialog,
+} from './contacts-dialogs.js';
+
+export const colors = [
   '#FF7A00',
   '#FF5EB3',
   '#6E52FF',
@@ -31,130 +40,14 @@ const colors = [
   '#FF4646',
 ];
 
-let contacts = [];
-let activeContactId = null;
+export const state = {
+  contacts: [],
+  activeContactId: null,
+};
 
-/**
- * Groups contacts by the first letter of their first name.
- *
- * @param {Array<Object>} contacts - The list of contacts to group.
- * @returns {Object<string, Array<Object>>} Grouped contacts by letter.
- */
-function groupContactsByLetter(contacts) {
-  const grouped = {};
-  contacts.forEach((contact) => {
-    const letter = contact.firstName.charAt(0).toUpperCase();
-    if (!grouped[letter]) {
-      grouped[letter] = [];
-    }
-    grouped[letter].push(contact);
-  });
-  return grouped;
-}
 window.addEventListener('load', () => {
   renderContacts();
 });
-
-/**
- * Creates a letter heading element for grouped contacts.
- *
- * @param {string} letter - The grouping letter.
- * @returns {HTMLDivElement} The created letter element.
- */
-function createLetterElement(letter) {
-  const el = document.createElement('div');
-  el.className = 'letter';
-  el.textContent = letter;
-  return el;
-}
-
-/**
- * Creates a contact button element with avatar and contact information.
- *
- * @param {Object} contact - The contact data.
- * @returns {HTMLButtonElement} The created contact button element.
- */
-function createContactElement(contact) {
-  const initials = contact.firstName[0] + contact.lastName[0];
-  const contactBtn = document.createElement('button');
-  contactBtn.className = 'contact';
-  contactBtn.dataset.id = contact.id;
-  contactBtn.addEventListener('click', () => {
-    showContactDetails(contactBtn, contact);
-  });
-  contactBtn.innerHTML = getContactTemplate(contact, initials);
-  return contactBtn;
-}
-
-/**
- * Loads contacts from the database, prepares the data by splitting the name into first and last name and assigning a color based on the email, then returns the prepared contacts
- *
- * @returns {Promise<Array<Object>>} A promise resolving to the prepared contacts.
- */
-export async function loadAndPrepareContacts() {
-  contacts = await loadContacts();
-  if (!contacts || contacts.length === 0) return [];
-  return contacts.map((contact) => {
-    const [firstName, ...rest] = contact.name.split(' ');
-    return {
-      ...contact,
-      firstName,
-      lastName: rest.join(' '),
-      color: stringToColor(contact.email),
-    };
-  });
-}
-
-/**
- * Renders the grouped contact list.
- *
- * @param {HTMLElement} contactlistRef - The contact list container element.
- * @param {Object<string, Array<Object>>} groupedContacts - Contacts grouped by letter.
- */
-function renderContactList(contactlistRef, groupedContacts) {
-  contactlistRef.innerHTML = '';
-  if (Object.keys(groupedContacts).length === 0) {
-    contactlistRef.innerHTML = '<p>Keine Kontakte gefunden</p>';
-    return;
-  }
-  Object.keys(groupedContacts)
-    .sort()
-    .forEach((letter) => {
-      contactlistRef.appendChild(createLetterElement(letter));
-      groupedContacts[letter].forEach((contact) => {
-        contactlistRef.appendChild(createContactElement(contact));
-      });
-    });
-  addEventListeners();
-}
-
-/**
- * Renders all contacts in the contact list.
- *
- * @returns {Promise<void>}
- */
-async function renderContacts() {
-  const contactlistRef = document.getElementById('contact-list');
-  if (!contactlistRef) return;
-  contactlistRef.innerHTML = 'Lade Kontakte...';
-  contacts = await loadAndPrepareContacts();
-  const grouped = groupContactsByLetter(contacts);
-  renderContactList(contactlistRef, grouped);
-}
-
-/**
- * Converts a string into a deterministic avatar color.
- *
- * @param {string} str - The string to convert.
- * @returns {string} The generated color value.
- */
-function stringToColor(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return colors[Math.abs(hash) % colors.length];
-}
 
 /**
  * Adds event listeners to the edit and delete buttons in the contact details view.
@@ -204,9 +97,9 @@ function addEventListenersToDetailContact() {
  * @param {HTMLElement} element - The clicked contact element.
  * @param {Object} contact - The selected contact data.
  */
-function showContactDetails(element, contact) {
-  if (activeContactId === contact.id && window.innerWidth > 900) return;
-  activeContactId = contact.id;
+export function showContactDetails(element, contact) {
+  if (state.activeContactId === contact.id && window.innerWidth > 900) return;
+  state.activeContactId = contact.id;
   const contactDetailsRef = document.getElementById('contact-details');
   const initials = contact.firstName[0] + contact.lastName[0];
   const color = contact.color;
@@ -222,143 +115,12 @@ function showContactDetails(element, contact) {
 }
 
 /**
- * Adds event listeners to close a dialog when clicking outside of it or pressing the Escape key.
- *
- * @param {HTMLElement} dialogRef - The dialog element.
- */
-function addEventListenersToCloseDialog(dialogRef) {
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      if (dialogRef.open) {
-        event.preventDefault();
-        closeDialog(dialogRef);
-      }
-    }
-  });
-  dialogRef.addEventListener('click', (event) => {
-    if (event.target === dialogRef) {
-      closeDialog(event.target);
-    }
-  });
-}
-
-function focusElement(elementId) {
-  const focusElement = document.getElementById(elementId);
-  focusElement.focus();
-  const length = focusElement.value.length;
-  focusElement.setSelectionRange(length, length);
-}
-
-/**
- * Opens the dialog to add a new contact.
- */
-function openAddContactDialog() {
-  const dialogRef = document.getElementById('addContactDialog');
-  dialogRef.showModal();
-  focusElement('nameInputAdd');
-  dialogRef.classList.add('show');
-  addEventListenersToCloseDialog(dialogRef);
-}
-
-/**
- * Adds event listeners to the edit contact dialog form and close button.
- */
-function addEditDialogEventListeners() {
-  const dialogRef = document.getElementById('editContactDialog');
-  const deleteBtnRef = document.getElementById('deleteContactBtnEditDialog');
-  const form = dialogRef.querySelector('form');
-  form.addEventListener('submit', (event) => {
-    editContact(event, activeContactId);
-  });
-  deleteBtnRef.addEventListener('click', (event) => {
-    deleteThisContact(activeContactId);
-  });
-  addEventListenersToCloseDialog(dialogRef);
-}
-
-/**
- * Opens the dialog to edit an existing contact and pre-fills the form with the contact's current information.
- *
- * @param {string} contactId - The ID of the contact to edit.
- */
-export function openEditContactDialog(contactId) {
-  const contact = contacts.find((contact) => contact.id == contactId);
-  const dialogRef = document.getElementById('editContactDialog');
-  const initials = contact.firstName[0] + contact.lastName[0];
-  const color = contact.color;
-  dialogRef.innerHTML = getEditContactTemplate(contact, initials, color);
-  dialogRef.showModal();
-  focusElement('nameInputEdit');
-  dialogRef.classList.add('show');
-  addEditDialogEventListeners();
-  addEventListeners();
-}
-
-/**
- * Closes an open dialog and clears its input fields.
- *
- * @param {HTMLElement} element - An element inside the dialog.
- */
-function closeDialog(element) {
-  const dialogRef = element.closest('dialog');
-  dialogRef.classList.remove('show');
-  setTimeout(() => {
-    dialogRef.close();
-  }, 300);
-  clearInputs(dialogRef);
-}
-
-/**
- * Executes contact deletion and clears the detail view after the overlay is removed.
- * @param {HTMLElement} overlay - The confirm overlay element to remove.
- * @param {string} contactId - The Firebase ID of the contact to delete.
- */
-async function executeContactDelete(overlay, contactId) {
-  overlay.remove();
-  await deleteContact(contactId);
-  renderContacts();
-  document.getElementById('contact-details').innerHTML = '';
-  if (window.innerWidth <= 900) {
-    closeContactDetails();
-    removeActiveStateFromContact();
-  }
-}
-
-/**
- * Shows a custom confirmation overlay before deleting a contact.
- * @param {string} contactId - The Firebase ID of the contact to delete.
- */
-export function deleteThisContact(contactId) {
-  const overlay = document.createElement('div');
-  overlay.className = 'confirm-overlay';
-  overlay.innerHTML = getContactConfirmHTML();
-  document.body.appendChild(overlay);
-  overlay
-    .querySelector('#confirmCancelContact')
-    .addEventListener('click', () => overlay.remove());
-  overlay
-    .querySelector('#confirmDeleteContact')
-    .addEventListener('click', () => executeContactDelete(overlay, contactId));
-}
-
-/**
- * Retrieves the data from the add contact form inputs and returns it as an object.
- */
-function getContactData() {
-  const name = nameInputAdd.value.trim();
-  const email = emailInputAdd.value.trim();
-  const rawPhone = phoneInputAdd.value.trim();
-  const phone = rawPhone.replace(/[^\d+]/g, '');
-  return { name, email, phone };
-}
-
-/**
  * Shows the details of a newly added contact by finding the corresponding contact element in the list and calling the showContactDetails function with the new contact's data.
  *
  * @param {string} id - The ID of the new contact.
  * @param {Object} contactData - The data for the new contact.
  */
-function showNewContactDetails(id, contactData) {
+export function showNewContactDetails(id, contactData) {
   const element = document.querySelector(`.contact[data-id="${id}"]`);
   if (!element) return;
   const [firstName, ...rest] = contactData.name.split(' ');
@@ -375,266 +137,13 @@ function showNewContactDetails(id, contactData) {
 }
 
 /**
- * Clears the input fields in the add contact form after a new contact has been added.
- *
- * @param {string} formId - The ID of the form to clear.
- */
-function clearInputs(formId) {
-  const form = document.getElementById(formId);
-  if (!form) return;
-  const inputs = form.querySelectorAll('input');
-  inputs.forEach((input) => {
-    input.value = '';
-  });
-}
-
-/**
- * Capitalizes the first letter of a string and converts the rest to lowercase.
- *
- * @param {string} fullName - The full name to capitalize.
- * @returns {string} The capitalized name.
- */
-
-function capitalize(fullName) {
-  if (!fullName) return '';
-  return fullName
-    .toLowerCase()
-    .split(' ')
-    .map((word) =>
-      word
-        .split('-')
-        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-        .join('-'),
-    )
-    .join(' ');
-}
-
-/**
- * Adds a slide-in animation to a container.
- *
- * @param {string} ref - The CSS selector for the element to animate.
- * @param {number} time - The delay before starting the animation.
- */
-function addSlideInAnimation(ref, time) {
-  const element = document.querySelector(ref);
-  const detailContainerRef = document.getElementById('detailContainer');
-  detailContainerRef.classList.add('no-scroll');
-  setTimeout(() => {
-    element.addEventListener(
-      'transitionend',
-      () => {
-        detailContainerRef.classList.remove('no-scroll');
-      },
-      { once: true },
-    );
-    element.classList.add('slide-in');
-  }, time);
-}
-
-/**
- * Removes the slide-in animation class from a container.
- *
- * @param {string} ref - The CSS selector for the element to animate.
- * @param {number} time - The delay before starting the animation.
- */
-function removeSlideInAnimation(ref, time) {
-  const element = document.querySelector(ref);
-  setTimeout(() => {
-    element.classList.remove('slide-in');
-  }, time);
-}
-
-/**
- * Handles the creation of a new contact.
- *
- * @param {SubmitEvent} event - The submit event object.
- * @returns {Promise<void>}
- */
-async function handleAddContact(event) {
-  event.preventDefault();
-  if (!validateAddForm()) return;
-  const contactData = formatContactData();
-  const id = await saveContact(contactData);
-  finishContactCreation(id, contactData);
-}
-
-/**
- * Validates the addcontact form inputs.
- *
- * @returns {boolean} True if all inputs are valid, false otherwise.
- */
-function validateAddForm() {
-  let valid = true;
-  valid &= checkInput('nameInputAdd', 'nameError', 'Name fehlt');
-  valid &= checkName('nameInputAdd', 'nameError');
-  valid &= checkInput('emailInputAdd', 'emailError', 'Email fehlt');
-  valid &= checkEmail('emailInputAdd', 'emailError');
-  valid &= checkInput('phoneInputAdd', 'phoneError', 'Telefon fehlt');
-  valid &= checkPhone('phoneInputAdd', 'phoneError');
-  return Boolean(valid);
-}
-
-/**
- * Validates the full name input field.
- *
- * @param {string} inputId - The input element ID.
- * @param {string} errorId - The error element ID.
- * @returns {boolean} True if the name is valid.
- */
-function checkName(inputId, errorId) {
-  const input = document.getElementById(inputId);
-  const error = document.getElementById(errorId);
-  const regex =
-    /^[A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)? [A-Za-zÄÖÜäöüß]+(-[A-Za-zÄÖÜäöüß]+)?$/;
-  if (!regex.test(input.value.trim())) {
-    error.innerText = 'Vor- und Nachname eingeben';
-    input.classList.add('input-error');
-    return false;
-  }
-  error.innerText = '';
-  input.classList.remove('input-error');
-  return true;
-}
-
-/**
- * Validates the email input field.
- *
- * @param {string} inputId - The input element ID.
- * @param {string} errorId - The error element ID.
- * @returns {boolean} True if the email is valid.
- */
-function checkEmail(inputId, errorId) {
-  const input = document.getElementById(inputId);
-  const error = document.getElementById(errorId);
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!regex.test(input.value.trim())) {
-    error.innerText = 'Ungültige Email';
-    input.classList.add('input-error');
-    return false;
-  }
-  error.innerText = '';
-  input.classList.remove('input-error');
-  return true;
-}
-
-/**
- * Validates the phone input field.
- *
- * @param {string} inputId - The input element ID.
- * @param {string} errorId - The error element ID.
- * @returns {boolean} True if the phone number is valid.
- */
-function checkPhone(inputId, errorId) {
-  const input = document.getElementById(inputId);
-  const error = document.getElementById(errorId);
-  const regex = /^\+?[0-9]+$/;
-  if (!regex.test(input.value.trim())) {
-    error.innerText = 'Ungültige Telefonnummer';
-    input.classList.add('input-error');
-    return false;
-  }
-  error.innerText = '';
-  input.classList.remove('input-error');
-  return true;
-}
-
-/**
- * Checks whether an input field is empty.
- *
- * @param {string} inputId - The input element ID.
- * @param {string} errorId - The error element ID.
- * @param {string} message - The error message to display.
- * @returns {boolean} True if the input is valid.
- */
-function checkInput(inputId, errorId, message) {
-  const input = document.getElementById(inputId);
-  const error = document.getElementById(errorId);
-  if (!input.value.trim()) {
-    error.innerText = message;
-    input.classList.add('input-error');
-    return false;
-  }
-  error.innerText = '';
-  input.classList.remove('input-error');
-  return true;
-}
-
-/**
- * Formats the contact data before saving.
- *
- * @returns {{name: string, email: string, phone: string}} The formatted contact data.
- */
-function formatContactData() {
-  const data = getContactData();
-  return {
-    ...data,
-    name: capitalize(data.name),
-  };
-}
-
-/**
- * Finalizes the contact creation process.
- *
- * @param {string} id - The ID of the created contact.
- * @param {{name: string, email: string, phone: string}} contactData - The contact data.
- * @returns {Promise<void>}
- */
-async function finishContactCreation(id, contactData) {
-  await renderContacts();
-  showNewContactDetails(id, contactData);
-  addSlideInAnimation('#contactCreatedSignal', 500);
-  removeSlideInAnimation('#contactCreatedSignal', 3000);
-  closeDialog(addContactDialog.querySelector('.close-btn'));
-}
-
-/**
- * Retrieves the data from the edit contact form inputs and returns it as an object.
- *
- * @param {HTMLElement} dialogRef - The dialog element containing the form.
- * @returns {Object} The contact data.
- */
-function getContactFormData(dialogRef) {
-  const nameInput = dialogRef.querySelector('input[type="text"]');
-  const emailInput = dialogRef.querySelector('input[type="email"]');
-  const phoneInput = dialogRef.querySelector('input[type="tel"]');
-  const rawPhone = phoneInput.value.trim();
-  return {
-    name: nameInput.value.trim(),
-    email: emailInput.value.trim(),
-    phone: rawPhone.replace(/[^\d+]/g, ''),
-  };
-}
-
-/**
- * Updates the contact data in the database with the new values from the edit contact form.
- *
- * @param {string} contactId - The ID of the contact to update.
- * @param {Object} data - The updated contact data.
- * @returns {Promise<void>}
- */
-async function updateContactData(contactId, data) {
-  await updateContact(contactId, data);
-}
-
-/**
- * Closes a dialog and re-renders the contact list.
- *
- * @param {HTMLDialogElement} dialogRef - The dialog element.
- * @returns {Promise<void>}
- */
-async function closeDialogAndRender(dialogRef) {
-  dialogRef.close();
-  await renderContacts();
-}
-
-/**
  * Displays the updated contact details.
  *
  * @param {string} contactId - The ID of the updated contact.
  */
-function showUpdatedContactDetails(contactId) {
-  activeContactId = '';
-  const updatedContact = contacts.find((c) => c.id == contactId);
+export function showUpdatedContactDetails(contactId) {
+  state.activeContactId = '';
+  const updatedContact = state.contacts.find((c) => c.id == contactId);
   if (!updatedContact) return;
   const contactEl = document.querySelector(`.contact[data-id="${contactId}"]`);
   if (contactEl) {
@@ -643,48 +152,9 @@ function showUpdatedContactDetails(contactId) {
 }
 
 /**
- * Handles the contact edit form submission.
- *
- * @param {SubmitEvent} event - The submit event object.
- * @param {string} contactId - The ID of the contact to edit.
- * @returns {Promise<void>}
- */
-async function editContact(event, contactId) {
-  event.preventDefault();
-  if (!validateEditForm()) return;
-  const dialogRef = document.getElementById('editContactDialog');
-  const contactData = getContactFormData(dialogRef);
-  const formattedData = {
-    ...contactData,
-    name: capitalize(contactData.name),
-  };
-  await updateContactData(contactId, formattedData);
-  await closeDialogAndRender(dialogRef);
-  showUpdatedContactDetails(contactId);
-  const element = document.querySelector(`.contact[data-id="${contactId}"]`);
-  element.scrollIntoView();
-}
-
-/**
- * Validates the edit contact form inputs.
- *
- * @returns {boolean} True if all inputs are valid.
- */
-function validateEditForm() {
-  let valid = true;
-  valid &= checkInput('nameInputEdit', 'nameErrorEdit', 'Name fehlt');
-  valid &= checkName('nameInputEdit', 'nameErrorEdit');
-  valid &= checkInput('emailInputEdit', 'emailErrorEdit', 'Email fehlt');
-  valid &= checkEmail('emailInputEdit', 'emailErrorEdit');
-  valid &= checkInput('phoneInputEdit', 'phoneErrorEdit', 'Telefon fehlt');
-  valid &= checkPhone('phoneInputEdit', 'phoneErrorEdit');
-  return Boolean(valid);
-}
-
-/**
  * Adds all required event listeners for contact dialogs and forms.
  */
-function addEventListeners() {
+export function addEventListeners() {
   document
     .getElementById('addContactBtn')
     .addEventListener('click', openAddContactDialog);
