@@ -42,7 +42,7 @@ body {
 
 .main-content {
   position: absolute;
-  top: 0px;
+  top: 80px;
   margin-left: 232px;
   padding: 40px 60px;
   min-height: calc(100vh - 80px);

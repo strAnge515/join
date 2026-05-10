@@ -9,19 +9,19 @@
   <link rel="stylesheet" href="../styles/sidebar.css" />
   <link rel="stylesheet" href="../styles/header.css" />
   <link rel="stylesheet" href="../styles/task.css" />
-  
+
 
   <script defer src="../scripts/auth-guard.js"></script>
   <script defer src="../scripts/sidebar.js"></script>
   <script defer src="../scripts/header.js"></script>
-  
+
 </head>
 
 <body>
-<header class="mobile-topbar">
-  <img src="../assets/img/join_logo.svg" alt="Join Logo" class="mobile-topbar__logo">
-  <div class="mobile-topbar__profile" id="mobile-profile"></div>
-</header>
+  <header class="mobile-topbar">
+    <img src="../assets/img/join_logo.svg" alt="Join Logo" class="mobile-topbar__logo">
+    <div class="mobile-topbar__profile" id="mobile-profile"></div>
+  </header>
 
   <div id="sidebar-container"></div>
   <div id="header-container"></div>
@@ -136,16 +136,17 @@
             <ul class="task-form-subtask-list" id="subtask-list"></ul>
           </section>
         </section>
-        <section class="task-form-actions">
-          <div>
-            <p class="star star-required">*</p>
-            <p>This field is required</p>
-          </div>
-          <div class="btn-action-wrapper">
-            <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
-            <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
-          </div>
-        </section>
+      </section>
+      <section class="task-form-actions">
+        <div>
+          <p class="star star-required">*</p>
+          <p>This field is required</p>
+        </div>
+        <div class="btn-action-wrapper">
+          <button type="button" class="btn btn--secondary" id="btn-clear">Clear ✕</button>
+          <button type="button" class="btn btn--primary" id="btn-create">Create Task ✓</button>
+        </div>
+      </section>
     </form>
   </main>
 
@@ -156,7 +157,7 @@
     </div>
   </dialog>
 
-    <nav class="mobile-bottom-nav">
+  <nav class="mobile-bottom-nav">
     <a href="summary.html">
       <span class="mobile-bottom-nav__icon"><img src="../assets/img/summary_icon.svg" alt=""></span>
       <span>Summary</span>
