@@ -107,11 +107,12 @@ function clearInputs(formId) {
  */
 export function closeDialog(element) {
   const dialogRef = element.closest('dialog');
+  const formId = dialogRef.querySelector('form').id;
   dialogRef.classList.remove('show');
   setTimeout(() => {
     dialogRef.close();
   }, 300);
-  clearInputs(dialogRef);
+  clearInputs(formId);
 }
 
 /**
