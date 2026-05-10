@@ -4,7 +4,11 @@ import {
   updateContact,
 } from './backend-contacts.js';
 
-import { validateAddForm, validateEditForm } from './contacts-validation.js';
+import {
+  validateAddForm,
+  validateEditForm,
+  addClearErrorInputListeners,
+} from './contacts-validation.js';
 
 import {
   state,
@@ -44,6 +48,7 @@ export function openAddContactDialog() {
   focusElement('nameInputAdd');
   dialogRef.classList.add('show');
   addEventListenersToCloseDialog(dialogRef);
+  addClearErrorInputListeners(dialogRef);
 }
 
 /**
@@ -60,6 +65,7 @@ function addEditDialogEventListeners() {
     deleteThisContact(state.activeContactId);
   });
   addEventListenersToCloseDialog(dialogRef);
+  addClearErrorInputListeners(dialogRef);
 }
 
 /**

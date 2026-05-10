@@ -105,3 +105,30 @@ function checkInput(inputId, errorId, message) {
   input.classList.remove('input-error');
   return true;
 }
+
+/**
+ * Adds event listeners to clear error messages when the user starts typing in the input fields.
+ * @param {string} inputId - The ID of the input element.
+ * @param {string} errorId - The ID of the error element.
+ */
+export function addClearErrorInputListeners(dialogRef) {
+  const inputs = dialogRef.querySelectorAll('input');
+  inputs.forEach((input) => {
+    input.addEventListener('focus', () => {
+      clearInputError(input);
+    });
+  });
+}
+
+/**
+ * Clears the error message and error class from an input field.
+ *
+ * @param {HTMLElement} input - The input element to clear errors from.
+ */
+function clearInputError(input) {
+  const error = input.parentElement.querySelector('.error');
+  input.classList.remove('input-error');
+  if (error) {
+    error.innerText = '';
+  }
+}
