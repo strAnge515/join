@@ -47,6 +47,10 @@ body {
   max-width: 1440px;
 }
 
+.mobile-topbar {
+  height: 80px;
+}
+
 @media (max-width: 900px) {
   html,
   body {
