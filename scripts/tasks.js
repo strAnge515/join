@@ -24,11 +24,15 @@ function init() {
   renderAssignedDropdown();
   initDropdownsEventlistener();
   initResizeHandle();
+  initFormValidation();
+  initErrorRemoval();
 }
 
 function addTask() {
-  let addButton = document.getElementById('btn-create');
-  addButton.addEventListener('click', async () => {
+  document.getElementById('task-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const title = document.getElementById('task-title').value;
+    if (!validateInputDate() || !validateInputCategory() || !validateInputTitle()) return;
     let informartionsFromInput = addInformations();
     let object = createTaskObjekt(informartionsFromInput);
 
@@ -80,11 +84,7 @@ function setPriorityButtons() {
   activeButton.forEach((button) => {
     button.addEventListener('click', () => {
       activeButton.forEach((button) => {
-        button.classList.remove(
-          'selected-urgent',
-          'selected-medium',
-          'selected-low',
-        );
+        button.classList.remove('selected-urgent', 'selected-medium', 'selected-low');
       });
       button.classList.add('selected-' + button.dataset.prio);
     });
@@ -138,9 +138,7 @@ function addSubtaskEventListeners(li) {
     li.classList.add('is-editing');
     let inputSubtask = li.querySelector('.subtask-edit-value');
     inputSubtask.focus();
-    li.querySelector('.edit-delete-btn').addEventListener('click', () =>
-      li.remove(),
-    );
+    li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
     li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
       subtaskText = li.querySelector('.subtask-edit-value').value;
       li.innerHTML = getSubtaskTemplate(subtaskText);
@@ -187,9 +185,9 @@ selectCategoryButton.addEventListener('click', () => {
 dropdownOptions.forEach((button) => {
   button.addEventListener('click', (event) => {
     let selectedOption = document.getElementById('selected-category');
-    selectCategoryButton.querySelector('p').textContent =
-      event.currentTarget.textContent;
+    selectCategoryButton.querySelector('p').textContent = event.currentTarget.textContent;
     selectedOption.dataset.value = event.currentTarget.value;
+    document.getElementById('category-hidden').value = event.currentTarget.value;
     dropdownOptionsContainer.classList.add('d-none');
     document.getElementById('arrow-down-category').classList.remove('d-none');
     document.getElementById('arrow-up-category').classList.add('d-none');
@@ -198,9 +196,7 @@ dropdownOptions.forEach((button) => {
 });
 
 function filterContacts() {
-  let registeredPersons = Array.from(
-    document.querySelectorAll('.assigned-option'),
-  );
+  let registeredPersons = Array.from(document.querySelectorAll('.assigned-option'));
   let filerInput = document.getElementById('assigned-placeholder').value;
   for (let i = 0; i < registeredPersons.length; i++) {
     const person = registeredPersons[i];
@@ -283,9 +279,7 @@ function initDropdownsEventlistener() {
 function toggleAssignedDropdown() {
   document.getElementById('assigned-toggle').addEventListener('click', () => {
     document.getElementById('assigned-options').classList.toggle('d-none');
-    document
-      .getElementById('arrow-down-assignet-to')
-      .classList.toggle('d-none');
+    document.getElementById('arrow-down-assignet-to').classList.toggle('d-none');
     document.getElementById('arrow-up-assigned-to').classList.toggle('d-none');
     document.getElementById('assigned-toggle').classList.toggle('open');
   });
@@ -305,6 +299,16 @@ function stopAssignedInputBubbling() {
     event.stopPropagation();
   });
   assigendToInput.addEventListener('input', filterContacts);
+}
+
+function initFormValidation() {
+  let taskButton = document.getElementById('btn-create');
+  taskButton.addEventListener('click', () => {
+    document.getElementById('task-form').classList.add('was-submitted');
+    validateInputDate();
+    validateInputCategory();
+    validateInputTitle();
+  });
 }
 
 function initResizeHandle() {
@@ -358,26 +362,80 @@ function insertDate() {
   return `${year}-${month}-${day}`;
 }
 
+function validateInputTitle() {
+  let taskTitle = document.getElementById('task-title');
+  let errorText = document.getElementById('error-text-title');
+  if (taskTitle.value === '') {
+    taskTitle.classList.add('was-submitted-custom');
+    errorText.classList.remove('d-none');
+    return false;
+  } else {
+    taskTitle.classList.remove('was-submitted-custom');
+    errorText.classList.add('d-none');
+    return true;
+  }
+}
+
+function validateInputDate() {
+  const dateInputContainer = document.getElementById('task-date');
+  const errorText = document.getElementById('error-text-date');
+  const dateInputField = document.querySelectorAll('.date-input-field');
+  const day = dateInputField[0].value;
+  const month = dateInputField[1].value;
+  const year = dateInputField[2].value;
+  if (!day || !month || !year) {
+    dateInputContainer.classList.add('was-submitted-custom');
+    errorText.classList.remove('d-none');
+    return false;
+  } else {
+    dateInputContainer.classList.remove('was-submitted-custom');
+    errorText.classList.add('d-none');
+    return true;
+  }
+}
+
+function validateInputCategory() {
+  let categoryContainer = document.getElementById('selected-category');
+  let errorText = document.getElementById('error-text-category');
+  let selectedCategory = categoryContainer.dataset.value;
+  if (selectedCategory === '') {
+    categoryContainer.classList.add('was-submitted-custom');
+    errorText.classList.remove('d-none');
+    return false;
+  } else {
+    categoryContainer.classList.remove('was-submitted-custom');
+    errorText.classList.add('d-none');
+    return true;
+  }
+}
+
+function initErrorRemoval() {
+  const dateInputContainer = document.getElementById('task-date');
+  const categoryContainer = document.getElementById('selected-category');
+  const taskTitle = document.getElementById('task-title');
+  dateInputContainer.addEventListener('focus', () => {
+    dateInputContainer.classList.remove('was-submitted-custom');
+    document.getElementById('error-text-date').classList.add('d-none');
+  });
+  categoryContainer.addEventListener('focus', () => {
+    categoryContainer.classList.remove('was-submitted-custom');
+    document.getElementById('error-text-category').classList.add('d-none');
+  });
+  taskTitle.addEventListener('focus', () => {
+    taskTitle.classList.remove('was-submitted-custom');
+    document.getElementById('error-text-title').classList.add('d-none');
+  });
+}
+
 function clearTask() {
   document.getElementById('task-title').value = '';
   document.getElementById('task-description').value = '';
-  document
-    .querySelectorAll('.date-input-field')
-    .forEach((input) => (input.value = ''));
-  document
-    .querySelectorAll('.prio-btn')
-    .forEach((btn) =>
-      btn.classList.remove(
-        'selected-urgent',
-        'selected-medium',
-        'selected-low',
-      ),
-    );
+  document.querySelectorAll('.date-input-field').forEach((input) => (input.value = ''));
+  document.querySelectorAll('.prio-btn').forEach((btn) => btn.classList.remove('selected-urgent', 'selected-medium', 'selected-low'));
   document.querySelector('.prio-btn--medium').classList.add('selected-medium');
   document.getElementById('subtask-input').value = '';
   document.getElementById('subtask-list').innerHTML = '';
-  document.getElementById('selected-category').querySelector('p').textContent =
-    'Select task category';
+  document.getElementById('selected-category').querySelector('p').textContent = 'Select task category';
   document.getElementById('selected-category').dataset.value = '';
   selectedContacts = [];
   document.getElementById('assigned-avatars').innerHTML = '';

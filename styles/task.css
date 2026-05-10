@@ -589,13 +589,13 @@ textarea::placeholder {
 }
 
 @keyframes subtask-added {
- from {
-  transform: translateY(100%);
- }
- to {
- transform: translateY(0); }
- }
-
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 
 .subtask-added {
   width: 330px;
@@ -628,6 +628,17 @@ textarea::placeholder {
 
 .subtask-added::backdrop {
   background: transparent;
+}
+
+#category-hidden {
+  opacity: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.was-submitted-custom {
+   border: 1px solid var(--color-error);
 }
 
 .open {
