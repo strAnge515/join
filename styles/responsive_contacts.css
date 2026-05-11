@@ -194,6 +194,9 @@
     height: unset;
     line-height: unset;
   }
+  .vertical-line {
+    display: none;
+  }
 }
 
 @media (max-width: 1250px) {
