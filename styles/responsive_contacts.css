@@ -53,6 +53,8 @@
     position: fixed;
     bottom: 112px;
     right: 76px;
+    top: 635px;
+    left: 270px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
