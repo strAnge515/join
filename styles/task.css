@@ -101,6 +101,7 @@ textarea::placeholder {
   resize: vertical;
   min-height: 110px;
   resize: none;
+  max-height: 300px;
 }
 
 .task-form-prio-group {
@@ -397,6 +398,14 @@ textarea::placeholder {
 
 .category:hover {
   border: 1px solid #a8a8a8;
+}
+
+.category p:hover {
+  cursor: default;
+}
+
+.category.was-submitted-custom:hover {
+  border: 1px solid var(--color-error);
 }
 
 .category.open:hover {
