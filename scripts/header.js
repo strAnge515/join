@@ -165,6 +165,7 @@ function addMobileLogout(logoutBtn) {
 
 function logoutUser(redirectPath) {
   sessionStorage.removeItem("currentUser");
+  sessionStorage.removeItem("mobileGreetingShown");
   window.location.href = redirectPath;
 }
 

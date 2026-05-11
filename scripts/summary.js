@@ -15,6 +15,7 @@ function renderSummary(tasks) {
   updateSummary(tasks);
   updateGreeting();
   updateMobileProfile();
+  initMobileGreetingIntro();
 }
 
 function updateSummary(tasks) {
@@ -127,7 +128,16 @@ function updateGreeting() {
   const user = getCurrentUser();
   if (!user) return redirectToLogin();
   setText("greeting-text", getGreetingText());
-  setText("greeting-name", getFirstName(user));
+  setText("greeting-name", getDisplayName(user));
+}
+
+function getDisplayName(user) {
+  if (isGuestUser(user)) return "Guest";
+  return `${user.firstName} ${user.lastName}`.trim();
+}
+
+function isGuestUser(user) {
+  return user.firstName.toLowerCase() === "guest";
 }
 
 function redirectToLogin() {
@@ -151,6 +161,29 @@ function updateMobileProfile() {
   const user = getSavedUser();
   if (!user) return;
   el.textContent = getUserInitials(user);
+}
+
+function initMobileGreetingIntro() {
+  if (!shouldShowMobileGreeting()) {
+    showSummaryContent();
+    return;
+  }
+
+  sessionStorage.setItem("mobileGreetingShown", "true");
+  setTimeout(showSummaryContent, 2000);
+}
+
+function shouldShowMobileGreeting() {
+  const wasShown = sessionStorage.getItem("mobileGreetingShown");
+  return isMobileView() && wasShown !== "true";
+}
+
+function isMobileView() {
+  return window.innerWidth <= 768;
+}
+
+function showSummaryContent() {
+  document.body.classList.remove("mobile-greeting-active");
 }
 
 function getSavedUser() {

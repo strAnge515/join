@@ -239,16 +239,3 @@
   color: #29abe2;
 }
 
-@media (min-width: 901px) {
-  .summary-layout {
-    position: relative;
-  }
-
-  .greeting {
-    position: absolute;
-    left: 930px;
-    top: 475px;
-    width: 420px;
-    margin: 0;
-  }
-}
