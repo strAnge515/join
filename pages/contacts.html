@@ -28,15 +28,15 @@
     <main class="main-content contacts-layout">
       <div class="contact-container">
         <button class="add-btn" id="addContactBtn">
-          <span class="add-btn-text">Add new contact</span>
+          <span class="add-btn-text mobile-hidden">Add new contact</span>
           <img src="../assets/img/contacts/person_add.svg" alt="" />
         </button>
         <div id="contact-list"></div>
       </div>
-      <div class="detail-container" id="detailContainer">
+      <div class="detail-container mobile-hidden" id="detailContainer">
         <div class="details-header">
           <h1>Contacts</h1>
-          <div class="vertical-line"></div>
+          <div class="vertical-line mobile-hidden"></div>
           <span class="subtitle">Better with a team</span>
           <div class="horizontal-line"></div>
           <button class="backwards-btn" id="backwardsBtn">
@@ -62,7 +62,10 @@
     <dialog id="addContactDialog">
       <div class="dialog">
         <div class="dialog-left">
-          <img src="../assets/img/contacts/join-logo.svg" class="logo" />
+          <img
+            src="../assets/img/contacts/join-logo.svg"
+            class="logo mobile-hidden"
+          />
           <h1>Add contact</h1>
           <p>Tasks are better with a team!</p>
           <div class="underline"></div>
@@ -101,7 +104,10 @@
                 <img src="../assets/img/contacts/call.svg" alt="" />
               </div>
               <div class="action-btns">
-                <button type="button" class="cancel-btn btn-to-close">
+                <button
+                  type="button"
+                  class="cancel-btn btn-to-close mobile-hidden"
+                >
                   Cancel ✕
                 </button>
                 <button type="submit" class="create-btn">

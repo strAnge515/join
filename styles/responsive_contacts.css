@@ -21,7 +21,8 @@
   .contact-container {
     width: 100%;
   }
-  .add-btn-text {
+
+  .mobile-hidden {
     display: none;
   }
   .add-btn,
@@ -42,9 +43,6 @@
   .detail-menu-icon {
     height: 24px;
     width: 6px;
-  }
-  .detail-actions {
-    display: none;
   }
 
   .detail-actions-mobile {
@@ -73,9 +71,6 @@
   .dialog-left {
     width: 100%;
     height: 46%;
-  }
-  .logo {
-    display: none;
   }
   .close-icon {
     position: fixed;
@@ -109,9 +104,6 @@
     padding: 0 16px;
     width: 100%;
   }
-  .cancel-btn {
-    display: none;
-  }
   .dialog-left h1 {
     font-size: 47px;
   }
@@ -119,7 +111,6 @@
     font-size: 20px;
   }
   .detail-container {
-    display: none;
     position: fixed;
     top: 80px;
     z-index: 1;
@@ -181,10 +172,6 @@
 
   .subtitle {
     font-size: clamp(1.25rem, 0.3012rem + 1.6867vw, 1.6875rem);
-  }
-
-  .vertical-line {
-    display: none;
   }
 
   .horizontal-line {
