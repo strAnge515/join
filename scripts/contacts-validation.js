@@ -132,3 +132,20 @@ function clearInputError(input) {
     error.innerText = '';
   }
 }
+
+/**
+ * Removes all error messages and error styles
+ * from the input fields inside a dialog.
+ *
+ * @param {HTMLDialogElement} dialogRef - The dialog element containing the form inputs and error messages.
+ */
+export function clearAllInputErrors(dialogRef) {
+  const inputs = dialogRef.querySelectorAll('input');
+  const errors = dialogRef.querySelectorAll('.error');
+  inputs.forEach((input) => {
+    input.classList.remove('input-error');
+  });
+  errors.forEach((error) => {
+    error.innerText = '';
+  });
+}

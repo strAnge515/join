@@ -8,6 +8,7 @@ import {
   validateAddForm,
   validateEditForm,
   addClearErrorInputListeners,
+  clearAllInputErrors,
 } from './contacts-validation.js';
 
 import {
@@ -111,7 +112,8 @@ export function closeDialog(element) {
   dialogRef.classList.remove('show');
   setTimeout(() => {
     dialogRef.close();
-  }, 300);
+  }, 100);
+  clearAllInputErrors(dialogRef);
   clearInputs(formId);
 }
 
