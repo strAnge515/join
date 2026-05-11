@@ -27,19 +27,18 @@
   <main class="main-content">
     <h1 class="main-title">Add Task</h1>
 
-    <form class="task-form" id="task-form" novalidate>
-      <section class="wrapper-add-task">
-        <section class="wrapper-add-task-left-side">
-          <!-- Title -->
-          <div class="form-group">
-            <label class="task-form-label" for="task-title">
-              <p>Title</p>
-              <p class="star">*</p>
-            </label>
-            <input class="task-form-input flex-center-space-between" type="text" id="task-title"
-              placeholder="Enter a title" required />
-            <p id="error-text-title" class="d-none">This field is required</p>
-          </div>
+      <form class="task-form" id="task-form" novalidate>
+        <section class="wrapper-add-task">
+          <section class="wrapper-add-task-left-side">
+            <!-- Title -->
+            <div class="form-group">
+              <label class="task-form-label" for="task-title">
+                <p>Title</p>
+                <p class="star">*</p>
+              </label>
+              <input class="task-form-input flex-center-space-between" type="text" id="task-title" placeholder="Enter a title" required maxlength="40" />
+              <p id="error-text-title" class="d-none">This field is required</p>
+            </div>
 
           <!-- Description -->
           <div class="form-group">
@@ -50,26 +49,26 @@
             <img id="resize" class="resize-img" src="../assets/img/Recurso 1 1.svg" alt="resizefield" />
           </div>
 
-          <!-- Due Date -->
-          <div class="form-group">
-            <label class="task-form-label">
-              <p>Due date</p>
-              <p class="star">*</p>
-            </label>
-            <section class="task-form-input" id="task-date" tabindex="0">
-              <div class="input-wrapper">
-                <input class="date-input-field" type="text" placeholder="dd" maxlength="2" size="2" />
-                <span>/</span>
-                <input class="date-input-field" type="text" placeholder="mm" maxlength="2" size="2" />
-                <span>/</span>
-                <input class="date-input-field" type="text" placeholder="yyyy" maxlength="4" size="4" />
-              </div>
-              <img src="../assets/img/event.svg" alt="eventsvg" />
-              <input class="old-calender" type="date" id="date-input" required />
-            </section>
-            <p id="error-text-date" class="d-none">This field is required</p>
-          </div>
-        </section>
+            <!-- Due Date -->
+            <div class="form-group">
+              <label class="task-form-label">
+                <p>Due date</p>
+                <p class="star">*</p>
+              </label>
+              <section class="task-form-input" id="task-date" tabindex="0">
+                <div class="input-wrapper">
+                  <input class="date-input-field" id="date-day" type="text" placeholder="dd" maxlength="2" size="2" />
+                  <span>/</span>
+                  <input class="date-input-field" id="date-month" type="text" placeholder="mm" maxlength="2" size="2" />
+                  <span>/</span>
+                  <input class="date-input-field" id="date-year" type="text" placeholder="yyyy" maxlength="4" size="4" />
+                </div>
+                <img src="../assets/img/event.svg" alt="eventsvg" />
+                <input class="old-calender" type="date" id="date-input" required />
+              </section>
+              <p id="error-text-date" class="d-none">This field is required</p>
+            </div>
+          </section>
 
         <div class="add-task-seperator"></div>
         <section class="wrapper-add-task-right-side">

@@ -13,12 +13,18 @@ const textarea = document.getElementById('task-description');
 const handle = document.getElementById('resize');
 const dateInput = document.getElementById('date-input');
 const calendarIcon = document.querySelector('#task-date img');
+const dateInputContainer = document.getElementById('task-date');
+
+const dateDay = document.getElementById('date-day');
+const dateMonth = document.getElementById('date-month');
+const dateYear = document.getElementById('date-year');
 
 let isResizing = false;
 let startY = 0;
 let startHeight = 0;
 
 function init() {
+  dateInput.min = new Date().toISOString().split('T')[0];
   addTask();
   setPriorityButtons();
   renderAssignedDropdown();
@@ -26,6 +32,9 @@ function init() {
   initResizeHandle();
   initFormValidation();
   initErrorRemoval();
+  dateFocusBehavior();
+  dateDeleteBehavior();
+  dateOnlyNumbers();
 }
 
 function addTask() {
@@ -377,7 +386,6 @@ function validateInputTitle() {
 }
 
 function validateInputDate() {
-  const dateInputContainer = document.getElementById('task-date');
   const errorText = document.getElementById('error-text-date');
   const dateInputField = document.querySelectorAll('.date-input-field');
   const day = dateInputField[0].value;
@@ -387,12 +395,56 @@ function validateInputDate() {
     dateInputContainer.classList.add('was-submitted-custom');
     errorText.classList.remove('d-none');
     return false;
-  } else {
-    dateInputContainer.classList.remove('was-submitted-custom');
-    errorText.classList.add('d-none');
-    return true;
+  }
+  dateInput.value = `${year}-${month}-${day}`;
+  if (!dateInput.validity.valid) {
+    dateInputContainer.classList.add('was-submitted-custom');
+    errorText.classList.remove('d-none');
+    return false;
+  }
+  dateInputContainer.classList.remove('was-submitted-custom');
+  errorText.classList.add('d-none');
+  return true;
+}
+
+function dateFocusBehavior() {
+  dateDay.addEventListener('input', () => {
+    if (dateDay.value.length === dateDay.maxLength) {
+      dateMonth.focus();
+    }
+  });
+  dateMonth.addEventListener('input', () => {
+    if (dateMonth.value.length === dateMonth.maxLength) {
+      dateYear.focus();
+    }
+  });
+}
+
+function dateDeleteBehavior() {
+  dateYear.addEventListener('keydown', (event) => {
+    if (dateYear.value === '' && event.key === 'Backspace') {
+      dateMonth.focus();
+    }
+  });
+  dateMonth.addEventListener('keydown', (event) => {
+    if (dateMonth.value === '' && event.key === 'Backspace') {
+      dateDay.focus();
+    }
+  });
+}
+
+function dateOnlyNumbers() {
+  if (isNaN(event.key) && event.key !== 'Backspace' && event.key !== 'Tab') {
+    event.preventDefault();
   }
 }
+
+dateInputContainer.addEventListener('click', (event) => {
+  dateDay.focus();
+  if (event.target === dateMonth || event.target === dateYear) {
+    event.target.focus();
+  }
+});
 
 function validateInputCategory() {
   let categoryContainer = document.getElementById('selected-category');
@@ -410,7 +462,6 @@ function validateInputCategory() {
 }
 
 function initErrorRemoval() {
-  const dateInputContainer = document.getElementById('task-date');
   const categoryContainer = document.getElementById('selected-category');
   const taskTitle = document.getElementById('task-title');
   dateInputContainer.addEventListener('focus', () => {
