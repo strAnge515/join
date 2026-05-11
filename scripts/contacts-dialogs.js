@@ -216,10 +216,13 @@ function focusElement(elementId) {
  */
 export async function handleAddContact(event) {
   event.preventDefault();
+  const btn = event.target.querySelector('.create-btn');
   if (!validateAddForm()) return;
+  btn.disabled = true;
   const contactData = formatContactData();
   const id = await saveContact(contactData);
   finishContactCreation(id, contactData);
+  btn.disabled = false;
 }
 
 /**
@@ -276,18 +279,18 @@ function formatContactData() {
  */
 async function editContact(event, contactId) {
   event.preventDefault();
+  const btn = event.target.querySelector('.create-btn');
   if (!validateEditForm()) return;
+  btn.disabled = true;
   const dialogRef = document.getElementById('editContactDialog');
   const contactData = getContactFormData(dialogRef);
-  const formattedData = {
-    ...contactData,
-    name: capitalize(contactData.name),
-  };
+  const formattedData = { ...contactData, name: capitalize(contactData.name) };
   await updateContactData(contactId, formattedData);
   await closeDialogAndRender(dialogRef);
   showUpdatedContactDetails(contactId);
   const element = document.querySelector(`.contact[data-id="${contactId}"]`);
   element.scrollIntoView();
+  btn.disabled = false;
 }
 
 /**
