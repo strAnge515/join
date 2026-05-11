@@ -219,6 +219,19 @@
   justify-content: space-between;
 }
 
+.task-card {
+  width: 250px;
+}
+
+.task-card__title,
+.task-card__description,
+.task-description,
+.modal-content h1 {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+}
+
 .progress-bar {
   height: 6px;
   width: 110px;

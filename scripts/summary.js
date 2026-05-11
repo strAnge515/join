@@ -5,54 +5,70 @@ initSummary();
 async function initSummary() {
   try {
     const tasks = await loadTasks();
-    updateSummary(tasks || []);
-    updateGreeting();
-    updateMobileProfile();
+    renderSummary(tasks || []);
   } catch (error) {
     console.error("Fehler beim Laden der Summary:", error);
   }
 }
 
+function renderSummary(tasks) {
+  updateSummary(tasks);
+  updateGreeting();
+  updateMobileProfile();
+}
+
 function updateSummary(tasks) {
-  const counts = {
+  const counts = countTasksByColumn(tasks);
+  const urgentTasks = tasks.filter(isUrgent);
+  renderSummaryCounts(tasks, counts, urgentTasks);
+  updateUrgentDate(urgentTasks);
+}
+
+function countTasksByColumn(tasks) {
+  const counts = getEmptyCounts();
+  tasks.forEach((task) => counts[getTaskColumn(task)]++);
+  return counts;
+}
+
+function getEmptyCounts() {
+  return {
     todo: 0,
     inprogress: 0,
     awaiting: 0,
     done: 0,
   };
+}
 
-  tasks.forEach((task) => {
-    const column = getTaskColumn(task);
-    counts[column]++;
-  });
-
-  const urgentTasks = tasks.filter((task) => isUrgent(task));
-
+function renderSummaryCounts(tasks, counts, urgentTasks) {
   setText("todo-count", counts.todo);
   setText("done-count", counts.done);
   setText("urgent-count", urgentTasks.length);
   setText("board-count", tasks.length);
   setText("inprogress-count", counts.inprogress);
   setText("awaiting-count", counts.awaiting);
-
-  updateUrgentDate(urgentTasks);
 }
 
 function getTaskColumn(task) {
-  const value = normalize(
+  const value = getNormalizedColumnValue(task);
+  if (value.includes("done")) return "done";
+  if (value.includes("awaiting")) return "awaiting";
+  if (value.includes("progress")) return "inprogress";
+  if (isTodoValue(value)) return "todo";
+  return "todo";
+}
+
+function getNormalizedColumnValue(task) {
+  return normalize(
     task.status ||
     task.column ||
     task.boardColumn ||
     task.category ||
     ""
   );
+}
 
-  if (value.includes("done")) return "done";
-  if (value.includes("awaiting")) return "awaiting";
-  if (value.includes("progress")) return "inprogress";
-  if (value.includes("todo") || value.includes("to do")) return "todo";
-
-  return "todo";
+function isTodoValue(value) {
+  return value.includes("todo") || value.includes("to do");
 }
 
 function isUrgent(task) {
@@ -63,20 +79,34 @@ function isUrgent(task) {
 function updateUrgentDate(urgentTasks) {
   const el = document.getElementById("current-date");
   if (!el) return;
+  const dates = getSortedUrgentDates(urgentTasks);
+  el.textContent = getUrgentDateText(dates);
+}
 
-  const tasksWithDate = urgentTasks
-    .map((task) => task.dueDate || task.date || "")
+function getSortedUrgentDates(tasks) {
+  return tasks
+    .map(getTaskDateValue)
     .filter(Boolean)
     .map(parseTaskDate)
-    .filter((date) => !Number.isNaN(date.getTime()))
+    .filter(isValidDate)
     .sort((a, b) => a - b);
+}
 
-  if (!tasksWithDate.length) {
-    el.textContent = "No deadline";
-    return;
-  }
+function getTaskDateValue(task) {
+  return task.dueDate || task.date || "";
+}
 
-  el.textContent = tasksWithDate[0].toLocaleDateString("de-DE", {
+function isValidDate(date) {
+  return !Number.isNaN(date.getTime());
+}
+
+function getUrgentDateText(dates) {
+  if (!dates.length) return "No deadline";
+  return formatDate(dates[0]);
+}
+
+function formatDate(date) {
+  return date.toLocaleDateString("de-DE", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -84,65 +114,81 @@ function updateUrgentDate(urgentTasks) {
 }
 
 function parseTaskDate(value) {
-  if (value.includes("/")) {
-    const [day, month, year] = value.split("/");
-    return new Date(`${year}-${month}-${day}`);
-  }
-
+  if (value.includes("/")) return parseSlashDate(value);
   return new Date(value);
+}
+
+function parseSlashDate(value) {
+  const [day, month, year] = value.split("/");
+  return new Date(`${year}-${month}-${day}`);
 }
 
 function updateGreeting() {
   const user = getCurrentUser();
-
-  if (!user) {
-    window.location.href = "../index.html";
-    return;
-  }
-
-  const hour = new Date().getHours();
-  let greeting = "";
-
-  if (hour >= 5 && hour <= 11) greeting = "Good morning";
-  else if (hour >= 12 && hour <= 17) greeting = "Good afternoon";
-  else if (hour >= 18 && hour <= 21) greeting = "Good evening";
-  else greeting = "Good night";
-
-  setText("greeting-text", greeting + ",");
+  if (!user) return redirectToLogin();
+  setText("greeting-text", getGreetingText());
   setText("greeting-name", getFirstName(user));
 }
 
+function redirectToLogin() {
+  window.location.href = "../index.html";
+}
 
-/**
- * Updates the mobile topbar profile circle with the current user's initials.
- */
+function getGreetingText() {
+  return getGreetingByHour(new Date().getHours()) + ",";
+}
+
+function getGreetingByHour(hour) {
+  if (hour >= 5 && hour <= 11) return "Good morning";
+  if (hour >= 12 && hour <= 17) return "Good afternoon";
+  if (hour >= 18 && hour <= 21) return "Good evening";
+  return "Good night";
+}
+
 function updateMobileProfile() {
   const el = document.getElementById("mobile-profile");
   if (!el) return;
-  const savedUser = sessionStorage.getItem("currentUser");
-  if (!savedUser) return;
-  try {
-    const user = JSON.parse(savedUser);
-    const parts = String(user.name || "").trim().split(" ");
-    const initials = (parts[0]?.[0] || "") + (parts[1]?.[0] || "");
-    el.textContent = initials.toUpperCase() || "?";
-  } catch {
-    el.textContent = "?";
-  }
+  const user = getSavedUser();
+  if (!user) return;
+  el.textContent = getUserInitials(user);
 }
 
-
-function getCurrentUser() {
+function getSavedUser() {
   const savedUser = sessionStorage.getItem("currentUser");
   if (!savedUser) return null;
   try {
-    const user = JSON.parse(savedUser);
-    if (!user || !user.name) return null;
-    const [first, ...rest] = user.name.trim().split(" ");
-    return { firstName: formatNamePart(first || ""), lastName: formatNamePart(rest.join(" ")) };
+    return JSON.parse(savedUser);
   } catch {
     return null;
   }
+}
+
+function getUserInitials(user) {
+  const parts = String(user.name || "").trim().split(" ");
+  const initials = getInitialsFromParts(parts);
+  return initials.toUpperCase() || "?";
+}
+
+function getInitialsFromParts(parts) {
+  return (parts[0]?.[0] || "") + (parts[1]?.[0] || "");
+}
+
+function getCurrentUser() {
+  const user = getSavedUser();
+  if (!isValidUser(user)) return null;
+  return formatUser(user);
+}
+
+function isValidUser(user) {
+  return user && user.name;
+}
+
+function formatUser(user) {
+  const [first, ...rest] = user.name.trim().split(" ");
+  return {
+    firstName: formatNamePart(first || ""),
+    lastName: formatNamePart(rest.join(" ")),
+  };
 }
 
 function getFirstName(user) {
@@ -153,7 +199,11 @@ function formatNamePart(value) {
   return String(value || "")
     .trim()
     .toLowerCase()
-    .replace(/^\w/, (firstLetter) => firstLetter.toUpperCase());
+    .replace(/^\w/, capitalizeFirstLetter);
+}
+
+function capitalizeFirstLetter(firstLetter) {
+  return firstLetter.toUpperCase();
 }
 
 function setText(id, value) {
