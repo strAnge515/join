@@ -9,12 +9,12 @@
 }
 
 @media (max-width: 900px) {
-  dialog {
+  #addContactDialog,
+  #editContactDialog {
     max-width: 600px;
     width: 100vw;
     height: 100vh;
   }
-
   dialog::backdrop {
     margin: 0;
   }
@@ -53,8 +53,6 @@
     position: fixed;
     bottom: 112px;
     right: 76px;
-    top: 635px;
-    left: 270px;
     flex-direction: column;
     align-items: center;
     justify-content: center;

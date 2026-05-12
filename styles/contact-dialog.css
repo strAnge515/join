@@ -229,20 +229,12 @@ input:focus {
   overflow: hidden;
 }
 
-.confirm-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-  transform: none;
+dialog.confirm-overlay {
+  transform: unset;
+  transition: unset;
 }
 
 .confirm-dialog {
-  background: #ffffff;
-  border-radius: 20px;
   padding: 32px;
   display: flex;
   flex-direction: column;

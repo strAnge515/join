@@ -152,10 +152,13 @@ export function deleteThisContact(contactId) {
   dialog.showModal();
   dialog.addEventListener('close', () => dialog.remove());
   addEventListenersToCloseDialog(dialog);
-  dialog.querySelector('#confirmCancelContact').addEventListener('click', () => dialog.close());
-  dialog.querySelector('#confirmDeleteContact').addEventListener('click', () => executeContactDelete(dialog, contactId));
+  dialog
+    .querySelector('#confirmCancelContact')
+    .addEventListener('click', () => dialog.close());
+  dialog
+    .querySelector('#confirmDeleteContact')
+    .addEventListener('click', () => executeContactDelete(dialog, contactId));
 }
-
 
 /**
  * Closes a dialog and re-renders the contact list.
