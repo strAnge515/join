@@ -36,7 +36,7 @@
   .main-content,
   .summary-main {
     margin-left: 0;
-    padding-left: 0;
+    padding: 0;
     width: 100%;
     max-width: 100%;
     min-width: 0;
@@ -44,18 +44,15 @@
 
   .summary-main {
     display: block;
-    padding: 0;
-    min-height: auto;
-    margin-top: 0px;
+    min-height: calc(100vh - 80px);
+    margin-top: 0;
   }
 
   .content {
-    position: relative;
-    top: 80px;
     width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 24px 16px 100px;
+    padding: 84px 16px 70px;
   }
 
   .headline-row {
@@ -221,5 +218,27 @@
     font-size: 48px;
     font-weight: 700;
     font-style: bold;
+  }
+}
+
+@media (max-width: 320px) {
+  .content {
+    padding: 84px 12px 70px;
+  }
+
+  .headline-row h1 {
+    font-size: 40px;
+  }
+
+  .headline-row p {
+    font-size: 18px;
+  }
+
+  .cards-grid {
+    gap: 12px;
+  }
+
+  .bottom-cards {
+    gap: 8px;
   }
 }
