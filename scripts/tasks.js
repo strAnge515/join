@@ -61,14 +61,8 @@ function addInformations() {
   let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
   let contact = selectedContacts.map((contact) => contact.name);
   let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
-  return {
-    taskTitle,
-    tastkDescription,
-    taskCategory,
-    taskDate,
-    taskPrio,
-    contact,
-    subtasks,
+  /* prettier-ignore */
+  return {taskTitle,tastkDescription,taskCategory,taskDate,taskPrio,contact,subtasks,
   };
 }
 
@@ -305,6 +299,10 @@ function toggleCategoryDropdown() {
 function stopAssignedInputBubbling() {
   let assigendToInput = document.getElementById('assigned-placeholder');
   assigendToInput.addEventListener('click', (event) => {
+    document.getElementById('assigned-options').classList.toggle('d-none');
+    document.getElementById('arrow-down-assignet-to').classList.toggle('d-none');
+    document.getElementById('arrow-up-assigned-to').classList.toggle('d-none');
+    document.getElementById('assigned-toggle').classList.toggle('open');
     event.stopPropagation();
   });
   assigendToInput.addEventListener('input', filterContacts);
