@@ -81,6 +81,8 @@
   }
 
   .summary-layout {
+    position: relative;
+    bottom: 50px;
     display: block;
     width: 100%;
   }
