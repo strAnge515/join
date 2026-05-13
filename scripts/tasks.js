@@ -61,14 +61,8 @@ function addInformations() {
   let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
   let contact = selectedContacts.map((contact) => contact.name);
   let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
-  return {
-    taskTitle,
-    tastkDescription,
-    taskCategory,
-    taskDate,
-    taskPrio,
-    contact,
-    subtasks,
+  /* prettier-ignore */
+  return {taskTitle,tastkDescription,taskCategory,taskDate,taskPrio,contact,subtasks,
   };
 }
 
@@ -118,7 +112,7 @@ function getSubtaskTemplate(subtaskValue) {
   return `<div class="subtask-left">
             <span>${subtaskValue}</span>
           </div>
-          <div class="subtask-eddit-buttons">
+          <div class="subtask-edit-buttons">
             <button class="edit-btn subtask-buttons"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
             <div class="subtask-button-seperator"></div>
             <button class="delete-btn subtask-buttons"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
@@ -129,32 +123,43 @@ function getEditTemplate(subtaskText) {
   return `<div class="input-wrapper-edit">
             <input class="subtask-edit-value" type="text" value="${subtaskText}" />
           </div>
-          <div class="subtask-eddit-buttons">
-            <button class="edit-delete-btn subtask-buttons"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol" /></button>
+          <div class="subtask-edit-buttons">
+            <button class="edit-delete-btn subtask-buttons" type="button"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol" /></button>
             <div class="subtask-button-seperator"></div>
-            <button class="edit-confirm-btn subtask-buttons"><img src="../assets/img/Property 1=check.svg" alt="checkicon" /></button>
+            <button class="edit-confirm-btn subtask-buttons" type="button"><img src="../assets/img/Property 1=check.svg" alt="checkicon" /></button>
           </div>
 `;
 }
 
-function addSubtaskEventListeners(li) {
-  let deleteBtn = li.querySelector('.delete-btn');
-  let editBtn = li.querySelector('.edit-btn');
-  deleteBtn.addEventListener('click', () => li.remove());
-  editBtn.addEventListener('click', () => {
-    let subtaskText = li.querySelector('span').textContent;
-    li.innerHTML = getEditTemplate(subtaskText);
-    li.classList.add('is-editing');
-    let inputSubtask = li.querySelector('.subtask-edit-value');
-    inputSubtask.focus();
-    li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
-    li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
-      subtaskText = li.querySelector('.subtask-edit-value').value;
-      li.innerHTML = getSubtaskTemplate(subtaskText);
-      li.classList.remove('is-editing');
-      addSubtaskEventListeners(li);
-    });
+function activateEditMode(li) {
+  let subtaskText = li.querySelector('span').textContent;
+  li.innerHTML = getEditTemplate(subtaskText);
+  li.classList.add('is-editing');
+  li.querySelector('.subtask-edit-value').focus();
+  li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
+  li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
+    subtaskText = li.querySelector('.subtask-edit-value').value;
+    li.innerHTML = getSubtaskTemplate(subtaskText);
+    li.classList.remove('is-editing');
+    addSubtaskEventListeners(li);
   });
+  editmodeConfirmListener(li);
+  
+}
+
+function editmodeConfirmListener(li) {
+li.querySelector('.subtask-edit-value').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    li.querySelector('.edit-confirm-btn').click();
+  }
+});
+}
+
+function addSubtaskEventListeners(li) {
+  li.querySelector('.delete-btn').addEventListener('click', () => li.remove());
+  li.querySelector('.edit-btn').addEventListener('click', () => activateEditMode(li));
+  li.addEventListener('dblclick', () => activateEditMode(li));
 }
 
 addButtonSubtask.addEventListener('keydown', (event) => {
@@ -189,6 +194,13 @@ deleteButtonSubtask.addEventListener('keydown', (event) => {
 
 selectCategoryButton.addEventListener('click', () => {
   dropdownOptionsContainer.classList.toggle('d-none');
+});
+
+subtaskInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    addSubtask();
+    subtaskInput.blur();
+  }
 });
 
 dropdownOptions.forEach((button) => {
@@ -305,6 +317,10 @@ function toggleCategoryDropdown() {
 function stopAssignedInputBubbling() {
   let assigendToInput = document.getElementById('assigned-placeholder');
   assigendToInput.addEventListener('click', (event) => {
+    document.getElementById('assigned-options').classList.toggle('d-none');
+    document.getElementById('arrow-down-assignet-to').classList.toggle('d-none');
+    document.getElementById('arrow-up-assigned-to').classList.toggle('d-none');
+    document.getElementById('assigned-toggle').classList.toggle('open');
     event.stopPropagation();
   });
   assigendToInput.addEventListener('input', filterContacts);

@@ -219,6 +219,8 @@ textarea::placeholder {
   flex-direction: column;
   gap: 6px;
   margin-top: 8px;
+  overflow: auto;
+  max-height: 110px;
 }
 
 .subtask-left span::before {
@@ -226,7 +228,7 @@ textarea::placeholder {
   padding-right: 5px;
 }
 
-.subtask-eddit-buttons {
+.subtask-edit-buttons {
   opacity: 0;
   display: flex;
   gap: 4px;
@@ -238,11 +240,11 @@ textarea::placeholder {
   border-radius: 10px;
 }
 
-.subtask-item:hover .subtask-eddit-buttons {
+.subtask-item:hover .subtask-edit-buttons {
   opacity: 1;
 }
 
-.subtask-item:focus-within .subtask-eddit-buttons {
+.subtask-item:focus-within .subtask-edit-buttons {
   opacity: 1;
 }
 
@@ -265,10 +267,13 @@ textarea::placeholder {
 
 .subtask-item.is-editing {
   background: white;
-  border-bottom: #005dff 1px solid;
+  border-bottom: #29abe2 1px solid;
   border-radius: 0;
   display: flex;
   height: 32px;
+}
+.subtask-item.is-editing .subtask-edit-buttons {
+  opacity: 1;
 }
 
 .input-wrapper-edit {
@@ -647,7 +652,7 @@ textarea::placeholder {
 }
 
 .was-submitted-custom {
-   border: 1px solid var(--color-error);
+  border: 1px solid var(--color-error);
 }
 
 .open {
