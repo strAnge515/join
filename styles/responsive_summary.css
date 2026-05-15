@@ -4,13 +4,13 @@
   }
 
   body.mobile-greeting-active .greeting {
-    display: flex !important;
+    display: flex;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   #sidebar-container {
-    display: none !important;
+    display: none;
   }
 
   #header-container {
