@@ -53,7 +53,7 @@ textarea::placeholder {
   flex-direction: column;
   gap: 8px;
   position: relative;
-  padding-bottom: 16px;
+  padding-bottom: 24px;
 }
 
 .resize-img {
@@ -85,7 +85,6 @@ textarea::placeholder {
   background: var(--color-white);
   outline: none;
   transition: border-color 0.2s;
-  margin-bottom: 12px;
   height: 48px;
   width: 440px;
   font-family: 'inter';
@@ -413,6 +412,11 @@ textarea::placeholder {
   border: 1px solid var(--color-error);
 }
 
+.error-writing {
+  color: var(--color-error);
+  font-size: 16px;
+}
+
 .category.open:hover {
   border-color: var(--color-accent);
 }
@@ -507,6 +511,7 @@ textarea::placeholder {
   justify-content: center;
   align-items: center;
   border: 2px solid white;
+  color: white;
 }
 
 .avatar-extracount {
@@ -584,6 +589,7 @@ textarea::placeholder {
 
 .btn-action-wrapper {
   gap: 16px;
+  z-index: 1;
 }
 
 .input-wrapper span {

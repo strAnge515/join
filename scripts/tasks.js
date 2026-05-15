@@ -1,24 +1,42 @@
 import { saveTask } from './backend-tasks.js';
 import { loadAndPrepareContacts } from './contacts-render.js';
+import { getSubtaskTemplate, getEditTemplate, getDropdownTemplate } from './tasks-template.js';
+
+const taskTitleInput = document.getElementById('task-title');
+const errorTextTitle = document.getElementById('error-text-title');
+
+const textarea = document.getElementById('task-description');
+
+const dateInput = document.getElementById('date-input');
+const dateInputContainer = document.getElementById('task-date');
+const calendarIcon = document.querySelector('#task-date img');
+const dateDay = document.getElementById('date-day');
+const dateMonth = document.getElementById('date-month');
+const dateYear = document.getElementById('date-year');
+const errorTextDate = document.getElementById('error-text-date');
+
+const selectCategoryButton = document.getElementById('selected-category');
+const dropdownOptions = document.querySelectorAll('.dropdown-option');
+const dropdownOptionsContainer = document.getElementById('category-options');
+const errorTextCategory = document.getElementById('error-text-category');
+
+const assignedOptions = document.getElementById('assigned-options');
+const assignedToggle = document.getElementById('assigned-toggle');
+const arrowDownAssigned = document.getElementById('arrow-down-assignet-to');
+const arrowUpAssigned = document.getElementById('arrow-up-assigned-to');
+const assignedPlaceholder = document.getElementById('assigned-placeholder');
+const assignedAvatars = document.getElementById('assigned-avatars');
+let selectedContacts = [];
 
 const subtaskInput = document.getElementById('subtask-input');
 const addButtonSubtask = document.getElementById('btn-add-subtask');
 const deleteButtonSubtask = document.getElementById('btn-delete-subtask');
 const subtaskButtonWrapper = document.getElementById('subtask-button-wrapper');
-const selectCategoryButton = document.getElementById('selected-category');
-const dropdownOptions = document.querySelectorAll('.dropdown-option');
-const dropdownOptionsContainer = document.getElementById('category-options');
-let selectedContacts = [];
-const textarea = document.getElementById('task-description');
+const subtaskList = document.getElementById('subtask-list');
+
+const taskForm = document.getElementById('task-form');
+
 const handle = document.getElementById('resize');
-const dateInput = document.getElementById('date-input');
-const calendarIcon = document.querySelector('#task-date img');
-const dateInputContainer = document.getElementById('task-date');
-
-const dateDay = document.getElementById('date-day');
-const dateMonth = document.getElementById('date-month');
-const dateYear = document.getElementById('date-year');
-
 let isResizing = false;
 let startY = 0;
 let startHeight = 0;
@@ -35,16 +53,15 @@ function init() {
   dateFocusBehavior();
   dateDeleteBehavior();
   dateOnlyNumbers();
+  
 }
 
 function addTask() {
-  document.getElementById('task-form').addEventListener('submit', async (event) => {
+  taskForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const title = document.getElementById('task-title').value;
     if (!validateInputDate() || !validateInputCategory() || !validateInputTitle()) return;
     let informartionsFromInput = addInformations();
     let object = createTaskObjekt(informartionsFromInput);
-
     await saveTask(object);
     document.getElementById('subtask-added').showModal();
     setTimeout(() => {
@@ -54,16 +71,15 @@ function addTask() {
 }
 
 function addInformations() {
-  let taskTitle = document.getElementById('task-title').value;
-  let tastkDescription = document.getElementById('task-description').value;
-  let taskCategory = document.getElementById('selected-category').dataset.value;
+  let taskTitle = taskTitleInput.value;
+  let tastkDescription = textarea.value;
+  let taskCategory = selectCategoryButton.dataset.value;
   let taskDate = insertDate();
   let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
   let contact = selectedContacts.map((contact) => contact.name);
-  let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
+  let subtasks = Array.from(subtaskList.querySelectorAll('li'));
   /* prettier-ignore */
-  return {taskTitle,tastkDescription,taskCategory,taskDate,taskPrio,contact,subtasks,
-  };
+  return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
 }
 
 function createTaskObjekt(data) {
@@ -98,38 +114,15 @@ addButtonSubtask.addEventListener('mousedown', addSubtask);
 
 function addSubtask() {
   const subtaskValue = subtaskInput.value;
-  const subtaskList = document.getElementById('subtask-list');
   if (subtaskValue === '') return;
   const li = document.createElement('li');
   li.innerHTML = getSubtaskTemplate(subtaskValue);
-  li.className = `subtask-item`;
+  li.className = 'subtask-item';
   subtaskList.appendChild(li);
   addSubtaskEventListeners(li);
   subtaskInput.value = '';
 }
 
-function getSubtaskTemplate(subtaskValue) {
-  return `<div class="subtask-left">
-            <span>${subtaskValue}</span>
-          </div>
-          <div class="subtask-edit-buttons">
-            <button class="edit-btn subtask-buttons"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
-            <div class="subtask-button-seperator"></div>
-            <button class="delete-btn subtask-buttons"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
-          </div>`;
-}
-
-function getEditTemplate(subtaskText) {
-  return `<div class="input-wrapper-edit">
-            <input class="subtask-edit-value" type="text" value="${subtaskText}" />
-          </div>
-          <div class="subtask-edit-buttons">
-            <button class="edit-delete-btn subtask-buttons" type="button"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol" /></button>
-            <div class="subtask-button-seperator"></div>
-            <button class="edit-confirm-btn subtask-buttons" type="button"><img src="../assets/img/Property 1=check.svg" alt="checkicon" /></button>
-          </div>
-`;
-}
 
 function activateEditMode(li) {
   let subtaskText = li.querySelector('span').textContent;
@@ -144,16 +137,15 @@ function activateEditMode(li) {
     addSubtaskEventListeners(li);
   });
   editmodeConfirmListener(li);
-  
 }
 
 function editmodeConfirmListener(li) {
-li.querySelector('.subtask-edit-value').addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    li.querySelector('.edit-confirm-btn').click();
-  }
-});
+  li.querySelector('.subtask-edit-value').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      li.querySelector('.edit-confirm-btn').click();
+    }
+  });
 }
 
 function addSubtaskEventListeners(li) {
@@ -180,6 +172,13 @@ subtaskInput.addEventListener('focus', () => {
   subtaskButtonWrapper.classList.add('button-wrapper');
 });
 
+subtaskInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    addSubtask();
+    subtaskInput.blur();
+  }
+});
+
 deleteButtonSubtask.addEventListener('mousedown', () => {
   subtaskInput.value = '';
   subtaskInput.blur();
@@ -192,37 +191,25 @@ deleteButtonSubtask.addEventListener('keydown', (event) => {
   }
 });
 
-selectCategoryButton.addEventListener('click', () => {
-  dropdownOptionsContainer.classList.toggle('d-none');
-});
-
-subtaskInput.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    addSubtask();
-    subtaskInput.blur();
-  }
-});
-
 dropdownOptions.forEach((button) => {
   button.addEventListener('click', (event) => {
-    let selectedOption = document.getElementById('selected-category');
     selectCategoryButton.querySelector('p').textContent = event.currentTarget.textContent;
-    selectedOption.dataset.value = event.currentTarget.value;
+    selectCategoryButton.dataset.value = event.currentTarget.value;
     document.getElementById('category-hidden').value = event.currentTarget.value;
     dropdownOptionsContainer.classList.add('d-none');
     document.getElementById('arrow-down-category').classList.remove('d-none');
     document.getElementById('arrow-up-category').classList.add('d-none');
-    document.getElementById('selected-category').classList.remove('open');
+    selectCategoryButton.classList.remove('open');
   });
 });
 
 function filterContacts() {
   let registeredPersons = Array.from(document.querySelectorAll('.assigned-option'));
-  let filerInput = document.getElementById('assigned-placeholder').value;
+  let filterInput = assignedPlaceholder.value;
   for (let i = 0; i < registeredPersons.length; i++) {
     const person = registeredPersons[i];
     const personName = person.querySelector('span').textContent;
-    if (personName.toLowerCase().includes(filerInput.toLowerCase())) {
+    if (personName.toLowerCase().includes(filterInput.toLowerCase())) {
       person.classList.remove('d-none');
     } else {
       person.classList.add('d-none');
@@ -232,62 +219,66 @@ function filterContacts() {
 
 async function renderAssignedDropdown() {
   const contacts = await loadAndPrepareContacts();
-  const list = document.getElementById('assigned-options');
-  list.innerHTML = '';
+  assignedOptions.innerHTML = '';
   contacts.forEach((contact) => {
     const initials = contact.firstName[0] + contact.lastName[0];
     const li = document.createElement('li');
     li.className = 'assigned-option';
-    li.innerHTML = `
-  <section class="assigned-to-contacts-wrapper">
-    <div class="assigned-to-names">
-      <div class="avatar" style="background:${contact.color}">${initials}</div>
-      <span>${contact.firstName} ${contact.lastName}</span>
-    </div>
-    <img src="../assets/img/Check button.svg" alt="checkbox" class="checkbox-unchecked" data-id="${contact.id}"/>
-    <img src="../assets/img/Check button checked.svg" alt="checkbox-checked" class="checkbox-checked d-none" data-id="${contact.id}">
-  </section>
-`;
+    li.innerHTML = getDropdownTemplate(contact, initials);
     li.addEventListener('click', () => toggleContact(li, contact));
-    list.appendChild(li);
+    assignedOptions.appendChild(li);
   });
 }
 
 function toggleContact(li, contact) {
   const checkboxUnchecked = li.querySelector('.checkbox-unchecked');
   const checkboxChecked = li.querySelector('.checkbox-checked');
-  const already = selectedContacts.find((c) => c.id === contact.id);
+  const already = selectedContacts.find((currentContact) => currentContact.id === contact.id);
   if (already) {
-    selectedContacts = selectedContacts.filter((c) => c.id !== contact.id);
-    checkboxUnchecked.classList.remove('d-none');
-    checkboxChecked.classList.add('d-none');
-    li.classList.remove('selected');
+    deselectContact(li, contact, checkboxUnchecked, checkboxChecked);
   } else {
-    selectedContacts.push(contact);
-    checkboxUnchecked.classList.add('d-none');
-    checkboxChecked.classList.remove('d-none');
-    li.classList.add('selected');
+    selectContact(li, contact, checkboxUnchecked, checkboxChecked);
   }
   renderSelectedAvatars();
 }
 
+function selectContact(li, contact, checkboxUnchecked, checkboxChecked) {
+  selectedContacts.push(contact);
+  checkboxUnchecked.classList.add('d-none');
+  checkboxChecked.classList.remove('d-none');
+  li.classList.add('selected');
+}
+
+function deselectContact(li, contact, checkboxUnchecked, checkboxChecked) {
+  selectedContacts = selectedContacts.filter((currentContact) => currentContact.id !== contact.id);
+  checkboxUnchecked.classList.remove('d-none');
+  checkboxChecked.classList.add('d-none');
+  li.classList.remove('selected');
+}
+
+function createAvatarElement(contact) {
+  const initials = contact.firstName[0] + contact.lastName[0];
+  const div = document.createElement('div');
+  div.className = 'avatar';
+  div.style.background = contact.color;
+  div.textContent = initials;
+  return div;
+}
+
+function createExtraAvatar(count) {
+  const div = document.createElement('div');
+  div.className = 'avatar avatar-extracount';
+  div.textContent = '+' + count;
+  return div;
+}
+
 function renderSelectedAvatars() {
-  const container = document.getElementById('assigned-avatars');
-  container.innerHTML = '';
+  assignedAvatars.innerHTML = '';
   selectedContacts.slice(0, 3).forEach((contact) => {
-    const initials = contact.firstName[0] + contact.lastName[0];
-    const div = document.createElement('div');
-    div.className = 'avatar';
-    div.style.background = contact.color;
-    div.textContent = initials;
-    container.appendChild(div);
+    assignedAvatars.appendChild(createAvatarElement(contact));
   });
   if (selectedContacts.length > 3) {
-    const numberOfChoosenMembers = selectedContacts.length - 3;
-    const extraAvatar = document.createElement('div');
-    extraAvatar.className = 'avatar avatar-extracount';
-    extraAvatar.textContent = '+' + numberOfChoosenMembers;
-    container.appendChild(extraAvatar);
+    assignedAvatars.appendChild(createExtraAvatar(selectedContacts.length - 3));
   }
 }
 
@@ -295,41 +286,54 @@ function initDropdownsEventlistener() {
   toggleAssignedDropdown();
   toggleCategoryDropdown();
   stopAssignedInputBubbling();
+  dropDownCloseListener();
+}
+
+function dropDownCloseListener() {
+  const dropdownContainer = document.querySelector('.assigned-dropdown');
+  document.addEventListener('click', (event) => {
+    if (!dropdownContainer.contains(event.target)) {
+      assignedOptions.classList.add('d-none');
+      arrowDownAssigned.classList.remove('d-none');
+      arrowUpAssigned.classList.add('d-none');
+      assignedToggle.classList.remove('open');
+    }
+  });
 }
 
 function toggleAssignedDropdown() {
-  document.getElementById('assigned-toggle').addEventListener('click', () => {
-    document.getElementById('assigned-options').classList.toggle('d-none');
-    document.getElementById('arrow-down-assignet-to').classList.toggle('d-none');
-    document.getElementById('arrow-up-assigned-to').classList.toggle('d-none');
-    document.getElementById('assigned-toggle').classList.toggle('open');
+  assignedToggle.addEventListener('click', () => {
+    assignedOptions.classList.toggle('d-none');
+    arrowDownAssigned.classList.toggle('d-none');
+    arrowUpAssigned.classList.toggle('d-none');
+    assignedToggle.classList.toggle('open');
   });
 }
 
 function toggleCategoryDropdown() {
-  document.getElementById('selected-category').addEventListener('click', () => {
+  selectCategoryButton.addEventListener('click', () => {
+    dropdownOptionsContainer.classList.toggle('d-none');
     document.getElementById('arrow-down-category').classList.toggle('d-none');
     document.getElementById('arrow-up-category').classList.toggle('d-none');
-    document.getElementById('selected-category').classList.toggle('open');
+    selectCategoryButton.classList.toggle('open');
   });
 }
 
 function stopAssignedInputBubbling() {
-  let assigendToInput = document.getElementById('assigned-placeholder');
-  assigendToInput.addEventListener('click', (event) => {
-    document.getElementById('assigned-options').classList.toggle('d-none');
-    document.getElementById('arrow-down-assignet-to').classList.toggle('d-none');
-    document.getElementById('arrow-up-assigned-to').classList.toggle('d-none');
-    document.getElementById('assigned-toggle').classList.toggle('open');
+  assignedPlaceholder.addEventListener('click', (event) => {
+    assignedOptions.classList.toggle('d-none');
+    arrowDownAssigned.classList.toggle('d-none');
+    arrowUpAssigned.classList.toggle('d-none');
+    assignedToggle.classList.toggle('open');
     event.stopPropagation();
   });
-  assigendToInput.addEventListener('input', filterContacts);
+  assignedPlaceholder.addEventListener('input', filterContacts);
 }
 
 function initFormValidation() {
   let taskButton = document.getElementById('btn-create');
   taskButton.addEventListener('click', () => {
-    document.getElementById('task-form').classList.add('was-submitted');
+    taskForm.classList.add('was-submitted');
     validateInputDate();
     validateInputCategory();
     validateInputTitle();
@@ -388,71 +392,66 @@ function insertDate() {
 }
 
 function validateInputTitle() {
-  let taskTitle = document.getElementById('task-title');
-  let errorText = document.getElementById('error-text-title');
-  if (taskTitle.value === '') {
-    taskTitle.classList.add('was-submitted-custom');
-    errorText.classList.remove('d-none');
+  if (taskTitleInput.value === '') {
+    taskTitleInput.classList.add('was-submitted-custom');
+    errorTextTitle.classList.remove('d-none');
     return false;
   } else {
-    taskTitle.classList.remove('was-submitted-custom');
-    errorText.classList.add('d-none');
+    taskTitleInput.classList.remove('was-submitted-custom');
+    errorTextTitle.classList.add('d-none');
     return true;
   }
 }
 
+function showDateError() {
+  dateInputContainer.classList.add('was-submitted-custom');
+  errorTextDate.classList.remove('d-none');
+  return false;
+}
+
+function hideDateError() {
+  dateInputContainer.classList.remove('was-submitted-custom');
+  errorTextDate.classList.add('d-none');
+  return true;
+}
+
 function validateInputDate() {
-  const errorText = document.getElementById('error-text-date');
   const dateInputField = document.querySelectorAll('.date-input-field');
   const day = dateInputField[0].value;
   const month = dateInputField[1].value;
   const year = dateInputField[2].value;
-  if (!day || !month || !year) {
-    dateInputContainer.classList.add('was-submitted-custom');
-    errorText.classList.remove('d-none');
-    return false;
-  }
+  if (!day || !month || !year) return showDateError();
   dateInput.value = `${year}-${month}-${day}`;
-  if (!dateInput.validity.valid) {
-    dateInputContainer.classList.add('was-submitted-custom');
-    errorText.classList.remove('d-none');
-    return false;
-  }
-  dateInputContainer.classList.remove('was-submitted-custom');
-  errorText.classList.add('d-none');
-  return true;
+  if (!dateInput.validity.valid) return showDateError();
+  return hideDateError();
 }
 
 function dateFocusBehavior() {
   dateDay.addEventListener('input', () => {
-    if (dateDay.value.length === dateDay.maxLength) {
-      dateMonth.focus();
-    }
+    if (dateDay.value.length === dateDay.maxLength) dateMonth.focus();
   });
   dateMonth.addEventListener('input', () => {
-    if (dateMonth.value.length === dateMonth.maxLength) {
-      dateYear.focus();
-    }
+    if (dateMonth.value.length === dateMonth.maxLength) dateYear.focus();
   });
 }
 
 function dateDeleteBehavior() {
   dateYear.addEventListener('keydown', (event) => {
-    if (dateYear.value === '' && event.key === 'Backspace') {
-      dateMonth.focus();
-    }
+    if (dateYear.value === '' && event.key === 'Backspace') dateMonth.focus();
   });
   dateMonth.addEventListener('keydown', (event) => {
-    if (dateMonth.value === '' && event.key === 'Backspace') {
-      dateDay.focus();
-    }
+    if (dateMonth.value === '' && event.key === 'Backspace') dateDay.focus();
   });
 }
 
 function dateOnlyNumbers() {
-  if (isNaN(event.key) && event.key !== 'Backspace' && event.key !== 'Tab') {
-    event.preventDefault();
-  }
+  [dateDay, dateMonth, dateYear].forEach((input) => {
+    input.addEventListener('keydown', (event) => {
+      if (isNaN(event.key) && event.key !== 'Backspace' && event.key !== 'Tab') {
+        event.preventDefault();
+      }
+    });
+  });
 }
 
 dateInputContainer.addEventListener('click', (event) => {
@@ -463,50 +462,55 @@ dateInputContainer.addEventListener('click', (event) => {
 });
 
 function validateInputCategory() {
-  let categoryContainer = document.getElementById('selected-category');
-  let errorText = document.getElementById('error-text-category');
-  let selectedCategory = categoryContainer.dataset.value;
+  let selectedCategory = selectCategoryButton.dataset.value;
   if (selectedCategory === '') {
-    categoryContainer.classList.add('was-submitted-custom');
-    errorText.classList.remove('d-none');
+    selectCategoryButton.classList.add('was-submitted-custom');
+    errorTextCategory.classList.remove('d-none');
     return false;
   } else {
-    categoryContainer.classList.remove('was-submitted-custom');
-    errorText.classList.add('d-none');
+    selectCategoryButton.classList.remove('was-submitted-custom');
+    errorTextCategory.classList.add('d-none');
     return true;
   }
 }
 
 function initErrorRemoval() {
-  const categoryContainer = document.getElementById('selected-category');
-  const taskTitle = document.getElementById('task-title');
   dateInputContainer.addEventListener('focus', () => {
     dateInputContainer.classList.remove('was-submitted-custom');
-    document.getElementById('error-text-date').classList.add('d-none');
+    errorTextDate.classList.add('d-none');
   });
-  categoryContainer.addEventListener('focus', () => {
-    categoryContainer.classList.remove('was-submitted-custom');
-    document.getElementById('error-text-category').classList.add('d-none');
+  selectCategoryButton.addEventListener('focus', () => {
+    selectCategoryButton.classList.remove('was-submitted-custom');
+    errorTextCategory.classList.add('d-none');
   });
-  taskTitle.addEventListener('focus', () => {
-    taskTitle.classList.remove('was-submitted-custom');
-    document.getElementById('error-text-title').classList.add('d-none');
+  taskTitleInput.addEventListener('focus', () => {
+    taskTitleInput.classList.remove('was-submitted-custom');
+    errorTextTitle.classList.add('d-none');
+  });
+}
+
+function clearAssignedContacts() {
+  selectedContacts = [];
+  assignedAvatars.innerHTML = '';
+  assignedPlaceholder.value = '';
+  document.querySelectorAll('.assigned-option').forEach((li) => {
+    li.classList.remove('selected');
+    li.querySelector('.checkbox-unchecked').classList.remove('d-none');
+    li.querySelector('.checkbox-checked').classList.add('d-none');
   });
 }
 
 function clearTask() {
-  document.getElementById('task-title').value = '';
-  document.getElementById('task-description').value = '';
+  taskTitleInput.value = '';
+  textarea.value = '';
   document.querySelectorAll('.date-input-field').forEach((input) => (input.value = ''));
   document.querySelectorAll('.prio-btn').forEach((btn) => btn.classList.remove('selected-urgent', 'selected-medium', 'selected-low'));
   document.querySelector('.prio-btn--medium').classList.add('selected-medium');
-  document.getElementById('subtask-input').value = '';
-  document.getElementById('subtask-list').innerHTML = '';
-  document.getElementById('selected-category').querySelector('p').textContent = 'Select task category';
-  document.getElementById('selected-category').dataset.value = '';
-  selectedContacts = [];
-  document.getElementById('assigned-avatars').innerHTML = '';
-  document.getElementById('assigned-placeholder').value = '';
+  subtaskInput.value = '';
+  subtaskList.innerHTML = '';
+  selectCategoryButton.querySelector('p').textContent = 'Select task category';
+  selectCategoryButton.dataset.value = '';
+  clearAssignedContacts();
 }
 
 document.getElementById('btn-clear').addEventListener('click', clearTask);
