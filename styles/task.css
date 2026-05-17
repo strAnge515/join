@@ -86,7 +86,8 @@ textarea::placeholder {
   outline: none;
   transition: border-color 0.2s;
   height: 48px;
-  width: 440px;
+  max-width: 440px;
+  width: 100%;
   font-family: 'inter';
 }
 
@@ -564,7 +565,7 @@ textarea::placeholder {
   width: 24px;
   cursor: pointer;
   position: absolute;
-  left: 403px;
+  right: 10px;
   z-index: 1;
 }
 
@@ -577,7 +578,7 @@ textarea::placeholder {
   width: 24px;
   cursor: pointer;
   position: absolute;
-  left: 403px;
+  right: 10px;
   z-index: 1;
 }
 
