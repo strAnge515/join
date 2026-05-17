@@ -81,14 +81,14 @@
   }
 
   .summary-layout {
-    position: relative;
-    bottom: 50px;
-    display: block;
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    width: 100%
   }
 
   .cards-grid {
     width: 100%;
+    max-width: 650px;
     min-width: 0;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
