@@ -1,6 +1,12 @@
+/**
+ * Handles user signup functionality, including form validation, user creation in Firestore, and UI feedback.
+ * @module signup
+ */
 import { saveUser } from './backend-users.js';
 import { findUserByEmail } from './backend-users.js';
 
+
+/** * DOM Elements */
 const form = document.getElementById("signup-form");
 const privacyCheckbox = document.getElementById("accept-privacy");
 const signupBtn = document.getElementById("signup-btn");
@@ -73,16 +79,33 @@ function toggleVisibility(input, icon) {
 }
 
 
+/** * Initializes the signup page by setting up event listeners and managing the state of the signup button. */
 document.addEventListener("DOMContentLoaded", () => {
     signupBtn.disabled = !privacyCheckbox.checked;
 });
 
+
+/** * Sets up event listeners for the signup form, privacy checkbox, and password visibility toggles. */
 privacyCheckbox.addEventListener("change", () => {
     signupBtn.disabled = !privacyCheckbox.checked;
 });
 
+
+/** * Sets up the event listener for the signup form submission. */
 togglePassword.addEventListener("click", () => toggleVisibility(passwordInput, togglePassword));
 
+
+/** * Sets up the event listener for the confirm password visibility toggle. */
 toggleConfirm.addEventListener("click", () => toggleVisibility(confirmInput, toggleConfirm));
 
+
+/**
+ * Initializes the signup page by setting up event listeners and managing the state of the signup button.
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    signupBtn.disabled = !privacyCheckbox.checked;
+});
+
+
+/** Sets up the event listener for the signup form submission. */
 form.addEventListener("submit", handleSignup);
