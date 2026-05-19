@@ -53,7 +53,7 @@ textarea::placeholder {
   flex-direction: column;
   gap: 8px;
   position: relative;
-  padding-bottom: 16px;
+  padding-bottom: 24px;
 }
 
 .resize-img {
@@ -85,9 +85,9 @@ textarea::placeholder {
   background: var(--color-white);
   outline: none;
   transition: border-color 0.2s;
-  margin-bottom: 12px;
   height: 48px;
-  width: 440px;
+  max-width: 440px;
+  width: 100%;
   font-family: 'inter';
 }
 
@@ -101,6 +101,7 @@ textarea::placeholder {
   resize: vertical;
   min-height: 110px;
   resize: none;
+  max-height: 300px;
 }
 
 .task-form-prio-group {
@@ -218,6 +219,8 @@ textarea::placeholder {
   flex-direction: column;
   gap: 6px;
   margin-top: 8px;
+  overflow: auto;
+  max-height: 110px;
 }
 
 .subtask-left span::before {
@@ -225,7 +228,7 @@ textarea::placeholder {
   padding-right: 5px;
 }
 
-.subtask-eddit-buttons {
+.subtask-edit-buttons {
   opacity: 0;
   display: flex;
   gap: 4px;
@@ -237,11 +240,11 @@ textarea::placeholder {
   border-radius: 10px;
 }
 
-.subtask-item:hover .subtask-eddit-buttons {
+.subtask-item:hover .subtask-edit-buttons {
   opacity: 1;
 }
 
-.subtask-item:focus-within .subtask-eddit-buttons {
+.subtask-item:focus-within .subtask-edit-buttons {
   opacity: 1;
 }
 
@@ -264,10 +267,13 @@ textarea::placeholder {
 
 .subtask-item.is-editing {
   background: white;
-  border-bottom: #005dff 1px solid;
+  border-bottom: #29abe2 1px solid;
   border-radius: 0;
   display: flex;
   height: 32px;
+}
+.subtask-item.is-editing .subtask-edit-buttons {
+  opacity: 1;
 }
 
 .input-wrapper-edit {
@@ -399,6 +405,19 @@ textarea::placeholder {
   border: 1px solid #a8a8a8;
 }
 
+.category p:hover {
+  cursor: default;
+}
+
+.category.was-submitted-custom:hover {
+  border: 1px solid var(--color-error);
+}
+
+.error-writing {
+  color: var(--color-error);
+  font-size: 16px;
+}
+
 .category.open:hover {
   border-color: var(--color-accent);
 }
@@ -493,6 +512,7 @@ textarea::placeholder {
   justify-content: center;
   align-items: center;
   border: 2px solid white;
+  color: white;
 }
 
 .avatar-extracount {
@@ -545,7 +565,7 @@ textarea::placeholder {
   width: 24px;
   cursor: pointer;
   position: absolute;
-  left: 403px;
+  right: 10px;
   z-index: 1;
 }
 
@@ -558,7 +578,7 @@ textarea::placeholder {
   width: 24px;
   cursor: pointer;
   position: absolute;
-  left: 403px;
+  right: 10px;
   z-index: 1;
 }
 
@@ -570,6 +590,7 @@ textarea::placeholder {
 
 .btn-action-wrapper {
   gap: 16px;
+  z-index: 1;
 }
 
 .input-wrapper span {
@@ -589,13 +610,13 @@ textarea::placeholder {
 }
 
 @keyframes subtask-added {
- from {
-  transform: translateY(100%);
- }
- to {
- transform: translateY(0); }
- }
-
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 
 .subtask-added {
   width: 330px;
@@ -628,6 +649,17 @@ textarea::placeholder {
 
 .subtask-added::backdrop {
   background: transparent;
+}
+
+#category-hidden {
+  opacity: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.was-submitted-custom {
+  border: 1px solid var(--color-error);
 }
 
 .open {

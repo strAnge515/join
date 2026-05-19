@@ -1,4 +1,4 @@
-@media (max-width: 1160px) {
+@media (max-width: 1100px) {
   .contacts-layout {
     margin: 0;
   }
@@ -9,12 +9,12 @@
 }
 
 @media (max-width: 900px) {
-  dialog {
+  #addContactDialog,
+  #editContactDialog {
     max-width: 600px;
     width: 100vw;
     height: 100vh;
   }
-
   dialog::backdrop {
     margin: 0;
   }

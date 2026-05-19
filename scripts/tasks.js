@@ -1,56 +1,91 @@
 import { saveTask } from './backend-tasks.js';
-import { loadAndPrepareContacts } from './contacts.js';
+import { loadAndPrepareContacts } from './contacts-render.js';
+import { getSubtaskTemplate, getEditTemplate, getDropdownTemplate } from './tasks-template.js';
+import { initDate, dateFocusBehavior, dateDeleteBehavior, dateOnlyNumbers, insertDate, validateInputDate } from './tasks-date.js';
+import { dateInputContainer, errorTextDate } from './tasks-date.js';
+import { subtaskList, subtaskInput } from './tasks-subtask.js';
+import { renderAssignedDropdown, clearAssignedContacts, filterContacts } from './tasks-contacts.js';
+import { assignedOptions, assignedToggle, arrowDownAssigned, arrowUpAssigned, assignedPlaceholder, assignedAvatars, getSelectedContacts } from './tasks-contacts.js';
 
-const subtaskInput = document.getElementById('subtask-input');
-const addButtonSubtask = document.getElementById('btn-add-subtask');
-const deleteButtonSubtask = document.getElementById('btn-delete-subtask');
-const subtaskButtonWrapper = document.getElementById('subtask-button-wrapper');
+const taskTitleInput = document.getElementById('task-title');
+const errorTextTitle = document.getElementById('error-text-title');
+
+const textarea = document.getElementById('task-description');
+
 const selectCategoryButton = document.getElementById('selected-category');
 const dropdownOptions = document.querySelectorAll('.dropdown-option');
 const dropdownOptionsContainer = document.getElementById('category-options');
-let selectedContacts = [];
-const textarea = document.getElementById('task-description');
-const handle = document.getElementById('resize');
-const dateInput = document.getElementById('date-input');
-const calendarIcon = document.querySelector('#task-date img');
+const errorTextCategory = document.getElementById('error-text-category');
 
+const taskForm = document.getElementById('task-form');
+
+const handle = document.getElementById('resize');
 let isResizing = false;
 let startY = 0;
 let startHeight = 0;
 
+/**
+ * Initializes the task form by setting up all event listeners and rendering components.
+ *
+ * @returns {void}
+ */
 function init() {
+  initDate();
   addTask();
   setPriorityButtons();
   renderAssignedDropdown();
   initDropdownsEventlistener();
   initResizeHandle();
+  initFormValidation();
+  initErrorRemoval();
+  dateFocusBehavior();
+  dateDeleteBehavior();
+  dateOnlyNumbers();
 }
 
+/**
+ * Registers the submit event on the task form.
+ * Validates all inputs, builds the task object and saves it to the backend.
+ *
+ * @returns {void}
+ */
 function addTask() {
-  let addButton = document.getElementById('btn-create');
-  addButton.addEventListener('click', async () => {
+  taskForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!validateInputDate() || !validateInputCategory() || !validateInputTitle()) return;
     let informartionsFromInput = addInformations();
     let object = createTaskObjekt(informartionsFromInput);
-
     await saveTask(object);
     document.getElementById('subtask-added').showModal();
     setTimeout(() => {
-      window.location.href = 'board.html'
+      window.location.href = 'board.html';
     }, 900);
   });
 }
 
+/**
+ * Reads all current form values and returns them as a plain object.
+ *
+ * @returns {{taskTitle: string, tastkDescription: string, taskCategory: string, taskDate: string, taskPrio: string, contact: string[], subtasks: HTMLElement[]}}
+ */
 function addInformations() {
-  let taskTitle = document.getElementById('task-title').value;
-  let tastkDescription = document.getElementById('task-description').value;
-  let taskCategory = document.getElementById('selected-category').dataset.value;
+  let taskTitle = taskTitleInput.value;
+  let tastkDescription = textarea.value;
+  let taskCategory = selectCategoryButton.dataset.value;
   let taskDate = insertDate();
   let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
-  let contact = selectedContacts.map((contact) => contact.name);
-  let subtasks = Array.from(document.querySelectorAll('#subtask-list li'));
+  let contact = getSelectedContacts().map((contact) => contact.name);
+  let subtasks = Array.from(subtaskList.querySelectorAll('li'));
+  /* prettier-ignore */
   return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
 }
 
+/**
+ * Transforms the raw form data into a structured task object for the database.
+ *
+ * @param {Object} data - The raw form data from addInformations().
+ * @returns {{title: string, description: string, category: string, status: string, assigned_to: string[], date: string, prio: string, subtasks: {title: string, state: boolean}[]}}
+ */
 function createTaskObjekt(data) {
   return {
     title: data.taskTitle,
@@ -67,6 +102,12 @@ function createTaskObjekt(data) {
   };
 }
 
+/**
+ * Sets up click listeners on all priority buttons.
+ * Removes all active classes and applies the correct one for the clicked button.
+ *
+ * @returns {void}
+ */
 function setPriorityButtons() {
   const activeButton = document.querySelectorAll('.prio-btn');
   activeButton.forEach((button) => {
@@ -79,221 +120,129 @@ function setPriorityButtons() {
   });
 }
 
-addButtonSubtask.addEventListener('mousedown', addSubtask);
-
-function addSubtask() {
-  const subtaskValue = subtaskInput.value;
-  const subtaskList = document.getElementById('subtask-list');
-  if (subtaskValue === '') return;
-  const li = document.createElement('li');
-  li.innerHTML = getSubtaskTemplate(subtaskValue);
-  li.className = `subtask-item`;
-  subtaskList.appendChild(li);
-  addSubtaskEventListeners(li);
-  subtaskInput.value = '';
-}
-
-function getSubtaskTemplate(subtaskValue) {
-  return `<div class="subtask-left">
-            <span>${subtaskValue}</span>
-          </div>
-          <div class="subtask-eddit-buttons">
-            <button class="edit-btn subtask-buttons"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
-            <div class="subtask-button-seperator"></div>
-            <button class="delete-btn subtask-buttons"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
-          </div>`;
-}
-
-function getEditTemplate(subtaskText) {
-  return `<div class="input-wrapper-edit">
-            <input class="subtask-edit-value" type="text" value="${subtaskText}" />
-          </div>
-          <div class="subtask-eddit-buttons">
-            <button class="edit-delete-btn subtask-buttons"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol" /></button>
-            <div class="subtask-button-seperator"></div>
-            <button class="edit-confirm-btn subtask-buttons"><img src="../assets/img/Property 1=check.svg" alt="checkicon" /></button>
-          </div>
-`;
-}
-
-function addSubtaskEventListeners(li) {
-  let deleteBtn = li.querySelector('.delete-btn');
-  let editBtn = li.querySelector('.edit-btn');
-  deleteBtn.addEventListener('click', () => li.remove());
-  editBtn.addEventListener('click', () => {
-    let subtaskText = li.querySelector('span').textContent;
-    li.innerHTML = getEditTemplate(subtaskText);
-    li.classList.add('is-editing');
-    let inputSubtask = li.querySelector('.subtask-edit-value');
-    inputSubtask.focus();
-    li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
-    li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
-      subtaskText = li.querySelector('.subtask-edit-value').value;
-      li.innerHTML = getSubtaskTemplate(subtaskText);
-      li.classList.remove('is-editing');
-      addSubtaskEventListeners(li);
-    });
-  });
-}
-
-addButtonSubtask.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter' || event.key === ' ') {
-    addSubtask();
-    subtaskInput.value = '';
-    subtaskInput.blur();
-  }
-});
-
-subtaskInput.addEventListener('blur', () => {
-  subtaskButtonWrapper.classList.remove('button-wrapper');
-  subtaskButtonWrapper.classList.add('d-none');
-});
-
-subtaskInput.addEventListener('focus', () => {
-  subtaskButtonWrapper.classList.remove('d-none');
-  subtaskButtonWrapper.classList.add('button-wrapper');
-});
-
-deleteButtonSubtask.addEventListener('mousedown', () => {
-  subtaskInput.value = '';
-  subtaskInput.blur();
-});
-
-deleteButtonSubtask.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter' || event.key === ' ') {
-    subtaskInput.value = '';
-    subtaskInput.blur();
-  }
-});
-
-selectCategoryButton.addEventListener('click', () => {
-  dropdownOptionsContainer.classList.toggle('d-none');
-});
-
+/**
+ * Sets up click listeners on all category dropdown options.
+ * Updates the displayed category and closes the dropdown after selection.
+ *
+ * @returns {void}
+ */
 dropdownOptions.forEach((button) => {
   button.addEventListener('click', (event) => {
-    let selectedOption = document.getElementById('selected-category');
     selectCategoryButton.querySelector('p').textContent = event.currentTarget.textContent;
-    selectedOption.dataset.value = event.currentTarget.value;
+    selectCategoryButton.dataset.value = event.currentTarget.value;
+    document.getElementById('category-hidden').value = event.currentTarget.value;
     dropdownOptionsContainer.classList.add('d-none');
     document.getElementById('arrow-down-category').classList.remove('d-none');
     document.getElementById('arrow-up-category').classList.add('d-none');
-    document.getElementById('selected-category').classList.remove('open');
+    selectCategoryButton.classList.remove('open');
   });
 });
 
-function filterContacts() {
-  let registeredPersons = Array.from(document.querySelectorAll('.assigned-option'));
-  let filerInput = document.getElementById('assigned-placeholder').value;
-  for (let i = 0; i < registeredPersons.length; i++) {
-    const person = registeredPersons[i];
-    const personName = person.querySelector('span').textContent;
-    if (personName.toLowerCase().includes(filerInput.toLowerCase())) {
-      person.classList.remove('d-none');
-    } else {
-      person.classList.add('d-none');
-    }
-  }
-}
-
-async function renderAssignedDropdown() {
-  const contacts = await loadAndPrepareContacts();
-  const list = document.getElementById('assigned-options');
-  list.innerHTML = '';
-  contacts.forEach((contact) => {
-    const initials = contact.firstName[0] + contact.lastName[0];
-    const li = document.createElement('li');
-    li.className = 'assigned-option';
-    li.innerHTML = `
-  <section class="assigned-to-contacts-wrapper">
-    <div class="assigned-to-names">
-      <div class="avatar" style="background:${contact.color}">${initials}</div>
-      <span>${contact.firstName} ${contact.lastName}</span>
-    </div>
-    <img src="../assets/img/Check button.svg" alt="checkbox" class="checkbox-unchecked" data-id="${contact.id}"/>
-    <img src="../assets/img/Check button checked.svg" alt="checkbox-checked" class="checkbox-checked d-none" data-id="${contact.id}">
-  </section>
-`;
-    li.addEventListener('click', () => toggleContact(li, contact));
-    list.appendChild(li);
-  });
-}
-
-function toggleContact(li, contact) {
-  const checkboxUnchecked = li.querySelector('.checkbox-unchecked');
-  const checkboxChecked = li.querySelector('.checkbox-checked');
-  const already = selectedContacts.find((c) => c.id === contact.id);
-  if (already) {
-    selectedContacts = selectedContacts.filter((c) => c.id !== contact.id);
-    checkboxUnchecked.classList.remove('d-none');
-    checkboxChecked.classList.add('d-none');
-    li.classList.remove('selected');
-  } else {
-    selectedContacts.push(contact);
-    checkboxUnchecked.classList.add('d-none');
-    checkboxChecked.classList.remove('d-none');
-    li.classList.add('selected');
-  }
-  renderSelectedAvatars();
-}
-
-function renderSelectedAvatars() {
-  const container = document.getElementById('assigned-avatars');
-  container.innerHTML = '';
-  selectedContacts.slice(0, 3).forEach((contact) => {
-    const initials = contact.firstName[0] + contact.lastName[0];
-    const div = document.createElement('div');
-    div.className = 'avatar';
-    div.style.background = contact.color;
-    div.textContent = initials;
-    container.appendChild(div);
-  });
-  if (selectedContacts.length > 3) {
-    const numberOfChoosenMembers = selectedContacts.length - 3;
-    const extraAvatar = document.createElement('div');
-    extraAvatar.className = 'avatar avatar-extracount';
-    extraAvatar.textContent = '+' + numberOfChoosenMembers;
-    container.appendChild(extraAvatar);
-  }
-}
-
+/**
+ * Initializes all dropdown-related event listeners.
+ *
+ * @returns {void}
+ */
 function initDropdownsEventlistener() {
   toggleAssignedDropdown();
   toggleCategoryDropdown();
   stopAssignedInputBubbling();
+  dropDownCloseListener();
 }
 
-function toggleAssignedDropdown() {
-  document.getElementById('assigned-toggle').addEventListener('click', () => {
-    document.getElementById('assigned-options').classList.toggle('d-none');
-    document.getElementById('arrow-down-assignet-to').classList.toggle('d-none');
-    document.getElementById('arrow-up-assigned-to').classList.toggle('d-none');
-    document.getElementById('assigned-toggle').classList.toggle('open');
+/**
+ * Closes the assigned-to dropdown when clicking outside of it.
+ *
+ * @returns {void}
+ */
+function dropDownCloseListener() {
+  const dropdownContainer = document.querySelector('.assigned-dropdown');
+  document.addEventListener('click', (event) => {
+    if (!dropdownContainer.contains(event.target)) {
+      assignedOptions.classList.add('d-none');
+      arrowDownAssigned.classList.remove('d-none');
+      arrowUpAssigned.classList.add('d-none');
+      assignedToggle.classList.remove('open');
+    }
   });
 }
 
+/**
+ * Toggles the assigned-to dropdown open or closed on click.
+ *
+ * @returns {void}
+ */
+function toggleAssignedDropdown() {
+  assignedToggle.addEventListener('click', () => {
+    assignedOptions.classList.toggle('d-none');
+    arrowDownAssigned.classList.toggle('d-none');
+    arrowUpAssigned.classList.toggle('d-none');
+    assignedToggle.classList.toggle('open');
+  });
+}
+
+/**
+ * Toggles the category dropdown open or closed on click.
+ *
+ * @returns {void}
+ */
 function toggleCategoryDropdown() {
-  document.getElementById('selected-category').addEventListener('click', () => {
+  selectCategoryButton.addEventListener('click', () => {
+    dropdownOptionsContainer.classList.toggle('d-none');
     document.getElementById('arrow-down-category').classList.toggle('d-none');
     document.getElementById('arrow-up-category').classList.toggle('d-none');
-    document.getElementById('selected-category').classList.toggle('open');
+    selectCategoryButton.classList.toggle('open');
   });
 }
 
+/**
+ * Prevents click events on the search input from bubbling to the toggle.
+ * Also registers the input filter listener.
+ *
+ * @returns {void}
+ */
 function stopAssignedInputBubbling() {
-  let assigendToInput = document.getElementById('assigned-placeholder');
-  assigendToInput.addEventListener('click', (event) => {
+  assignedPlaceholder.addEventListener('click', (event) => {
+    assignedOptions.classList.toggle('d-none');
+    arrowDownAssigned.classList.toggle('d-none');
+    arrowUpAssigned.classList.toggle('d-none');
+    assignedToggle.classList.toggle('open');
     event.stopPropagation();
   });
-  assigendToInput.addEventListener('input', filterContacts);
+  assignedPlaceholder.addEventListener('input', filterContacts);
 }
 
+/**
+ * Registers the click listener on the submit button to trigger all validations.
+ *
+ * @returns {void}
+ */
+function initFormValidation() {
+  let taskButton = document.getElementById('btn-create');
+  taskButton.addEventListener('click', () => {
+    taskForm.classList.add('was-submitted');
+    validateInputDate();
+    validateInputCategory();
+    validateInputTitle();
+  });
+}
+
+/**
+ * Initializes all three resize handle mouse event listeners.
+ *
+ * @returns {void}
+ */
 function initResizeHandle() {
   resizeHandleMouseDown();
   resizeHandleMouseMove();
   resizeHandleMouseUp();
 }
 
+/**
+ * Starts the resize process on mousedown, storing the start position and height.
+ *
+ * @returns {void}
+ */
 function resizeHandleMouseDown() {
   handle.addEventListener('mousedown', (event) => {
     event.preventDefault();
@@ -303,6 +252,11 @@ function resizeHandleMouseDown() {
   });
 }
 
+/**
+ * Adjusts the textarea height while the mouse is being dragged.
+ *
+ * @returns {void}
+ */
 function resizeHandleMouseMove() {
   document.addEventListener('mousemove', (event) => {
     if (!isResizing) return;
@@ -312,46 +266,90 @@ function resizeHandleMouseMove() {
   });
 }
 
+/**
+ * Ends the resize process when the mouse button is released.
+ *
+ * @returns {void}
+ */
 function resizeHandleMouseUp() {
   document.addEventListener('mouseup', () => {
     isResizing = false;
   });
 }
 
-calendarIcon.addEventListener('click', () => {
-  dateInput.showPicker();
-});
-
-dateInput.addEventListener('change', () => {
-  let formatedDate = dateInput.value.split('-');
-  const dateInputField = document.querySelectorAll('.date-input-field');
-  dateInputField[0].value = formatedDate[2];
-  dateInputField[1].value = formatedDate[1];
-  dateInputField[2].value = formatedDate[0];
-});
-
-function insertDate() {
-  const dateInputField = document.querySelectorAll('.date-input-field');
-  const day = dateInputField[0].value;
-  const month = dateInputField[1].value;
-  const year = dateInputField[2].value;
-  if (!day || !month || !year) return '';
-  return `${year}-${month}-${day}`;
+/**
+ * Validates the title input field.
+ * Shows an error message if the field is empty.
+ *
+ * @returns {boolean} True if valid, false if empty.
+ */
+function validateInputTitle() {
+  if (taskTitleInput.value === '') {
+    taskTitleInput.classList.add('was-submitted-custom');
+    errorTextTitle.classList.remove('d-none');
+    return false;
+  } else {
+    taskTitleInput.classList.remove('was-submitted-custom');
+    errorTextTitle.classList.add('d-none');
+    return true;
+  }
 }
 
+/**
+ * Validates the category dropdown.
+ * Shows an error message if no category has been selected.
+ *
+ * @returns {boolean} True if a category is selected, false otherwise.
+ */
+function validateInputCategory() {
+  let selectedCategory = selectCategoryButton.dataset.value;
+  if (selectedCategory === '') {
+    selectCategoryButton.classList.add('was-submitted-custom');
+    errorTextCategory.classList.remove('d-none');
+    return false;
+  } else {
+    selectCategoryButton.classList.remove('was-submitted-custom');
+    errorTextCategory.classList.add('d-none');
+    return true;
+  }
+}
+
+/**
+ * Removes error styling from all validated fields when they receive focus again.
+ *
+ * @returns {void}
+ */
+function initErrorRemoval() {
+  dateInputContainer.addEventListener('focus', () => {
+    dateInputContainer.classList.remove('was-submitted-custom');
+    errorTextDate.classList.add('d-none');
+  });
+  selectCategoryButton.addEventListener('focus', () => {
+    selectCategoryButton.classList.remove('was-submitted-custom');
+    errorTextCategory.classList.add('d-none');
+  });
+  taskTitleInput.addEventListener('focus', () => {
+    taskTitleInput.classList.remove('was-submitted-custom');
+    errorTextTitle.classList.add('d-none');
+  });
+}
+
+/**
+ * Resets the entire task form back to its initial state.
+ *
+ * @returns {void}
+ */
 function clearTask() {
-  document.getElementById('task-title').value = '';
-  document.getElementById('task-description').value = '';
-  document.querySelectorAll('.date-input-field').forEach(input => input.value = '');
-  document.querySelectorAll('.prio-btn').forEach(btn => btn.classList.remove('selected-urgent', 'selected-medium', 'selected-low'));
+  taskTitleInput.value = '';
+  textarea.value = '';
+  document.querySelectorAll('.date-input-field').forEach((input) => (input.value = ''));
+  document.querySelectorAll('.prio-btn').forEach((btn) => btn.classList.remove('selected-urgent', 'selected-medium', 'selected-low'));
   document.querySelector('.prio-btn--medium').classList.add('selected-medium');
-  document.getElementById('subtask-input').value = '';
-  document.getElementById('subtask-list').innerHTML = '';
-  document.getElementById('selected-category').querySelector('p').textContent = 'Select task category';
-  document.getElementById('selected-category').dataset.value = '';
-  selectedContacts = [];
-  document.getElementById('assigned-avatars').innerHTML = '';
-  document.getElementById('assigned-placeholder').value = '';
+  subtaskInput.value = '';
+  subtaskList.innerHTML = '';
+  selectCategoryButton.querySelector('p').textContent = 'Select task category';
+  selectCategoryButton.dataset.value = '';
+  clearAssignedContacts();
 }
 
 document.getElementById('btn-clear').addEventListener('click', clearTask);

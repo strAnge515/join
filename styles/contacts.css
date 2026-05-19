@@ -28,14 +28,12 @@
 }
 
 .contact-container {
-  position: relative;
   width: 456px;
   height: calc(100vh - 80px);
   background: #fff;
   overflow-y: auto;
   padding: 22px 52px;
-  box-shadow: 4px -1px 4px rgba(0, 0, 0, 0.1);
-  top: 80px;
+  box-shadow: 4px -1px 4px rgba(0, 0, 0, 0.1);  
 }
 
 .add-btn {

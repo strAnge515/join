@@ -1,5 +1,11 @@
+/**
+ * Handles the login functionality for the application.
+ * This script manages user authentication, including form submission, error handling, and guest login.
+ */
 import { findUserByEmail } from './backend-users.js';
 
+
+/* DOM Elements */  
 const form = document.getElementById("login-form");
 const signUpButton = document.getElementById("sign-up-button");
 const guestButton = document.getElementById("guest-login-btn");
@@ -9,8 +15,8 @@ const loginError = document.getElementById("login-error");
 
 
 /**
- * Validates the login credentials against Firestore and redirects on success.
- * @param {Event} e - The form submit event.
+ * Handles the login form submission.
+ * @param {Event} e - The form submission event.
  */
 async function handleLogin(e) {
     e.preventDefault();
@@ -27,7 +33,7 @@ async function handleLogin(e) {
 
 
 /**
- * Displays the login error message.
+ * Displays a login error message to the user.
  */
 function showLoginError() {
     loginError.textContent = "Check your email and password. Please try again.";
@@ -35,7 +41,7 @@ function showLoginError() {
 
 
 /**
- * Toggles the password input visibility between text and password.
+ * Toggles the visibility of the password input field.
  */
 function togglePasswordVisibility() {
     const isPassword = passwordInput.type === "password";
@@ -44,15 +50,30 @@ function togglePasswordVisibility() {
 }
 
 
+/**
+ * Initializes the login page by setting up event listeners.
+ */
 form.addEventListener("submit", handleLogin);
 
+
+/**
+ * Handles the sign-up button click event.
+ */
 signUpButton.addEventListener("click", () => {
     window.location.href = "./pages/signup.html";
 });
 
+
+/**
+ * Handles the guest login button click event.
+ */
 guestButton.addEventListener("click", () => {
     sessionStorage.setItem("currentUser", JSON.stringify({ name: "Guest", email: "" }));
     window.location.href = "./pages/summary.html";
 });
 
+
+/**
+ * Initializes the toggle password visibility button.
+ */
 togglePassword.addEventListener("click", togglePasswordVisibility);

@@ -24,20 +24,9 @@ import {
 } from './contacts-dialogs.js';
 
 export const colors = [
-  '#FF7A00',
-  '#FF5EB3',
-  '#6E52FF',
-  '#9327FF',
-  '#00BEE8',
-  '#1FD7C1',
-  '#FF745E',
-  '#FFA35E',
-  '#FC71FF',
-  '#FFC701',
-  '#0038FF',
-  '#FFE62B',
-  '#FF4646',
-  '#FF4646',
+  '#FF7A00', '#FF5EB3', '#6E52FF', '#9327FF', '#00BEE8',
+  '#1FD7C1', '#FF745E', '#FFA35E', '#FC71FF', '#FFC701',
+  '#0038FF', '#FFE62B', '#FF4646', '#FF4646',
 ];
 
 export const state = {
@@ -87,8 +76,6 @@ function addDetailEventListeners() {
 
 /**
  * Toggles the active state of a contact in the list.
- *
- * @param {HTMLElement} element - The contact element to toggle.
  */
 function toggleActiveContact(element) {
   const allContacts = document.querySelectorAll('.contact');
@@ -109,9 +96,6 @@ function addEventListenersToDetailContact() {
 
 /**
  * Displays the details of the selected contact.
- *
- * @param {HTMLElement} element - The clicked contact element.
- * @param {Object} contact - The selected contact data.
  */
 // prettier-ignore
 export function showContactDetails(element, contact) {
@@ -128,31 +112,7 @@ export function showContactDetails(element, contact) {
 }
 
 /**
- * Shows the details of a newly added contact by finding the corresponding contact element in the list and calling the showContactDetails function with the new contact's data.
- *
- * @param {string} id - The ID of the new contact.
- * @param {Object} contactData - The data for the new contact.
- */
-export function showNewContactDetails(id, contactData) {
-  const element = document.querySelector(`.contact[data-id="${id}"]`);
-  if (!element) return;
-  const [firstName, ...rest] = contactData.name.split(' ');
-  const contact = {
-    id,
-    firstName,
-    lastName: rest.join(' '),
-    email: contactData.email,
-    phone: contactData.phone,
-    color: stringToColor(contactData.email),
-  };
-  showContactDetails(element, contact);
-  element.scrollIntoView();
-}
-
-/**
  * Displays the updated contact details.
- *
- * @param {string} contactId - The ID of the updated contact.
  */
 export function showUpdatedContactDetails(contactId) {
   state.activeContactId = '';
@@ -177,7 +137,30 @@ export function addEventListeners() {
       closeDialog(dialog);
     });
   });
-  document
-    .getElementById('newContactForm')
-    .addEventListener('submit', handleAddContact);
+  const newContactForm = document.getElementById('newContactForm');
+  if(newContactForm) {
+      newContactForm.addEventListener('submit', handleAddContact);
+  }
+}
+
+
+/**
+ * Shows the details of a newly added contact by finding it in the rendered list.
+ * @param {string} id - The Firebase ID of the new contact.
+ * @param {{name: string, email: string, phone: string}} contactData - The contact data.
+ */
+export function showNewContactDetails(id, contactData) {
+  const element = document.querySelector(`.contact[data-id="${id}"]`);
+  if (!element) return;
+  const [firstName, ...rest] = contactData.name.split(' ');
+  const contact = {
+    id,
+    firstName,
+    lastName: rest.join(' '),
+    email: contactData.email,
+    phone: contactData.phone,
+    color: stringToColor(contactData.email),
+  };
+  showContactDetails(element, contact);
+  element.scrollIntoView();
 }

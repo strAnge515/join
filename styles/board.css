@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 32px;
+  margin-top: 80px;
   max-width: 1082px;
 }
 
@@ -216,6 +217,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.task-card {
+  width: 250px;
+}
+
+.task-card__title,
+.task-card__description,
+.task-description,
+.modal-content h1 {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .progress-bar {
@@ -609,3 +623,4 @@ h2 {
 .confirm-btn--delete:hover {
   background: var(--color-accent);
 }
+
