@@ -8,7 +8,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 800px) {
   #addContactDialog,
   #editContactDialog {
     max-width: 600px;
@@ -97,7 +97,7 @@
     justify-content: center;
   }
   .input-wrapper img {
-    top: 38%;
+    top: 30%;
   }
   .dialog-right {
     position: unset;
@@ -125,6 +125,7 @@
   .contacts-detail-avatar {
     height: 80px;
     width: 80px;
+    font-size: 27px;
   }
   .details-header {
     gap: 13px;
@@ -146,9 +147,9 @@
 } */
 
 @media (max-width: 437px) {
-  .contact-container {
+  /* .contact-container {
     padding: 22px clamp(10px, calc(-93.385px + 32.308vw), 52px);
-  }
+  } */
 
   .name {
     max-width: clamp(175px, calc(93.769px + 25.385vw), 208px);
@@ -160,6 +161,11 @@
 }
 
 @media (max-width: 1315px) {
+  .detail-container {
+    padding: clamp(42px, calc(-63.631px + 13.204vw), 110px) 0 0
+      clamp(21px, calc(-31.816px + 6.602vw), 55px);
+  }
+
   .details-header {
     flex-direction: column;
     align-items: unset;
@@ -196,6 +202,20 @@
   }
   .vertical-line {
     display: none;
+  }
+  .contact-container {
+    padding: 22px clamp(10px, calc(-16.94px + 5.24vw), 52px);
+  }
+}
+
+@media (min-width: 801px) and (max-width: 1315px) {
+  .contact-container {
+    width: clamp(400px, calc(313px + 10.87vw), 456px);
+  }
+  .contacts-detail-avatar {
+    width: clamp(80px, calc(17.864px + 7.767vw), 120px);
+    height: clamp(80px, calc(17.864px + 7.767vw), 120px);
+    font-size: clamp(27px, calc(5.252px + 2.718vw), 41px);
   }
 }
 
