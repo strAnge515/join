@@ -239,7 +239,6 @@ dialog.confirm-overlay {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  min-width: 320px;
 }
 
 .confirm-dialog__text {
@@ -249,8 +248,7 @@ dialog.confirm-overlay {
 
 .confirm-dialog__actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  gap: 20px;
 }
 
 .error {
