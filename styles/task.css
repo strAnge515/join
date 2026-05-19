@@ -14,6 +14,10 @@ textarea::placeholder {
   margin-top: 80px;
 }
 
+.main-content {
+  position: relative;
+}
+
 .wrapper-add-task {
   display: flex;
 }
@@ -59,7 +63,7 @@ textarea::placeholder {
 .resize-img {
   position: absolute;
   height: 20px;
-  bottom: 33px;
+  bottom: 30px;
   right: 5px;
   cursor: nwse-resize;
 }
@@ -77,7 +81,7 @@ textarea::placeholder {
 .task-form-input,
 .task-form-textarea,
 .task-form-select {
-  padding: 10px 14px;
+  padding: 12px 21px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   font-size: 20px;
@@ -525,7 +529,6 @@ textarea::placeholder {
   align-items: center;
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  padding: 8px 12px;
   justify-content: space-between;
   position: relative;
 }
@@ -591,6 +594,9 @@ textarea::placeholder {
 .btn-action-wrapper {
   gap: 16px;
   z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
 }
 
 .input-wrapper span {
@@ -660,6 +666,12 @@ textarea::placeholder {
 
 .was-submitted-custom {
   border: 1px solid var(--color-error);
+}
+
+.required-wrapper {
+  position: absolute;
+  top: 807px;
+  display: flex;
 }
 
 .open {
