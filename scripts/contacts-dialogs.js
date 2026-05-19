@@ -90,12 +90,12 @@ export function openEditContactDialog(contactId) {
 /**
  * Clears the input fields in the add contact form after a new contact has been added.
  *
- * @param {string} formId - The ID of the form to clear.
+ * @param {string} elementId - The ID of the element to clear.
  */
-function clearInputs(formId) {
-  const form = document.getElementById(formId);
-  if (!form) return;
-  const inputs = form.querySelectorAll('input');
+function clearInputs(elementId) {
+  const dialogRef = document.getElementById(elementId);
+  if (!dialogRef) return;
+  const inputs = dialogRef.querySelectorAll('input');
   inputs.forEach((input) => {
     input.value = '';
   });
@@ -108,13 +108,13 @@ function clearInputs(formId) {
  */
 export function closeDialog(element) {
   const dialogRef = element.closest('dialog');
-  const formId = dialogRef.querySelector('form').id;
+  const elementId = element.id;
   dialogRef.classList.remove('show');
   setTimeout(() => {
     dialogRef.close();
   }, 100);
   clearAllInputErrors(dialogRef);
-  clearInputs(formId);
+  clearInputs(elementId);
 }
 
 /**
@@ -138,19 +138,18 @@ async function executeContactDelete(overlay, contactId) {
  * @param {string} contactId - The Firebase ID of the contact to delete.
  */
 export function deleteThisContact(contactId) {
-  const dialog = document.createElement('dialog');
-  dialog.className = 'confirm-overlay';
-  dialog.innerHTML = getContactConfirmHTML();
-  document.body.appendChild(dialog);
-  dialog.showModal();
-  dialog.addEventListener('close', () => dialog.remove());
-  addEventListenersToCloseDialog(dialog);
-  dialog
+  const dialogRef = document.getElementById('confirmContactDeleteDialog');
+  dialogRef.innerHTML = getContactConfirmHTML();
+  dialogRef.showModal();
+  addEventListenersToCloseDialog(dialogRef);
+  dialogRef
     .querySelector('#confirmCancelContact')
-    .addEventListener('click', () => dialog.close());
-  dialog
+    .addEventListener('click', () => dialogRef.close());
+  dialogRef
     .querySelector('#confirmDeleteContact')
-    .addEventListener('click', () => executeContactDelete(overlay, contactId));
+    .addEventListener('click', () =>
+      executeContactDelete(dialogRef, contactId),
+    );
 }
 
 /**
@@ -158,14 +157,12 @@ export function deleteThisContact(contactId) {
  * @param {HTMLElement} dialogRef - The dialog element.
  */
 function closeWithEscKey(dialogRef) {
-  document.addEventListener('keydown', (event) => {
+  dialogRef.onkeydown = (event) => {
     if (event.key === 'Escape') {
-      if (dialogRef.open) {
-        event.preventDefault();
-        closeDialog(dialogRef);
-      }
+      event.preventDefault();
+      closeDialog(dialogRef);
     }
-  });
+  };
 }
 
 /**
@@ -173,6 +170,8 @@ function closeWithEscKey(dialogRef) {
  * @param {HTMLElement} dialogRef - The dialog element.
  */
 function closeWithOutsideClick(dialogRef) {
+  if (dialogRef.dataset.outsideClickBound) return;
+  dialogRef.dataset.outsideClickBound = 'true';
   dialogRef.addEventListener('click', (event) => {
     if (event.target === dialogRef) {
       closeDialog(event.target);
