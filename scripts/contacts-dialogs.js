@@ -4,7 +4,12 @@ import {
   updateContact,
 } from './backend-contacts.js';
 
-import { validateAddForm, validateEditForm } from './contacts-validation.js';
+import {
+  validateAddForm,
+  validateEditForm,
+  addClearErrorInputListeners,
+  clearAllInputErrors,
+} from './contacts-validation.js';
 
 import {
   state,
@@ -44,6 +49,7 @@ export function openAddContactDialog() {
   focusElement('nameInputAdd');
   dialogRef.classList.add('show');
   addEventListenersToCloseDialog(dialogRef);
+  addClearErrorInputListeners(dialogRef);
 }
 
 /**
@@ -60,22 +66,7 @@ function addEditDialogEventListeners() {
     deleteThisContact(state.activeContactId);
   });
   addEventListenersToCloseDialog(dialogRef);
-}
-
-export function addEventListenersToCloseDialog(dialogRef) {
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      if (dialogRef.open) {
-        event.preventDefault();
-        closeDialog(dialogRef);
-      }
-    }
-  });
-  dialogRef.addEventListener('click', (event) => {
-    if (event.target === dialogRef) {
-      closeDialog(event.target);
-    }
-  });
+  addClearErrorInputListeners(dialogRef);
 }
 
 /**
@@ -99,12 +90,12 @@ export function openEditContactDialog(contactId) {
 /**
  * Clears the input fields in the add contact form after a new contact has been added.
  *
- * @param {string} formId - The ID of the form to clear.
+ * @param {string} elementId - The ID of the element to clear.
  */
-function clearInputs(formId) {
-  const form = document.getElementById(formId);
-  if (!form) return;
-  const inputs = form.querySelectorAll('input');
+function clearInputs(elementId) {
+  const dialogRef = document.getElementById(elementId);
+  if (!dialogRef) return;
+  const inputs = dialogRef.querySelectorAll('input');
   inputs.forEach((input) => {
     input.value = '';
   });
@@ -117,11 +108,13 @@ function clearInputs(formId) {
  */
 export function closeDialog(element) {
   const dialogRef = element.closest('dialog');
+  const elementId = element.id;
   dialogRef.classList.remove('show');
   setTimeout(() => {
     dialogRef.close();
-  }, 300);
-  clearInputs(dialogRef);
+  }, 100);
+  clearAllInputErrors(dialogRef);
+  clearInputs(elementId);
 }
 
 /**
@@ -145,19 +138,55 @@ async function executeContactDelete(overlay, contactId) {
  * @param {string} contactId - The Firebase ID of the contact to delete.
  */
 export function deleteThisContact(contactId) {
-  const dialog = document.createElement('dialog');
-  dialog.className = 'confirm-overlay';
-  dialog.innerHTML = getContactConfirmHTML();
-  document.body.appendChild(dialog);
-  dialog.showModal();
-  dialog.addEventListener('close', () => dialog.remove());
-  addEventListenersToCloseDialog(dialog);
-  dialog
+  const dialogRef = document.getElementById('confirmContactDeleteDialog');
+  dialogRef.innerHTML = getContactConfirmHTML();
+  dialogRef.showModal();
+  addEventListenersToCloseDialog(dialogRef);
+  dialogRef
     .querySelector('#confirmCancelContact')
-    .addEventListener('click', () => dialog.close());
-  dialog
+    .addEventListener('click', () => dialogRef.close());
+  dialogRef
     .querySelector('#confirmDeleteContact')
-    .addEventListener('click', () => executeContactDelete(dialog, contactId));
+    .addEventListener('click', () =>
+      executeContactDelete(dialogRef, contactId),
+    );
+}
+
+/**
+ * Closes a dialog when the Esc key is pressed.
+ * @param {HTMLElement} dialogRef - The dialog element.
+ */
+function closeWithEscKey(dialogRef) {
+  dialogRef.onkeydown = (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeDialog(dialogRef);
+    }
+  };
+}
+
+/**
+ * Closes a dialog when clicking outside of it.
+ * @param {HTMLElement} dialogRef - The dialog element.
+ */
+function closeWithOutsideClick(dialogRef) {
+  if (dialogRef.dataset.outsideClickBound) return;
+  dialogRef.dataset.outsideClickBound = 'true';
+  dialogRef.addEventListener('click', (event) => {
+    if (event.target === dialogRef) {
+      closeDialog(event.target);
+    }
+  });
+}
+
+/**
+ * Adds event listeners to close a dialog when clicking outside of it or pressing the Escape key.
+ *
+ * @param {HTMLElement} dialogRef - The dialog element.
+ */
+function addEventListenersToCloseDialog(dialogRef) {
+  closeWithEscKey(dialogRef);
+  closeWithOutsideClick(dialogRef);
 }
 
 /**
@@ -171,6 +200,11 @@ async function closeDialogAndRender(dialogRef) {
   await renderContacts();
 }
 
+/**
+ * Focuses an input element and places the cursor at the end.
+ *
+ * @param {string} elementId - The ID of the element to focus.
+ */
 function focusElement(elementId) {
   const focusElement = document.getElementById(elementId);
   focusElement.focus();
@@ -186,10 +220,13 @@ function focusElement(elementId) {
  */
 export async function handleAddContact(event) {
   event.preventDefault();
+  const btn = event.target.querySelector('.create-btn');
   if (!validateAddForm()) return;
+  btn.disabled = true;
   const contactData = formatContactData();
   const id = await saveContact(contactData);
   finishContactCreation(id, contactData);
+  btn.disabled = false;
 }
 
 /**
@@ -246,18 +283,18 @@ function formatContactData() {
  */
 async function editContact(event, contactId) {
   event.preventDefault();
+  const btn = event.target.querySelector('.create-btn');
   if (!validateEditForm()) return;
+  btn.disabled = true;
   const dialogRef = document.getElementById('editContactDialog');
   const contactData = getContactFormData(dialogRef);
-  const formattedData = {
-    ...contactData,
-    name: capitalize(contactData.name),
-  };
+  const formattedData = { ...contactData, name: capitalize(contactData.name) };
   await updateContactData(contactId, formattedData);
   await closeDialogAndRender(dialogRef);
   showUpdatedContactDetails(contactId);
   const element = document.querySelector(`.contact[data-id="${contactId}"]`);
   element.scrollIntoView();
+  btn.disabled = false;
 }
 
 /**
