@@ -108,7 +108,7 @@ dialog::backdrop {
 .input-wrapper {
   width: 100%;
   position: relative;
-  margin-bottom: 32px;
+  margin-bottom: 14px;
 }
 
 input {
@@ -134,7 +134,7 @@ input:focus {
 .input-wrapper img {
   position: absolute;
   right: 21px;
-  top: 48%;
+  top: 37%;
   transform: translatey(-50%);
   width: 18px;
   pointer-events: none;
@@ -256,6 +256,8 @@ dialog.confirm-overlay {
 .error {
   color: #e60026;
   font-size: 16px;
+  min-height: 18px;
+  display: block;
 }
 
 .input-error {

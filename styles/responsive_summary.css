@@ -61,18 +61,17 @@
     width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 84px 16px 70px;
+    padding: 60px 16px 70px;
   }
 
 
   .headline-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
-    margin-bottom: 36px;
-    width: 100%;
-    position: relative;
-    bottom: 47px;
+    gap: 16px;
+    margin-bottom: 50px;
+    width: 220px;
+    height: 100px;
   }
 
 
@@ -83,8 +82,16 @@
 
 
   .divider {
+    display: none;
+  }
+
+
+  .divider_1 {
+    display: block;
     width: 96px;
     height: 3px;
+    background: #29abe2;
+    padding-top: 3px;
   }
 
 
@@ -281,7 +288,7 @@
     gap: 12px;
   }
 
-  
+
   .bottom-cards {
     gap: 8px;
   }

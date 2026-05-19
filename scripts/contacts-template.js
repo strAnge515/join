@@ -19,7 +19,7 @@ function getContactDetailTemplate(contact, initials, color) {
         </div>
         <div>
           <div class="detail-name">${contact.firstName} ${contact.lastName}</div>
-          <div class="detail-actions" id="detailActions">
+          <div class="detail-actions mobile-hidden" id="detailActions">
           <button class="edit-btn" id="editContactBtn" data-id="${contact.id}">
           <div class="edit-icon"></div>
           Edit </button>
@@ -69,11 +69,10 @@ function getContactConfirmHTML() {
   `;
 }
 
-
 function getEditContactTemplate(contact, initials, color) {
   return `<div class="dialog">
         <div class="dialog-left">
-          <img src="../assets/img/contacts/join-logo.svg" class="logo" />
+          <img src="../assets/img/contacts/join-logo.svg" class="logo mobile-hidden" />
           <h1>Edit contact</h1>
           <div class="underline"></div>
         </div>

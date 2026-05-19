@@ -89,6 +89,53 @@ export async function loadAndPrepareContacts() {
 }
 
 /**
+ * Checks whether the grouped contact object is empty.
+ *
+ * @param {Object} groupedContacts - The grouped contacts object.
+ * @returns {boolean} Returns true if no contacts exist.
+ */
+function isContactListEmpty(groupedContacts) {
+  return Object.keys(groupedContacts).length === 0;
+}
+
+/**
+ * Renders a message when no contacts are available.
+ *
+ * @param {HTMLElement} contactlistRef - The contact list container element.
+ */
+function renderEmptyMessage(contactlistRef) {
+  contactlistRef.innerHTML = '<p>Keine Kontakte gefunden</p>';
+}
+
+/**
+ * Renders all grouped contacts sorted by their first letter.
+ *
+ * @param {HTMLElement} contactlistRef - The contact list container element.
+ * @param {Object} groupedContacts - Contacts grouped by first letter.
+ */
+function renderGroupedContacts(contactlistRef, groupedContacts) {
+  Object.keys(groupedContacts)
+    .sort()
+    .forEach((letter) =>
+      renderLetterGroup(contactlistRef, groupedContacts, letter),
+    );
+}
+
+/**
+ * Renders a single letter group with all belonging contacts.
+ *
+ * @param {HTMLElement} contactlistRef - The contact list container element.
+ * @param {Object} groupedContacts - Contacts grouped by first letter.
+ * @param {string} letter - The current group letter.
+ */
+function renderLetterGroup(contactlistRef, groupedContacts, letter) {
+  contactlistRef.appendChild(createLetterElement(letter));
+  groupedContacts[letter].forEach((contact) => {
+    contactlistRef.appendChild(createContactElement(contact));
+  });
+}
+
+/**
  * Renders the grouped contact list.
  *
  * @param {HTMLElement} contactlistRef - The contact list container element.
@@ -96,18 +143,11 @@ export async function loadAndPrepareContacts() {
  */
 export function renderContactList(contactlistRef, groupedContacts) {
   contactlistRef.innerHTML = '';
-  if (Object.keys(groupedContacts).length === 0) {
-    contactlistRef.innerHTML = '<p>Keine Kontakte gefunden</p>';
+  if (isContactListEmpty(groupedContacts)) {
+    renderEmptyMessage(contactlistRef);
     return;
   }
-  Object.keys(groupedContacts)
-    .sort()
-    .forEach((letter) => {
-      contactlistRef.appendChild(createLetterElement(letter));
-      groupedContacts[letter].forEach((contact) => {
-        contactlistRef.appendChild(createContactElement(contact));
-      });
-    });
+  renderGroupedContacts(contactlistRef, groupedContacts);
   addEventListeners();
 }
 
@@ -144,6 +184,7 @@ export function removeSlideInAnimation(ref, time) {
  * @param {string} ref - The CSS selector for the element to animate.
  * @param {number} time - The delay before starting the animation.
  */
+//prettier-ignore
 export function addSlideInAnimation(ref, time) {
   const element = document.querySelector(ref);
   const detailContainerRef = document.getElementById('detailContainer');
@@ -151,9 +192,7 @@ export function addSlideInAnimation(ref, time) {
   setTimeout(() => {
     element.addEventListener(
       'transitionend',
-      () => {
-        detailContainerRef.classList.remove('no-scroll');
-      },
+      () => {detailContainerRef.classList.remove('no-scroll');},
       { once: true },
     );
     element.classList.add('slide-in');
