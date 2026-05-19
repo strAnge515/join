@@ -68,8 +68,8 @@
   .headline-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
-    margin-bottom: 36px;
+    gap: 16px;
+    margin-bottom: 50px;
     width: 220px;
     height: 100px;
   }
@@ -85,12 +85,13 @@
     display: none;
   }
 
+
   .divider_1 {
     display: block;
     width: 96px;
     height: 3px;
     background: #29abe2;
-  
+    padding-top: 3px;
   }
 
 
