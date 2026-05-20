@@ -61,14 +61,16 @@
 .account-menu {
   display: none;
   position: absolute;
+  width: 150px;
+  height: 158px;
   top: 70px;
   right: 40px;
   background-color: #091931;
   color: white;
-  padding: 15px;
+  padding: 26px;
   border-radius: 15px 0 15px 15px;
   flex-direction: column;
-  gap: 10px;
+  gap: 22px;
   z-index: 6;
 }
 
