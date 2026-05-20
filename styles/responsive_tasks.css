@@ -47,9 +47,8 @@
   }
 
   .main-content {
-    padding: 0 16px;
-      }
-  
+    padding: 0 16px 80px;
+  }
 
   .task-form-label {
     font-size: 16px;
@@ -60,6 +59,7 @@
   .task-form-textarea,
   .task-form-input {
     max-width: 800px;
+    font-size: 16px;
   }
 
   .wrapper-add-task-left-side {
@@ -73,8 +73,20 @@
   .task-form-input img {
     right: 8px;
   }
+
+  .task-form-actions {
+    margin-top: 135px;
+  }
+
   .task-form-input {
     justify-content: flex-start;
+  }
+
+  .task-form-input::placeholder,
+  .task-form-textarea::placeholder,
+  .input-assigned-to::placeholder,
+  .date-input-field {
+    font-size: 16px;
   }
 
   .form-group {
@@ -95,5 +107,24 @@
     position: sticky;
     bottom: 87px;
     gap: 32px;
+  }
+
+  .required-wrapper-mobile {
+    display: flex;
+  }
+
+  .required-wrapper {
+    display: none;
+  }
+}
+
+@media (max-width: 376px) {
+  .prio-btn {
+    gap: unset;
+    font-size: 12px;
+  }
+
+  .main-content {
+    padding: 0 8px 80px;
   }
 }

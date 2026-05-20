@@ -327,7 +327,7 @@ textarea::placeholder {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 110px;
+  margin-top: 118px;
   max-width: 970px;
 }
 
@@ -666,6 +666,10 @@ textarea::placeholder {
 
 .was-submitted-custom {
   border: 1px solid var(--color-error);
+}
+
+.required-wrapper-mobile {
+  display: none;
 }
 
 .required-wrapper {
