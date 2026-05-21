@@ -8,7 +8,7 @@
 }
 
 .board-header__title {
-  font-size: 61px;
+  font-size: 60px;
   font-weight: 700;
   color: black;
 }
@@ -125,12 +125,12 @@
 }
 
 .board-column__add-btn {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   border: 2px solid #2a3647;
   border-radius: 8px;
   background-color: transparent;
-  font-size: 20px;
+  font-size: 33px;
   cursor: pointer;
   color: var(--color-text);
   display: flex;
