@@ -624,3 +624,25 @@ h2 {
   background: var(--color-accent);
 }
 
+.addTask-dialog {
+  border-radius: 30px;
+  padding: 64px 74px;
+  border: none;
+  width: 1100px;
+  height: 870px;
+}
+
+.main-title {
+  margin-top: 0;
+}
+
+.edit-btn_dialog {
+  min-width: unset;
+}
+.btn-action-wrapper {
+  position: unset;
+}
+
+.task-form-actions {
+  margin-top: 0;
+}

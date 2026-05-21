@@ -9,7 +9,7 @@ export function getSubtaskTemplate(subtaskValue) {
             <span>${subtaskValue}</span>
           </div>
           <div class="subtask-edit-buttons">
-            <button class="edit-btn subtask-buttons"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
+            <button class="edit-btn edit-btn_dialog subtask-buttons"><img src="../assets/img/Property 1=edit.svg" alt="editsymbol"></button>
             <div class="subtask-button-seperator"></div>
             <button class="delete-btn subtask-buttons"><img src="../assets/img/Property 1=delete.svg" alt="deletesymbol"></button>
           </div>`;

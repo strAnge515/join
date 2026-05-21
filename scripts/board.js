@@ -25,6 +25,17 @@ async function initBoard() {
   await renderBoard();
   initSearch();
   initDragDrop(handleTaskMove);
+  addEventListenersToAddTaskBtn();
+}
+
+function addEventListenersToAddTaskBtn() {
+  const addTaskBtnRef = document.getElementById('addTaskBtn');
+  const dialogRef = document.getElementById('addTaskDialog');
+  if (addTaskBtnRef) {
+    addTaskBtnRef.addEventListener('click', () => {
+      if (dialogRef) dialogRef.showModal();
+    });
+  }
 }
 
 /**
