@@ -27,6 +27,18 @@
   .main-title {
     text-align: center;
   }
+
+  .task-page-body .mobile-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3000;
+  }
+
+  .task-page-body .main-content {
+    padding-top: 80px;
+  }
 }
 
 @media (max-width: 800px) {
