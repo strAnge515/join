@@ -184,7 +184,7 @@ function closeWithOutsideClick(dialogRef) {
  *
  * @param {HTMLElement} dialogRef - The dialog element.
  */
-function addEventListenersToCloseDialog(dialogRef) {
+export function addEventListenersToCloseDialog(dialogRef) {
   closeWithEscKey(dialogRef);
   closeWithOutsideClick(dialogRef);
 }

@@ -9,6 +9,7 @@ import {
   getTaskCardInnerHTML,
 } from './board-utils.js';
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
+import { addEventListenersToCloseDialog } from './contacts-dialogs.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -28,6 +29,9 @@ async function initBoard() {
   addEventListenersToAddTaskBtn();
 }
 
+/**
+ * Attaches a click event listener to the "Add Task" button to open the add task dialog.
+ */
 function addEventListenersToAddTaskBtn() {
   const addTaskBtnRef = document.getElementById('addTaskBtn');
   const dialogRef = document.getElementById('addTaskDialog');

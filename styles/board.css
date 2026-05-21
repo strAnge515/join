@@ -646,3 +646,27 @@ h2 {
 .task-form-actions {
   margin-top: 0;
 }
+
+.header-dialog {
+  display: flex;
+  justify-content: space-between;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 60px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  align-self: end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background-color: #eeeeee;
+  border-radius: 50%;
+}
