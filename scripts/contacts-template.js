@@ -1,16 +1,26 @@
 function getContactTemplate(contact, initials) {
+  // --- NEU: User Story 5 (Badge) ---
+  let currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+  let isYou = currentUser.email && contact.email === currentUser.email;
+  let youBadge = isYou ? `<span class="you-badge">(You)</span>` : '';
+
   return `
     <div class="avatar" style="background:${contact.color}">
       ${initials}
     </div>
     <div class="info">
-      <div class="name">${contact.firstName} ${contact.lastName}</div>
+      <div class="name">${contact.firstName} ${contact.lastName} ${youBadge}</div>
       <div class="email">${contact.email}</div>
     </div>
   `;
 }
 
 function getContactDetailTemplate(contact, initials, color) {
+  // --- NEU: User Story 5 (Badge) ---
+  let currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+  let isYou = currentUser.email && contact.email === currentUser.email;
+  let youBadge = isYou ? `<span class="you-badge">(You)</span>` : '';
+
   return `
     <div class="contact-detail-card" id="contactDetailCard">
           <div class="detail-header">
@@ -18,7 +28,7 @@ function getContactDetailTemplate(contact, initials, color) {
           ${initials}
         </div>
         <div>
-          <div class="detail-name">${contact.firstName} ${contact.lastName}</div>
+          <div class="detail-name">${contact.firstName} ${contact.lastName} ${youBadge}</div>
           <div class="detail-actions mobile-hidden" id="detailActions">
           <button class="edit-btn" id="editContactBtn" data-id="${contact.id}">
           <div class="edit-icon"></div>
