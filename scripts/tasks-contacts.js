@@ -80,7 +80,7 @@ function selectContact(li, contact, checkboxUnchecked, checkboxChecked) {
   checkboxUnchecked.classList.add('d-none');
   checkboxChecked.classList.remove('d-none');
   li.classList.add('selected');
-}
+ }
 
 /**
  * Removes a contact from the selectedContacts array and resets the checkbox visually.
