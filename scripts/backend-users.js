@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBmuTnjiq0SjSKXwtFK1DDu25UQ2VKzBUw",
@@ -44,4 +44,23 @@ export async function findUserByEmail(email) {
     } catch (error) {
         console.error(error);
     }
+}
+
+
+/**
+ * Updates a user in the Firestore database.
+ */
+export async function updateUser(userId, updatedData) {
+    try {
+        await updateDoc(doc(db, "users", userId), updatedData);
+    } catch (error) { console.error(error); }
+}
+
+/**
+ * Deletes a user from the Firestore database.
+ */
+export async function deleteUser(userId) {
+    try {
+        await deleteDoc(doc(db, "users", userId));
+    } catch (error) { console.error(error); }
 }
