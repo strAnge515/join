@@ -1,5 +1,4 @@
 function getContactTemplate(contact, initials) {
-  // --- NEU: User Story 5 (Badge) ---
   let currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
   let isYou = currentUser.email && contact.email === currentUser.email;
   let youBadge = isYou ? `<span class="you-badge">(You)</span>` : '';
@@ -16,7 +15,6 @@ function getContactTemplate(contact, initials) {
 }
 
 function getContactDetailTemplate(contact, initials, color) {
-  // --- NEU: User Story 5 (Badge) ---
   let currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
   let isYou = currentUser.email && contact.email === currentUser.email;
   let youBadge = isYou ? `<span class="you-badge">(You)</span>` : '';
