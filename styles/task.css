@@ -58,6 +58,7 @@ textarea::placeholder {
   gap: 8px;
   position: relative;
   padding-bottom: 24px;
+  font-size: 20px;
 }
 
 .resize-img {

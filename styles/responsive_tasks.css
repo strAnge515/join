@@ -35,6 +35,10 @@
     font-size: 47px;
   }
 
+  .form-group {
+    font-size: 16px;
+  }
+
   .add-task-seperator {
     margin: 0;
     height: 1px;
