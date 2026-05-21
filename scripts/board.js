@@ -9,7 +9,10 @@ import {
   getTaskCardInnerHTML,
 } from './board-utils.js';
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
-import { addEventListenersToCloseDialog } from './contacts-dialogs.js';
+import {
+  addEventListenersToCloseDialog,
+  closeDialog,
+} from './contacts-dialogs.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -27,6 +30,7 @@ async function initBoard() {
   initSearch();
   initDragDrop(handleTaskMove);
   addEventListenersToAddTaskBtn();
+  addDialogCloseListeners();
 }
 
 /**
@@ -35,11 +39,48 @@ async function initBoard() {
 function addEventListenersToAddTaskBtn() {
   const addTaskBtnRef = document.getElementById('addTaskBtn');
   const dialogRef = document.getElementById('addTaskDialog');
-  if (addTaskBtnRef) {
-    addTaskBtnRef.addEventListener('click', () => {
-      if (dialogRef) dialogRef.showModal();
+  if (!addTaskBtnRef || !dialogRef) return;
+  addTaskBtnRef.addEventListener('click', () => {
+    openAddTaskDialog(dialogRef);
+  });
+}
+
+/**
+ * Opens the add task dialog and adds the "show" class for animation.
+ * @param {HTMLElement} dialogRef - The reference to the add task dialog element.
+ */
+function openAddTaskDialog(dialogRef) {
+  if (!dialogRef) return;
+  dialogRef.showModal();
+  dialogRef.classList.add('show');
+}
+
+/**
+ * Adds a click event listener to a single close button.
+ * When clicked, it finds the closest <dialog> element
+ * and passes it to the closeDialog function.
+ *
+ * @returns {void}
+ */
+function addEventListenersToCloseBtn() {
+  const btn = document.querySelector('.btn-to-close');
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      const dialog = e.target.closest('dialog');
+      if (!dialog) return;
+      closeDialog(dialog);
     });
   }
+}
+
+/**
+ * Adds event listeners to the add task dialog to close it when clicking outside, on the cancel button or pressing ESC.
+ */
+function addDialogCloseListeners() {
+  const dialogRef = document.getElementById('addTaskDialog');
+  if (!dialogRef) return;
+  addEventListenersToCloseDialog(dialogRef);
+  addEventListenersToCloseBtn();
 }
 
 /**
