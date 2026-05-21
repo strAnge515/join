@@ -127,7 +127,7 @@ async function executeContactDelete(overlay, contactId) {
   await deleteContact(contactId);
   await renderContacts();
   document.getElementById('contact-details').innerHTML = '';
-  if (window.innerWidth <= 900) {
+  if (window.innerWidth <= 800) {
     closeContactDetails();
     removeActiveStateFromContact();
   }
