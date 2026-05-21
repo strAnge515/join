@@ -29,6 +29,10 @@ import {
   removeActiveStateFromContact,
 } from './contacts-responsive.js';
 
+// --- NEUE IMPORTE FÜR USER STORY 4 & 5 ---
+import { loadTasks, updateTask } from './backend-tasks.js';
+import { findUserByEmail, updateUser, deleteUser } from './backend-users.js';
+
 /**
  * Updates the contact data in the database with the new values from the edit contact form.
  *
@@ -123,8 +127,52 @@ export function closeDialog(element) {
  * @param {string} contactId - The Firebase ID of the contact to delete.
  */
 async function executeContactDelete(overlay, contactId) {
-  overlay.remove();
+  // --- NEU: User Story Vorbereitung ---
+  const contactToDelete = state.contacts.find((c) => c.id == contactId);
+  const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+  const isCurrentUser = currentUser.email && contactToDelete && contactToDelete.email === currentUser.email;
+  // ------------------------------------
+
+  // Verhindert Absturz beim Löschen des Dialogs
+  if (overlay.tagName === 'DIALOG') {
+    overlay.close();
+  } else {
+    overlay.remove();
+  }
+  
   await deleteContact(contactId);
+
+  // --- NEU: User Story 4 (Kontakt aus Tasks entfernen) ---
+  try {
+    const tasks = await loadTasks();
+    if (tasks && Array.isArray(tasks)) {
+      for (let task of tasks) {
+        if (task.assignedTo && Array.isArray(task.assignedTo)) {
+          const updatedAssigned = task.assignedTo.filter(assigned => {
+            const id = typeof assigned === 'string' ? assigned : assigned.id;
+            return id !== contactId;
+          });
+          if (updatedAssigned.length !== task.assignedTo.length) {
+            await updateTask(task.id, { assignedTo: updatedAssigned });
+          }
+        }
+      }
+    }
+  } catch (taskError) {
+    console.error("Fehler beim Entfernen aus Tasks:", taskError);
+  }
+  // --------------------------------------------------------
+
+  // --- NEU: User Story 5 (Sich selbst löschen -> Logout) ---
+  if (isCurrentUser) {
+    const userDoc = await findUserByEmail(contactToDelete.email);
+    if (userDoc) await deleteUser(userDoc.id);
+    sessionStorage.clear();
+    window.location.href = '../index.html';
+    return; // Script stoppen
+  }
+  // ---------------------------------------------------------
+
   await renderContacts();
   document.getElementById('contact-details').innerHTML = '';
   if (window.innerWidth <= 900) {
@@ -289,11 +337,27 @@ async function editContact(event, contactId) {
   const dialogRef = document.getElementById('editContactDialog');
   const contactData = getContactFormData(dialogRef);
   const formattedData = { ...contactData, name: capitalize(contactData.name) };
+
+  // --- NEU: User Story 5 (E-Mail Update in Login-System) ---
+  const oldContact = state.contacts.find((c) => c.id == contactId);
+  const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+  const isCurrentUser = currentUser.email && oldContact && oldContact.email === currentUser.email;
+
   await updateContactData(contactId, formattedData);
+
+  if (isCurrentUser) {
+    const userDoc = await findUserByEmail(oldContact.email);
+    if (userDoc) {
+      await updateUser(userDoc.id, { name: formattedData.name, email: formattedData.email });
+      sessionStorage.setItem('currentUser', JSON.stringify({ name: formattedData.name, email: formattedData.email }));
+    }
+  }
+  // -----------------------------------------------------------
+
   await closeDialogAndRender(dialogRef);
   showUpdatedContactDetails(contactId);
   const element = document.querySelector(`.contact[data-id="${contactId}"]`);
-  element.scrollIntoView();
+  if (element) element.scrollIntoView();
   btn.disabled = false;
 }
 

@@ -1,3 +1,4 @@
+import { saveContact } from './backend-contacts.js';
 /**
  * Handles user signup functionality, including form validation, user creation in Firestore, and UI feedback.
  * @module signup
@@ -35,6 +36,7 @@ async function handleSignup(e) {
         return;
     }
     await saveUser({ name, email, password });
+    await saveContact({ name: name, email: email, phone: "" });
     showSuccessToast();
 }
 
