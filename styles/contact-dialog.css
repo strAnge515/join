@@ -156,7 +156,6 @@ input:focus {
   border-radius: 10px;
   cursor: pointer;
   font-size: 20px;
-  white-space: nowrap;
 }
 
 .cancel-btn:hover,
@@ -174,6 +173,7 @@ input:focus {
 
 .cancel-btn {
   width: 126px;
+  white-space: nowrap;
 }
 
 .create-btn {
@@ -186,7 +186,6 @@ input:focus {
   font-size: 20px;
   font-weight: bold;
   width: 214px;
-  white-space: nowrap;
 }
 
 .create-btn:hover {

@@ -24,9 +24,20 @@ import {
 } from './contacts-dialogs.js';
 
 export const colors = [
-  '#FF7A00', '#FF5EB3', '#6E52FF', '#9327FF', '#00BEE8',
-  '#1FD7C1', '#FF745E', '#FFA35E', '#FC71FF', '#FFC701',
-  '#0038FF', '#FFE62B', '#FF4646', '#FF4646',
+  '#FF7A00',
+  '#FF5EB3',
+  '#6E52FF',
+  '#9327FF',
+  '#00BEE8',
+  '#1FD7C1',
+  '#FF745E',
+  '#FFA35E',
+  '#FC71FF',
+  '#FFC701',
+  '#0038FF',
+  '#FFE62B',
+  '#FF4646',
+  '#FF4646',
 ];
 
 export const state = {
@@ -87,7 +98,7 @@ function toggleActiveContact(element) {
  * Adds event listeners to the detail contact view based on the screen width.
  */
 function addEventListenersToDetailContact() {
-  if (window.innerWidth <= 900) {
+  if (window.innerWidth <= 800) {
     addMobileDetailEventListeners();
   } else {
     addDetailEventListeners();
@@ -99,7 +110,7 @@ function addEventListenersToDetailContact() {
  */
 // prettier-ignore
 export function showContactDetails(element, contact) {
-  if (state.activeContactId === contact.id && window.innerWidth > 900) return;
+  if (state.activeContactId === contact.id && window.innerWidth > 800) return;
   state.activeContactId = contact.id;
   const contactDetailsRef = document.getElementById('contact-details');
   const initials = contact.firstName[0] + contact.lastName[0];
@@ -138,11 +149,10 @@ export function addEventListeners() {
     });
   });
   const newContactForm = document.getElementById('newContactForm');
-  if(newContactForm) {
-      newContactForm.addEventListener('submit', handleAddContact);
+  if (newContactForm) {
+    newContactForm.addEventListener('submit', handleAddContact);
   }
 }
-
 
 /**
  * Shows the details of a newly added contact by finding it in the rendered list.
