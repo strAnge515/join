@@ -230,3 +230,13 @@
     padding-left: clamp(16px, calc(-148.571px + 18.286vw), 80px);
   }
 }
+
+@media (max-width: 970px) and (min-width: 801px) {
+  .dialog-right {
+padding: 0 clamp(16px, calc(-135.669px + 18.935vw), 48px) 0 16px;
+  }
+  .create-btn {
+    display: flex;
+    align-items: anchor-center;
+  }
+}

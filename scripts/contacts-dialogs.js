@@ -175,7 +175,7 @@ async function executeContactDelete(overlay, contactId) {
 
   await renderContacts();
   document.getElementById('contact-details').innerHTML = '';
-  if (window.innerWidth <= 900) {
+  if (window.innerWidth <= 800) {
     closeContactDetails();
     removeActiveStateFromContact();
   }
@@ -232,7 +232,7 @@ function closeWithOutsideClick(dialogRef) {
  *
  * @param {HTMLElement} dialogRef - The dialog element.
  */
-function addEventListenersToCloseDialog(dialogRef) {
+export function addEventListenersToCloseDialog(dialogRef) {
   closeWithEscKey(dialogRef);
   closeWithOutsideClick(dialogRef);
 }

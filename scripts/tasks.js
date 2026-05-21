@@ -74,7 +74,10 @@ function addInformations() {
   let taskCategory = selectCategoryButton.dataset.value;
   let taskDate = insertDate();
   let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
-  let contact = getSelectedContacts().map((contact) => contact.name);
+  let contact = getSelectedContacts().map((contact) => ({
+    name: contact.name,
+    id: contact.id,
+  }));
   let subtasks = Array.from(subtaskList.querySelectorAll('li'));
   /* prettier-ignore */
   return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
