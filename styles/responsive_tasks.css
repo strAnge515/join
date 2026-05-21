@@ -109,8 +109,11 @@
 
   .btn-action-wrapper {
     position: sticky;
-    bottom: 87px;
+    bottom: 80px;
     gap: 32px;
+    background-color: #f6f7f8;
+    padding-bottom: 7px;
+    padding-top: 7px;
   }
 
   .required-wrapper-mobile {
