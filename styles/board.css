@@ -642,11 +642,12 @@ h2 {
   min-width: unset;
 }
 .btn-action-wrapper {
-  position: unset;
+  bottom: 0;
 }
 
 .task-form-actions {
   margin-top: 0;
+  background-color: white;
 }
 
 .header-dialog {
