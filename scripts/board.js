@@ -13,6 +13,7 @@ import {
   addEventListenersToCloseDialog,
   closeDialog,
 } from './contacts-dialogs.js';
+import { dateInputContainer, errorTextDate } from './tasks-date.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -52,6 +53,7 @@ function addEventListenersToAddTaskBtn() {
 function openAddTaskDialog(dialogRef) {
   if (!dialogRef) return;
   dialogRef.showModal();
+  removeAllInputErrors();
   dialogRef.classList.add('show');
 }
 
@@ -81,6 +83,22 @@ function addDialogCloseListeners() {
   if (!dialogRef) return;
   addEventListenersToCloseDialog(dialogRef);
   addEventListenersToCloseBtn();
+}
+
+/**
+ * Removes all error messages and styles from the add task dialog's input fields.
+ */
+function removeAllInputErrors() {
+  const selectCategoryButton = document.getElementById('selected-category');
+  const taskTitleInput = document.getElementById('task-title');
+  const errorTextCategory = document.getElementById('error-text-category');
+  const errorTextTitle = document.getElementById('error-text-title');
+  dateInputContainer.classList.remove('was-submitted-custom');
+  errorTextDate.classList.add('d-none');
+  selectCategoryButton.classList.remove('was-submitted-custom');
+  errorTextCategory.classList.add('d-none');
+  taskTitleInput.classList.remove('was-submitted-custom');
+  errorTextTitle.classList.add('d-none');
 }
 
 /**
