@@ -75,10 +75,10 @@ function addInformations() {
   let taskDate = insertDate();
   let taskPrio = document.querySelector('[class*="selected-"]').dataset.prio;
   let contact = getSelectedContacts().map((contact) => ({
-    name: contact.name,
+    firstName: contact.firstName,
+    lastName: contact.lastName,
     id: contact.id,
-  }));
-  let subtasks = Array.from(subtaskList.querySelectorAll('li'));
+  }));    let subtasks = Array.from(subtaskList.querySelectorAll('li'));
   /* prettier-ignore */
   return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
 }

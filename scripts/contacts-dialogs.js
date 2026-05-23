@@ -127,13 +127,15 @@ export function closeDialog(element) {
  * @param {string} contactId - The Firebase ID of the contact to delete.
  */
 async function executeContactDelete(overlay, contactId) {
-  // --- NEU: User Story Vorbereitung ---
   const contactToDelete = state.contacts.find((c) => c.id == contactId);
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
   const isCurrentUser = currentUser.email && contactToDelete && contactToDelete.email === currentUser.email;
-  // ------------------------------------
+  
+  let contactFullName = '';
+  if (contactToDelete) {
+     contactFullName = contactToDelete.name || `${contactToDelete.firstName} ${contactToDelete.lastName}`.trim();
+  }
 
-  // Verhindert Absturz beim Löschen des Dialogs
   if (overlay.tagName === 'DIALOG') {
     overlay.close();
   } else {
@@ -142,44 +144,64 @@ async function executeContactDelete(overlay, contactId) {
   
   await deleteContact(contactId);
 
-  // --- NEU: User Story 4 (Kontakt aus Tasks entfernen) ---
   try {
     const tasks = await loadTasks();
     if (tasks && Array.isArray(tasks)) {
       for (let task of tasks) {
-        if (task.assignedTo && Array.isArray(task.assignedTo)) {
-          const updatedAssigned = task.assignedTo.filter(assigned => {
-            const id = typeof assigned === 'string' ? assigned : assigned.id;
-            return id !== contactId;
+        let hasChanges = false;
+        let updatedTaskData = {};
+
+        if (task.assigned_to && Array.isArray(task.assigned_to)) {
+          const updatedAssigned = task.assigned_to.filter(assigned => {
+            const isNameMatch = typeof assigned === 'string' && assigned === contactFullName;
+            const isIdMatch = assigned.id && assigned.id === contactId;
+            return !isNameMatch && !isIdMatch; 
           });
-          if (updatedAssigned.length !== task.assignedTo.length) {
-            await updateTask(task.id, { assignedTo: updatedAssigned });
+          
+          if (updatedAssigned.length !== task.assigned_to.length) {
+            updatedTaskData.assigned_to = updatedAssigned;
+            hasChanges = true;
           }
+        }
+
+        if (task.assignedTo && Array.isArray(task.assignedTo)) {
+          const updatedAssigned2 = task.assignedTo.filter(assigned => {
+            const isNameMatch = typeof assigned === 'string' && assigned === contactFullName;
+            const isIdMatch = assigned.id && assigned.id === contactId;
+            return !isNameMatch && !isIdMatch;
+          });
+          
+          if (updatedAssigned2.length !== task.assignedTo.length) {
+            updatedTaskData.assignedTo = updatedAssigned2;
+            hasChanges = true;
+          }
+        }
+
+        if (hasChanges) {
+          await updateTask(task.id, updatedTaskData);
         }
       }
     }
   } catch (taskError) {
     console.error("Fehler beim Entfernen aus Tasks:", taskError);
   }
-  // --------------------------------------------------------
 
-  // --- NEU: User Story 5 (Sich selbst löschen -> Logout) ---
   if (isCurrentUser) {
     const userDoc = await findUserByEmail(contactToDelete.email);
     if (userDoc) await deleteUser(userDoc.id);
     sessionStorage.clear();
     window.location.href = '../index.html';
-    return; // Script stoppen
+    return; 
   }
-  // ---------------------------------------------------------
 
   await renderContacts();
   document.getElementById('contact-details').innerHTML = '';
-  if (window.innerWidth <= 800) {
+  if (window.innerWidth <= 900) {
     closeContactDetails();
     removeActiveStateFromContact();
   }
 }
+
 
 /**
  * Shows a custom confirmation overlay before deleting a contact.

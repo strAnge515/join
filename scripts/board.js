@@ -214,7 +214,13 @@ function createTaskCard(task) {
   card.dataset.id = task.id;
   card.addEventListener('click', () => openTaskCard(task));
   const subtaskInfo = getSubtaskInfo(task.subtasks);
-  const assignedUsers = Array.isArray(task.assigned_to) ? task.assigned_to : [];
+  const assignedUsers = Array.isArray(task.assigned_to)
+    ? task.assigned_to.map((u) => {
+        if (typeof u === 'string') return u; // Fallback für alte Test-Tasks
+        if (u.firstName && u.lastName) return `${u.firstName} ${u.lastName}`; // Neuer Standard
+        return u.name || 'Unknown';
+      })
+    : [];  
   const priorityIcon = getPriorityIcon(task.prio);
   const categoryBadge = getCategoryBadge(task.category);
   card.innerHTML = getTaskCardInnerHTML(
@@ -250,15 +256,27 @@ function openTaskCard(task) {
 function fillTaskCardInitials(task) {
   const assignedListRef = document.getElementById('assignedList');
   if (!task.assigned_to || task.assigned_to.length === 0) return;
+  
   for (let i = 0; i < task.assigned_to.length; i++) {
     const user = task.assigned_to[i];
+    
+    let userName = 'Unknown';
+    if (typeof user === 'string') {
+      userName = user; 
+    } else if (user.firstName && user.lastName) {
+      userName = `${user.firstName} ${user.lastName}`; 
+    } else if (user.name) {
+      userName = user.name;
+    }
+
     assignedListRef.innerHTML += getAssignedUsersHTML(
       getAvatarColor(i),
-      getInitials(user),
-      user,
+      getInitials(userName),
+      userName,
     );
   }
 }
+
 
 /**
  * Fills the subtask list inside the open task modal.
