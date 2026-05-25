@@ -1,74 +1,104 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join - Privacy Policy</title>
 
-    <link rel="icon" type="image/png" href="../assets/img/join_logo.svg">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../styles/sidebar.css">
-    <link rel="stylesheet" href="../styles/header.css">
-    <link rel="stylesheet" href="../styles/legal.css">
+    <link rel="icon" type="image/png" href="../assets/img/join_logo.svg" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/sidebar.css" />
+    <link rel="stylesheet" href="../styles/header.css" />
+    <link rel="stylesheet" href="../styles/legal.css" />
 
     <script defer src="../scripts/sidebar.js"></script>
     <script defer src="../scripts/header.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <header class="mobile-topbar">
-        <img src="../assets/img/join_logo.svg" alt="Join Logo" class="mobile-topbar__logo">
-        <div class="mobile-topbar__profile" id="mobile-profile"></div>
+      <img
+        src="../assets/img/join_logo.svg"
+        alt="Join Logo"
+        class="mobile-topbar__logo"
+      />
+      <div class="mobile-topbar__profile" id="mobile-profile"></div>
+      <div class="mobile-account-menu" id="mobile-account-menu">
+        <a href="./help.html">Help</a>
+        <a href="./legal_notice.html">Legal Notice</a>
+        <a href="./privacy_policy.html">Privacy Policy</a>
+        <button type="button" id="mobile-logout-btn">Log out</button>
+      </div>
     </header>
 
     <div id="sidebar-container"></div>
     <div id="header-container"></div>
 
     <main class="main-content legal-page">
+      <div class="legal-header">
+        <h1>Privacy Policy</h1>
+        <a
+          href="#"
+          class="back-btn"
+          aria-label="Go back"
+          onclick="
+            history.back();
+            return false;
+          "
+        >
+          <img src="../assets/img/arrow-left-line.svg" alt="Back Arrow" />
+        </a>
+      </div>
 
-        <div class="legal-header">
-            <h1>Privacy Policy</h1>
-            <a href="#" class="back-btn" aria-label="Go back" onclick="history.back(); return false;">
-                <img src="../assets/img/arrow-left-line.svg" alt="Back Arrow">
-            </a>
-        </div>
+      <h2>Subtitle</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
+        odio felis, iaculis ut massa eget, ornare lacinia urna. In dignissim
+        justo eu velit sagittis, in scelerisque nulla convallis. Vestibulum eros
+        lorem, sollicitudin eget eros non, varius aliquam mauris. Sed turpis
+        ipsum, condimentum quis nulla at, lobortis facilisis ipsum. Nunc erat
+        justo, hendrerit vel enim vitae, feugiat mattis dui. In auctor dignissim
+        luctus. Mauris ornare ipsum at ultrices eleifend. Praesent tempus congue
+        magna. Quisque libero erat, pharetra a neque et, imperdiet semper justo.
+      </p>
 
-        <h2>Subtitle</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque odio felis, iaculis ut massa eget,
-            ornare lacinia urna. In dignissim justo eu velit sagittis, in scelerisque nulla convallis. Vestibulum eros
-            lorem, sollicitudin eget eros non, varius aliquam mauris. Sed turpis ipsum, condimentum quis nulla at,
-            lobortis facilisis ipsum. Nunc erat justo, hendrerit vel enim vitae, feugiat mattis dui. In auctor dignissim
-            luctus. Mauris ornare ipsum at ultrices eleifend. Praesent tempus congue magna. Quisque libero erat,
-            pharetra a neque et, imperdiet semper justo.</p>
-
-        <h2>Subtitle</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque odio felis, iaculis ut massa eget,
-            ornare lacinia urna. In dignissim justo eu velit sagittis, in scelerisque nulla convallis. Vestibulum eros
-            lorem, sollicitudin eget eros non, varius aliquam mauris. Sed turpis ipsum, condimentum quis nulla at,
-            lobortis facilisis ipsum. Nunc erat justo, hendrerit vel enim vitae, feugiat mattis dui. In auctor dignissim
-            luctus. Mauris ornare ipsum at ultrices eleifend. Praesent tempus congue magna. Quisque libero erat,
-            pharetra a neque et, imperdiet semper justo.</p>
-
+      <h2>Subtitle</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
+        odio felis, iaculis ut massa eget, ornare lacinia urna. In dignissim
+        justo eu velit sagittis, in scelerisque nulla convallis. Vestibulum eros
+        lorem, sollicitudin eget eros non, varius aliquam mauris. Sed turpis
+        ipsum, condimentum quis nulla at, lobortis facilisis ipsum. Nunc erat
+        justo, hendrerit vel enim vitae, feugiat mattis dui. In auctor dignissim
+        luctus. Mauris ornare ipsum at ultrices eleifend. Praesent tempus congue
+        magna. Quisque libero erat, pharetra a neque et, imperdiet semper justo.
+      </p>
     </main>
     <nav class="mobile-bottom-nav">
-        <a href="summary.html" class="active">
-            <span class="mobile-bottom-nav__icon"><img src="../assets/img/summary_icon.svg" alt=""></span>
-            <span>Summary</span>
-        </a>
-        <a href="task.html">
-            <span class="mobile-bottom-nav__icon"><img src="../assets/img/add_task.svg" alt=""></span>
-            <span>Add Task</span>
-        </a>
-        <a href="board.html">
-            <span class="mobile-bottom-nav__icon"><img src="../assets/img/board.svg" alt=""></span>
-            <span>Board</span>
-        </a>
-        <a href="contacts.html">
-            <span class="mobile-bottom-nav__icon"><img src="../assets/img/contact.svg" alt=""></span>
-            <span>Contacts</span>
-        </a>
+      <a href="summary.html" class="active">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/summary_icon.svg" alt=""
+        /></span>
+        <span>Summary</span>
+      </a>
+      <a href="task.html">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/add_task.svg" alt=""
+        /></span>
+        <span>Add Task</span>
+      </a>
+      <a href="board.html">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/board.svg" alt=""
+        /></span>
+        <span>Board</span>
+      </a>
+      <a href="contacts.html">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/contact.svg" alt=""
+        /></span>
+        <span>Contacts</span>
+      </a>
     </nav>
-</body>
-
+  </body>
 </html>
