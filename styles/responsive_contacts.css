@@ -204,7 +204,7 @@
     display: none;
   }
   .contact-container {
-    padding: 22px clamp(10px, calc(-16.94px + 5.24vw), 52px);
+    padding: 17px clamp(10px, calc(-16.94px + 5.24vw), 52px);
   }
 }
 
@@ -233,7 +233,7 @@
 
 @media (max-width: 970px) and (min-width: 801px) {
   .dialog-right {
-padding: 0 clamp(16px, calc(-135.669px + 18.935vw), 48px) 0 16px;
+    padding: 0 clamp(16px, calc(-135.669px + 18.935vw), 48px) 0 16px;
   }
   .create-btn {
     display: flex;
