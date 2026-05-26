@@ -1,65 +1,72 @@
 .legal-page {
-    color: #000000;
+  color: #000000;
 }
 
 .legal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-    margin-top: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  margin-top: 80px;
 }
 
 .legal-header h1 {
-    font-size: 45px;
-    font-weight: 700;
-    margin: 0;
+  font-size: 45px;
+  font-weight: 700;
+  margin: 0;
 }
 
 .legal-page h2 {
-    font-size: 27px;
-    font-weight: 700;
-    margin-top: 40px;
-    margin-bottom: 24px;
+  font-size: 27px;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 24px;
 }
 
 .legal-page p,
 .legal-page ul {
-    font-size: 16px;
-    line-height: 1.4;
-    margin-bottom: 24px;
+  font-size: 16px;
+  line-height: 1.4;
+  margin-bottom: 24px;
 }
 
 .legal-page ul {
-    list-style-position: inside;
-    padding-left: 0;
+  list-style-position: inside;
+  padding-left: 0;
 }
 
 .legal-highlight {
-    color: #29abe2;
-    text-decoration: none;
+  color: #29abe2;
+  text-decoration: none;
 }
 
 .back-btn {
-    cursor: pointer;
-    transition: transform 0.125s ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  cursor: pointer;
+  transition: transform 0.125s ease-in-out;
+  display: none;
+  align-items: center;
+  justify-content: center;
 }
 
 .back-btn img {
-    width: 32px;
-    height: 32px;
+  width: 32px;
+  height: 32px;
 }
 
 .back-btn:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 @media (max-width: 1100px) {
-    .main-content {
-        margin: auto;
-        padding: 16px;
-    }
+  .main-content {
+    margin: auto;
+    padding: 16px;
+  }
+
+  .legal-header {
+    margin-top: 32px;
+  }
+  .back-btn {
+    display: flex;
+  }
 }
