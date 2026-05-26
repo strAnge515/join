@@ -1,139 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join 360 - Summary</title>
+    <link rel="icon" type="image/png" href="../assets/img/join_logo.svg" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Join 360 - Summary</title>
-  <link rel="icon" type="image/png" href="../assets/img/join_logo.svg">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/sidebar.css" />
+    <link rel="stylesheet" href="../styles/header.css" />
+    <link rel="stylesheet" href="../styles/summary.css" />
+    <link rel="stylesheet" href="../styles/responsive_summary.css" />
 
-  <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../styles/sidebar.css">
-  <link rel="stylesheet" href="../styles/header.css">
-  <link rel="stylesheet" href="../styles/summary.css" />
-  <link rel="stylesheet" href="../styles/responsive_summary.css" />
+    <script defer src="../scripts/auth-guard.js"></script>
+    <script defer src="../scripts/sidebar.js"></script>
+    <script defer src="../scripts/header.js"></script>
+  </head>
 
-  <script defer src="../scripts/auth-guard.js"></script>
-  <script defer src="../scripts/sidebar.js"></script>
-  <script defer src="../scripts/header.js"></script>
+  <body class="mobile-greeting-active">
+    <header class="mobile-topbar">
+      <img
+        src="../assets/img/join_logo.svg"
+        alt="Join Logo"
+        class="mobile-topbar__logo"
+      />
+      <div class="mobile-topbar__profile" id="mobile-profile"></div>
+      <div class="mobile-account-menu" id="mobile-account-menu">
+        <a href="./help.html">Help</a>
+        <a href="./legal_notice.html">Legal Notice</a>
+        <a href="./privacy_policy.html">Privacy Policy</a>
+        <button type="button" id="mobile-logout-btn">Log out</button>
+      </div>
+    </header>
 
-</head>
+    <div id="sidebar-container"></div>
+    <div id="header-container"></div>
 
-<body class="mobile-greeting-active">
+    <main class="main-content summary-main">
+      <div class="content">
+        <section class="headline-row">
+          <h1>Join 360</h1>
+          <div class="divider"></div>
+          <p>Key Metrics at a Glance</p>
+          <div class="divider_1"></div>
+        </section>
 
-  <header class="mobile-topbar">
-    <img src="../assets/img/join_logo.svg" alt="Join Logo" class="mobile-topbar__logo">
-    <div class="mobile-topbar__profile" id="mobile-profile"></div>
-  </header>
-
-  <div id="sidebar-container"></div>
-  <div id="header-container"></div>
-
-  <main class="main-content summary-main">
-    <div class="content">
-      <section class="headline-row">
-        <h1>Join 360</h1>
-        <div class="divider"></div>
-        <p>Key Metrics at a Glance</p>
-        <div class="divider_1"></div>
-      </section>
-
-      <section class="summary-layout">
-        <div class="cards-grid">
-
-          <a href="board.html" class="card-link">
-            <div class="card small-card">
-              <div class="card-icon dark-circle">✎</div>
-              <div class="card-text">
-                <h2 id="todo-count">0</h2>
-                <span>To-do</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="board.html" class="card-link">
-            <div class="card small-card">
-              <div class="card-icon dark-circle">✓</div>
-              <div class="card-text">
-                <h2 id="done-count">0</h2>
-                <span>Done</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="board.html" class="card-link card-link--wide">
-            <div class="card urgent-card">
-              <div class="urgent-left">
-                <div class="card-icon orange-circle">
-                  <img src="../assets/img/Prio alta.svg" alt="Urgent">
-                </div>
+        <section class="summary-layout">
+          <div class="cards-grid">
+            <a href="board.html" class="card-link">
+              <div class="card small-card">
+                <div class="card-icon dark-circle">✎</div>
                 <div class="card-text">
-                  <h2 id="urgent-count">0</h2>
-                  <span>Urgent</span>
+                  <h2 id="todo-count">0</h2>
+                  <span>To-do</span>
                 </div>
               </div>
+            </a>
 
-              <div class="card-separator"></div>
-
-              <div class="urgent-right">
-                <h3 id="current-date">No deadline</h3>
-                <p>Upcoming Deadline</p>
+            <a href="board.html" class="card-link">
+              <div class="card small-card">
+                <div class="card-icon dark-circle">✓</div>
+                <div class="card-text">
+                  <h2 id="done-count">0</h2>
+                  <span>Done</span>
+                </div>
               </div>
+            </a>
+
+            <a href="board.html" class="card-link card-link--wide">
+              <div class="card urgent-card">
+                <div class="urgent-left">
+                  <div class="card-icon orange-circle">
+                    <img src="../assets/img/Prio alta.svg" alt="Urgent" />
+                  </div>
+                  <div class="card-text">
+                    <h2 id="urgent-count">0</h2>
+                    <span>Urgent</span>
+                  </div>
+                </div>
+
+                <div class="card-separator"></div>
+
+                <div class="urgent-right">
+                  <h3 id="current-date">No deadline</h3>
+                  <p>Upcoming Deadline</p>
+                </div>
+              </div>
+            </a>
+
+            <div class="bottom-cards">
+              <a href="board.html" class="card-link bottom-card-link">
+                <div class="card bottom-card">
+                  <h2 id="board-count">0</h2>
+                  <span>Tasks in Board</span>
+                </div>
+              </a>
+
+              <a href="board.html" class="card-link bottom-card-link">
+                <div class="card bottom-card active-progress">
+                  <h2 id="inprogress-count">0</h2>
+                  <span>Tasks In Progress</span>
+                </div>
+              </a>
+
+              <a href="board.html" class="card-link bottom-card-link">
+                <div class="card bottom-card">
+                  <h2 id="awaiting-count">0</h2>
+                  <span>Awaiting Feedback</span>
+                </div>
+              </a>
             </div>
-          </a>
-
-          <div class="bottom-cards">
-            <a href="board.html" class="card-link bottom-card-link">
-              <div class="card bottom-card">
-                <h2 id="board-count">0</h2>
-                <span>Tasks in Board</span>
-              </div>
-            </a>
-
-            <a href="board.html" class="card-link bottom-card-link">
-              <div class="card bottom-card active-progress">
-                <h2 id="inprogress-count">0</h2>
-                <span>Tasks In Progress</span>
-              </div>
-            </a>
-
-            <a href="board.html" class="card-link bottom-card-link">
-              <div class="card bottom-card">
-                <h2 id="awaiting-count">0</h2>
-                <span>Awaiting Feedback</span>
-              </div>
-            </a>
           </div>
-        </div>
 
-        <div class="greeting">
-          <p id="greeting-text"></p>
-          <h2 id="greeting-name"></h2>
-        </div>
-      </section>
-    </div>
-  </main>
+          <div class="greeting">
+            <p id="greeting-text"></p>
+            <h2 id="greeting-name"></h2>
+          </div>
+        </section>
+      </div>
+    </main>
 
-  <nav class="mobile-bottom-nav">
-    <a href="summary.html" class="active">
-      <span class="mobile-bottom-nav__icon"><img src="../assets/img/summary_icon.svg" alt=""></span>
-      <span>Summary</span>
-    </a>
-    <a href="task.html">
-      <span class="mobile-bottom-nav__icon"><img src="../assets/img/add_task.svg" alt=""></span>
-      <span>Add Task</span>
-    </a>
-    <a href="board.html">
-      <span class="mobile-bottom-nav__icon"><img src="../assets/img/board.svg" alt=""></span>
-      <span>Board</span>
-    </a>
-    <a href="contacts.html">
-      <span class="mobile-bottom-nav__icon"><img src="../assets/img/contact.svg" alt=""></span>
-      <span>Contacts</span>
-    </a>
-  </nav>
+    <nav class="mobile-bottom-nav">
+      <a href="summary.html" class="active">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/summary_icon.svg" alt=""
+        /></span>
+        <span>Summary</span>
+      </a>
+      <a href="task.html">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/add_task.svg" alt=""
+        /></span>
+        <span>Add Task</span>
+      </a>
+      <a href="board.html">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/board.svg" alt=""
+        /></span>
+        <span>Board</span>
+      </a>
+      <a href="contacts.html">
+        <span class="mobile-bottom-nav__icon"
+          ><img src="../assets/img/contact.svg" alt=""
+        /></span>
+        <span>Contacts</span>
+      </a>
+    </nav>
 
-  <script type="module" src="../scripts/summary.js"></script>
-</body>
-
+    <script type="module" src="../scripts/summary.js"></script>
+  </body>
 </html>
