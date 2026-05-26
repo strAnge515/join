@@ -1,0 +1,118 @@
+.edit-task-modal {
+  width: 526px;
+  max-width: 95vw;
+  background: white;
+  border-radius: 30px;
+  padding: 32px 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  box-sizing: border-box;
+  margin: auto;
+  border: none;
+  outline: none;
+}
+
+.edit-task-modal * {
+  box-sizing: border-box;
+}
+
+.edit-modal-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.edit-modal-top button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-right: -8px;
+}
+
+.edit-modal-top button:hover {
+  background-color: #eeeeee;
+  border-radius: 50%;
+}
+
+.edit-task-scrollarea {
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-right: 8px;
+}
+
+.edit-task-scrollarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.edit-task-scrollarea::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.edit-task-scrollarea::-webkit-scrollbar-thumb {
+  background: #a8a8a8;
+  border-radius: 10px;
+}
+
+.edit-task-modal .task-form-input,
+.edit-task-modal .task-form-textarea {
+  max-width: 100%;
+}
+
+.edit-task-modal .form-group {
+  padding-bottom: 0;
+}
+
+.edit-task-modal .assigned-dropdown {
+  position: relative;
+}
+
+.edit-task-modal .assigned-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #d1d1d1;
+  border-top: none;
+  max-height: 150px;
+  height: auto;
+}
+
+.edit-ok-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  position: sticky;
+  bottom: -5px;
+  background: white;
+  padding: 16px 0 8px 0;
+  margin-top: 8px;
+  z-index: 10;
+}
+
+.edit-ok-btn {
+  font-size: 21px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 24px;
+}
+
+.edit-old-calender {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}

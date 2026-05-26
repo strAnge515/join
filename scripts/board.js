@@ -108,6 +108,9 @@ async function renderBoard() {
   clearBoard();
   try {
     allTasks = (await loadTasks()) || [];
+    window.allTasks = allTasks; 
+    window.renderBoard = renderBoard;
+    
     displayTasks(allTasks);
     refreshCardListeners();
   } catch (error) {

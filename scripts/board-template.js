@@ -39,7 +39,7 @@ function getTaskCardHTML(categoryBadge, task) {
           Delete
         </button>
         <div class="edit-divider"></div>
-        <button class="edit-btn" id="editTaskBtn" data-id="${task.id}">
+        <button class="edit-btn" id="editTaskBtn" onclick="openEditTask('${task.id}')">
           <div class="edit-icon"></div>
           Edit
         </button>
