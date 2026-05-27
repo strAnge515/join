@@ -153,6 +153,7 @@
   flex-direction: column;
   gap: 16px;
   min-height: 100px;
+  height: 70vh;
 }
 
 .board-column__empty {
