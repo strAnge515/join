@@ -101,8 +101,13 @@
 
 .board {
   display: grid;
-  grid-template-columns: repeat(4, 250px);
+  grid-template-columns: repeat(auto-fit, 250px);
   gap: 26px;
+  max-width: 1082px;
+}
+
+.board-page-body .main-content {
+  width: calc(100% - 232px);
 }
 
 .board-column {
