@@ -19,7 +19,7 @@
 .back-btn {
   cursor: pointer;
   transition: transform 0.125s ease-in-out;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -97,8 +97,5 @@
   }
   .help-header {
     margin-top: 32px;
-  }
-  .back-btn {
-    display: flex;
   }
 }
