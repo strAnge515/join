@@ -206,7 +206,7 @@ textarea::placeholder {
 }
 
 .subtask-button:hover {
-  background: #d9d9d9;
+  background: #eeeeee;
   color: #fff;
   border-color: transparent;
   border-radius: 50px;
@@ -574,7 +574,7 @@ textarea::placeholder {
 }
 
 .arrow-img:hover {
-  background-color: #d9d9d9;
+  background-color: #eeeeee;
   border-radius: 50px;
 }
 

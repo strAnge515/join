@@ -139,6 +139,14 @@
   }
 }
 
+@media (max-width: 429px) {
+
+  .assigned-to-names span {
+   max-width: clamp(135px, calc(2.89px + 41.284vw), 180px);
+  }
+}
+
+
 @media (max-width: 376px) {
   .prio-btn {
     gap: unset;
