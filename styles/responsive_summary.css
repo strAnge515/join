@@ -52,7 +52,7 @@
     width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 48px 16px 70px;
+    padding: 48px 60px 70px;
   }
 
   .headline-row {
@@ -230,24 +230,8 @@
   }
 }
 
-/* @media (max-width: 320px) {
+@media (max-width: 420px) {
   .content {
-    padding: 84px 12px 70px;
-  }
-
-  .headline-row h1 {
-    font-size: 40px;
-  }
-
-  .headline-row p {
-    font-size: 18px;
-  }
-
-  .cards-grid {
-    gap: 12px;
-  }
-
-  .bottom-cards {
-    gap: 8px;
-  }
-} */
+    padding: 48px 16px 80px;
+}
+}
