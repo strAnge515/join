@@ -55,7 +55,7 @@
               />
             </div>
           </div>
-          <button class="board-header__add-btn" id="addTaskBtn">
+          <button class="board-header__add-btn" id="addTaskBtn" data-status="to do">
             Add task <span class="plus">+</span>
           </button>
         </div>
@@ -65,7 +65,7 @@
         <section class="board-column">
           <div class="board-column__header">
             <h2 class="board-column__title">To do</h2>
-            <button class="board-column__add-btn">+</button>
+            <button class="board-column__add-btn" data-status="to do">+</button>
           </div>
           <div
             class="board-column__cards"
@@ -77,7 +77,7 @@
         <section class="board-column">
           <div class="board-column__header">
             <h2 class="board-column__title">In progress</h2>
-            <button class="board-column__add-btn">+</button>
+            <button class="board-column__add-btn" data-status="in progress">+</button>
           </div>
           <div
             class="board-column__cards"
@@ -89,7 +89,7 @@
         <section class="board-column">
           <div class="board-column__header">
             <h2 class="board-column__title">Awaiting feedback</h2>
-            <button class="board-column__add-btn">+</button>
+            <button class="board-column__add-btn" data-status="awaiting feedback">+</button>
           </div>
           <div
             class="board-column__cards"
