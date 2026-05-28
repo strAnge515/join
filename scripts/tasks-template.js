@@ -1,3 +1,6 @@
+import { escapeHtml, getInitials, getAvatarColor } from './board-utils.js';
+
+
 /**
  * Returns the HTML template for a subtask list item in display mode.
  *
@@ -55,49 +58,74 @@ export function getDropdownTemplate(contact, initials) {
   </section>`;
 }
 
+
 /**
- * Returns the HTML string for rendering a single avatar in the edit view.
+ * Resolves the display name of an assigned user, supporting strings and
+ * contact-object shapes (firstName/lastName or name).
+ *
+ * @param {string|Object} user - The assigned user entry.
+ * @returns {string} The full display name.
+ */
+function getUserDisplayName(user) {
+  if (typeof user === 'string') return user;
+  if (user.firstName && user.lastName) return `${user.firstName} ${user.lastName}`;
+  return user.name || 'Unknown';
+}
+
+
+/**
+ * Returns the HTML string for the stacked avatars shown in the edit dialog.
+ * Visual styling lives in edit-task.css (.avatar--stacked).
  *
  * @param {Array} assignedTo - Array of assigned contacts.
- * @returns {string} HTML markup for avatars.
+ * @returns {string} HTML markup for the avatar row.
  */
 export function renderAvatarsForEdit(assignedTo) {
-  if (!assignedTo || !Array.isArray(assignedTo)) return '';
+  if (!Array.isArray(assignedTo)) return '';
   return assignedTo.map((user, i) => {
-    let userName = typeof user === 'string' ? user : (user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.name || 'Unknown');
-    const initials = userName.split(' ').map(n => n[0] || '').join('').substring(0, 2).toUpperCase();
-    const colors = ['#29abe2', '#9b59b6', '#2ecc71', '#e67e22', '#e74c3c', '#607d8b', '#1565c0'];
-    const color = user.color || colors[i % colors.length];
-    return `<div class="avatar" style="background:${color}; width:32px; height:32px; font-size:14px; display:flex; align-items:center; justify-content:center; border-radius:50%; color:white; border:1px solid white; margin-left: ${i === 0 ? '0' : '-8px'}; z-index: ${10 - i};">${initials}</div>`;
+    const initials = escapeHtml(getInitials(getUserDisplayName(user)));
+    const color = user.color || getAvatarColor(i);
+    return `<div class="avatar avatar--stacked" style="background:${color}">${initials}</div>`;
   }).join('');
 }
 
+
 /**
- * Parses a date string and extracts day, month, year formats to populate inputs.
+ * Splits a date string into day, month and year segments.
+ * Supports DD/MM/YYYY, DD.MM.YYYY and YYYY-MM-DD / DD-MM-YYYY input.
+ *
+ * @param {string} value - The raw date string from the database.
+ * @returns {{day: string, month: string, year: string}} The split date parts.
+ */
+function splitDateString(value) {
+  let day = '', month = '', year = '';
+  if (!value) return { day, month, year };
+  if (value.includes('/')) [day, month, year] = value.split('/');
+  else if (value.includes('.')) [day, month, year] = value.split('.');
+  else if (value.includes('-')) {
+    const parts = value.split('-');
+    if (parts[0].length === 4) [year, month, day] = parts;
+    else [day, month, year] = parts;
+  }
+  return { day, month, year };
+}
+
+
+/**
+ * Parses a date string and pads the segments for use in the native date picker.
  *
  * @param {string} dateValue - The raw date string from the database.
- * @returns {Object} An object containing day, month, year, and formattedDate.
+ * @returns {{day: string, month: string, year: string, formattedDate: string}}
+ *   Padded segments plus a YYYY-MM-DD string for <input type="date">.
  */
 function parseEditDate(dateValue) {
-  let day = '', month = '', year = '', formattedDate = '';
-  if (dateValue) {
-    if (dateValue.includes('/')) {
-      [day, month, year] = dateValue.split('/');
-    } else if (dateValue.includes('.')) {
-      [day, month, year] = dateValue.split('.');
-    } else if (dateValue.includes('-')) {
-      const parts = dateValue.split('-');
-      if (parts[0].length === 4) [year, month, day] = parts;
-      else [day, month, year] = parts;
-    }
-    if (day && month && year) {
-      day = day.padStart(2, '0');
-      month = month.padStart(2, '0');
-      formattedDate = `${year}-${month}-${day}`;
-    }
-  }
-  return { day, month, year, formattedDate };
+  const { day, month, year } = splitDateString(dateValue);
+  if (!day || !month || !year) return { day, month, year, formattedDate: '' };
+  const dd = day.padStart(2, '0');
+  const mm = month.padStart(2, '0');
+  return { day: dd, month: mm, year, formattedDate: `${year}-${mm}-${dd}` };
 }
+
 
 /**
  * Returns the HTML string for the entire edit task modal content.
@@ -106,10 +134,9 @@ function parseEditDate(dateValue) {
  * @returns {string} HTML markup for the edit task modal.
  */
 export function getBoardEditTemplate(task) {
-  const title = task.title || '';
-  const description = task.description || '';
+  const title = escapeHtml(task.title || '');
+  const description = escapeHtml(task.description || '');
   const { day, month, year, formattedDate } = parseEditDate(task.date);
-
   const isUrgent = task.prio === 'urgent' ? 'selected-urgent' : '';
   const isMedium = task.prio === 'medium' ? 'selected-medium' : '';
   const isLow = task.prio === 'low' ? 'selected-low' : '';
@@ -121,11 +148,15 @@ export function getBoardEditTemplate(task) {
           <img class="close-icon" src="../assets/img/contacts/close.svg" alt="Close">
         </button>
       </div>
-      <form id="edit-task-form" class="edit-task-scrollarea">
-        
+      <form id="edit-task-form" class="edit-task-scrollarea" novalidate>
+
         <div class="form-group">
-          <label class="task-form-label" for="edit-task-title">Title</label>
-          <input type="text" id="edit-task-title" class="task-form-input" value="${title}" required>
+          <label class="task-form-label" for="edit-task-title">
+            <p>Title</p>
+            <p class="star">*</p>
+          </label>
+          <input type="text" id="edit-task-title" class="task-form-input" value="${title}" maxlength="40">
+          <p id="edit-error-title" class="d-none error-writing">This field is required</p>
         </div>
 
         <div class="form-group">
@@ -134,7 +165,10 @@ export function getBoardEditTemplate(task) {
         </div>
 
         <div class="form-group">
-          <label class="task-form-label">Due date</label>
+          <label class="task-form-label">
+            <p>Due date</p>
+            <p class="star">*</p>
+          </label>
           <div>
             <section class="task-form-input" id="edit-task-date" tabindex="0">
               <div class="input-wrapper">
@@ -145,8 +179,9 @@ export function getBoardEditTemplate(task) {
                 <input class="date-input-field" id="edit-date-year" type="text" placeholder="yyyy" maxlength="4" size="4" value="${year}" />
               </div>
               <img src="../assets/img/event.svg" alt="eventsvg" id="edit-event-svg" />
-              <input class="edit-old-calender" type="date" id="edit-date-input" required value="${formattedDate}" />
+              <input class="edit-old-calender" type="date" id="edit-date-input" value="${formattedDate}" />
             </section>
+            <p id="edit-error-date" class="d-none error-writing">This field is required</p>
           </div>
         </div>
 
@@ -176,7 +211,7 @@ export function getBoardEditTemplate(task) {
           <label class="task-form-label">Subtasks</label>
           <div class="task-form-subtask-input-row">
             <input class="task-form-input" type="text" id="edit-subtask-input" placeholder="Add new subtask" maxlength="35">
-            
+
             <div class="button-wrapper d-none" id="edit-subtask-actions">
               <button type="button" class="subtask-button" id="edit-subtask-clear">
                 <img src="../assets/img/Property 1=close.svg" alt="clear">
@@ -192,7 +227,7 @@ export function getBoardEditTemplate(task) {
         </section>
 
         <div class="edit-ok-btn-wrapper">
-          <button type="submit" class="edit-ok-btn btn btn--primary" id="btn-edit-save">Ok ✔</button>
+          <button type="submit" class="btn btn--primary" id="btn-edit-save">Save ✓</button>
         </div>
       </form>
     </div>
