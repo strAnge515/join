@@ -42,7 +42,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding-right: 8px;
+  scrollbar-gutter: stable;
 }
 
 .edit-task-scrollarea::-webkit-scrollbar {
@@ -86,23 +86,30 @@
   height: auto;
 }
 
+.edit-task-modal .task-form-subtask-list {
+  overflow: visible;
+  max-height: none;
+}
+
+.edit-task-modal .avatar--stacked {
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+}
+
+.edit-task-modal .avatar--stacked + .avatar--stacked {
+  margin-left: -8px;
+}
+
 .edit-ok-btn-wrapper {
   display: flex;
   justify-content: flex-end;
   position: sticky;
-  bottom: -5px;
+  bottom: 0;
   background: white;
   padding: 16px 0 8px 0;
   margin-top: 8px;
   z-index: 10;
-}
-
-.edit-ok-btn {
-  font-size: 21px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 24px;
 }
 
 .edit-old-calender {
@@ -115,4 +122,28 @@
   opacity: 0;
   cursor: pointer;
   z-index: 2;
+}
+
+@media (max-width: 800px) {
+  .edit-task-modal {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    margin: 0;
+    padding: clamp(16px, calc(-50.783px + 20.87vw), 64px)
+             clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
+  }
+
+  .edit-ok-btn-wrapper {
+    padding-bottom: clamp(16px, calc(-50.783px + 20.87vw), 64px);
+  }
+}
+
+@media (max-width: 376px) {
+  .edit-task-modal .prio-btn {
+    gap: unset;
+    font-size: 12px;
+  }
 }
