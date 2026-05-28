@@ -26,7 +26,7 @@
 
   .main-title {
     text-align: center;
-    margin-top: 48px;
+    margin-top: 8px;
   }
 
   .task-page-body .mobile-topbar {
@@ -37,16 +37,16 @@
     z-index: 3000;
   }
 
-  .task-page-body .main-content {
+  /* .task-page-body .main-content {
     padding-top: 80px;
-  }
+  } */
 }
 
 @media (max-width: 800px) {
   .main-title {
     text-align: unset;
     font-size: 47px;
-    margin-top: 80px;
+    /* margin-top: 80px; */
   }
 
   .form-group {
@@ -65,7 +65,7 @@
   }
 
   .main-content {
-    padding: 0 16px 80px;
+    padding: 40px 16px 80px;
   }
 
   .task-form-label {
@@ -140,12 +140,10 @@
 }
 
 @media (max-width: 429px) {
-
   .assigned-to-names span {
-   max-width: clamp(135px, calc(2.89px + 41.284vw), 180px);
+    max-width: clamp(135px, calc(2.89px + 41.284vw), 180px);
   }
 }
-
 
 @media (max-width: 376px) {
   .prio-btn {

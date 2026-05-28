@@ -60,6 +60,7 @@
     align-items: flex-start;
     gap: 16px;
     margin-bottom: 50px;
+    margin-top: 0;
     width: 220px;
     height: 100px;
   }

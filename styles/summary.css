@@ -1,32 +1,29 @@
 .summary-main {
-  margin-top: 80px;
-  padding: 0;
+  /* margin-top: 80px; */
+  /* padding: 0; */
   display: flex;
   flex-direction: column;
-   min-height: calc(100% - 80px);
+  /* min-height: calc(100% - 80px); */
 }
 
-
-.content {
+/* .content {
   padding: 40px 60px;
   padding-bottom: 40px;
-}
-
+} */
 
 .headline-row {
   display: flex;
   align-items: center;
   gap: 30px;
   margin-bottom: 56px;
+  margin-top: 80px;
 }
-
 
 .headline-row h1 {
   font-size: 64px;
   font-weight: 700;
   color: black;
 }
-
 
 .divider {
   width: 3px;
@@ -40,14 +37,12 @@
   color: #2a3647;
 }
 
-
 .summary-layout {
   display: flex;
   align-items: center;
   gap: 80px;
   width: 100%;
 }
-
 
 .cards-grid {
   width: 560px;
@@ -57,31 +52,28 @@
   gap: 28px;
 }
 
-
 .card-link {
   text-decoration: none;
   color: inherit;
   display: block;
 }
 
-
 .card-link--wide {
   width: 560px;
 }
-
 
 .bottom-card-link {
   width: 168px;
 }
 
-
 .card {
   background: white;
   border-radius: 30px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.08);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
-
 
 .card-link:hover .card {
   background-color: #2a3647;
@@ -90,7 +82,6 @@
   cursor: pointer;
 }
 
-
 .card-link:hover .card h2,
 .card-link:hover .card span,
 .card-link:hover .card h3,
@@ -98,22 +89,18 @@
   color: #ffffff;
 }
 
-
 .card-link:hover .card-icon {
   background: #ffffff;
   color: #2a3647;
 }
 
-
 .card-link:hover .orange-circle {
   background: #ff5c00;
 }
 
-
 .card-link:hover .card-separator {
   background: rgba(255, 255, 255, 0.4);
 }
-
 
 .small-card {
   width: 266px;
@@ -123,7 +110,6 @@
   justify-content: center;
   gap: 18px;
 }
-
 
 .card-icon {
   width: 69px;
@@ -137,30 +123,25 @@
   font-weight: 700;
 }
 
-
 .card-icon img {
   width: 32px;
   height: 32px;
   object-fit: contain;
 }
 
-
 .dark-circle {
   background: #2a3647;
 }
 
-
 .orange-circle {
   background: #ff5c00;
 }
-
 
 .card-text {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 
 .card-text h2 {
   font-size: 64px;
@@ -169,12 +150,10 @@
   color: black;
 }
 
-
 .card-text span {
   font-size: 21px;
   color: #2a3647;
 }
-
 
 .urgent-card {
   width: 560px;
@@ -185,20 +164,17 @@
   padding: 0 48px;
 }
 
-
 .urgent-left {
   display: flex;
   align-items: center;
   gap: 18px;
 }
 
-
 .card-separator {
   width: 2px;
   height: 102px;
   background: #d1d1d1;
 }
-
 
 .urgent-right h3 {
   font-size: 21px;
@@ -207,19 +183,16 @@
   margin-bottom: 12px;
 }
 
-
 .urgent-right p {
   font-size: 16px;
   color: #2a3647;
 }
-
 
 .bottom-cards {
   width: 560px;
   display: flex;
   gap: 28px;
 }
-
 
 .bottom-card {
   width: 168px;
@@ -230,7 +203,6 @@
   justify-content: center;
 }
 
-
 .bottom-card h2 {
   font-size: 64px;
   line-height: 1;
@@ -238,7 +210,6 @@
   color: black;
   margin-bottom: 12px;
 }
-
 
 .bottom-card span {
   width: 90px;
@@ -248,19 +219,16 @@
   line-height: 1.2;
 }
 
-
 .active-progress h2,
 .active-progress span {
   color: black;
 }
-
 
 .greeting {
   min-width: 360px;
   display: flex;
   flex-direction: column;
 }
-
 
 .greeting p {
   font-size: 48px;
@@ -269,10 +237,8 @@
   margin-bottom: 8px;
 }
 
-
 .greeting h2 {
   font-size: 64px;
   font-weight: 700;
   color: #29abe2;
 }
-
