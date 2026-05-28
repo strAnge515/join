@@ -1,14 +1,31 @@
-.edit-task-modal {
-  width: 526px;
+#taskModal.edit-mode {
+  width: 720px;
   max-width: 95vw;
+  max-height: 90vh;
+  padding: 0;
+  border: none;
+  background: transparent;
+  margin: auto;
+  overflow: visible;
+  top: 0; 
+  bottom: 0; 
+  left: 0; 
+  right: 0; 
+  transform: none;
+}
+
+.edit-task-modal {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 90vh;
   background: white;
   border-radius: 30px;
   padding: 32px 24px 32px 32px;
   display: flex;
   flex-direction: column;
-  max-height: 85vh;
   box-sizing: border-box;
-  margin: auto;
+  margin: 0;
   border: none;
   outline: none;
 }
@@ -43,6 +60,9 @@
   flex-direction: column;
   gap: 24px;
   scrollbar-gutter: stable;
+  min-width: 0;
+  flex: 1;
+  min-height: 0;
 }
 
 .edit-task-scrollarea::-webkit-scrollbar {
@@ -59,13 +79,25 @@
   border-radius: 10px;
 }
 
+.edit-task-modal .form-group {
+  padding-bottom: 0;
+  min-width: 0;
+}
+
 .edit-task-modal .task-form-input,
 .edit-task-modal .task-form-textarea {
   max-width: 100%;
+  width: 100%;
 }
 
-.edit-task-modal .form-group {
-  padding-bottom: 0;
+.edit-task-modal .task-form-prio-group {
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.edit-task-modal .prio-btn {
+  min-width: 0;
+  flex: 1 1 0;
 }
 
 .edit-task-modal .assigned-dropdown {
@@ -125,13 +157,19 @@
 }
 
 @media (max-width: 800px) {
-  .edit-task-modal {
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    max-height: none;
-    border-radius: 0;
+  #taskModal.edit-mode {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     margin: 0;
+    border-radius: 0;
+  }
+
+  .edit-task-modal {
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
     padding: clamp(16px, calc(-50.783px + 20.87vw), 64px)
              clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
   }
