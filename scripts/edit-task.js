@@ -21,6 +21,7 @@ function closeEditModal() {
   if (!dialogRef) return;
   detachOutsideClickHandler();
   document.body.classList.remove('no-scroll');
+  dialogRef.classList.remove('edit-mode');
   dialogRef.close();
   dialogRef.innerHTML = '';
 }
@@ -60,6 +61,7 @@ window.openEditTask = async function (taskId) {
  */
 async function renderModalContent(task) {
   const dialogRef = document.getElementById('taskModal');
+  dialogRef.classList.add('edit-mode');
   dialogRef.innerHTML = getBoardEditTemplate(task);
   const closeBtn = dialogRef.querySelector('#edit-close-btn');
   if (closeBtn) closeBtn.addEventListener('click', closeEditModal);

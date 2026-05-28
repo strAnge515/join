@@ -38,11 +38,18 @@ async function initBoard() {
  * Attaches a click event listener to the "Add Task" button to open the add task dialog.
  */
 function addEventListenersToAddTaskBtn() {
-  const addTaskBtnRef = document.getElementById('addTaskBtn');
   const dialogRef = document.getElementById('addTaskDialog');
-  if (!addTaskBtnRef || !dialogRef) return;
-  addTaskBtnRef.addEventListener('click', () => {
-    openAddTaskDialog(dialogRef);
+  const addTaskButtons = document.querySelectorAll(
+    '#addTaskBtn, .board-column__add-btn'
+  );
+
+  if (!dialogRef) return;
+
+  addTaskButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      window.selectedBoardStatus = button.dataset.status || 'to do';
+      openAddTaskDialog(dialogRef);
+    });
   });
 }
 

@@ -44,10 +44,10 @@ function init() {
 }
 
 /**
- * Registers the submit event on the task form.
- * Validates all inputs, builds the task object and saves it to the backend.
- *
- * @returns {void}
+ * Registers the submit event listener on the task form.
+ * Validates all inputs, collects the form data, creates a task object,
+ * saves it to the backend, shows the success dialog,
+ * then closes the dialog, resets the form and re-renders the board.
  */
 function addTask() {
   taskForm.addEventListener('submit', async (event) => {
@@ -57,9 +57,21 @@ function addTask() {
     let object = createTaskObjekt(informartionsFromInput);
     await saveTask(object);
     document.getElementById('subtask-added').showModal();
-    setTimeout(() => {
-      window.location.href = 'board.html';
-    }, 900);
+    setTimeout(async () => {
+      document.getElementById('subtask-added').close();
+
+      const dialog = document.getElementById('addTaskDialog');
+      if (dialog) dialog.close();
+
+      clearTask();
+
+      if (window.renderBoard) {
+        await window.renderBoard();
+      } else {
+        window.location.href = 'board.html';
+      }
+    },
+      900);
   });
 }
 
@@ -78,7 +90,7 @@ function addInformations() {
     firstName: contact.firstName,
     lastName: contact.lastName,
     id: contact.id,
-  }));    let subtasks = Array.from(subtaskList.querySelectorAll('li'));
+  })); let subtasks = Array.from(subtaskList.querySelectorAll('li'));
   /* prettier-ignore */
   return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
 }
@@ -94,7 +106,7 @@ function createTaskObjekt(data) {
     title: data.taskTitle,
     description: data.tastkDescription,
     category: data.taskCategory,
-    status: 'to do',
+    status: window.selectedBoardStatus || 'to do',
     assigned_to: data.contact,
     date: data.taskDate,
     prio: data.taskPrio,
