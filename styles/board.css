@@ -634,9 +634,13 @@ h2 {
   padding: 64px 74px;
   border: none;
   width: 1100px;
-  height: 870px;
+  height: 730px;
   transform: translate(120%, 0);
   transition: transform 0.1s ease-out;
+}
+
+.required-wrapper {
+  top: 645px;
 }
 
 .main-title {
@@ -648,6 +652,10 @@ h2 {
 }
 .btn-action-wrapper {
   bottom: 0;
+}
+
+.btn--secondary {
+  background: white;
 }
 
 .task-form-actions {
