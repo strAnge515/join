@@ -635,13 +635,14 @@ h2 {
   padding: 64px 74px;
   border: none;
   width: 1100px;
-  height: 730px;
+  height: 850px;
   transform: translate(120%, 0);
   transition: transform 0.1s ease-out;
 }
 
 .required-wrapper {
-  top: 645px;
+  top: 779px;
+  left: 74px;
 }
 
 .main-title {
@@ -661,7 +662,10 @@ h2 {
 
 .task-form-actions {
   margin-top: 0;
-  background-color: white;
+  padding-bottom: 50px;
+  position: absolute;
+  top: 750px;
+  right: 74px;
 }
 
 .header-dialog {
