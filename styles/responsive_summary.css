@@ -52,7 +52,7 @@
     width: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 48px 60px 70px;
+    padding: 48px 60px 80px;
   }
 
   .headline-row {
@@ -232,12 +232,12 @@
 
 @media (max-width: 800px) {
     .content {
-        padding: 40px 16px 80px;
+        padding: 48px 16px 80px;
     }
 }
 
 @media (max-width: 420px) {
   .content {
-    padding: 40px 16px 80px;
+    padding: 48px 16px 80px;
 }
 }
