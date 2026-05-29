@@ -46,12 +46,12 @@ export function getEditTemplate(subtaskText) {
  * @param {string} initials - The two-letter initials to display inside the avatar.
  * @returns {string} HTML string with avatar, name and checkbox images.
  */
-export function getDropdownTemplate(contact, initials) {
+export function getDropdownTemplate(contact, initials, isYou) {
   return `
   <section class="assigned-to-contacts-wrapper">
     <div class="assigned-to-names">
       <div class="avatar" style="background:${contact.color}">${initials}</div>
-      <span>${contact.firstName} ${contact.lastName}</span>
+      <span>${contact.firstName} ${contact.lastName} ${isYou ? '(You)' : ''}</span>
     </div>
     <img src="../assets/img/Check button.svg" alt="checkbox" class="checkbox-unchecked" data-id="${contact.id}"/>
     <img src="../assets/img/Check button checked.svg" alt="checkbox-checked" class="checkbox-checked d-none" data-id="${contact.id}">
