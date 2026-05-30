@@ -150,9 +150,14 @@ export function getTaskCardInnerHTML(
   assignedUsers,
 ) {
   return `
-    <span class="task-card__category" style="background:${categoryBadge.color}; color:${categoryBadge.textColor};">
+  <div class="header-wrapper">
+      <span class="task-card__category" style="background:${categoryBadge.color}; color:${categoryBadge.textColor};">
       ${categoryBadge.label}
-    </span>
+      </span>
+      <button type="button" class="mobile-swap-button d-none">
+        <img src="../assets/img/Frame 380.svg" alt="double-arrow">
+      </button>
+    </div>
     <div class="task-card__text">
       <h3 class="task-card__title">${escapeHtml(task.title || 'Untitled task')}</h3>
       <p class="task-card__description">${escapeHtml(task.description || 'No description')}</p>

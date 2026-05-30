@@ -52,7 +52,8 @@ export async function renderAssignedDropdown() {
 
 function generateYouAvatar(currentLoggedUser) {
   const youContact = loggedUser(currentLoggedUser);
-  const youInitials = youContact.firstName[0] + youContact.lastName[0];
+  const youInitials = youContact.firstName[0] + (youContact.lastName ? youContact.lastName[0] : '');
+  console.log(youContact);
   const currentLoggedUserAvatar = document.createElement('li');
   currentLoggedUserAvatar.className = 'assigned-option';
   currentLoggedUserAvatar.innerHTML = getDropdownTemplate(youContact, youInitials, true);
@@ -63,7 +64,7 @@ function loggedUser(currentLoggedUser) {
   const currentLoggedUserName = currentLoggedUser.name;
 
   let firstName = currentLoggedUserName.split(' ')[0];
-  let lastName = currentLoggedUserName.split(' ')[1];
+  let lastName = currentLoggedUserName.split(' ')[1] || "";
   let id = currentLoggedUser.email;
   let color = getAvatarColor(0);
   return { firstName, lastName, id, color };
