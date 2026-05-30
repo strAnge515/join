@@ -14,6 +14,7 @@ import {
   closeDialog,
 } from './contacts-dialogs.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
+import { clearTask } from './tasks.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -40,11 +41,9 @@ async function initBoard() {
 function addEventListenersToAddTaskBtn() {
   const dialogRef = document.getElementById('addTaskDialog');
   const addTaskButtons = document.querySelectorAll(
-    '#addTaskBtn, .board-column__add-btn'
+    '#addTaskBtn, .board-column__add-btn',
   );
-
   if (!dialogRef) return;
-
   addTaskButtons.forEach((button) => {
     button.addEventListener('click', () => {
       window.selectedBoardStatus = button.dataset.status || 'to do';
@@ -59,9 +58,14 @@ function addEventListenersToAddTaskBtn() {
  */
 function openAddTaskDialog(dialogRef) {
   if (!dialogRef) return;
-  dialogRef.showModal();
-  removeAllInputErrors();
-  dialogRef.classList.add('show');
+  if (window.innerWidth >= 800) {
+    document.body.style.overflow = 'hidden';
+    dialogRef.showModal();
+    removeAllInputErrors();
+    dialogRef.classList.add('show');
+  } else {
+    window.location.href = 'task.html';
+  }
 }
 
 /**
@@ -77,6 +81,7 @@ function addEventListenersToCloseBtn() {
     btn.addEventListener('click', (e) => {
       const dialog = e.target.closest('dialog');
       if (!dialog) return;
+      clearTask();
       closeDialog(dialog);
     });
   }
@@ -88,7 +93,7 @@ function addEventListenersToCloseBtn() {
 function addDialogCloseListeners() {
   const dialogRef = document.getElementById('addTaskDialog');
   if (!dialogRef) return;
-  addEventListenersToCloseDialog(dialogRef);
+  addEventListenersToCloseDialog(dialogRef, clearTask);
   addEventListenersToCloseBtn();
 }
 
@@ -115,9 +120,9 @@ async function renderBoard() {
   clearBoard();
   try {
     allTasks = (await loadTasks()) || [];
-    window.allTasks = allTasks; 
+    window.allTasks = allTasks;
     window.renderBoard = renderBoard;
-    
+
     displayTasks(allTasks);
     refreshCardListeners();
   } catch (error) {
@@ -230,7 +235,7 @@ function createTaskCard(task) {
         if (u.firstName && u.lastName) return `${u.firstName} ${u.lastName}`; // Neuer Standard
         return u.name || 'Unknown';
       })
-    : [];  
+    : [];
   const priorityIcon = getPriorityIcon(task.prio);
   const categoryBadge = getCategoryBadge(task.category);
   card.innerHTML = getTaskCardInnerHTML(
@@ -266,15 +271,15 @@ function openTaskCard(task) {
 function fillTaskCardInitials(task) {
   const assignedListRef = document.getElementById('assignedList');
   if (!task.assigned_to || task.assigned_to.length === 0) return;
-  
+
   for (let i = 0; i < task.assigned_to.length; i++) {
     const user = task.assigned_to[i];
-    
+
     let userName = 'Unknown';
     if (typeof user === 'string') {
-      userName = user; 
+      userName = user;
     } else if (user.firstName && user.lastName) {
-      userName = `${user.firstName} ${user.lastName}`; 
+      userName = `${user.firstName} ${user.lastName}`;
     } else if (user.name) {
       userName = user.name;
     }
@@ -286,7 +291,6 @@ function fillTaskCardInitials(task) {
     );
   }
 }
-
 
 /**
  * Fills the subtask list inside the open task modal.
@@ -316,16 +320,14 @@ function addTaskCardEventListeners(task) {
   const closeBtnRef = document.querySelector('.close');
   const dialogRef = document.getElementById('taskModal');
   const deleteBtn = document.getElementById('deleteTaskBtn');
-
   if (closeBtnRef) closeBtnRef.addEventListener('click', closeModal);
-
+  if (dialogRef.dataset.outsideClickBound) return;
+  dialogRef.dataset.outsideClickBound = 'true';
   dialogRef.addEventListener('click', (e) => {
     if (e.target === dialogRef) closeModal();
   });
-
   if (deleteBtn)
     deleteBtn.addEventListener('click', () => handleModalDelete(task));
-
   dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
     checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
   });

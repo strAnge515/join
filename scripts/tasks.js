@@ -1,11 +1,34 @@
 import { saveTask } from './backend-tasks.js';
 import { loadAndPrepareContacts } from './contacts-render.js';
-import { getSubtaskTemplate, getEditTemplate, getDropdownTemplate } from './tasks-template.js';
-import { initDate, dateFocusBehavior, dateDeleteBehavior, dateOnlyNumbers, insertDate, validateInputDate } from './tasks-date.js';
+import {
+  getSubtaskTemplate,
+  getEditTemplate,
+  getDropdownTemplate,
+} from './tasks-template.js';
+import {
+  initDate,
+  dateFocusBehavior,
+  dateDeleteBehavior,
+  dateOnlyNumbers,
+  insertDate,
+  validateInputDate,
+} from './tasks-date.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
 import { subtaskList, subtaskInput } from './tasks-subtask.js';
-import { renderAssignedDropdown, clearAssignedContacts, filterContacts } from './tasks-contacts.js';
-import { assignedOptions, assignedToggle, arrowDownAssigned, arrowUpAssigned, assignedPlaceholder, assignedAvatars, getSelectedContacts } from './tasks-contacts.js';
+import {
+  renderAssignedDropdown,
+  clearAssignedContacts,
+  filterContacts,
+} from './tasks-contacts.js';
+import {
+  assignedOptions,
+  assignedToggle,
+  arrowDownAssigned,
+  arrowUpAssigned,
+  assignedPlaceholder,
+  assignedAvatars,
+  getSelectedContacts,
+} from './tasks-contacts.js';
 
 const taskTitleInput = document.getElementById('task-title');
 const errorTextTitle = document.getElementById('error-text-title');
@@ -52,7 +75,12 @@ function init() {
 function addTask() {
   taskForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (!validateInputDate() || !validateInputCategory() || !validateInputTitle()) return;
+    if (
+      !validateInputDate() ||
+      !validateInputCategory() ||
+      !validateInputTitle()
+    )
+      return;
     let informartionsFromInput = addInformations();
     let object = createTaskObjekt(informartionsFromInput);
     await saveTask(object);
@@ -70,8 +98,7 @@ function addTask() {
       } else {
         window.location.href = 'board.html';
       }
-    },
-      900);
+    }, 900);
   });
 }
 
@@ -90,7 +117,8 @@ function addInformations() {
     firstName: contact.firstName,
     lastName: contact.lastName,
     id: contact.id,
-  })); let subtasks = Array.from(subtaskList.querySelectorAll('li'));
+  }));
+  let subtasks = Array.from(subtaskList.querySelectorAll('li'));
   /* prettier-ignore */
   return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
 }
@@ -128,7 +156,11 @@ function setPriorityButtons() {
   activeButton.forEach((button) => {
     button.addEventListener('click', () => {
       activeButton.forEach((button) => {
-        button.classList.remove('selected-urgent', 'selected-medium', 'selected-low');
+        button.classList.remove(
+          'selected-urgent',
+          'selected-medium',
+          'selected-low',
+        );
       });
       button.classList.add('selected-' + button.dataset.prio);
     });
@@ -143,9 +175,11 @@ function setPriorityButtons() {
  */
 dropdownOptions.forEach((button) => {
   button.addEventListener('click', (event) => {
-    selectCategoryButton.querySelector('p').textContent = event.currentTarget.textContent;
+    selectCategoryButton.querySelector('p').textContent =
+      event.currentTarget.textContent;
     selectCategoryButton.dataset.value = event.currentTarget.value;
-    document.getElementById('category-hidden').value = event.currentTarget.value;
+    document.getElementById('category-hidden').value =
+      event.currentTarget.value;
     dropdownOptionsContainer.classList.add('d-none');
     document.getElementById('arrow-down-category').classList.remove('d-none');
     document.getElementById('arrow-up-category').classList.add('d-none');
@@ -354,11 +388,21 @@ function initErrorRemoval() {
  *
  * @returns {void}
  */
-function clearTask() {
+export function clearTask() {
   taskTitleInput.value = '';
   textarea.value = '';
-  document.querySelectorAll('.date-input-field').forEach((input) => (input.value = ''));
-  document.querySelectorAll('.prio-btn').forEach((btn) => btn.classList.remove('selected-urgent', 'selected-medium', 'selected-low'));
+  document
+    .querySelectorAll('.date-input-field')
+    .forEach((input) => (input.value = ''));
+  document
+    .querySelectorAll('.prio-btn')
+    .forEach((btn) =>
+      btn.classList.remove(
+        'selected-urgent',
+        'selected-medium',
+        'selected-low',
+      ),
+    );
   document.querySelector('.prio-btn--medium').classList.add('selected-medium');
   subtaskInput.value = '';
   subtaskList.innerHTML = '';

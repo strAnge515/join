@@ -156,6 +156,16 @@
   .board {
     padding-bottom: 0;
   }
+  .task-form-actions {
+    position: sticky;
+    background-color: white;
+    bottom: 0;
+    top: unset;
+    right: unset;
+    left: 0;
+    width: 100%;
+    justify-content: center;
+  }
 
   .addTask-dialog {
     margin: 0;
@@ -171,7 +181,7 @@
     gap: 30px;
   }
 
-  .addTask-dialog {
+  .dialog {
     padding: clamp(16px, calc(-50.783px + 20.87vw), 64px)
       clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
   }
