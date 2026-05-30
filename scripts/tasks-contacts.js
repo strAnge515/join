@@ -52,7 +52,8 @@ export async function renderAssignedDropdown() {
 
 function generateYouAvatar(currentLoggedUser) {
   const youContact = loggedUser(currentLoggedUser);
-  const youInitials = youContact.firstName[0] + youContact.lastName[0];
+  const youInitials = youContact.firstName[0] + (youContact.lastName ? youContact.lastName[0] : '');
+  console.log(youContact);
   const currentLoggedUserAvatar = document.createElement('li');
   currentLoggedUserAvatar.className = 'assigned-option';
   currentLoggedUserAvatar.innerHTML = getDropdownTemplate(youContact, youInitials, true);
