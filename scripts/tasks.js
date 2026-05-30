@@ -6,6 +6,7 @@ import { dateInputContainer, errorTextDate } from './tasks-date.js';
 import { subtaskList, subtaskInput } from './tasks-subtask.js';
 import { renderAssignedDropdown, clearAssignedContacts, filterContacts } from './tasks-contacts.js';
 import { assignedOptions, assignedToggle, arrowDownAssigned, arrowUpAssigned, assignedPlaceholder, assignedAvatars, getSelectedContacts } from './tasks-contacts.js';
+import { initResizeHandle } from './tasks-resize.js';
 
 const taskTitleInput = document.getElementById('task-title');
 const errorTextTitle = document.getElementById('error-text-title');
@@ -20,9 +21,6 @@ const errorTextCategory = document.getElementById('error-text-category');
 const taskForm = document.getElementById('task-form');
 
 const handle = document.getElementById('resize');
-let isResizing = false;
-let startY = 0;
-let startHeight = 0;
 
 /**
  * Initializes the task form by setting up all event listeners and rendering components.
@@ -30,12 +28,15 @@ let startHeight = 0;
  * @returns {void}
  */
 function init() {
+  taskForm.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') event.preventDefault();
+  });
   initDate();
   addTask();
   setPriorityButtons();
   renderAssignedDropdown();
   initDropdownsEventlistener();
-  initResizeHandle();
+  initResizeHandle(handle, textarea);
   initFormValidation();
   initErrorRemoval();
   dateFocusBehavior();
@@ -70,8 +71,7 @@ function addTask() {
       } else {
         window.location.href = 'board.html';
       }
-    },
-      900);
+    }, 900);
   });
 }
 
@@ -90,7 +90,8 @@ function addInformations() {
     firstName: contact.firstName,
     lastName: contact.lastName,
     id: contact.id,
-  })); let subtasks = Array.from(subtaskList.querySelectorAll('li'));
+  }));
+  let subtasks = Array.from(subtaskList.querySelectorAll('li'));
   /* prettier-ignore */
   return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
 }
@@ -207,6 +208,11 @@ function toggleCategoryDropdown() {
     document.getElementById('arrow-down-category').classList.toggle('d-none');
     document.getElementById('arrow-up-category').classList.toggle('d-none');
     selectCategoryButton.classList.toggle('open');
+    if (!selectCategoryButton.classList.contains('open')) {
+      selectCategoryButton.blur();
+    }
+    selectCategoryButton.classList.remove('was-submitted-custom');
+    errorTextCategory.classList.add('d-none');
   });
 }
 
@@ -239,56 +245,6 @@ function initFormValidation() {
     validateInputDate();
     validateInputCategory();
     validateInputTitle();
-  });
-}
-
-/**
- * Initializes all three resize handle mouse event listeners.
- *
- * @returns {void}
- */
-function initResizeHandle() {
-  resizeHandleMouseDown();
-  resizeHandleMouseMove();
-  resizeHandleMouseUp();
-}
-
-/**
- * Starts the resize process on mousedown, storing the start position and height.
- *
- * @returns {void}
- */
-function resizeHandleMouseDown() {
-  handle.addEventListener('mousedown', (event) => {
-    event.preventDefault();
-    isResizing = true;
-    startY = event.clientY;
-    startHeight = textarea.offsetHeight;
-  });
-}
-
-/**
- * Adjusts the textarea height while the mouse is being dragged.
- *
- * @returns {void}
- */
-function resizeHandleMouseMove() {
-  document.addEventListener('mousemove', (event) => {
-    if (!isResizing) return;
-    const deltaY = event.clientY - startY;
-    const newHeight = startHeight + deltaY;
-    textarea.style.height = newHeight + 'px';
-  });
-}
-
-/**
- * Ends the resize process when the mouse button is released.
- *
- * @returns {void}
- */
-function resizeHandleMouseUp() {
-  document.addEventListener('mouseup', () => {
-    isResizing = false;
   });
 }
 
@@ -354,6 +310,35 @@ function initErrorRemoval() {
  *
  * @returns {void}
  */
+function clearCategory() {
+  selectCategoryButton.querySelector('p').textContent = 'Select task category';
+  selectCategoryButton.dataset.value = '';
+  selectCategoryButton.classList.remove('open');
+  dropdownOptionsContainer.classList.add('d-none');
+  document.getElementById('arrow-down-category').classList.remove('d-none');
+  document.getElementById('arrow-up-category').classList.add('d-none');
+}
+
+/**
+ * Removes the errormessages from the inputfields.
+ *
+ * @returns {void}
+ */
+
+function removeErrorMessage() {
+  errorTextTitle.classList.add('d-none');
+  errorTextDate.classList.add('d-none');
+  errorTextCategory.classList.add('d-none');
+  taskTitleInput.classList.remove('was-submitted-custom');
+  dateInputContainer.classList.remove('was-submitted-custom');
+  selectCategoryButton.classList.remove('was-submitted-custom');
+}
+
+/**
+ * Resets the entire task form back to its initial state.
+ *
+ * @returns {void}
+ */
 function clearTask() {
   taskTitleInput.value = '';
   textarea.value = '';
@@ -362,9 +347,9 @@ function clearTask() {
   document.querySelector('.prio-btn--medium').classList.add('selected-medium');
   subtaskInput.value = '';
   subtaskList.innerHTML = '';
-  selectCategoryButton.querySelector('p').textContent = 'Select task category';
-  selectCategoryButton.dataset.value = '';
+  clearCategory();
   clearAssignedContacts();
+  removeErrorMessage();
 }
 
 document.getElementById('btn-clear').addEventListener('click', clearTask);

@@ -1,19 +1,9 @@
 import { loadTasks, deleteTask, updateTask } from './backend-tasks.js';
-import {
-  getInitials,
-  getAvatarColor,
-  getPriorityIcon,
-  getCategoryBadge,
-  getSubtaskInfo,
-  getProgressBarHTML,
-  getTaskCardInnerHTML,
-} from './board-utils.js';
+import { getInitials, getAvatarColor, getPriorityIcon, getCategoryBadge, getSubtaskInfo, getProgressBarHTML, getTaskCardInnerHTML } from './board-utils.js';
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
-import {
-  addEventListenersToCloseDialog,
-  closeDialog,
-} from './contacts-dialogs.js';
+import { addEventListenersToCloseDialog, closeDialog } from './contacts-dialogs.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
+import { createNavButtonMobile } from './board-utils.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -39,9 +29,7 @@ async function initBoard() {
  */
 function addEventListenersToAddTaskBtn() {
   const dialogRef = document.getElementById('addTaskDialog');
-  const addTaskButtons = document.querySelectorAll(
-    '#addTaskBtn, .board-column__add-btn'
-  );
+  const addTaskButtons = document.querySelectorAll('#addTaskBtn, .board-column__add-btn');
 
   if (!dialogRef) return;
 
@@ -115,9 +103,9 @@ async function renderBoard() {
   clearBoard();
   try {
     allTasks = (await loadTasks()) || [];
-    window.allTasks = allTasks; 
+    window.allTasks = allTasks;
     window.renderBoard = renderBoard;
-    
+
     displayTasks(allTasks);
     refreshCardListeners();
   } catch (error) {
@@ -184,11 +172,7 @@ function handleSearch() {
     displayTasks(allTasks);
     return;
   }
-  const filtered = allTasks.filter(
-    (task) =>
-      task.title?.toLowerCase().includes(query) ||
-      task.description?.toLowerCase().includes(query),
-  );
+  const filtered = allTasks.filter((task) => task.title?.toLowerCase().includes(query) || task.description?.toLowerCase().includes(query));
   displayTasks(filtered);
   if (filtered.length === 0) {
     clearBoard();
@@ -223,6 +207,7 @@ function createTaskCard(task) {
   card.className = 'task-card';
   card.dataset.id = task.id;
   card.addEventListener('click', () => openTaskCard(task));
+  
   const subtaskInfo = getSubtaskInfo(task.subtasks);
   const assignedUsers = Array.isArray(task.assigned_to)
     ? task.assigned_to.map((u) => {
@@ -230,16 +215,15 @@ function createTaskCard(task) {
         if (u.firstName && u.lastName) return `${u.firstName} ${u.lastName}`; // Neuer Standard
         return u.name || 'Unknown';
       })
-    : [];  
+    : [];
+  let possibleStatus = ['to do', 'in progress', 'awaiting feedback', 'done'];
+ const currentStatus = possibleStatus.filter((state) => state !== task.status) 
   const priorityIcon = getPriorityIcon(task.prio);
   const categoryBadge = getCategoryBadge(task.category);
-  card.innerHTML = getTaskCardInnerHTML(
-    categoryBadge,
-    task,
-    subtaskInfo,
-    assignedUsers,
-    priorityIcon,
-  );
+  card.innerHTML = getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedUsers, currentStatus);
+  card.querySelector('.mobile-swap-button').addEventListener('click', (event) => {
+    event.stopPropagation();
+  })
   return card;
 }
 
@@ -266,27 +250,22 @@ function openTaskCard(task) {
 function fillTaskCardInitials(task) {
   const assignedListRef = document.getElementById('assignedList');
   if (!task.assigned_to || task.assigned_to.length === 0) return;
-  
+
   for (let i = 0; i < task.assigned_to.length; i++) {
     const user = task.assigned_to[i];
-    
+
     let userName = 'Unknown';
     if (typeof user === 'string') {
-      userName = user; 
+      userName = user;
     } else if (user.firstName && user.lastName) {
-      userName = `${user.firstName} ${user.lastName}`; 
+      userName = `${user.firstName} ${user.lastName}`;
     } else if (user.name) {
       userName = user.name;
     }
 
-    assignedListRef.innerHTML += getAssignedUsersHTML(
-      getAvatarColor(i),
-      getInitials(userName),
-      userName,
-    );
+    assignedListRef.innerHTML += getAssignedUsersHTML(getAvatarColor(i), getInitials(userName), userName);
   }
 }
-
 
 /**
  * Fills the subtask list inside the open task modal.
@@ -299,11 +278,7 @@ function fillTaskCardSubtasks(task) {
     return;
   }
   for (let i = 0; i < task.subtasks.length; i++) {
-    subtaskListRef.innerHTML += getSubtaskItemHTML(
-      task.subtasks[i],
-      task.id,
-      i,
-    );
+    subtaskListRef.innerHTML += getSubtaskItemHTML(task.subtasks[i], task.id, i);
   }
 }
 
@@ -323,8 +298,7 @@ function addTaskCardEventListeners(task) {
     if (e.target === dialogRef) closeModal();
   });
 
-  if (deleteBtn)
-    deleteBtn.addEventListener('click', () => handleModalDelete(task));
+  if (deleteBtn) deleteBtn.addEventListener('click', () => handleModalDelete(task));
 
   dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
     checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
@@ -357,12 +331,8 @@ function handleModalDelete(task) {
   dialog.innerHTML = getConfirmDialogHTML(task.title || 'Untitled task');
   document.body.appendChild(dialog);
   dialog.showModal();
-  dialog
-    .querySelector('#confirmCancel')
-    .addEventListener('click', () => dialog.close());
-  dialog
-    .querySelector('#confirmDelete')
-    .addEventListener('click', () => executeTaskDelete(dialog, task));
+  dialog.querySelector('#confirmCancel').addEventListener('click', () => dialog.close());
+  dialog.querySelector('#confirmDelete').addEventListener('click', () => executeTaskDelete(dialog, task));
 }
 
 /**
