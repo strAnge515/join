@@ -63,7 +63,7 @@ function loggedUser(currentLoggedUser) {
   const currentLoggedUserName = currentLoggedUser.name;
 
   let firstName = currentLoggedUserName.split(' ')[0];
-  let lastName = currentLoggedUserName.split(' ')[1];
+  let lastName = currentLoggedUserName.split(' ')[1] || "";
   let id = currentLoggedUser.email;
   let color = getAvatarColor(0);
   return { firstName, lastName, id, color };
