@@ -116,6 +116,7 @@
   .task-card {
     min-width: 250px;
     flex-shrink: 0;
+    position: relative;
   }
 
   .board-column__empty {
@@ -172,8 +173,7 @@
   }
 
   .addTask-dialog {
-    padding: clamp(16px, calc(-50.783px + 20.87vw), 64px)
-      clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
+    padding: clamp(16px, calc(-50.783px + 20.87vw), 64px) clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
   }
 
   .header-wrapper {
@@ -191,6 +191,38 @@
 
   .mobile-move-buttons {
     display: block;
+  }
+
+  .mobile-move-buttons {
+    background: #2a3647;
+    border-radius: 0 20px 20px 20px;
+    padding: 6px 8px 16px 8px;
+    gap: 16px;
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.04);
+    top: 42px;
+    display: flex;
+    position: absolute;
+    right: -50px;
+    z-index: 1;
+  }
+
+  .mobile-move-buttons p {
+    color: white;
+    font-weight: bold;
+  }
+
+  .mobile-move-buttons button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+  }
+
+  .mobile-move-buttons button:hover {
+    background: #1e2a3a;
+    border-radius: 10px;
   }
 }
 

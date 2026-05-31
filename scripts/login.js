@@ -23,11 +23,13 @@ async function handleLogin(e) {
     const email = document.getElementById("login-email").value.trim();
     const password = passwordInput.value.trim();
     const user = await findUserByEmail(email);
+    console.log(user);
+    
     if (!user || user.password !== password) {
         showLoginError();
         return;
     }
-    sessionStorage.setItem("currentUser", JSON.stringify({ name: user.name, email: user.email }));
+    sessionStorage.setItem("currentUser", JSON.stringify({ name: user.name, email: user.email, id: user.id }));
     window.location.href = "./pages/summary.html";
 }
 
@@ -68,7 +70,7 @@ signUpButton.addEventListener("click", () => {
  * Handles the guest login button click event.
  */
 guestButton.addEventListener("click", () => {
-    sessionStorage.setItem("currentUser", JSON.stringify({ name: "Guest", email: "" }));
+    sessionStorage.setItem("currentUser", JSON.stringify({ name: "Guest", email: "", id: "guest" }));
     window.location.href = "./pages/summary.html";
 });
 

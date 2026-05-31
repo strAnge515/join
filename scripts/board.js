@@ -216,15 +216,24 @@ function createTaskCard(task) {
         return u.name || 'Unknown';
       })
     : [];
-  let possibleStatus = ['to do', 'in progress', 'awaiting feedback', 'done'];
- const currentStatus = possibleStatus.filter((state) => state !== task.status) 
-  const priorityIcon = getPriorityIcon(task.prio);
+  let possibleStatus = ['To-do', 'In progress', 'Awaiting feedback', 'Done'];
+ const currentStatus = getNeighborStatus(task);
+ 
   const categoryBadge = getCategoryBadge(task.category);
   card.innerHTML = getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedUsers, currentStatus);
   card.querySelector('.mobile-swap-button').addEventListener('click', (event) => {
     event.stopPropagation();
   })
   return card;
+}
+
+function getNeighborStatus(task) {
+  const possibleStatus = ['to do', 'in progress', 'awaiting feedback', 'done'];
+  const currentIndex = possibleStatus.indexOf(task.status);
+  const neighbors = [];
+  if (currentIndex - 1 >= 0) neighbors.push(possibleStatus[currentIndex - 1]);
+  if (currentIndex + 1 < possibleStatus.length) neighbors.push(possibleStatus[currentIndex + 1]);
+  return neighbors;
 }
 
 /**

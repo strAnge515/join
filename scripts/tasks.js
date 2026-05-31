@@ -56,6 +56,8 @@ function addTask() {
     if (!validateInputDate() || !validateInputCategory() || !validateInputTitle()) return;
     let informartionsFromInput = addInformations();
     let object = createTaskObjekt(informartionsFromInput);
+    console.log(object);
+    
     await saveTask(object);
     document.getElementById('subtask-added').showModal();
     setTimeout(async () => {
@@ -90,6 +92,7 @@ function addInformations() {
     firstName: contact.firstName,
     lastName: contact.lastName,
     id: contact.id,
+    email: contact.email
   }));
   let subtasks = Array.from(subtaskList.querySelectorAll('li'));
   /* prettier-ignore */
