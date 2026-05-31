@@ -196,6 +196,11 @@
     display: block;
     border: none;
     background-color: white;
+    cursor: pointer;
+  }
+
+  .mobile-move-buttons {
+    display: block;
   }
 }
 

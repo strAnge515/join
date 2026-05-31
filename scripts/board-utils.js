@@ -19,15 +19,7 @@ export function getInitials(name) {
  * @returns {string} Hex color string.
  */
 export function getAvatarColor(index) {
-  const colors = [
-    '#29abe2',
-    '#9b59b6',
-    '#2ecc71',
-    '#e67e22',
-    '#e74c3c',
-    '#607d8b',
-    '#1565c0',
-  ];
+  const colors = ['#29abe2', '#9b59b6', '#2ecc71', '#e67e22', '#e74c3c', '#607d8b', '#1565c0'];
   return colors[index % colors.length];
 }
 
@@ -79,12 +71,7 @@ export function normalize(value) {
  * @returns {string} HTML-safe escaped string.
  */
 export function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
+  return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 }
 
 /**
@@ -118,6 +105,10 @@ export function getSubtaskInfo(subtasks) {
   return { total, done, percent };
 }
 
+export function createNavButtonMobile(currentStatus) {
+ return currentStatus.map((status) => `<button type="button">${status}</button>`).join('');
+}
+
 /**
  * Returns the HTML string for the subtask progress bar.
  * @param {Object} subtaskInfo - Object containing done, total and percent values.
@@ -143,12 +134,7 @@ export function getProgressBarHTML(subtaskInfo) {
  * @param {string} priorityIcon - Emoji string representing task priority.
  * @returns {string} HTML string for the task card's inner content.
  */
-export function getTaskCardInnerHTML(
-  categoryBadge,
-  task,
-  subtaskInfo,
-  assignedUsers,
-) {
+export function getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedUsers, currentStatus) {
   return `
   <div class="header-wrapper">
       <span class="task-card__category" style="background:${categoryBadge.color}; color:${categoryBadge.textColor};">
@@ -168,6 +154,14 @@ export function getTaskCardInnerHTML(
       <div class="task-card__actions">
         <span class="prio-icon">${getPriorityIconForModal(task.prio)}</span>
       </div>
-    </div>
+      <section class="mobile-move-buttons d-none">
+        <div>
+          <p>Move to</p>
+          <div>
+            ${createNavButtonMobile(currentStatus)}
+          </div>
+        </div>
+      </section>
+  </div>
   `;
 }

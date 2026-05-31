@@ -15,6 +15,7 @@ import {
 } from './contacts-dialogs.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
 import { clearTask } from './tasks.js';
+import { createNavButtonMobile } from './board-utils.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -43,6 +44,7 @@ function addEventListenersToAddTaskBtn() {
   const addTaskButtons = document.querySelectorAll(
     '#addTaskBtn, .board-column__add-btn',
   );
+
   if (!dialogRef) return;
   addTaskButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -228,6 +230,7 @@ function createTaskCard(task) {
   card.className = 'task-card';
   card.dataset.id = task.id;
   card.addEventListener('click', () => openTaskCard(task));
+
   const subtaskInfo = getSubtaskInfo(task.subtasks);
   const assignedUsers = Array.isArray(task.assigned_to)
     ? task.assigned_to.map((u) => {
@@ -236,6 +239,8 @@ function createTaskCard(task) {
         return u.name || 'Unknown';
       })
     : [];
+  let possibleStatus = ['to do', 'in progress', 'awaiting feedback', 'done'];
+  const currentStatus = possibleStatus.filter((state) => state !== task.status);
   const priorityIcon = getPriorityIcon(task.prio);
   const categoryBadge = getCategoryBadge(task.category);
   card.innerHTML = getTaskCardInnerHTML(
@@ -243,8 +248,13 @@ function createTaskCard(task) {
     task,
     subtaskInfo,
     assignedUsers,
-    priorityIcon,
+    currentStatus,
   );
+  card
+    .querySelector('.mobile-swap-button')
+    .addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
   return card;
 }
 

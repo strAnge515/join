@@ -45,6 +45,19 @@ function activateEditMode(li) {
     addSubtaskEventListeners(li);
   });
   editmodeConfirmListener(li);
+  exitEditModePerClick(li, subtaskText);
+}
+
+function exitEditModePerClick(li, subtaskText) {
+  console.log('exitEditModePerClick called');
+  document.addEventListener('click', (event) => {
+    if (!li.contains(event.target) && li.classList.contains('is-editing')) {
+      subtaskText = li.querySelector('.subtask-edit-value').value;
+      li.innerHTML = getSubtaskTemplate(subtaskText);
+      li.classList.remove('is-editing');
+      addSubtaskEventListeners(li);
+    }
+  });
 }
 
 /**
@@ -70,7 +83,10 @@ function editmodeConfirmListener(li) {
  */
 function addSubtaskEventListeners(li) {
   li.querySelector('.delete-btn').addEventListener('click', () => li.remove());
-  li.querySelector('.edit-btn').addEventListener('click', () => activateEditMode(li));
+  li.querySelector('.edit-btn').addEventListener('click', (event) => {
+    event.stopPropagation();
+    activateEditMode(li);
+  });
   li.addEventListener('dblclick', () => activateEditMode(li));
 }
 
@@ -103,6 +119,7 @@ subtaskInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     addSubtask();
     subtaskInput.blur();
+    event.preventDefault();
   }
 });
 
