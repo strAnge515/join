@@ -185,6 +185,7 @@ dropdownOptions.forEach((button) => {
     document.getElementById('arrow-down-category').classList.remove('d-none');
     document.getElementById('arrow-up-category').classList.add('d-none');
     selectCategoryButton.classList.remove('open');
+    selectCategoryButton.focus();
   });
 });
 
