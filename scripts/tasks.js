@@ -29,20 +29,6 @@ import {
   assignedAvatars,
   getSelectedContacts,
 } from './tasks-contacts.js';
-import {
-  renderAssignedDropdown,
-  clearAssignedContacts,
-  filterContacts,
-} from './tasks-contacts.js';
-import {
-  assignedOptions,
-  assignedToggle,
-  arrowDownAssigned,
-  arrowUpAssigned,
-  assignedPlaceholder,
-  assignedAvatars,
-  getSelectedContacts,
-} from './tasks-contacts.js';
 import { initResizeHandle } from './tasks-resize.js';
 
 const taskTitleInput = document.getElementById('task-title');
