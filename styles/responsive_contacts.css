@@ -138,23 +138,12 @@
     background-color: unset;
     border: unset;
   }
+  .name {
+    max-width: clamp(175px, calc(-125px + 93.75vw), 625px);
+  }
 }
 
-/* @media (max-width: 800px) {
-  .detail-name {
-    white-space: normal;
-  }
-} */
-
 @media (max-width: 437px) {
-  /* .contact-container {
-    padding: 22px clamp(10px, calc(-93.385px + 32.308vw), 52px);
-  } */
-
-  .name {
-    max-width: clamp(175px, calc(93.769px + 25.385vw), 208px);
-  }
-
   .email {
     max-width: clamp(175px, calc(93.769px + 25.385vw), 208px);
   }
