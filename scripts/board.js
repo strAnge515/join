@@ -3,7 +3,6 @@ import { getInitials, getAvatarColor, getPriorityIcon, getCategoryBadge, getSubt
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
 import { addEventListenersToCloseDialog, closeDialog } from './contacts-dialogs.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
-import { createNavButtonMobile } from './board-utils.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -207,7 +206,7 @@ function createTaskCard(task) {
   card.className = 'task-card';
   card.dataset.id = task.id;
   card.addEventListener('click', () => openTaskCard(task));
-  
+
   const subtaskInfo = getSubtaskInfo(task.subtasks);
   const assignedUsers = Array.isArray(task.assigned_to)
     ? task.assigned_to.map((u) => {
@@ -217,13 +216,22 @@ function createTaskCard(task) {
       })
     : [];
   let possibleStatus = ['To-do', 'In progress', 'Awaiting feedback', 'Done'];
- const currentStatus = getNeighborStatus(task);
- 
+  const currentStatus = getNeighborStatus(task);
+
   const categoryBadge = getCategoryBadge(task.category);
   card.innerHTML = getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedUsers, currentStatus);
   card.querySelector('.mobile-swap-button').addEventListener('click', (event) => {
     event.stopPropagation();
-  })
+    const overlay = card.querySelector('.mobile-move-buttons');
+    overlay.classList.toggle('d-none');
+  });
+
+  card.querySelectorAll('.mobile-move-section').forEach((button) => {
+  button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    handleTaskMove(task.id, button.dataset.status);
+  });
+});
   return card;
 }
 
@@ -418,5 +426,10 @@ function removeSlideInAnimation(ref, time) {
     element.classList.remove('slide-in');
   }, time);
 }
+
+document.addEventListener('click', () => {
+  const mobileMoveButtons = document.querySelectorAll('.mobile-move-buttons');
+  mobileMoveButtons.forEach((overlay) => overlay.classList.add('d-none'));
+});
 
 initBoard();

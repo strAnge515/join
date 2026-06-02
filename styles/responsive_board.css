@@ -190,20 +190,21 @@
   }
 
   .mobile-move-buttons {
-    display: block;
-  }
-
-  .mobile-move-buttons {
     background: #2a3647;
     border-radius: 0 20px 20px 20px;
     padding: 6px 8px 16px 8px;
     gap: 16px;
     box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.04);
     top: 42px;
-    display: flex;
+    display: none;
     position: absolute;
     right: -50px;
     z-index: 1;
+    
+  }
+
+  .mobile-move-buttons:not(.d-none) {
+    display: flex;
   }
 
   .mobile-move-buttons p {
@@ -218,6 +219,7 @@
     cursor: pointer;
     width: 100%;
     display: flex;
+    text-transform: capitalize;
   }
 
   .mobile-move-buttons button:hover {

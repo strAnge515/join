@@ -105,8 +105,11 @@ export function getSubtaskInfo(subtasks) {
   return { total, done, percent };
 }
 
-export function createNavButtonMobile(currentStatus) {
- return currentStatus.map((status) => `<button type="button">${status}</button>`).join('');
+export function createNavButtonMobile(currentStatus, task) {
+ return currentStatus.map((status, index) => `<button type="button" class="mobile-move-section" data-status="${status}">
+    ${index === 0 && task.status !== 'to do' ?
+   '<img src="../assets/img/arrow_upward.svg" alt="arrow-up">' :
+   '<img src="../assets/img/arrow_downward.svg" alt="arrow-down"></img>'}${status}</button>`).join('');
 }
 
 /**
@@ -140,7 +143,7 @@ export function getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedU
       <span class="task-card__category" style="background:${categoryBadge.color}; color:${categoryBadge.textColor};">
       ${categoryBadge.label}
       </span>
-      <button type="button" class="mobile-swap-button d-none">
+      <button type="button" class="mobile-swap-button d-none" id="mobile-swap-button">
         <img src="../assets/img/Frame 380.svg" alt="double-arrow">
       </button>
     </div>
@@ -158,7 +161,7 @@ export function getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedU
         <div>
           <p>Move to</p>
           <div>
-            ${createNavButtonMobile(currentStatus)}
+            ${createNavButtonMobile(currentStatus, task)}
           </div>
         </div>
       </section>
