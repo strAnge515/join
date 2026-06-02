@@ -9,13 +9,12 @@ import {
   getTaskCardInnerHTML,
 } from './board-utils.js';
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
-import {
-  addEventListenersToCloseDialog,
-  closeDialog,
-} from './contacts-dialogs.js';
-import { dateInputContainer, errorTextDate } from './tasks-date.js';
-import { clearTask } from './tasks.js';
 import { createNavButtonMobile } from './board-utils.js';
+import {
+  addEventListenersToAddTaskBtn,
+  addDialogCloseListeners,
+  openTaskCard,
+} from './board-dialogs.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -34,85 +33,6 @@ async function initBoard() {
   initDragDrop(handleTaskMove);
   addEventListenersToAddTaskBtn();
   addDialogCloseListeners();
-}
-
-/**
- * Attaches a click event listener to the "Add Task" button to open the add task dialog.
- */
-function addEventListenersToAddTaskBtn() {
-  const dialogRef = document.getElementById('addTaskDialog');
-  const addTaskButtons = document.querySelectorAll(
-    '#addTaskBtn, .board-column__add-btn',
-  );
-
-  if (!dialogRef) return;
-  addTaskButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      window.selectedBoardStatus = button.dataset.status || 'to do';
-      openAddTaskDialog(dialogRef);
-    });
-  });
-}
-
-/**
- * Opens the add task dialog and adds the "show" class for animation.
- * @param {HTMLElement} dialogRef - The reference to the add task dialog element.
- */
-function openAddTaskDialog(dialogRef) {
-  if (!dialogRef) return;
-  if (window.innerWidth >= 800) {
-    document.body.style.overflow = 'hidden';
-    dialogRef.showModal();
-    removeAllInputErrors();
-    dialogRef.classList.add('show');
-  } else {
-    window.location.href = 'task.html';
-  }
-}
-
-/**
- * Adds a click event listener to a single close button.
- * When clicked, it finds the closest <dialog> element
- * and passes it to the closeDialog function.
- *
- * @returns {void}
- */
-function addEventListenersToCloseBtn() {
-  const btn = document.querySelector('.btn-to-close');
-  if (btn) {
-    btn.addEventListener('click', (e) => {
-      const dialog = e.target.closest('dialog');
-      if (!dialog) return;
-      clearTask();
-      closeDialog(dialog);
-    });
-  }
-}
-
-/**
- * Adds event listeners to the add task dialog to close it when clicking outside, on the cancel button or pressing ESC.
- */
-function addDialogCloseListeners() {
-  const dialogRef = document.getElementById('addTaskDialog');
-  if (!dialogRef) return;
-  addEventListenersToCloseDialog(dialogRef, clearTask);
-  addEventListenersToCloseBtn();
-}
-
-/**
- * Removes all error messages and styles from the add task dialog's input fields.
- */
-function removeAllInputErrors() {
-  const selectCategoryButton = document.getElementById('selected-category');
-  const taskTitleInput = document.getElementById('task-title');
-  const errorTextCategory = document.getElementById('error-text-category');
-  const errorTextTitle = document.getElementById('error-text-title');
-  dateInputContainer.classList.remove('was-submitted-custom');
-  errorTextDate.classList.add('d-none');
-  selectCategoryButton.classList.remove('was-submitted-custom');
-  errorTextCategory.classList.add('d-none');
-  taskTitleInput.classList.remove('was-submitted-custom');
-  errorTextTitle.classList.add('d-none');
 }
 
 /**
@@ -259,91 +179,6 @@ function createTaskCard(task) {
 }
 
 /**
- * Opens the task detail modal, populates it with the given task's data,
- * disables background scrolling and sets up close listeners.
- * @param {Object} task - The task data object to display in the modal.
- */
-function openTaskCard(task) {
-  const categoryBadge = getCategoryBadge(task.category);
-  const dialogRef = document.getElementById('taskModal');
-  document.body.classList.add('no-scroll');
-  dialogRef.innerHTML = getTaskCardHTML(categoryBadge, task);
-  fillTaskCardInitials(task);
-  fillTaskCardSubtasks(task);
-  addTaskCardEventListeners(task);
-  dialogRef.showModal();
-}
-
-/**
- * Fills the assigned users list inside the open task modal.
- * @param {Object} task - The task data object containing assigned_to.
- */
-function fillTaskCardInitials(task) {
-  const assignedListRef = document.getElementById('assignedList');
-  if (!task.assigned_to || task.assigned_to.length === 0) return;
-
-  for (let i = 0; i < task.assigned_to.length; i++) {
-    const user = task.assigned_to[i];
-
-    let userName = 'Unknown';
-    if (typeof user === 'string') {
-      userName = user;
-    } else if (user.firstName && user.lastName) {
-      userName = `${user.firstName} ${user.lastName}`;
-    } else if (user.name) {
-      userName = user.name;
-    }
-
-    assignedListRef.innerHTML += getAssignedUsersHTML(
-      getAvatarColor(i),
-      getInitials(userName),
-      userName,
-    );
-  }
-}
-
-/**
- * Fills the subtask list inside the open task modal.
- * @param {Object} task - The task data object containing subtasks.
- */
-function fillTaskCardSubtasks(task) {
-  const subtaskListRef = document.getElementById('subtaskList');
-  if (!task.subtasks || task.subtasks.length === 0) {
-    subtaskListRef.innerHTML = getEmptySubtaskHTML();
-    return;
-  }
-  for (let i = 0; i < task.subtasks.length; i++) {
-    subtaskListRef.innerHTML += getSubtaskItemHTML(
-      task.subtasks[i],
-      task.id,
-      i,
-    );
-  }
-}
-
-/**
- * Attaches event listeners to the modal's close button, backdrop click,
- * delete button and subtask checkboxes.
- * @param {Object} task - The task data object.
- */
-function addTaskCardEventListeners(task) {
-  const closeBtnRef = document.querySelector('.close');
-  const dialogRef = document.getElementById('taskModal');
-  const deleteBtn = document.getElementById('deleteTaskBtn');
-  if (closeBtnRef) closeBtnRef.addEventListener('click', closeModal);
-  if (dialogRef.dataset.outsideClickBound) return;
-  dialogRef.dataset.outsideClickBound = 'true';
-  dialogRef.addEventListener('click', (e) => {
-    if (e.target === dialogRef) closeModal();
-  });
-  if (deleteBtn)
-    deleteBtn.addEventListener('click', () => handleModalDelete(task));
-  dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
-    checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
-  });
-}
-
-/**
  * Executes task deletion and closes the modal after the overlay is removed.
  * @param {HTMLElement} overlay - The confirm overlay element to remove.
  * @param {Object} task - The task to delete.
@@ -363,7 +198,7 @@ async function executeTaskDelete(overlay, task) {
  * Shows a custom confirmation overlay before deleting a task from the modal.
  * @param {Object} task - The task to delete.
  */
-function handleModalDelete(task) {
+export function handleModalDelete(task) {
   const dialog = document.createElement('dialog');
   dialog.className = 'confirm-overlay';
   dialog.innerHTML = getConfirmDialogHTML(task.title || 'Untitled task');
@@ -406,7 +241,7 @@ async function handleSubtaskToggle(e, task) {
 /**
  * Closes the task detail modal, re-enables background scrolling and clears modal content.
  */
-function closeModal() {
+export function closeModal() {
   const dialogRef = document.getElementById('taskModal');
   if (!dialogRef) return;
   document.body.classList.remove('no-scroll');
