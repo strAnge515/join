@@ -4,8 +4,16 @@ import {
   closeDialog,
 } from './contacts-dialogs.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
-import { getCategoryBadge, getAvatarColor } from './board-utils.js';
 import { closeModal, handleModalDelete } from './board.js';
+import {
+  getInitials,
+  getCategoryBadge,
+  getAvatarColor,
+  getSubtaskInfo,
+  getProgressBarHTML,
+} from './board-utils.js';
+import { updateTask } from './backend-tasks.js';
+
 /**
  * Attaches a click event listener to the "Add Task" button to open the add task dialog.
  */
@@ -158,14 +166,40 @@ function addTaskCardEventListeners(task) {
   const dialogRef = document.getElementById('taskModal');
   const deleteBtn = document.getElementById('deleteTaskBtn');
   if (closeBtnRef) closeBtnRef.addEventListener('click', closeModal);
-  if (dialogRef.dataset.outsideClickBound) return;
-  dialogRef.dataset.outsideClickBound = 'true';
-  dialogRef.addEventListener('click', (e) => {
-    if (e.target === dialogRef) closeModal();
-  });
   if (deleteBtn)
     deleteBtn.addEventListener('click', () => handleModalDelete(task));
   dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
     checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
+    if (dialogRef.dataset.outsideClickBound) return;
+    dialogRef.dataset.outsideClickBound = 'true';
+    dialogRef.addEventListener('click', (e) => {
+      if (e.target === dialogRef) closeModal();
+    });
   });
+}
+
+/**
+ * Toggles a subtask's state and saves the updated subtasks array to Firebase.
+ * @param {Event} e - The change event fired by the checkbox.
+ * @param {Object} task - The parent task containing the subtasks array.
+ */
+async function handleSubtaskToggle(e, task) {
+  const index = parseInt(e.target.dataset.index);
+  const updatedSubtasks = [...task.subtasks];
+  updatedSubtasks[index] = {
+    ...updatedSubtasks[index],
+    state: e.target.checked,
+  };
+  task.subtasks = updatedSubtasks;
+  try {
+    await updateTask(task.id, { subtasks: updatedSubtasks });
+    const cardRef = document.querySelector(`.task-card[data-id="${task.id}"]`);
+    if (cardRef) {
+      const subtaskInfo = getSubtaskInfo(updatedSubtasks);
+      const progressEl = cardRef.querySelector('.task-card__progress');
+      if (progressEl) progressEl.outerHTML = getProgressBarHTML(subtaskInfo);
+    }
+  } catch (error) {
+    console.error('Fehler beim Speichern des Subtasks:', error);
+  }
 }

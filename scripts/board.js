@@ -1,5 +1,6 @@
 import { loadTasks, deleteTask, updateTask } from './backend-tasks.js';
 import {
+  createNavButtonMobile,
   getInitials,
   getAvatarColor,
   getPriorityIcon,
@@ -9,12 +10,12 @@ import {
   getTaskCardInnerHTML,
 } from './board-utils.js';
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
-import { createNavButtonMobile } from './board-utils.js';
 import {
   addEventListenersToAddTaskBtn,
   addDialogCloseListeners,
   openTaskCard,
 } from './board-dialogs.js';
+import { addEventListenersToCloseDialog } from './contacts-dialogs.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -201,6 +202,7 @@ async function executeTaskDelete(overlay, task) {
 export function handleModalDelete(task) {
   const dialog = document.createElement('dialog');
   dialog.className = 'confirm-overlay';
+  dialog.setAttribute('closedby', 'any');
   dialog.innerHTML = getConfirmDialogHTML(task.title || 'Untitled task');
   document.body.appendChild(dialog);
   dialog.showModal();
