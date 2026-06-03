@@ -370,6 +370,7 @@ dialog {
 }
 
 .modal-content {
+  border-radius: 30px;
   display: flex;
   flex-direction: column;
   background: white;
