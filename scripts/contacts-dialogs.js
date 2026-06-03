@@ -111,6 +111,7 @@ function clearInputs(elementId) {
  * @param {Function} callback - A function to call after closing the dialog.
  */
 export function closeDialog(element, callback = null) {
+  document.body.style.overflow = '';
   const dialogRef = element.closest('dialog');
   const elementId = element.id;
   dialogRef.classList.remove('show');
@@ -119,9 +120,9 @@ export function closeDialog(element, callback = null) {
   }, 100);
   clearAllInputErrors(dialogRef);
   clearInputs(elementId);
+
   if (callback) {
     callback();
-    document.body.style.overflow = '';
   }
 }
 

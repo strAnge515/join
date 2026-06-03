@@ -22,7 +22,6 @@ export function addEventListenersToAddTaskBtn() {
   const addTaskButtons = document.querySelectorAll(
     '#addTaskBtn, .board-column__add-btn',
   );
-
   if (!dialogRef) return;
   addTaskButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -101,7 +100,7 @@ function addEventListenersToCloseBtn() {
 export function openTaskCard(task) {
   const categoryBadge = getCategoryBadge(task.category);
   const dialogRef = document.getElementById('taskModal');
-  document.body.classList.add('no-scroll');
+  document.body.style.overflow = 'hidden';
   dialogRef.innerHTML = getTaskCardHTML(categoryBadge, task);
   fillTaskCardInitials(task);
   fillTaskCardSubtasks(task);
@@ -170,11 +169,12 @@ function addTaskCardEventListeners(task) {
     deleteBtn.addEventListener('click', () => handleModalDelete(task));
   dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
     checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
-    if (dialogRef.dataset.outsideClickBound) return;
-    dialogRef.dataset.outsideClickBound = 'true';
-    dialogRef.addEventListener('click', (e) => {
-      if (e.target === dialogRef) closeModal();
-    });
+    // if (dialogRef.dataset.outsideClickBound) return;
+    // dialogRef.dataset.outsideClickBound = 'true';
+    // dialogRef.addEventListener('click', (e) => {
+    //   if (e.target === dialogRef) closeModal();
+    // });
+    addEventListenersToCloseDialog(dialogRef);
   });
 }
 

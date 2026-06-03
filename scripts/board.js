@@ -246,7 +246,7 @@ async function handleSubtaskToggle(e, task) {
 export function closeModal() {
   const dialogRef = document.getElementById('taskModal');
   if (!dialogRef) return;
-  document.body.classList.remove('no-scroll');
+  document.body.style.overflow = '';
   dialogRef.close();
   dialogRef.innerHTML = '';
 }
