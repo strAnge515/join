@@ -1,8 +1,21 @@
 import { loadTasks, deleteTask, updateTask } from './backend-tasks.js';
-import { getInitials, getAvatarColor, getPriorityIcon, getCategoryBadge, getSubtaskInfo, getProgressBarHTML, getTaskCardInnerHTML } from './board-utils.js';
+import {
+  createNavButtonMobile,
+  getInitials,
+  getAvatarColor,
+  getPriorityIcon,
+  getCategoryBadge,
+  getSubtaskInfo,
+  getProgressBarHTML,
+  getTaskCardInnerHTML,
+} from './board-utils.js';
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
-import { addEventListenersToCloseDialog, closeDialog } from './contacts-dialogs.js';
-import { dateInputContainer, errorTextDate } from './tasks-date.js';
+import {
+  addEventListenersToAddTaskBtn,
+  addDialogCloseListeners,
+  openTaskCard,
+} from './board-dialogs.js';
+import { addEventListenersToCloseDialog } from './contacts-dialogs.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -169,7 +182,11 @@ function handleSearch() {
     displayTasks(allTasks);
     return;
   }
-  const filtered = allTasks.filter((task) => task.title?.toLowerCase().includes(query) || task.description?.toLowerCase().includes(query));
+  const filtered = allTasks.filter(
+    (task) =>
+      task.title?.toLowerCase().includes(query) ||
+      task.description?.toLowerCase().includes(query),
+  );
   displayTasks(filtered);
   if (filtered.length === 0) {
     clearBoard();
@@ -361,14 +378,45 @@ async function executeTaskDelete(overlay, task) {
  * Shows a custom confirmation overlay before deleting a task from the modal.
  * @param {Object} task - The task to delete.
  */
-function handleModalDelete(task) {
+export function handleModalDelete(task) {
   const dialog = document.createElement('dialog');
   dialog.className = 'confirm-overlay';
+  dialog.setAttribute('closedby', 'any');
   dialog.innerHTML = getConfirmDialogHTML(task.title || 'Untitled task');
   document.body.appendChild(dialog);
   dialog.showModal();
-  dialog.querySelector('#confirmCancel').addEventListener('click', () => dialog.close());
-  dialog.querySelector('#confirmDelete').addEventListener('click', () => executeTaskDelete(dialog, task));
+  dialog
+    .querySelector('#confirmCancel')
+    .addEventListener('click', () => dialog.close());
+  dialog
+    .querySelector('#confirmDelete')
+    .addEventListener('click', () => executeTaskDelete(dialog, task));
+}
+
+/**
+ * Saves the updated subtasks array to Firebase and refreshes the progress bar on the task card.
+ * @param {Object} task - The parent task object.
+ * @param {Array} updatedSubtasks - The updated subtasks array.
+ */
+async function saveSubtaskUpdate(task, updatedSubtasks) {
+  try {
+    await updateTask(task.id, { subtasks: updatedSubtasks });
+    const cardRef = document.querySelector(`.task-card[data-id="${task.id}"]`);
+    if (cardRef) updateCardProgressBar(cardRef, updatedSubtasks);
+  } catch (error) {
+    console.error('Fehler beim Speichern des Subtasks:', error);
+  }
+}
+
+/**
+ * Updates the progress bar element on a task card after a subtask state change.
+ * @param {HTMLElement} cardRef - The task card element.
+ * @param {Array} updatedSubtasks - The updated subtasks array.
+ */
+function updateCardProgressBar(cardRef, updatedSubtasks) {
+  const subtaskInfo = getSubtaskInfo(updatedSubtasks);
+  const progressEl = cardRef.querySelector('.task-card__progress');
+  if (progressEl) progressEl.outerHTML = getProgressBarHTML(subtaskInfo);
 }
 
 /**
@@ -413,10 +461,10 @@ async function handleSubtaskToggle(e, task) {
 /**
  * Closes the task detail modal, re-enables background scrolling and clears modal content.
  */
-function closeModal() {
+export function closeModal() {
   const dialogRef = document.getElementById('taskModal');
   if (!dialogRef) return;
-  document.body.classList.remove('no-scroll');
+  document.body.style.overflow = '';
   dialogRef.close();
   dialogRef.innerHTML = '';
 }

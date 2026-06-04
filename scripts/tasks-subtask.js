@@ -37,7 +37,9 @@ function activateEditMode(li) {
   li.innerHTML = getEditTemplate(subtaskText);
   li.classList.add('is-editing');
   li.querySelector('.subtask-edit-value').focus();
-  li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
+  li.querySelector('.edit-delete-btn').addEventListener('click', () =>
+    li.remove(),
+  );
   li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
     subtaskText = li.querySelector('.subtask-edit-value').value;
     li.innerHTML = getSubtaskTemplate(subtaskText);
@@ -67,12 +69,15 @@ function exitEditModePerClick(li, subtaskText) {
  * @returns {void}
  */
 function editmodeConfirmListener(li) {
-  li.querySelector('.subtask-edit-value').addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      li.querySelector('.edit-confirm-btn').click();
-    }
-  });
+  li.querySelector('.subtask-edit-value').addEventListener(
+    'keydown',
+    (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        li.querySelector('.edit-confirm-btn').click();
+      }
+    },
+  );
 }
 
 /**
@@ -91,7 +96,10 @@ function addSubtaskEventListeners(li) {
 }
 
 // Mousedown on the add button adds the subtask (fires before blur)
-addButtonSubtask.addEventListener('mousedown', addSubtask);
+addButtonSubtask.addEventListener('mousedown', () => {
+  addSubtask();
+  event.preventDefault();
+});
 
 // Enter or Space on the add button also adds the subtask
 addButtonSubtask.addEventListener('keydown', (event) => {
@@ -118,7 +126,7 @@ subtaskInput.addEventListener('focus', () => {
 subtaskInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     addSubtask();
-    subtaskInput.blur();
+    // subtaskInput.blur();
     event.preventDefault();
   }
 });
@@ -126,7 +134,7 @@ subtaskInput.addEventListener('keydown', (event) => {
 // Mousedown on the delete button clears the input and removes focus
 deleteButtonSubtask.addEventListener('mousedown', () => {
   subtaskInput.value = '';
-  subtaskInput.blur();
+  // subtaskInput.blur();
 });
 
 // Enter or Space on the delete button clears the input and removes focus

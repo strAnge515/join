@@ -28,7 +28,6 @@ import {
   closeContactDetails,
   removeActiveStateFromContact,
 } from './contacts-responsive.js';
-
 // --- NEUE IMPORTE FÜR USER STORY 4 & 5 ---
 import { loadTasks, updateTask } from './backend-tasks.js';
 import { findUserByEmail, updateUser, deleteUser } from './backend-users.js';
@@ -109,8 +108,10 @@ function clearInputs(elementId) {
  * Closes an open dialog and clears its input fields.
  *
  * @param {HTMLElement} element - An element inside the dialog.
+ * @param {Function} callback - A function to call after closing the dialog.
  */
-export function closeDialog(element) {
+export function closeDialog(element, callback = null) {
+  document.body.style.overflow = '';
   const dialogRef = element.closest('dialog');
   const elementId = element.id;
   dialogRef.classList.remove('show');
@@ -119,6 +120,10 @@ export function closeDialog(element) {
   }, 100);
   clearAllInputErrors(dialogRef);
   clearInputs(elementId);
+
+  if (callback) {
+    callback();
+  }
 }
 
 /**
@@ -129,11 +134,16 @@ export function closeDialog(element) {
 async function executeContactDelete(overlay, contactId) {
   const contactToDelete = state.contacts.find((c) => c.id == contactId);
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-  const isCurrentUser = currentUser.email && contactToDelete && contactToDelete.email === currentUser.email;
-  
+  const isCurrentUser =
+    currentUser.email &&
+    contactToDelete &&
+    contactToDelete.email === currentUser.email;
+
   let contactFullName = '';
   if (contactToDelete) {
-     contactFullName = contactToDelete.name || `${contactToDelete.firstName} ${contactToDelete.lastName}`.trim();
+    contactFullName =
+      contactToDelete.name ||
+      `${contactToDelete.firstName} ${contactToDelete.lastName}`.trim();
   }
 
   if (overlay.tagName === 'DIALOG') {
@@ -141,7 +151,7 @@ async function executeContactDelete(overlay, contactId) {
   } else {
     overlay.remove();
   }
-  
+
   await deleteContact(contactId);
 
   try {
@@ -152,12 +162,13 @@ async function executeContactDelete(overlay, contactId) {
         let updatedTaskData = {};
 
         if (task.assigned_to && Array.isArray(task.assigned_to)) {
-          const updatedAssigned = task.assigned_to.filter(assigned => {
-            const isNameMatch = typeof assigned === 'string' && assigned === contactFullName;
+          const updatedAssigned = task.assigned_to.filter((assigned) => {
+            const isNameMatch =
+              typeof assigned === 'string' && assigned === contactFullName;
             const isIdMatch = assigned.id && assigned.id === contactId;
-            return !isNameMatch && !isIdMatch; 
+            return !isNameMatch && !isIdMatch;
           });
-          
+
           if (updatedAssigned.length !== task.assigned_to.length) {
             updatedTaskData.assigned_to = updatedAssigned;
             hasChanges = true;
@@ -165,12 +176,13 @@ async function executeContactDelete(overlay, contactId) {
         }
 
         if (task.assignedTo && Array.isArray(task.assignedTo)) {
-          const updatedAssigned2 = task.assignedTo.filter(assigned => {
-            const isNameMatch = typeof assigned === 'string' && assigned === contactFullName;
+          const updatedAssigned2 = task.assignedTo.filter((assigned) => {
+            const isNameMatch =
+              typeof assigned === 'string' && assigned === contactFullName;
             const isIdMatch = assigned.id && assigned.id === contactId;
             return !isNameMatch && !isIdMatch;
           });
-          
+
           if (updatedAssigned2.length !== task.assignedTo.length) {
             updatedTaskData.assignedTo = updatedAssigned2;
             hasChanges = true;
@@ -183,7 +195,7 @@ async function executeContactDelete(overlay, contactId) {
       }
     }
   } catch (taskError) {
-    console.error("Fehler beim Entfernen aus Tasks:", taskError);
+    console.error('Fehler beim Entfernen aus Tasks:', taskError);
   }
 
   if (isCurrentUser) {
@@ -191,7 +203,7 @@ async function executeContactDelete(overlay, contactId) {
     if (userDoc) await deleteUser(userDoc.id);
     sessionStorage.clear();
     window.location.href = '../index.html';
-    return; 
+    return;
   }
 
   await renderContacts();
@@ -201,7 +213,6 @@ async function executeContactDelete(overlay, contactId) {
     removeActiveStateFromContact();
   }
 }
-
 
 /**
  * Shows a custom confirmation overlay before deleting a contact.
@@ -225,12 +236,15 @@ export function deleteThisContact(contactId) {
 /**
  * Closes a dialog when the Esc key is pressed.
  * @param {HTMLElement} dialogRef - The dialog element.
+ * @param {Function} callback - A function to call after closing the dialog.
  */
-function closeWithEscKey(dialogRef) {
+function closeWithEscKey(dialogRef, callback = null) {
+  if (dialogRef.dataset.escKeyBound) return;
+  dialogRef.dataset.escKeyBound = 'true';
   dialogRef.onkeydown = (event) => {
     if (event.key === 'Escape') {
       event.preventDefault();
-      closeDialog(dialogRef);
+      closeDialog(dialogRef, callback);
     }
   };
 }
@@ -238,13 +252,14 @@ function closeWithEscKey(dialogRef) {
 /**
  * Closes a dialog when clicking outside of it.
  * @param {HTMLElement} dialogRef - The dialog element.
+ * @param {Function} callback - A function to call after closing the dialog.
  */
-function closeWithOutsideClick(dialogRef) {
+function closeWithOutsideClick(dialogRef, callback = null) {
   if (dialogRef.dataset.outsideClickBound) return;
   dialogRef.dataset.outsideClickBound = 'true';
   dialogRef.addEventListener('click', (event) => {
     if (event.target === dialogRef) {
-      closeDialog(event.target);
+      closeDialog(event.target, callback);
     }
   });
 }
@@ -253,10 +268,11 @@ function closeWithOutsideClick(dialogRef) {
  * Adds event listeners to close a dialog when clicking outside of it or pressing the Escape key.
  *
  * @param {HTMLElement} dialogRef - The dialog element.
+ * @param {Function} callback - A function to call after closing the dialog.
  */
-export function addEventListenersToCloseDialog(dialogRef) {
-  closeWithEscKey(dialogRef);
-  closeWithOutsideClick(dialogRef);
+export function addEventListenersToCloseDialog(dialogRef, callback = null) {
+  closeWithEscKey(dialogRef, callback);
+  closeWithOutsideClick(dialogRef, callback);
 }
 
 /**
@@ -363,15 +379,25 @@ async function editContact(event, contactId) {
   // --- NEU: User Story 5 (E-Mail Update in Login-System) ---
   const oldContact = state.contacts.find((c) => c.id == contactId);
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-  const isCurrentUser = currentUser.email && oldContact && oldContact.email === currentUser.email;
+  const isCurrentUser =
+    currentUser.email && oldContact && oldContact.email === currentUser.email;
 
   await updateContactData(contactId, formattedData);
 
   if (isCurrentUser) {
     const userDoc = await findUserByEmail(oldContact.email);
     if (userDoc) {
-      await updateUser(userDoc.id, { name: formattedData.name, email: formattedData.email });
-      sessionStorage.setItem('currentUser', JSON.stringify({ name: formattedData.name, email: formattedData.email }));
+      await updateUser(userDoc.id, {
+        name: formattedData.name,
+        email: formattedData.email,
+      });
+      sessionStorage.setItem(
+        'currentUser',
+        JSON.stringify({
+          name: formattedData.name,
+          email: formattedData.email,
+        }),
+      );
     }
   }
   // -----------------------------------------------------------

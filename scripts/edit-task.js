@@ -1,9 +1,16 @@
-import { getBoardEditTemplate, getDropdownTemplate, renderAvatarsForEdit } from './tasks-template.js';
+import {
+  getBoardEditTemplate,
+  getDropdownTemplate,
+  renderAvatarsForEdit,
+} from './tasks-template.js';
 import { loadAndPrepareContacts } from './contacts-render.js';
 import { updateTask } from './backend-tasks.js';
 import { getInitials } from './board-utils.js';
-import { initSubtasks, getEditedSubtasks, setupSubtaskUI } from './edit-task-subtasks.js';
-
+import {
+  initSubtasks,
+  getEditedSubtasks,
+  setupSubtaskUI,
+} from './edit-task-subtasks.js';
 
 let currentEditTaskId = null;
 let currentPrio = 'medium';
@@ -11,21 +18,26 @@ let editSelectedContacts = [];
 let allContacts = [];
 let outsideClickHandler = null;
 
-
 /**
  * Closes the edit task modal, resets the scroll behavior and removes
  * the document-level click listener registered for the contacts dropdown.
  */
 function closeEditModal() {
+  document.removeEventListener('keydown', handleEscKey);
   const dialogRef = document.getElementById('taskModal');
   if (!dialogRef) return;
   detachOutsideClickHandler();
-  document.body.classList.remove('no-scroll');
+  document.body.style.overflow = '';
   dialogRef.classList.remove('edit-mode');
   dialogRef.close();
   dialogRef.innerHTML = '';
 }
 
+function handleEscKey(event) {
+  if (event.key === 'Escape') {
+    closeEditModal();
+  }
+}
 
 /**
  * Removes the document-level outside-click handler if one is registered.
@@ -35,7 +47,6 @@ function detachOutsideClickHandler() {
   document.removeEventListener('click', outsideClickHandler);
   outsideClickHandler = null;
 }
-
 
 /**
  * Opens the edit modal for a specific task and initializes all components.
@@ -53,7 +64,6 @@ window.openEditTask = async function (taskId) {
   renderModalContent(task);
 };
 
-
 /**
  * Renders the modal content and sets up event listeners.
  *
@@ -65,13 +75,13 @@ async function renderModalContent(task) {
   dialogRef.innerHTML = getBoardEditTemplate(task);
   const closeBtn = dialogRef.querySelector('#edit-close-btn');
   if (closeBtn) closeBtn.addEventListener('click', closeEditModal);
+  document.addEventListener('keydown', handleEscKey);
   setupPriorityButtons(dialogRef);
   setupDateInput(dialogRef);
   await setupContactsDropdown(dialogRef);
   setupSubtaskUI(dialogRef);
   setupFormSubmit(dialogRef, task);
 }
-
 
 /**
  * Initializes the custom date input fields and the native picker sync.
@@ -85,9 +95,10 @@ function setupDateInput(dialogRef) {
   svg.addEventListener('click', () => {
     if (typeof picker.showPicker === 'function') picker.showPicker();
   });
-  picker.addEventListener('change', (e) => syncPickerToFields(dialogRef, e.target.value));
+  picker.addEventListener('change', (e) =>
+    syncPickerToFields(dialogRef, e.target.value),
+  );
 }
-
 
 /**
  * Writes the YYYY-MM-DD picker value into the three day/month/year inputs.
@@ -103,7 +114,6 @@ function syncPickerToFields(dialogRef, value) {
   dialogRef.querySelector('#edit-date-year').value = y;
 }
 
-
 /**
  * Sets up click listeners for the three priority buttons.
  *
@@ -114,13 +124,18 @@ function setupPriorityButtons(dialogRef) {
   prioBtns.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      prioBtns.forEach((b) => b.classList.remove('selected-urgent', 'selected-medium', 'selected-low'));
+      prioBtns.forEach((b) =>
+        b.classList.remove(
+          'selected-urgent',
+          'selected-medium',
+          'selected-low',
+        ),
+      );
       currentPrio = btn.dataset.prio;
       btn.classList.add(`selected-${currentPrio}`);
     });
   });
 }
-
 
 /**
  * Initializes the contacts dropdown and loads contact data.
@@ -135,12 +150,13 @@ async function setupContactsDropdown(dialogRef) {
   }
   const toggleBtn = dialogRef.querySelector('#edit-assigned-toggle');
   if (!toggleBtn) return;
-  toggleBtn.addEventListener('click', (e) => toggleDropdownVisibility(e, dialogRef));
+  toggleBtn.addEventListener('click', (e) =>
+    toggleDropdownVisibility(e, dialogRef),
+  );
   outsideClickHandler = (e) => handleOutsideClick(e, dialogRef);
   document.addEventListener('click', outsideClickHandler);
   updateAvatarsContainer(dialogRef);
 }
-
 
 /**
  * Toggles the visibility of the contacts dropdown list.
@@ -156,9 +172,9 @@ function toggleDropdownVisibility(e, dialogRef) {
   optionsContainer.classList.toggle('d-none');
   arrowDown.classList.toggle('d-none');
   arrowUp.classList.toggle('d-none');
-  if (!optionsContainer.classList.contains('d-none')) renderEditContactsDropdown(dialogRef);
+  if (!optionsContainer.classList.contains('d-none'))
+    renderEditContactsDropdown(dialogRef);
 }
-
 
 /**
  * Closes the dropdown if the user clicks outside of it.
@@ -170,12 +186,12 @@ function handleOutsideClick(e, dialogRef) {
   const optionsContainer = dialogRef.querySelector('#edit-assigned-options');
   const toggleBtn = dialogRef.querySelector('#edit-assigned-toggle');
   if (!optionsContainer || !toggleBtn) return;
-  if (optionsContainer.contains(e.target) || toggleBtn.contains(e.target)) return;
+  if (optionsContainer.contains(e.target) || toggleBtn.contains(e.target))
+    return;
   optionsContainer.classList.add('d-none');
   dialogRef.querySelector('#edit-arrow-down').classList.remove('d-none');
   dialogRef.querySelector('#edit-arrow-up').classList.add('d-none');
 }
-
 
 /**
  * Renders the list of contacts inside the dropdown menu.
@@ -191,7 +207,6 @@ function renderEditContactsDropdown(dialogRef) {
   });
 }
 
-
 /**
  * Creates a single list item for a contact in the dropdown.
  *
@@ -206,10 +221,11 @@ function createContactListItem(contact, dialogRef) {
   li.className = `assigned-option ${isSelected ? 'selected' : ''}`;
   li.innerHTML = getDropdownTemplate(contact, getInitials(fullName));
   applyCheckboxState(li, isSelected);
-  li.addEventListener('click', (e) => onContactItemClick(e, contact, fullName, isSelected, dialogRef));
+  li.addEventListener('click', (e) =>
+    onContactItemClick(e, contact, fullName, isSelected, dialogRef),
+  );
   return li;
 }
-
 
 /**
  * Toggles the checkbox icon visibility on a rendered contact list item.
@@ -222,7 +238,6 @@ function applyCheckboxState(li, isSelected) {
   li.querySelector('.checkbox-unchecked').classList.add('d-none');
   li.querySelector('.checkbox-checked').classList.remove('d-none');
 }
-
 
 /**
  * Handles a click on a contact item: toggles selection and re-renders the UI.
@@ -240,7 +255,6 @@ function onContactItemClick(e, contact, fullName, isSelected, dialogRef) {
   updateAvatarsContainer(dialogRef);
 }
 
-
 /**
  * Checks if a specific contact is currently selected.
  *
@@ -250,10 +264,11 @@ function onContactItemClick(e, contact, fullName, isSelected, dialogRef) {
  */
 function isContactSelected(contact, fullName) {
   return editSelectedContacts.some(
-    (c) => (c.id && c.id === contact.id) || (typeof c === 'string' && c === fullName),
+    (c) =>
+      (c.id && c.id === contact.id) ||
+      (typeof c === 'string' && c === fullName),
   );
 }
-
 
 /**
  * Adds or removes a contact from the selected contacts array.
@@ -272,7 +287,6 @@ function toggleContactSelection(contact, fullName, isSelected) {
   }
 }
 
-
 /**
  * Updates the container showing the selected contact avatars.
  *
@@ -280,9 +294,9 @@ function toggleContactSelection(contact, fullName, isSelected) {
  */
 function updateAvatarsContainer(dialogRef) {
   const avatarsContainer = dialogRef.querySelector('#edit-assigned-avatars');
-  if (avatarsContainer) avatarsContainer.innerHTML = renderAvatarsForEdit(editSelectedContacts);
+  if (avatarsContainer)
+    avatarsContainer.innerHTML = renderAvatarsForEdit(editSelectedContacts);
 }
-
 
 /**
  * Binds the submit event to save the edited task data after manual validation.
@@ -301,7 +315,6 @@ function setupFormSubmit(dialogRef, task) {
   });
 }
 
-
 /**
  * Disables the save button to prevent double-submission during the Firestore call.
  *
@@ -311,7 +324,6 @@ function disableSaveButton(dialogRef) {
   const btn = dialogRef.querySelector('#btn-edit-save');
   if (btn) btn.disabled = true;
 }
-
 
 /**
  * Runs manual validation on the edit form. Title is required.
@@ -332,7 +344,6 @@ function validateEditForm(dialogRef) {
   return true;
 }
 
-
 /**
  * Reads the three date fields and returns the DD/MM/YYYY string written to Firestore.
  *
@@ -345,7 +356,6 @@ function readDateFromForm(dialogRef) {
   const y = dialogRef.querySelector('#edit-date-year').value;
   return `${d}/${m}/${y}`;
 }
-
 
 /**
  * Constructs the updated task object and saves it to the backend.
@@ -366,7 +376,6 @@ async function performTaskUpdate(dialogRef, task) {
   await updateTask(currentEditTaskId, updatedTask);
   finalizeTaskUpdate();
 }
-
 
 /**
  * Closes the modal and re-renders the board after a successful update.
