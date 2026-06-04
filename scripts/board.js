@@ -1,20 +1,7 @@
 import { loadTasks, deleteTask, updateTask } from './backend-tasks.js';
-import {
-  createNavButtonMobile,
-  getInitials,
-  getAvatarColor,
-  getPriorityIcon,
-  getCategoryBadge,
-  getSubtaskInfo,
-  getProgressBarHTML,
-  getTaskCardInnerHTML,
-} from './board-utils.js';
+import { createNavButtonMobile, getInitials, getAvatarColor, getPriorityIcon, getCategoryBadge, getSubtaskInfo, getProgressBarHTML, getTaskCardInnerHTML } from './board-utils.js';
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
-import {
-  addEventListenersToAddTaskBtn,
-  addDialogCloseListeners,
-  openTaskCard,
-} from './board-dialogs.js';
+import { addEventListenersToAddTaskBtn, addDialogCloseListeners, openTaskCard } from './board-dialogs.js';
 import { addEventListenersToCloseDialog } from './contacts-dialogs.js';
 
 const columnTodo = document.getElementById('column-todo');
@@ -34,21 +21,6 @@ async function initBoard() {
   initDragDrop(handleTaskMove);
   addEventListenersToAddTaskBtn();
   addDialogCloseListeners();
-}
-
-/**
- * Attaches a click event listener to the "Add Task" button to open the add task dialog.
- */
-function addEventListenersToAddTaskBtn() {
-  const dialogRef = document.getElementById('addTaskDialog');
-  const addTaskButtons = document.querySelectorAll('#addTaskBtn, .board-column__add-btn');
-  if (!dialogRef) return;
-  addTaskButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      window.selectedBoardStatus = button.dataset.status || 'to do';
-      openAddTaskDialog(dialogRef);
-    });
-  });
 }
 
 /**
@@ -78,16 +50,6 @@ function addEventListenersToCloseBtn() {
       closeDialog(dialog);
     });
   }
-}
-
-/**
- * Adds event listeners to the add task dialog to close it when clicking outside, on the cancel button or pressing ESC.
- */
-function addDialogCloseListeners() {
-  const dialogRef = document.getElementById('addTaskDialog');
-  if (!dialogRef) return;
-  addEventListenersToCloseDialog(dialogRef);
-  addEventListenersToCloseBtn();
 }
 
 /**
@@ -182,11 +144,7 @@ function handleSearch() {
     displayTasks(allTasks);
     return;
   }
-  const filtered = allTasks.filter(
-    (task) =>
-      task.title?.toLowerCase().includes(query) ||
-      task.description?.toLowerCase().includes(query),
-  );
+  const filtered = allTasks.filter((task) => task.title?.toLowerCase().includes(query) || task.description?.toLowerCase().includes(query));
   displayTasks(filtered);
   if (filtered.length === 0) {
     clearBoard();
@@ -288,22 +246,6 @@ function getNeighborStatus(task) {
 }
 
 /**
- * Opens the task detail modal, populates it with the given task's data,
- * disables background scrolling and sets up close listeners.
- * @param {Object} task - The task data object to display in the modal.
- */
-function openTaskCard(task) {
-  const categoryBadge = getCategoryBadge(task.category);
-  const dialogRef = document.getElementById('taskModal');
-  document.body.classList.add('no-scroll');
-  dialogRef.innerHTML = getTaskCardHTML(categoryBadge, task);
-  fillTaskCardInitials(task);
-  fillTaskCardSubtasks(task);
-  addTaskCardEventListeners(task);
-  dialogRef.showModal();
-}
-
-/**
  * Fills the assigned users list inside the open task modal.
  * @param {Object} task - The task data object containing assigned_to.
  */
@@ -385,27 +327,8 @@ export function handleModalDelete(task) {
   dialog.innerHTML = getConfirmDialogHTML(task.title || 'Untitled task');
   document.body.appendChild(dialog);
   dialog.showModal();
-  dialog
-    .querySelector('#confirmCancel')
-    .addEventListener('click', () => dialog.close());
-  dialog
-    .querySelector('#confirmDelete')
-    .addEventListener('click', () => executeTaskDelete(dialog, task));
-}
-
-/**
- * Saves the updated subtasks array to Firebase and refreshes the progress bar on the task card.
- * @param {Object} task - The parent task object.
- * @param {Array} updatedSubtasks - The updated subtasks array.
- */
-async function saveSubtaskUpdate(task, updatedSubtasks) {
-  try {
-    await updateTask(task.id, { subtasks: updatedSubtasks });
-    const cardRef = document.querySelector(`.task-card[data-id="${task.id}"]`);
-    if (cardRef) updateCardProgressBar(cardRef, updatedSubtasks);
-  } catch (error) {
-    console.error('Fehler beim Speichern des Subtasks:', error);
-  }
+  dialog.querySelector('#confirmCancel').addEventListener('click', () => dialog.close());
+  dialog.querySelector('#confirmDelete').addEventListener('click', () => executeTaskDelete(dialog, task));
 }
 
 /**
@@ -432,17 +355,6 @@ async function saveSubtaskUpdate(task, updatedSubtasks) {
   } catch (error) {
     console.error('Fehler beim Speichern des Subtasks:', error);
   }
-}
-
-/**
- * Updates the progress bar element on a task card after a subtask state change.
- * @param {HTMLElement} cardRef - The task card element.
- * @param {Array} updatedSubtasks - The updated subtasks array.
- */
-function updateCardProgressBar(cardRef, updatedSubtasks) {
-  const subtaskInfo = getSubtaskInfo(updatedSubtasks);
-  const progressEl = cardRef.querySelector('.task-card__progress');
-  if (progressEl) progressEl.outerHTML = getProgressBarHTML(subtaskInfo);
 }
 
 /**

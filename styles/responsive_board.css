@@ -183,8 +183,7 @@
   }
 
   .dialog {
-    padding: clamp(16px, calc(-50.783px + 20.87vw), 64px)
-      clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
+    padding: clamp(16px, calc(-50.783px + 20.87vw), 64px) clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
   }
 
   .header-wrapper {
@@ -203,7 +202,7 @@
   .mobile-move-buttons {
     background: #2a3647;
     border-radius: 0 20px 20px 20px;
-    padding: 6px 8px 16px 8px;
+    padding: 6px 8px 16px 4px;
     gap: 16px;
     box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.04);
     top: 42px;
@@ -216,7 +215,7 @@
   .mobile-move-buttons:not(.d-none) {
     display: flex;
     height: 120px;
-    width: 115px;
+    width: 127px;
     justify-content: center;
     align-items: center;
   }
@@ -253,7 +252,7 @@
   .buttons-to-move {
     display: flex;
     flex-direction: column;
-    width: 90px;
+    width: 96px;
     align-items: flex-start;
     gap: 8px;
   }
