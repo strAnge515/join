@@ -200,16 +200,20 @@
     position: absolute;
     right: -50px;
     z-index: 1;
-    
   }
 
   .mobile-move-buttons:not(.d-none) {
     display: flex;
+    height: 120px;
+    width: 115px;
+    justify-content: center;
+    align-items: center;
   }
 
-  .mobile-move-buttons p {
+  .mobile-move-buttons span {
     color: white;
     font-weight: bold;
+    text-align: left;
   }
 
   .mobile-move-buttons button {
@@ -220,11 +224,36 @@
     width: 100%;
     display: flex;
     text-transform: capitalize;
+    align-items: center;
+    gap: 8px;
   }
 
   .mobile-move-buttons button:hover {
     background: #1e2a3a;
     border-radius: 10px;
+  }
+
+  .mobile-move-buttons-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .buttons-to-move {
+    display: flex;
+    flex-direction: column;
+    width: 90px;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .mobile-move-section img {
+    height: 20px;
+    width: 20px;
+  }
+
+  .mobile-head {
+    padding-left: 4px;
   }
 }
 

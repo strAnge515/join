@@ -109,7 +109,7 @@ export function createNavButtonMobile(currentStatus, task) {
  return currentStatus.map((status, index) => `<button type="button" class="mobile-move-section" data-status="${status}">
     ${index === 0 && task.status !== 'to do' ?
    '<img src="../assets/img/arrow_upward.svg" alt="arrow-up">' :
-   '<img src="../assets/img/arrow_downward.svg" alt="arrow-down"></img>'}${status}</button>`).join('');
+   '<img src="../assets/img/arrow_downward.svg" alt="arrow-down"></img>'}<span>${status}</span></button>`).join('');
 }
 
 /**
@@ -158,9 +158,9 @@ export function getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedU
         <span class="prio-icon">${getPriorityIconForModal(task.prio)}</span>
       </div>
       <section class="mobile-move-buttons d-none">
-        <div>
-          <p>Move to</p>
-          <div>
+        <div class="mobile-move-buttons-wrapper">
+          <span class="mobile-head">Move to</span>
+          <div class="buttons-to-move">
             ${createNavButtonMobile(currentStatus, task)}
           </div>
         </div>

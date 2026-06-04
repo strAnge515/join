@@ -29,9 +29,7 @@ async function initBoard() {
 function addEventListenersToAddTaskBtn() {
   const dialogRef = document.getElementById('addTaskDialog');
   const addTaskButtons = document.querySelectorAll('#addTaskBtn, .board-column__add-btn');
-
   if (!dialogRef) return;
-
   addTaskButtons.forEach((button) => {
     button.addEventListener('click', () => {
       window.selectedBoardStatus = button.dataset.status || 'to do';
@@ -197,7 +195,49 @@ function getColumnByStatus(status) {
 }
 
 /**
- * Creates and returns a task card button element for the board.
+ * Extracts a flat array of display names from the assigned_to field of a task.
+ * @param {Array} assignedTo - The raw assigned_to array from Firebase.
+ * @returns {string[]} Array of full name strings.
+ */
+function getAssignedUserNames(assignedTo) {
+  if (!Array.isArray(assignedTo)) return [];
+  return assignedTo.map((u) => {
+    if (typeof u === 'string') return u;
+    if (u.firstName && u.lastName) return `${u.firstName} ${u.lastName}`;
+    return u.name || 'Unknown';
+  });
+}
+
+/**
+ * Attaches a click listener to the mobile swap button to toggle the move overlay.
+ * @param {HTMLElement} card - The task card element.
+ */
+function initMobileSwapButton(card) {
+  card.querySelector('.mobile-swap-button').addEventListener('click', (event) => {
+    event.stopPropagation();
+    const overlay = card.querySelector('.mobile-move-buttons');
+    const isOpen = !overlay.classList.contains('d-none');
+    document.querySelectorAll('.mobile-move-buttons').forEach((o) => o.classList.add('d-none'));
+    overlay.classList.toggle('d-none', isOpen);
+  });
+}
+
+/**
+ * Attaches click listeners to all mobile move buttons inside a task card.
+ * @param {HTMLElement} card - The task card element.
+ * @param {string} taskId - The Firebase ID of the task.
+ */
+function initMobileMoveButtons(card, taskId) {
+  card.querySelectorAll('.mobile-move-section').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      handleTaskMove(taskId, button.dataset.status);
+    });
+  });
+}
+
+/**
+ * Creates and returns a fully configured task card button element.
  * @param {Object} task - The task data object.
  * @returns {HTMLElement} The rendered task card element.
  */
@@ -206,35 +246,21 @@ function createTaskCard(task) {
   card.className = 'task-card';
   card.dataset.id = task.id;
   card.addEventListener('click', () => openTaskCard(task));
-
   const subtaskInfo = getSubtaskInfo(task.subtasks);
-  const assignedUsers = Array.isArray(task.assigned_to)
-    ? task.assigned_to.map((u) => {
-        if (typeof u === 'string') return u; // Fallback für alte Test-Tasks
-        if (u.firstName && u.lastName) return `${u.firstName} ${u.lastName}`; // Neuer Standard
-        return u.name || 'Unknown';
-      })
-    : [];
-  let possibleStatus = ['To-do', 'In progress', 'Awaiting feedback', 'Done'];
+  const assignedUsers = getAssignedUserNames(task.assigned_to);
   const currentStatus = getNeighborStatus(task);
-
   const categoryBadge = getCategoryBadge(task.category);
   card.innerHTML = getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedUsers, currentStatus);
-  card.querySelector('.mobile-swap-button').addEventListener('click', (event) => {
-    event.stopPropagation();
-    const overlay = card.querySelector('.mobile-move-buttons');
-    overlay.classList.toggle('d-none');
-  });
-
-  card.querySelectorAll('.mobile-move-section').forEach((button) => {
-  button.addEventListener('click', (event) => {
-    event.stopPropagation();
-    handleTaskMove(task.id, button.dataset.status);
-  });
-});
+  initMobileSwapButton(card);
+  initMobileMoveButtons(card, task.id);
   return card;
 }
 
+/**
+ * Returns the neighboring statuses (previous and next) for a given task's current status.
+ * @param {Object} task - The task data object containing a status string.
+ * @returns {string[]} Array of up to two neighboring status strings.
+ */
 function getNeighborStatus(task) {
   const possibleStatus = ['to do', 'in progress', 'awaiting feedback', 'done'];
   const currentIndex = possibleStatus.indexOf(task.status);
@@ -267,10 +293,8 @@ function openTaskCard(task) {
 function fillTaskCardInitials(task) {
   const assignedListRef = document.getElementById('assignedList');
   if (!task.assigned_to || task.assigned_to.length === 0) return;
-
   for (let i = 0; i < task.assigned_to.length; i++) {
     const user = task.assigned_to[i];
-
     let userName = 'Unknown';
     if (typeof user === 'string') {
       userName = user;
@@ -279,7 +303,6 @@ function fillTaskCardInitials(task) {
     } else if (user.name) {
       userName = user.name;
     }
-
     assignedListRef.innerHTML += getAssignedUsersHTML(getAvatarColor(i), getInitials(userName), userName);
   }
 }
@@ -308,15 +331,11 @@ function addTaskCardEventListeners(task) {
   const closeBtnRef = document.querySelector('.close');
   const dialogRef = document.getElementById('taskModal');
   const deleteBtn = document.getElementById('deleteTaskBtn');
-
   if (closeBtnRef) closeBtnRef.addEventListener('click', closeModal);
-
   dialogRef.addEventListener('click', (e) => {
     if (e.target === dialogRef) closeModal();
   });
-
   if (deleteBtn) deleteBtn.addEventListener('click', () => handleModalDelete(task));
-
   dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
     checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
   });
@@ -353,6 +372,32 @@ function handleModalDelete(task) {
 }
 
 /**
+ * Saves the updated subtasks array to Firebase and refreshes the progress bar on the task card.
+ * @param {Object} task - The parent task object.
+ * @param {Array} updatedSubtasks - The updated subtasks array.
+ */
+async function saveSubtaskUpdate(task, updatedSubtasks) {
+  try {
+    await updateTask(task.id, { subtasks: updatedSubtasks });
+    const cardRef = document.querySelector(`.task-card[data-id="${task.id}"]`);
+    if (cardRef) updateCardProgressBar(cardRef, updatedSubtasks);
+  } catch (error) {
+    console.error('Fehler beim Speichern des Subtasks:', error);
+  }
+}
+
+/**
+ * Updates the progress bar element on a task card after a subtask state change.
+ * @param {HTMLElement} cardRef - The task card element.
+ * @param {Array} updatedSubtasks - The updated subtasks array.
+ */
+function updateCardProgressBar(cardRef, updatedSubtasks) {
+  const subtaskInfo = getSubtaskInfo(updatedSubtasks);
+  const progressEl = cardRef.querySelector('.task-card__progress');
+  if (progressEl) progressEl.outerHTML = getProgressBarHTML(subtaskInfo);
+}
+
+/**
  * Toggles a subtask's state and saves the updated subtasks array to Firebase.
  * @param {Event} e - The change event fired by the checkbox.
  * @param {Object} task - The parent task containing the subtasks array.
@@ -360,22 +405,9 @@ function handleModalDelete(task) {
 async function handleSubtaskToggle(e, task) {
   const index = parseInt(e.target.dataset.index);
   const updatedSubtasks = [...task.subtasks];
-  updatedSubtasks[index] = {
-    ...updatedSubtasks[index],
-    state: e.target.checked,
-  };
+  updatedSubtasks[index] = { ...updatedSubtasks[index], state: e.target.checked };
   task.subtasks = updatedSubtasks;
-  try {
-    await updateTask(task.id, { subtasks: updatedSubtasks });
-    const cardRef = document.querySelector(`.task-card[data-id="${task.id}"]`);
-    if (cardRef) {
-      const subtaskInfo = getSubtaskInfo(updatedSubtasks);
-      const progressEl = cardRef.querySelector('.task-card__progress');
-      if (progressEl) progressEl.outerHTML = getProgressBarHTML(subtaskInfo);
-    }
-  } catch (error) {
-    console.error('Fehler beim Speichern des Subtasks:', error);
-  }
+  await saveSubtaskUpdate(task, updatedSubtasks);
 }
 
 /**
@@ -427,6 +459,9 @@ function removeSlideInAnimation(ref, time) {
   }, time);
 }
 
+/**
+ * Closes all open mobile move overlays when clicking anywhere on the document.
+ */
 document.addEventListener('click', () => {
   const mobileMoveButtons = document.querySelectorAll('.mobile-move-buttons');
   mobileMoveButtons.forEach((overlay) => overlay.classList.add('d-none'));
