@@ -5,6 +5,7 @@ import { getInitials, getCategoryBadge, getAvatarColor, getSubtaskInfo } from '.
 import { updateTask, deleteTask } from './backend-tasks.js';
 import { getProgressBarHTML, getTaskCardHTML, getEmptySubtaskHTML, getSubtaskItemHTML, getAssignedUsersHTML, getConfirmDialogHTML } from './board-template.js';
 import { renderBoard } from './board.js';
+import {splitDateString} from './tasks-template.js';
 
 /**
  * Attaches a click event listener to the "Add Task" button to open the add task dialog.
@@ -129,12 +130,8 @@ export function openTaskCard(task) {
  * @returns {string} The foramted string for the card
  */
 export function dateValidationForBoard(task) {
-  const date = task.date.split('-');
-  const dateDay = date[2];
-  const dateMonth = date[1];
-  const dateYear = date[0];
-  let newDate = `${dateDay}/${dateMonth}/${dateYear}`;
-  return newDate;
+  const { day, month, year } = splitDateString(task.date);
+  return `${day}/${month}/${year}`;
 }
 
 /**

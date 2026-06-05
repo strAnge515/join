@@ -99,7 +99,7 @@ export function renderAvatarsForEdit(assignedTo) {
  * @param {string} value - The raw date string from the database.
  * @returns {{day: string, month: string, year: string}} The split date parts.
  */
-function splitDateString(value) {
+export function splitDateString(value) {
   const empty = { day: '', month: '', year: '' };
   if (!value || typeof value !== 'string') return empty;
   let parts;
