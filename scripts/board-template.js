@@ -1,10 +1,12 @@
+import { escapeHtml, renderAssignedUsers, createNavButtonMobile } from "./board-utils.js";
+
 /**
  * Returns the full HTML string for the task detail modal content.
  * @param {Object} categoryBadge - Badge config with color and label.
  * @param {Object} task - The task data object to display.
  * @returns {string} HTML string for the modal's inner content.
  */
-function getTaskCardHTML(categoryBadge, task) {
+export function getTaskCardHTML(categoryBadge, task) {
   return `
     <div class="modal-content">
       <div class="modal-top">
@@ -73,7 +75,7 @@ function getPriorityIconForModal(prio) {
  * @param {number} index - The index of the subtask in the array.
  * @returns {string} HTML string for a single subtask item.
  */
-function getSubtaskItemHTML(subtask, taskId, index) {
+export function getSubtaskItemHTML(subtask, taskId, index) {
   return `
     <div class="subtask-item">
       <input
@@ -92,7 +94,7 @@ function getSubtaskItemHTML(subtask, taskId, index) {
  * Returns the HTML for the empty subtask placeholder.
  * @returns {string} HTML string for the empty subtask state.
  */
-function getEmptySubtaskHTML() {
+ export function getEmptySubtaskHTML() {
   return '<div class="subtask-item"><span class="subtask-label">No subtasks</span></div>';
 }
 
@@ -101,7 +103,7 @@ function getEmptySubtaskHTML() {
  * @param {string} title - The title of the task to be deleted.
  * @returns {string} HTML string for the confirmation dialog.
  */
-function getConfirmDialogHTML(title) {
+export function getConfirmDialogHTML(title) {
   return `
     <div class="confirm-dialog">
       <p class="confirm-dialog__text">Delete "${title}"?</p>
@@ -121,11 +123,68 @@ function getConfirmDialogHTML(title) {
  * @param {string} user - The full name of the assigned user.
  * @returns {string} HTML string for the assigned user entry.
  */
-function getAssignedUsersHTML(color, initials, user) {
+export function getAssignedUsersHTML(color, initials, user) {
   return `
     <div class="assigned-user">
       <div class="avatar big-card__avatar" style="background:${color};">${initials}</div>
       <span class="user-name">${user}</span>
     </div>
+  `;
+}
+
+/**
+ * Returns the HTML string for the subtask progress bar.
+ * @param {Object} subtaskInfo - Object containing done, total and percent values.
+ * @returns {string} Progress bar HTML string.
+ */
+export function getProgressBarHTML(subtaskInfo) {
+  return `
+    <div class="task-card__progress">
+      <div class="progress-bar">
+        <div class="progress-bar__fill" style="width: ${subtaskInfo.percent}%"></div>
+      </div>
+      <span class="task-card__progress-label">${subtaskInfo.done}/${subtaskInfo.total} Subtasks</span>
+    </div>
+  `;
+}
+
+/**
+ * Returns the inner HTML string for a task card.
+ * @param {Object} categoryBadge - Badge config with color, textColor and label.
+ * @param {Object} task - The task data object.
+ * @param {Object} subtaskInfo - Subtask progress info object.
+ * @param {Array} assignedUsers - List of assigned user name strings.
+ * @param {string} priorityIcon - Emoji string representing task priority.
+ * @returns {string} HTML string for the task card's inner content.
+ */
+export function getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedUsers, currentStatus) {
+  return `
+  <div class="header-wrapper">
+      <span class="task-card__category" style="background:${categoryBadge.color}; color:${categoryBadge.textColor};">
+      ${categoryBadge.label}
+      </span>
+      <button type="button" class="mobile-swap-button d-none" id="mobile-swap-button">
+        <img src="../assets/img/Frame 380.svg" alt="double-arrow">
+      </button>
+    </div>
+    <div class="task-card__text">
+      <h3 class="task-card__title">${escapeHtml(task.title || 'Untitled task')}</h3>
+      <p class="task-card__description">${escapeHtml(task.description || 'No description')}</p>
+    </div>
+    ${subtaskInfo.total > 0 ? getProgressBarHTML(subtaskInfo) : ''}
+    <div class="task-card__footer">
+      <div class="avatar-group">${renderAssignedUsers(assignedUsers)}</div>
+      <div class="task-card__actions">
+        <span class="prio-icon">${getPriorityIconForModal(task.prio)}</span>
+      </div>
+      <section class="mobile-move-buttons d-none">
+        <div class="mobile-move-buttons-wrapper">
+          <span class="mobile-head">Move to</span>
+          <div class="buttons-to-move">
+            ${createNavButtonMobile(currentStatus, task)}
+          </div>
+        </div>
+      </section>
+  </div>
   `;
 }

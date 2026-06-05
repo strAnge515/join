@@ -1,8 +1,9 @@
 import { loadTasks, deleteTask, updateTask } from './backend-tasks.js';
-import { createNavButtonMobile, getInitials, getAvatarColor, getPriorityIcon, getCategoryBadge, getSubtaskInfo, getProgressBarHTML, getTaskCardInnerHTML } from './board-utils.js';
+import { createNavButtonMobile, getInitials, getAvatarColor, getPriorityIcon, getCategoryBadge, getSubtaskInfo} from './board-utils.js';
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
 import { addEventListenersToAddTaskBtn, addDialogCloseListeners, openTaskCard } from './board-dialogs.js';
 import { addEventListenersToCloseDialog } from './contacts-dialogs.js';
+import { getTaskCardInnerHTML, getProgressBarHTML, getConfirmDialogHTML } from './board-template.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
