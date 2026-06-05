@@ -1,5 +1,5 @@
 import { escapeHtml, renderAssignedUsers, createNavButtonMobile } from "./board-utils.js";
-
+import {dateValidationForBoard} from "./board-dialogs.js"
 /**
  * Returns the full HTML string for the task detail modal content.
  * @param {Object} categoryBadge - Badge config with color and label.
@@ -20,7 +20,7 @@ export function getTaskCardHTML(categoryBadge, task) {
       <div class="info">
         <div class="info-item">
           <h2>Due date:</h2>
-          <p id="taskDate">${task.date || '—'}</p>
+          <p id="taskDate">${dateValidationForBoard(task) || '—'}</p>
         </div>
         <div class="info-item">
           <h2>Priority:</h2>

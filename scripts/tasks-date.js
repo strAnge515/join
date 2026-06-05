@@ -134,3 +134,4 @@ dateInputContainer.addEventListener('click', (event) => {
     event.target.focus();
   }
 });
+

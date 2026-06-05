@@ -184,7 +184,7 @@ export function removeSlideInAnimation(ref, time) {
  * @param {string} ref - The CSS selector for the element to animate.
  * @param {number} time - The delay before starting the animation.
  */
-//prettier-ignore
+
 export function addSlideInAnimation(ref, time) {
   const element = document.querySelector(ref);
   const detailContainerRef = document.getElementById('detailContainer');

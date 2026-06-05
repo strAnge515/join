@@ -1,9 +1,9 @@
 import { clearTask } from './tasks.js';
 import { addEventListenersToCloseDialog, closeDialog } from './contacts-dialogs.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
-import { getInitials, getCategoryBadge, getAvatarColor, getSubtaskInfo} from './board-utils.js';
+import { getInitials, getCategoryBadge, getAvatarColor, getSubtaskInfo } from './board-utils.js';
 import { updateTask, deleteTask } from './backend-tasks.js';
-import { getProgressBarHTML, getTaskCardHTML, getEmptySubtaskHTML, getSubtaskItemHTML, getAssignedUsersHTML, getConfirmDialogHTML  } from './board-template.js';
+import { getProgressBarHTML, getTaskCardHTML, getEmptySubtaskHTML, getSubtaskItemHTML, getAssignedUsersHTML, getConfirmDialogHTML } from './board-template.js';
 import { renderBoard } from './board.js';
 
 /**
@@ -125,6 +125,19 @@ export function openTaskCard(task) {
 }
 
 /**
+ * Get the date from the card
+ * @returns {string} The foramted string for the card
+ */
+export function dateValidationForBoard(task) {
+  const date = task.date.split('-');
+  const dateDay = date[2];
+  const dateMonth = date[1];
+  const dateYear = date[0];
+  let newDate = `${dateDay}/${dateMonth}/${dateYear}`;
+  return newDate;
+}
+
+/**
  * Fills the assigned users list inside the open task modal.
  * @param {Object} task - The task data object containing assigned_to.
  */
@@ -233,7 +246,3 @@ async function executeTaskDelete(overlay, task) {
     console.error('Fehler beim Löschen:', error);
   }
 }
-
-
-
-
