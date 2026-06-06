@@ -1,5 +1,5 @@
 import { escapeHtml, getInitials, getAvatarColor } from './board-utils.js';
-
+import { parseEditDate } from './tasks-date.js';
 
 /**
  * Returns the HTML template for a subtask list item in display mode.
@@ -58,76 +58,15 @@ export function getDropdownTemplate(contact, initials, isYou) {
   </section>`;
 }
 
-
 /**
- * Resolves the display name of an assigned user, supporting strings and
- * contact-object shapes (firstName/lastName or name).
- *
- * @param {string|Object} user - The assigned user entry.
- * @returns {string} The full display name.
+ * Returns an HTML string with the color and the intials for the avatars.
+ * @param {string} color - The background color of the avatar.
+ * @param {string} initials - The initials displayed inside the avatar.
+ * @returns {string} HTML markup for a single avatar element.
  */
-function getUserDisplayName(user) {
-  if (typeof user === 'string') return user;
-  if (user.firstName && user.lastName) return `${user.firstName} ${user.lastName}`;
-  return user.name || 'Unknown';
+function renderAvatarsForEditTemplate(color, initials) {
+  return `<div class="avatar avatar--stacked" style="background:${color}">${initials}</div>`;
 }
-
-
-/**
- * Returns the HTML string for the stacked avatars shown in the edit dialog.
- * Visual styling lives in edit-task.css (.avatar--stacked).
- *
- * @param {Array} assignedTo - Array of assigned contacts.
- * @returns {string} HTML markup for the avatar row.
- */
-export function renderAvatarsForEdit(assignedTo) {
-  if (!Array.isArray(assignedTo)) return '';
-  return assignedTo.map((user, i) => {
-    const initials = escapeHtml(getInitials(getUserDisplayName(user)));
-    const color = user.color || getAvatarColor(i);
-    return `<div class="avatar avatar--stacked" style="background:${color}">${initials}</div>`;
-  }).join('');
-}
-
-
-/**
- * Splits a date string into day, month and year segments.
- * Supports DD/MM/YYYY, DD.MM.YYYY and YYYY-MM-DD / DD-MM-YYYY input.
- * Returns empty strings for any malformed input (wrong segment count,
- * non-numeric parts) so corrupted Firestore values can't poison the form.
- *
- * @param {string} value - The raw date string from the database.
- * @returns {{day: string, month: string, year: string}} The split date parts.
- */
-export function splitDateString(value) {
-  const empty = { day: '', month: '', year: '' };
-  if (!value || typeof value !== 'string') return empty;
-  let parts;
-  if (value.includes('/')) parts = value.split('/');
-  else if (value.includes('.')) parts = value.split('.');
-  else if (value.includes('-')) parts = value.split('-');
-  else return empty;
-  if (parts.length !== 3 || !parts.every((p) => /^\d+$/.test(p))) return empty;
-  if (parts[0].length === 4) return { year: parts[0], month: parts[1], day: parts[2] };
-  return { day: parts[0], month: parts[1], year: parts[2] };
-}
-
-
-/**
- * Parses a date string and pads the segments for use in the native date picker.
- *
- * @param {string} dateValue - The raw date string from the database.
- * @returns {{day: string, month: string, year: string, formattedDate: string}}
- *   Padded segments plus a YYYY-MM-DD string for <input type="date">.
- */
-function parseEditDate(dateValue) {
-  const { day, month, year } = splitDateString(dateValue);
-  if (!day || !month || !year) return { day, month, year, formattedDate: '' };
-  const dd = day.padStart(2, '0');
-  const mm = month.padStart(2, '0');
-  return { day: dd, month: mm, year, formattedDate: `${year}-${mm}-${dd}` };
-}
-
 
 /**
  * Returns the HTML string for the entire edit task modal content.
@@ -135,14 +74,7 @@ function parseEditDate(dateValue) {
  * @param {Object} task - The task data object to prefill the form.
  * @returns {string} HTML markup for the edit task modal.
  */
-export function getBoardEditTemplate(task) {
-  const title = escapeHtml(task.title || '');
-  const description = escapeHtml(task.description || '');
-  const { day, month, year, formattedDate } = parseEditDate(task.date);
-  const isUrgent = task.prio === 'urgent' ? 'selected-urgent' : '';
-  const isMedium = task.prio === 'medium' ? 'selected-medium' : '';
-  const isLow = task.prio === 'low' ? 'selected-low' : '';
-
+export function getBoardEditTemplate(data) {
   return `
     <div class="edit-task-modal">
       <div class="edit-modal-top">
@@ -157,13 +89,13 @@ export function getBoardEditTemplate(task) {
             <p>Title</p>
             <p class="star">*</p>
           </label>
-          <input type="text" id="edit-task-title" class="task-form-input" value="${title}" maxlength="40">
+          <input type="text" id="edit-task-title" class="task-form-input" value="${data.title}" maxlength="40">
           <p id="edit-error-title" class="d-none error-writing">This field is required</p>
         </div>
 
         <div class="form-group">
           <label class="task-form-label" for="edit-task-description">Description</label>
-          <textarea id="edit-task-description" class="task-form-textarea">${description}</textarea>
+          <textarea id="edit-task-description" class="task-form-textarea">${data.description}</textarea>
         </div>
 
         <div class="form-group">
@@ -174,14 +106,14 @@ export function getBoardEditTemplate(task) {
           <div>
             <section class="task-form-input" id="edit-task-date" tabindex="0">
               <div class="input-wrapper">
-                <input class="date-input-field" id="edit-date-day" type="text" placeholder="dd" maxlength="2" size="2" value="${day}" />
+                <input class="date-input-field" id="edit-date-day" type="text" placeholder="dd" maxlength="2" size="2" value="${data.day}" />
                 <span>/</span>
-                <input class="date-input-field" id="edit-date-month" type="text" placeholder="mm" maxlength="2" size="2" value="${month}" />
+                <input class="date-input-field" id="edit-date-month" type="text" placeholder="mm" maxlength="2" size="2" value="${data.month}" />
                 <span>/</span>
-                <input class="date-input-field" id="edit-date-year" type="text" placeholder="yyyy" maxlength="4" size="4" value="${year}" />
+                <input class="date-input-field" id="edit-date-year" type="text" placeholder="yyyy" maxlength="4" size="4" value="${data.year}" />
               </div>
               <img src="../assets/img/event.svg" alt="eventsvg" id="edit-event-svg" />
-              <input class="edit-old-calender" type="date" id="edit-date-input" value="${formattedDate}" />
+              <input class="edit-old-calender" type="date" id="edit-date-input" value="${data.formattedDate}" />
             </section>
             <p id="edit-error-date" class="d-none error-writing">This field is required</p>
           </div>
@@ -190,9 +122,9 @@ export function getBoardEditTemplate(task) {
         <div class="form-group">
           <label class="task-form-label">Priority</label>
           <div class="task-form-prio-group">
-            <button type="button" class="prio-btn prio-btn--urgent ${isUrgent}" data-prio="urgent">Urgent<img src="../assets/img/Property 1=Urgent.svg" alt="urgent"></button>
-            <button type="button" class="prio-btn prio-btn--medium ${isMedium}" data-prio="medium">Medium<img src="../assets/img/Property 1=Medium.svg" alt="medium"></button>
-            <button type="button" class="prio-btn prio-btn--low ${isLow}" data-prio="low">Low<img src="../assets/img/Property 1=Low.svg" alt="low"></button>
+            <button type="button" class="prio-btn prio-btn--urgent ${data.isUrgent}" data-prio="urgent">Urgent<img src="../assets/img/Property 1=Urgent.svg" alt="urgent"></button>
+            <button type="button" class="prio-btn prio-btn--medium ${data.isMedium}" data-prio="medium">Medium<img src="../assets/img/Property 1=Medium.svg" alt="medium"></button>
+            <button type="button" class="prio-btn prio-btn--low ${data.isLow}" data-prio="low">Low<img src="../assets/img/Property 1=Low.svg" alt="low"></button>
           </div>
         </div>
 

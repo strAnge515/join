@@ -5,7 +5,7 @@ import { getInitials, getCategoryBadge, getAvatarColor, getSubtaskInfo } from '.
 import { updateTask, deleteTask } from './backend-tasks.js';
 import { getProgressBarHTML, getTaskCardHTML, getEmptySubtaskHTML, getSubtaskItemHTML, getAssignedUsersHTML, getConfirmDialogHTML } from './board-template.js';
 import { renderBoard } from './board.js';
-import {splitDateString} from './tasks-template.js';
+import {splitDateString} from './tasks-date.js';
 
 /**
  * Attaches a click event listener to the "Add Task" button to open the add task dialog.

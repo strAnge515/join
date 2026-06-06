@@ -1,16 +1,10 @@
-import {
-  getBoardEditTemplate,
-  getDropdownTemplate,
-  renderAvatarsForEdit,
-} from './tasks-template.js';
+import { getBoardEditTemplate, getDropdownTemplate } from './tasks-template.js';
 import { loadAndPrepareContacts } from './contacts-render.js';
 import { updateTask } from './backend-tasks.js';
-import { getInitials } from './board-utils.js';
-import {
-  initSubtasks,
-  getEditedSubtasks,
-  setupSubtaskUI,
-} from './edit-task-subtasks.js';
+import { getInitials, escapeHtml } from './board-utils.js';
+import { initSubtasks, getEditedSubtasks, setupSubtaskUI } from './edit-task-subtasks.js';
+import {renderAvatarsForEdit} from './tasks-contacts.js';
+import { parseEditDate } from './tasks-date.js';
 
 let currentEditTaskId = null;
 let currentPrio = 'medium';
@@ -72,7 +66,7 @@ window.openEditTask = async function (taskId) {
 async function renderModalContent(task) {
   const dialogRef = document.getElementById('taskModal');
   dialogRef.classList.add('edit-mode');
-  dialogRef.innerHTML = getBoardEditTemplate(task);
+ dialogRef.innerHTML = getBoardEditTemplate(getBoardEdit(task));
   const closeBtn = dialogRef.querySelector('#edit-close-btn');
   if (closeBtn) closeBtn.addEventListener('click', closeEditModal);
   document.addEventListener('keydown', handleEscKey);
@@ -95,9 +89,7 @@ function setupDateInput(dialogRef) {
   svg.addEventListener('click', () => {
     if (typeof picker.showPicker === 'function') picker.showPicker();
   });
-  picker.addEventListener('change', (e) =>
-    syncPickerToFields(dialogRef, e.target.value),
-  );
+  picker.addEventListener('change', (e) => syncPickerToFields(dialogRef, e.target.value));
 }
 
 /**
@@ -124,13 +116,7 @@ function setupPriorityButtons(dialogRef) {
   prioBtns.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      prioBtns.forEach((b) =>
-        b.classList.remove(
-          'selected-urgent',
-          'selected-medium',
-          'selected-low',
-        ),
-      );
+      prioBtns.forEach((b) => b.classList.remove('selected-urgent', 'selected-medium', 'selected-low'));
       currentPrio = btn.dataset.prio;
       btn.classList.add(`selected-${currentPrio}`);
     });
@@ -150,9 +136,7 @@ async function setupContactsDropdown(dialogRef) {
   }
   const toggleBtn = dialogRef.querySelector('#edit-assigned-toggle');
   if (!toggleBtn) return;
-  toggleBtn.addEventListener('click', (e) =>
-    toggleDropdownVisibility(e, dialogRef),
-  );
+  toggleBtn.addEventListener('click', (e) => toggleDropdownVisibility(e, dialogRef));
   outsideClickHandler = (e) => handleOutsideClick(e, dialogRef);
   document.addEventListener('click', outsideClickHandler);
   updateAvatarsContainer(dialogRef);
@@ -172,8 +156,7 @@ function toggleDropdownVisibility(e, dialogRef) {
   optionsContainer.classList.toggle('d-none');
   arrowDown.classList.toggle('d-none');
   arrowUp.classList.toggle('d-none');
-  if (!optionsContainer.classList.contains('d-none'))
-    renderEditContactsDropdown(dialogRef);
+  if (!optionsContainer.classList.contains('d-none')) renderEditContactsDropdown(dialogRef);
 }
 
 /**
@@ -186,8 +169,7 @@ function handleOutsideClick(e, dialogRef) {
   const optionsContainer = dialogRef.querySelector('#edit-assigned-options');
   const toggleBtn = dialogRef.querySelector('#edit-assigned-toggle');
   if (!optionsContainer || !toggleBtn) return;
-  if (optionsContainer.contains(e.target) || toggleBtn.contains(e.target))
-    return;
+  if (optionsContainer.contains(e.target) || toggleBtn.contains(e.target)) return;
   optionsContainer.classList.add('d-none');
   dialogRef.querySelector('#edit-arrow-down').classList.remove('d-none');
   dialogRef.querySelector('#edit-arrow-up').classList.add('d-none');
@@ -221,9 +203,7 @@ function createContactListItem(contact, dialogRef) {
   li.className = `assigned-option ${isSelected ? 'selected' : ''}`;
   li.innerHTML = getDropdownTemplate(contact, getInitials(fullName));
   applyCheckboxState(li, isSelected);
-  li.addEventListener('click', (e) =>
-    onContactItemClick(e, contact, fullName, isSelected, dialogRef),
-  );
+  li.addEventListener('click', (e) => onContactItemClick(e, contact, fullName, isSelected, dialogRef));
   return li;
 }
 
@@ -263,11 +243,7 @@ function onContactItemClick(e, contact, fullName, isSelected, dialogRef) {
  * @returns {boolean} True if the contact is selected, otherwise false.
  */
 function isContactSelected(contact, fullName) {
-  return editSelectedContacts.some(
-    (c) =>
-      (c.id && c.id === contact.id) ||
-      (typeof c === 'string' && c === fullName),
-  );
+  return editSelectedContacts.some((c) => (c.id && c.id === contact.id) || (typeof c === 'string' && c === fullName));
 }
 
 /**
@@ -279,9 +255,7 @@ function isContactSelected(contact, fullName) {
  */
 function toggleContactSelection(contact, fullName, isSelected) {
   if (isSelected) {
-    editSelectedContacts = editSelectedContacts.filter(
-      (c) => !(c.id === contact.id || c === fullName),
-    );
+    editSelectedContacts = editSelectedContacts.filter((c) => !(c.id === contact.id || c === fullName));
   } else {
     editSelectedContacts.push(contact);
   }
@@ -294,8 +268,7 @@ function toggleContactSelection(contact, fullName, isSelected) {
  */
 function updateAvatarsContainer(dialogRef) {
   const avatarsContainer = dialogRef.querySelector('#edit-assigned-avatars');
-  if (avatarsContainer)
-    avatarsContainer.innerHTML = renderAvatarsForEdit(editSelectedContacts);
+  if (avatarsContainer) avatarsContainer.innerHTML = renderAvatarsForEdit(editSelectedContacts);
 }
 
 /**
@@ -384,4 +357,25 @@ async function finalizeTaskUpdate() {
   closeEditModal();
   if (typeof window.renderBoard === 'function') await window.renderBoard();
   else location.reload();
+}
+
+function getBoardEdit(task) {
+  const title = escapeHtml(task.title || '');
+  const description = escapeHtml(task.description || '');
+  const { day, month, year, formattedDate } = parseEditDate(task.date);
+  const isUrgent = task.prio === 'urgent' ? 'selected-urgent' : '';
+  const isMedium = task.prio === 'medium' ? 'selected-medium' : '';
+  const isLow = task.prio === 'low' ? 'selected-low' : '';
+
+  return {
+    title,
+    description,
+    day,
+    month,
+    year,
+    formattedDate,
+    isUrgent,
+    isMedium,
+    isLow,
+  };
 }

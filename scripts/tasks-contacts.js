@@ -193,3 +193,33 @@ export function clearAssignedContacts() {
 export function getSelectedContacts() {
   return selectedContacts;
 }
+
+/**
+ * Returns the HTML string for the stacked avatars shown in the edit dialog.
+ * Visual styling lives in edit-task.css (.avatar--stacked).
+ *
+ * @param {Array} assignedTo - Array of assigned contacts.
+ * @returns {string} HTML markup for the avatar row.
+ */
+export function renderAvatarsForEdit(assignedTo) {
+  if (!Array.isArray(assignedTo)) return '';
+  return assignedTo.map((user, i) => {
+    const initials = escapeHtml(getInitials(getUserDisplayName(user)));
+    const color = user.color || getAvatarColor(i);
+    return renderAvatarsForEditTemplate(color, initials);
+  }).join('');
+}
+
+/**
+ * Resolves the display name of an assigned user, supporting strings and
+ * contact-object shapes (firstName/lastName or name).
+ *
+ * @param {string|Object} user - The assigned user entry.
+ * @returns {string} The full display name.
+ */
+function getUserDisplayName(user) {
+  if (typeof user === 'string') return user;
+  if (user.firstName && user.lastName) return `${user.firstName} ${user.lastName}`;
+  return user.name || 'Unknown';
+}
+
