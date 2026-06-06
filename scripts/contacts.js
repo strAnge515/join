@@ -27,6 +27,7 @@ import {
 import { deleteContact } from './backend-contacts.js';
 
 import { loadTasks, updateTask } from './backend-tasks.js';
+import { findUserByEmail, deleteUser } from './backend-users.js';
 
 export const colors = [
   '#FF7A00',
@@ -190,7 +191,7 @@ export async function executeContactDelete(overlay, contactId) {
   const contactFullName = getContactFullName(contactToDelete);
   closeOverlay(overlay);
   await deleteContact(contactId);
-  await removeContactFromTasks(contactId, contactFullName);
+  await removeContactFromTasks(contactId, contactFullName, contactToDelete);
   await renderContacts();
   document.getElementById('contact-details').innerHTML = '';
   handleMobileDeleteContact();
@@ -248,9 +249,10 @@ function closeOverlay(overlay) {
  *
  * @param {string} contactId - ID of the contact to remove
  * @param {string} contactFullName - Full name of the contact
+ * @param {Object} contactToDelete - The contact object being deleted (used for self-deletion check)
  */
-/*ignore prettier*/
-async function removeContactFromTasks(contactId, contactFullName) {
+/*prettier-ignore */
+async function removeContactFromTasks(contactId,contactFullName,contactToDelete) {
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
   const isCurrent =
     currentUser.email && contactToDelete?.email === currentUser.email;
@@ -260,7 +262,7 @@ async function removeContactFromTasks(contactId, contactFullName) {
   } catch (e) {
     console.error('Fehler beim Entfernen aus Tasks:', e);
   }
-  if (isCurrent) await handleSelfDeletion();
+  if (isCurrent) await handleSelfDeletion(contactToDelete);
 }
 
 /**
@@ -344,7 +346,7 @@ async function processTask(task, contactId, contactFullName) {
 /**
  * Deletes the current user after self-contact removal and redirects to login page.
  */
-async function handleSelfDeletion() {
+async function handleSelfDeletion(contactToDelete) {
   const userDoc = await findUserByEmail(contactToDelete.email);
   if (userDoc) await deleteUser(userDoc.id);
   sessionStorage.clear();

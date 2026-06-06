@@ -26,7 +26,7 @@ import {
   removeActiveStateFromContact,
 } from './contacts-responsive.js';
 
-import { findUserByEmail, updateUser, deleteUser } from './backend-users.js';
+import { findUserByEmail, updateUser } from './backend-users.js';
 
 /**
  * Opens the dialog to add a new contact.
