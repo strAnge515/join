@@ -33,6 +33,7 @@ import { findUserByEmail, updateUser, deleteUser } from './backend-users.js';
  */
 export function openAddContactDialog() {
   const dialogRef = document.getElementById('addContactDialog');
+  clearInputs('addContactDialog');
   dialogRef.showModal();
   focusElement('nameInputAdd');
   dialogRef.classList.add('show');
@@ -63,6 +64,7 @@ function addEditDialogEventListeners() {
  * @param {string} contactId - The ID of the contact to edit.
  */
 export function openEditContactDialog(contactId) {
+  clearInputs('editContactDialog');
   const contact = state.contacts.find((contact) => contact.id == contactId);
   const dialogRef = document.getElementById('editContactDialog');
   const initials = contact.firstName[0] + contact.lastName[0];

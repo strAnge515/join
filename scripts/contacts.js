@@ -187,83 +187,166 @@ export function showNewContactDetails(id, contactData) {
  */
 export async function executeContactDelete(overlay, contactId) {
   const contactToDelete = state.contacts.find((c) => c.id == contactId);
-  const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-  const isCurrentUser =
-    currentUser.email &&
-    contactToDelete &&
-    contactToDelete.email === currentUser.email;
+  const contactFullName = getContactFullName(contactToDelete);
+  closeOverlay(overlay);
+  await deleteContact(contactId);
+  await removeContactFromTasks(contactId, contactFullName);
+  await renderContacts();
+  document.getElementById('contact-details').innerHTML = '';
+  handleMobileDeleteContact();
+}
 
-  let contactFullName = '';
-  if (contactToDelete) {
-    contactFullName =
-      contactToDelete.name ||
-      `${contactToDelete.firstName} ${contactToDelete.lastName}`.trim();
+/**
+ * Builds a displayable full name for a contact.
+ * Falls back from `name` to `firstName + lastName` if needed.
+ *
+ * @param {Object|null|undefined} contact - The contact object.
+ * @param {string} [contact.name] - Full name of the contact.
+ * @param {string} [contact.firstName] - First name of the contact.
+ * @param {string} [contact.lastName] - Last name of the contact.
+ * @returns {string} The formatted full name or an empty string if no contact is provided.
+ */
+function getContactFullName(contact) {
+  if (!contact) return '';
+  return (
+    contact.name ||
+    `${contact.firstName || ''} ${contact.lastName || ''}`.trim()
+  );
+}
+
+/**
+ * Handles UI cleanup after deleting a contact on mobile viewports.
+ * Closes the contact details view and removes active selection state
+ * if the screen width is 900px or less.
+ *
+ * @returns {void}
+ */ function handleMobileDeleteContact() {
+  if (window.innerWidth <= 900) {
+    closeContactDetails();
+    removeActiveStateFromContact();
   }
+}
 
+/**
+ * Closes or removes an overlay element depending on its type.
+ * If the overlay is a <dialog>, it is closed using `.close()`.
+ * Otherwise, the element is removed from the DOM.
+ *
+ * @param {HTMLElement} overlay - The overlay element to close or remove.
+ * @returns {void}
+ */
+function closeOverlay(overlay) {
   if (overlay.tagName === 'DIALOG') {
     overlay.close();
   } else {
     overlay.remove();
   }
+}
 
-  await deleteContact(contactId);
-
+/**
+ * Removes a contact from all tasks and deletes the user if it is the current user.
+ *
+ * @param {string} contactId - ID of the contact to remove
+ * @param {string} contactFullName - Full name of the contact
+ */
+/*ignore prettier*/
+async function removeContactFromTasks(contactId, contactFullName) {
+  const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+  const isCurrent =
+    currentUser.email && contactToDelete?.email === currentUser.email;
   try {
-    const tasks = await loadTasks();
-    if (tasks && Array.isArray(tasks)) {
-      for (let task of tasks) {
-        let hasChanges = false;
-        let updatedTaskData = {};
-
-        if (task.assigned_to && Array.isArray(task.assigned_to)) {
-          const updatedAssigned = task.assigned_to.filter((assigned) => {
-            const isNameMatch =
-              typeof assigned === 'string' && assigned === contactFullName;
-            const isIdMatch = assigned.id && assigned.id === contactId;
-            return !isNameMatch && !isIdMatch;
-          });
-
-          if (updatedAssigned.length !== task.assigned_to.length) {
-            updatedTaskData.assigned_to = updatedAssigned;
-            hasChanges = true;
-          }
-        }
-
-        if (task.assignedTo && Array.isArray(task.assignedTo)) {
-          const updatedAssigned2 = task.assignedTo.filter((assigned) => {
-            const isNameMatch =
-              typeof assigned === 'string' && assigned === contactFullName;
-            const isIdMatch = assigned.id && assigned.id === contactId;
-            return !isNameMatch && !isIdMatch;
-          });
-
-          if (updatedAssigned2.length !== task.assignedTo.length) {
-            updatedTaskData.assignedTo = updatedAssigned2;
-            hasChanges = true;
-          }
-        }
-
-        if (hasChanges) {
-          await updateTask(task.id, updatedTaskData);
-        }
-      }
-    }
-  } catch (taskError) {
-    console.error('Fehler beim Entfernen aus Tasks:', taskError);
+    const tasks = await loadAllTasks();
+    await processAllTasks(tasks, contactId, contactFullName);
+  } catch (e) {
+    console.error('Fehler beim Entfernen aus Tasks:', e);
   }
+  if (isCurrent) await handleSelfDeletion();
+}
 
-  if (isCurrentUser) {
-    const userDoc = await findUserByEmail(contactToDelete.email);
-    if (userDoc) await deleteUser(userDoc.id);
-    sessionStorage.clear();
-    window.location.href = '../index.html';
-    return;
-  }
+/**
+ * Loads all tasks and ensures an array is always returned.
+ *
+ * @returns {Promise<Array<Object>>} List of tasks
+ */
+async function loadAllTasks() {
+  const tasks = await loadTasks();
+  if (!Array.isArray(tasks)) return [];
+  return tasks;
+}
 
-  await renderContacts();
-  document.getElementById('contact-details').innerHTML = '';
-  if (window.innerWidth <= 900) {
-    closeContactDetails();
-    removeActiveStateFromContact();
+/**
+ * Processes all tasks and removes the contact from each task.
+ *
+ * @param {Array<Object>} tasks - List of tasks
+ * @param {string} contactId - Contact ID
+ * @param {string} contactFullName - Contact full name
+ */
+async function processAllTasks(tasks, contactId, contactFullName) {
+  for (const task of tasks) {
+    await processTask(task, contactId, contactFullName);
   }
+}
+
+/**
+ * Checks whether an assignee does NOT match the contact to be removed.
+ *
+ * @param {*} assigned - Assignee (string or object)
+ * @param {string} contactId - Contact ID
+ * @param {string} contactFullName - Contact full name
+ * @returns {boolean} True if the assignee should be kept
+ */
+function isMatchingAssignee(assigned, contactId, contactFullName) {
+  return !(
+    (typeof assigned === 'string' && assigned === contactFullName) ||
+    (assigned?.id && assigned.id === contactId)
+  );
+}
+
+/**
+ * Removes a contact from a task field (assigned_to / assignedTo) if present.
+ *
+ * @param {Object} task - Task object
+ * @param {string} key - Field name (assigned_to | assignedTo)
+ * @param {string} contactId - Contact ID
+ * @param {string} contactFullName - Contact full name
+ * @param {Object} updates - Object collecting updates
+ * @returns {boolean} True if the task was modified
+ */
+function updateTaskIfNeeded(task, key, contactId, contactFullName, updates) {
+  const list = task[key];
+  if (!Array.isArray(list)) return false;
+  const filtered = list.filter((a) => {
+    const isNameMatch = typeof a === 'string' && a === contactFullName;
+    const isIdMatch = a && a.id === contactId;
+    return !(isNameMatch || isIdMatch);
+  });
+  if (filtered.length === list.length) return false;
+  updates[key] = filtered;
+  return true;
+}
+
+/**
+ * Processes a single task and updates it if needed.
+ *
+ * @param {Object} task - Task object
+ * @param {string} contactId - Contact ID
+ * @param {string} contactFullName - Contact full name
+ */
+/*prettier-ignore */
+async function processTask(task, contactId, contactFullName) {
+  const updates = {};
+  let changed = false;
+  changed ||= updateTaskIfNeeded(task, 'assigned_to', contactId, contactFullName, updates);
+  changed ||= updateTaskIfNeeded(task, 'assignedTo', contactId, contactFullName, updates);
+  if (changed) await updateTask(task.id, updates);
+}
+
+/**
+ * Deletes the current user after self-contact removal and redirects to login page.
+ */
+async function handleSelfDeletion() {
+  const userDoc = await findUserByEmail(contactToDelete.email);
+  if (userDoc) await deleteUser(userDoc.id);
+  sessionStorage.clear();
+  window.location.href = '../index.html';
 }
