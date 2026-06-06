@@ -81,6 +81,12 @@
   gap: 35px;
 }
 
+.contact.active {
+  background-color: #2a3647;
+  border-radius: 10px;
+  color: white;
+}
+
 .contact:not(.active):hover {
   background: linear-gradient(#f9f9f9, #f0f0f0);
   border-radius: 10px;

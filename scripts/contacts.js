@@ -21,7 +21,12 @@ import {
   deleteThisContact,
   handleAddContact,
   closeDialog,
+  formatContactData,
 } from './contacts-dialogs.js';
+
+import { deleteContact } from './backend-contacts.js';
+
+import { loadTasks, updateTask } from './backend-tasks.js';
 
 export const colors = [
   '#FF7A00',
@@ -173,4 +178,92 @@ export function showNewContactDetails(id, contactData) {
   };
   showContactDetails(element, contact);
   element.scrollIntoView();
+}
+
+/**
+ * Executes contact deletion and clears the detail view after the overlay is removed.
+ * @param {HTMLElement} overlay - The confirm overlay element to remove.
+ * @param {string} contactId - The Firebase ID of the contact to delete.
+ */
+export async function executeContactDelete(overlay, contactId) {
+  const contactToDelete = state.contacts.find((c) => c.id == contactId);
+  const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+  const isCurrentUser =
+    currentUser.email &&
+    contactToDelete &&
+    contactToDelete.email === currentUser.email;
+
+  let contactFullName = '';
+  if (contactToDelete) {
+    contactFullName =
+      contactToDelete.name ||
+      `${contactToDelete.firstName} ${contactToDelete.lastName}`.trim();
+  }
+
+  if (overlay.tagName === 'DIALOG') {
+    overlay.close();
+  } else {
+    overlay.remove();
+  }
+
+  await deleteContact(contactId);
+
+  try {
+    const tasks = await loadTasks();
+    if (tasks && Array.isArray(tasks)) {
+      for (let task of tasks) {
+        let hasChanges = false;
+        let updatedTaskData = {};
+
+        if (task.assigned_to && Array.isArray(task.assigned_to)) {
+          const updatedAssigned = task.assigned_to.filter((assigned) => {
+            const isNameMatch =
+              typeof assigned === 'string' && assigned === contactFullName;
+            const isIdMatch = assigned.id && assigned.id === contactId;
+            return !isNameMatch && !isIdMatch;
+          });
+
+          if (updatedAssigned.length !== task.assigned_to.length) {
+            updatedTaskData.assigned_to = updatedAssigned;
+            hasChanges = true;
+          }
+        }
+
+        if (task.assignedTo && Array.isArray(task.assignedTo)) {
+          const updatedAssigned2 = task.assignedTo.filter((assigned) => {
+            const isNameMatch =
+              typeof assigned === 'string' && assigned === contactFullName;
+            const isIdMatch = assigned.id && assigned.id === contactId;
+            return !isNameMatch && !isIdMatch;
+          });
+
+          if (updatedAssigned2.length !== task.assignedTo.length) {
+            updatedTaskData.assignedTo = updatedAssigned2;
+            hasChanges = true;
+          }
+        }
+
+        if (hasChanges) {
+          await updateTask(task.id, updatedTaskData);
+        }
+      }
+    }
+  } catch (taskError) {
+    console.error('Fehler beim Entfernen aus Tasks:', taskError);
+  }
+
+  if (isCurrentUser) {
+    const userDoc = await findUserByEmail(contactToDelete.email);
+    if (userDoc) await deleteUser(userDoc.id);
+    sessionStorage.clear();
+    window.location.href = '../index.html';
+    return;
+  }
+
+  await renderContacts();
+  document.getElementById('contact-details').innerHTML = '';
+  if (window.innerWidth <= 900) {
+    closeContactDetails();
+    removeActiveStateFromContact();
+  }
 }
