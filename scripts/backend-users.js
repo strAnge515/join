@@ -1,6 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+/**
+ * This module provides functions to manage user data in a Firestore database.
+ * It includes functions to save a new user, find a user by email, update user data, and delete a user.
+ */
 const firebaseConfig = {
     apiKey: "AIzaSyBmuTnjiq0SjSKXwtFK1DDu25UQ2VKzBUw",
     authDomain: "join-developer-akademie-35d8f.firebaseapp.com",
@@ -49,6 +53,8 @@ export async function findUserByEmail(email) {
 
 /**
  * Updates a user in the Firestore database.
+ * @param {string} userId - The unique Firebase ID of the user.
+ * @param {Object} updatedData - An object containing the updated user data.
  */
 export async function updateUser(userId, updatedData) {
     try {
@@ -58,6 +64,7 @@ export async function updateUser(userId, updatedData) {
 
 /**
  * Deletes a user from the Firestore database.
+ * @param {string} userId - The unique Firebase ID of the user.
  */
 export async function deleteUser(userId) {
     try {
