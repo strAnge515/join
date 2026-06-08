@@ -37,7 +37,9 @@ function activateEditMode(li) {
   li.innerHTML = getEditTemplate(subtaskText);
   li.classList.add('is-editing');
   li.querySelector('.subtask-edit-value').focus();
-  li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
+  li.querySelector('.edit-delete-btn').addEventListener('click', () =>
+    li.remove(),
+  );
   li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
     subtaskText = li.querySelector('.subtask-edit-value').value;
     li.innerHTML = getSubtaskTemplate(subtaskText);
@@ -45,6 +47,19 @@ function activateEditMode(li) {
     addSubtaskEventListeners(li);
   });
   editmodeConfirmListener(li);
+  exitEditModePerClick(li, subtaskText);
+}
+
+function exitEditModePerClick(li, subtaskText) {
+  console.log('exitEditModePerClick called');
+  document.addEventListener('click', (event) => {
+    if (!li.contains(event.target) && li.classList.contains('is-editing')) {
+      subtaskText = li.querySelector('.subtask-edit-value').value;
+      li.innerHTML = getSubtaskTemplate(subtaskText);
+      li.classList.remove('is-editing');
+      addSubtaskEventListeners(li);
+    }
+  });
 }
 
 /**
@@ -54,12 +69,15 @@ function activateEditMode(li) {
  * @returns {void}
  */
 function editmodeConfirmListener(li) {
-  li.querySelector('.subtask-edit-value').addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      li.querySelector('.edit-confirm-btn').click();
-    }
-  });
+  li.querySelector('.subtask-edit-value').addEventListener(
+    'keydown',
+    (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        li.querySelector('.edit-confirm-btn').click();
+      }
+    },
+  );
 }
 
 /**
@@ -70,12 +88,18 @@ function editmodeConfirmListener(li) {
  */
 function addSubtaskEventListeners(li) {
   li.querySelector('.delete-btn').addEventListener('click', () => li.remove());
-  li.querySelector('.edit-btn').addEventListener('click', () => activateEditMode(li));
+  li.querySelector('.edit-btn').addEventListener('click', (event) => {
+    event.stopPropagation();
+    activateEditMode(li);
+  });
   li.addEventListener('dblclick', () => activateEditMode(li));
 }
 
 // Mousedown on the add button adds the subtask (fires before blur)
-addButtonSubtask.addEventListener('mousedown', addSubtask);
+addButtonSubtask.addEventListener('mousedown', () => {
+  addSubtask();
+  event.preventDefault();
+});
 
 // Enter or Space on the add button also adds the subtask
 addButtonSubtask.addEventListener('keydown', (event) => {
@@ -102,14 +126,15 @@ subtaskInput.addEventListener('focus', () => {
 subtaskInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     addSubtask();
-    subtaskInput.blur();
+    // subtaskInput.blur();
+    event.preventDefault();
   }
 });
 
 // Mousedown on the delete button clears the input and removes focus
 deleteButtonSubtask.addEventListener('mousedown', () => {
   subtaskInput.value = '';
-  subtaskInput.blur();
+  // subtaskInput.blur();
 });
 
 // Enter or Space on the delete button clears the input and removes focus

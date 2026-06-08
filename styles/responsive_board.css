@@ -116,6 +116,7 @@
   .task-card {
     min-width: 250px;
     flex-shrink: 0;
+    position: relative;
   }
 
   .board-column__empty {
@@ -156,6 +157,16 @@
   .board {
     padding-bottom: 0;
   }
+  .task-form-actions {
+    position: sticky;
+    background-color: white;
+    bottom: 0;
+    top: unset;
+    right: unset;
+    left: 0;
+    width: 100%;
+    justify-content: center;
+  }
 
   .addTask-dialog {
     margin: 0;
@@ -171,9 +182,88 @@
     gap: 30px;
   }
 
-  .addTask-dialog {
-    padding: clamp(16px, calc(-50.783px + 20.87vw), 64px)
-      clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
+  .dialog {
+    padding: clamp(16px, calc(-50.783px + 20.87vw), 64px) clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
+  }
+
+  .header-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mobile-swap-button {
+    display: block;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+  }
+
+  .mobile-move-buttons {
+    background: #2a3647;
+    border-radius: 0 20px 20px 20px;
+    padding: 6px 8px 16px 4px;
+    gap: 16px;
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.04);
+    top: 64px;
+    display: none;
+    position: absolute;
+    left: 120px;
+    z-index: 1;
+  }
+
+  .mobile-move-buttons:not(.d-none) {
+    display: flex;
+    height: 120px;
+    width: 127px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mobile-move-buttons span {
+    color: white;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .mobile-move-buttons button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    text-transform: capitalize;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mobile-move-buttons button:hover {
+    background: #1e2a3a;
+    border-radius: 10px;
+  }
+
+  .mobile-move-buttons-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .buttons-to-move {
+    display: flex;
+    flex-direction: column;
+    width: 96px;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .mobile-move-section img {
+    height: 20px;
+    width: 20px;
+  }
+
+  .mobile-head {
+    padding-left: 4px;
   }
 }
 

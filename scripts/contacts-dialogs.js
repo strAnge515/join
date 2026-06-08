@@ -1,8 +1,4 @@
-import {
-  saveContact,
-  deleteContact,
-  updateContact,
-} from './backend-contacts.js';
+import { saveContact, updateContact } from './backend-contacts.js';
 
 import {
   validateAddForm,
@@ -16,6 +12,7 @@ import {
   addEventListeners,
   showUpdatedContactDetails,
   showNewContactDetails,
+  executeContactDelete,
 } from './contacts.js';
 
 import {
@@ -29,26 +26,14 @@ import {
   removeActiveStateFromContact,
 } from './contacts-responsive.js';
 
-// --- NEUE IMPORTE FÜR USER STORY 4 & 5 ---
-import { loadTasks, updateTask } from './backend-tasks.js';
-import { findUserByEmail, updateUser, deleteUser } from './backend-users.js';
-
-/**
- * Updates the contact data in the database with the new values from the edit contact form.
- *
- * @param {string} contactId - The ID of the contact to update.
- * @param {Object} data - The updated contact data.
- * @returns {Promise<void>}
- */
-async function updateContactData(contactId, data) {
-  await updateContact(contactId, data);
-}
+import { findUserByEmail, updateUser } from './backend-users.js';
 
 /**
  * Opens the dialog to add a new contact.
  */
 export function openAddContactDialog() {
   const dialogRef = document.getElementById('addContactDialog');
+  clearInputs('addContactDialog');
   dialogRef.showModal();
   focusElement('nameInputAdd');
   dialogRef.classList.add('show');
@@ -79,6 +64,7 @@ function addEditDialogEventListeners() {
  * @param {string} contactId - The ID of the contact to edit.
  */
 export function openEditContactDialog(contactId) {
+  clearInputs('editContactDialog');
   const contact = state.contacts.find((contact) => contact.id == contactId);
   const dialogRef = document.getElementById('editContactDialog');
   const initials = contact.firstName[0] + contact.lastName[0];
@@ -109,8 +95,10 @@ function clearInputs(elementId) {
  * Closes an open dialog and clears its input fields.
  *
  * @param {HTMLElement} element - An element inside the dialog.
+ * @param {Function} callback - A function to call after closing the dialog.
  */
-export function closeDialog(element) {
+export function closeDialog(element, callback = null) {
+  document.body.style.overflow = '';
   const dialogRef = element.closest('dialog');
   const elementId = element.id;
   dialogRef.classList.remove('show');
@@ -119,89 +107,10 @@ export function closeDialog(element) {
   }, 100);
   clearAllInputErrors(dialogRef);
   clearInputs(elementId);
-}
-
-/**
- * Executes contact deletion and clears the detail view after the overlay is removed.
- * @param {HTMLElement} overlay - The confirm overlay element to remove.
- * @param {string} contactId - The Firebase ID of the contact to delete.
- */
-async function executeContactDelete(overlay, contactId) {
-  const contactToDelete = state.contacts.find((c) => c.id == contactId);
-  const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-  const isCurrentUser = currentUser.email && contactToDelete && contactToDelete.email === currentUser.email;
-  
-  let contactFullName = '';
-  if (contactToDelete) {
-     contactFullName = contactToDelete.name || `${contactToDelete.firstName} ${contactToDelete.lastName}`.trim();
-  }
-
-  if (overlay.tagName === 'DIALOG') {
-    overlay.close();
-  } else {
-    overlay.remove();
-  }
-  
-  await deleteContact(contactId);
-
-  try {
-    const tasks = await loadTasks();
-    if (tasks && Array.isArray(tasks)) {
-      for (let task of tasks) {
-        let hasChanges = false;
-        let updatedTaskData = {};
-
-        if (task.assigned_to && Array.isArray(task.assigned_to)) {
-          const updatedAssigned = task.assigned_to.filter(assigned => {
-            const isNameMatch = typeof assigned === 'string' && assigned === contactFullName;
-            const isIdMatch = assigned.id && assigned.id === contactId;
-            return !isNameMatch && !isIdMatch; 
-          });
-          
-          if (updatedAssigned.length !== task.assigned_to.length) {
-            updatedTaskData.assigned_to = updatedAssigned;
-            hasChanges = true;
-          }
-        }
-
-        if (task.assignedTo && Array.isArray(task.assignedTo)) {
-          const updatedAssigned2 = task.assignedTo.filter(assigned => {
-            const isNameMatch = typeof assigned === 'string' && assigned === contactFullName;
-            const isIdMatch = assigned.id && assigned.id === contactId;
-            return !isNameMatch && !isIdMatch;
-          });
-          
-          if (updatedAssigned2.length !== task.assignedTo.length) {
-            updatedTaskData.assignedTo = updatedAssigned2;
-            hasChanges = true;
-          }
-        }
-
-        if (hasChanges) {
-          await updateTask(task.id, updatedTaskData);
-        }
-      }
-    }
-  } catch (taskError) {
-    console.error("Fehler beim Entfernen aus Tasks:", taskError);
-  }
-
-  if (isCurrentUser) {
-    const userDoc = await findUserByEmail(contactToDelete.email);
-    if (userDoc) await deleteUser(userDoc.id);
-    sessionStorage.clear();
-    window.location.href = '../index.html';
-    return; 
-  }
-
-  await renderContacts();
-  document.getElementById('contact-details').innerHTML = '';
-  if (window.innerWidth <= 900) {
-    closeContactDetails();
-    removeActiveStateFromContact();
+  if (callback) {
+    callback();
   }
 }
-
 
 /**
  * Shows a custom confirmation overlay before deleting a contact.
@@ -225,12 +134,15 @@ export function deleteThisContact(contactId) {
 /**
  * Closes a dialog when the Esc key is pressed.
  * @param {HTMLElement} dialogRef - The dialog element.
+ * @param {Function} callback - A function to call after closing the dialog.
  */
-function closeWithEscKey(dialogRef) {
+function closeWithEscKey(dialogRef, callback = null) {
+  if (dialogRef.dataset.escKeyBound) return;
+  dialogRef.dataset.escKeyBound = 'true';
   dialogRef.onkeydown = (event) => {
     if (event.key === 'Escape') {
       event.preventDefault();
-      closeDialog(dialogRef);
+      closeDialog(dialogRef, callback);
     }
   };
 }
@@ -238,13 +150,14 @@ function closeWithEscKey(dialogRef) {
 /**
  * Closes a dialog when clicking outside of it.
  * @param {HTMLElement} dialogRef - The dialog element.
+ * @param {Function} callback - A function to call after closing the dialog.
  */
-function closeWithOutsideClick(dialogRef) {
+function closeWithOutsideClick(dialogRef, callback = null) {
   if (dialogRef.dataset.outsideClickBound) return;
   dialogRef.dataset.outsideClickBound = 'true';
   dialogRef.addEventListener('click', (event) => {
     if (event.target === dialogRef) {
-      closeDialog(event.target);
+      closeDialog(event.target, callback);
     }
   });
 }
@@ -253,10 +166,11 @@ function closeWithOutsideClick(dialogRef) {
  * Adds event listeners to close a dialog when clicking outside of it or pressing the Escape key.
  *
  * @param {HTMLElement} dialogRef - The dialog element.
+ * @param {Function} callback - A function to call after closing the dialog.
  */
-export function addEventListenersToCloseDialog(dialogRef) {
-  closeWithEscKey(dialogRef);
-  closeWithOutsideClick(dialogRef);
+export function addEventListenersToCloseDialog(dialogRef, callback = null) {
+  closeWithEscKey(dialogRef, callback);
+  closeWithOutsideClick(dialogRef, callback);
 }
 
 /**
@@ -305,7 +219,6 @@ export async function handleAddContact(event) {
  * @param {string} fullName - The full name to capitalize.
  * @returns {string} The capitalized name.
  */
-
 function capitalize(fullName) {
   if (!fullName) return '';
   return fullName
@@ -336,7 +249,7 @@ function getContactData() {
  *
  * @returns {{name: string, email: string, phone: string}} The formatted contact data.
  */
-function formatContactData() {
+export function formatContactData() {
   const data = getContactData();
   return {
     ...data,
@@ -359,23 +272,58 @@ async function editContact(event, contactId) {
   const dialogRef = document.getElementById('editContactDialog');
   const contactData = getContactFormData(dialogRef);
   const formattedData = { ...contactData, name: capitalize(contactData.name) };
+  await updateContactAndSyncCurrentUser(contactId, formattedData);
+  await finishContactUpdate(dialogRef, contactId, btn);
+}
 
-  // --- NEU: User Story 5 (E-Mail Update in Login-System) ---
+/**
+ * Updates a contact and synchronizes the current user if the edited contact
+ * belongs to the logged-in user.
+ *
+ * @param {string|number} contactId - ID of the contact to update
+ * @param {Object} formattedData - Updated contact data
+ */
+async function updateContactAndSyncCurrentUser(contactId, formattedData) {
   const oldContact = state.contacts.find((c) => c.id == contactId);
   const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-  const isCurrentUser = currentUser.email && oldContact && oldContact.email === currentUser.email;
+  const isCurrentUser =
+    currentUser.email && oldContact && oldContact.email === currentUser.email;
+  await updateContact(contactId, formattedData);
+  syncCurrentUserIfNeeded(isCurrentUser, oldContact, formattedData);
+}
 
-  await updateContactData(contactId, formattedData);
+/* prettier-ignore */
+/**
+ * Synchronizes the currently logged-in user if the updated contact
+ * belongs to that user.
+ *
+ * Updates the user in the backend and keeps sessionStorage in sync.
+ *
+ * @param {boolean} isCurrentUser - Whether the edited contact is the current user
+ * @param {Object} oldContact - Previous contact data
+ * @param {Object} formattedData - Updated contact data
+ */
+async function syncCurrentUserIfNeeded(isCurrentUser, oldContact, formattedData) {
+  if (!isCurrentUser) return;
+  const userDoc = await findUserByEmail(oldContact.email);
+  if (!userDoc) return;
+  await updateUser(userDoc.id, { name: formattedData.name, email: formattedData.email });
+  sessionStorage.setItem(
+    'currentUser',
+    JSON.stringify({ name: formattedData.name, email: formattedData.email }),
+  );
+}
 
-  if (isCurrentUser) {
-    const userDoc = await findUserByEmail(oldContact.email);
-    if (userDoc) {
-      await updateUser(userDoc.id, { name: formattedData.name, email: formattedData.email });
-      sessionStorage.setItem('currentUser', JSON.stringify({ name: formattedData.name, email: formattedData.email }));
-    }
-  }
-  // -----------------------------------------------------------
-
+/**
+ * Finalizes the contact update process after saving.
+ * Closes the dialog, refreshes the UI, scrolls to the updated contact,
+ * and re-enables the trigger button.
+ *
+ * @param {HTMLElement|Object} dialogRef - Reference to the open dialog
+ * @param {string|number} contactId - ID of the updated contact
+ * @param {HTMLButtonElement} btn - Button that triggered the update
+ */
+async function finishContactUpdate(dialogRef, contactId, btn) {
   await closeDialogAndRender(dialogRef);
   showUpdatedContactDetails(contactId);
   const element = document.querySelector(`.contact[data-id="${contactId}"]`);

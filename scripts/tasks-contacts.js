@@ -1,5 +1,6 @@
 import { loadAndPrepareContacts } from './contacts-render.js';
 import { getDropdownTemplate } from './tasks-template.js';
+import { getAvatarColor } from './board-utils.js';
 
 export const assignedOptions = document.getElementById('assigned-options');
 export const assignedToggle = document.getElementById('assigned-toggle');
@@ -36,6 +37,8 @@ export function filterContacts() {
 export async function renderAssignedDropdown() {
   const contacts = await loadAndPrepareContacts();
   assignedOptions.innerHTML = '';
+  const currentLoggedUser = JSON.parse(sessionStorage.getItem('currentUser'));
+  assignedOptions.appendChild(generateYouAvatar(currentLoggedUser));
   contacts.forEach((contact) => {
     const initials = contact.firstName[0] + contact.lastName[0];
     const li = document.createElement('li');
@@ -44,6 +47,28 @@ export async function renderAssignedDropdown() {
     li.addEventListener('click', () => toggleContact(li, contact));
     assignedOptions.appendChild(li);
   });
+}
+
+function generateYouAvatar(currentLoggedUser) {
+  const youContact = loggedUser(currentLoggedUser);
+  const youInitials = youContact.firstName[0] + (youContact.lastName ? youContact.lastName[0] : '');
+   const currentLoggedUserAvatar = document.createElement('li');
+  currentLoggedUserAvatar.className = 'assigned-option';
+  currentLoggedUserAvatar.innerHTML = getDropdownTemplate(youContact, youInitials, true);
+  currentLoggedUserAvatar.addEventListener('click', () => {
+    toggleContact(currentLoggedUserAvatar, youContact)
+  })
+  return currentLoggedUserAvatar;
+}
+
+function loggedUser(currentLoggedUser) {
+  const currentLoggedUserName = currentLoggedUser.name;
+  let firstName = currentLoggedUserName.split(' ')[0];
+  let lastName = currentLoggedUserName.split(' ')[1] || "";
+  let id = currentLoggedUser.id;
+  let color = getAvatarColor(0);
+  let email = currentLoggedUser.email
+  return { firstName, lastName, id, color, email };
 }
 
 /**
@@ -80,7 +105,7 @@ function selectContact(li, contact, checkboxUnchecked, checkboxChecked) {
   checkboxUnchecked.classList.add('d-none');
   checkboxChecked.classList.remove('d-none');
   li.classList.add('selected');
- }
+}
 
 /**
  * Removes a contact from the selectedContacts array and resets the checkbox visually.
@@ -105,7 +130,7 @@ function deselectContact(li, contact, checkboxUnchecked, checkboxChecked) {
  * @returns {HTMLDivElement} The avatar element.
  */
 function createAvatarElement(contact) {
-  const initials = contact.firstName[0] + contact.lastName[0];
+  const initials = contact.firstName[0] + (contact.lastName ? contact.lastName[0] : '');
   const div = document.createElement('div');
   div.className = 'avatar';
   div.style.background = contact.color;
@@ -153,10 +178,10 @@ export function clearAssignedContacts() {
   assignedAvatars.innerHTML = '';
   assignedPlaceholder.value = '';
   document.querySelectorAll('.assigned-option').forEach((li) => {
-    li.classList.remove('selected');
-    li.querySelector('.checkbox-unchecked').classList.remove('d-none');
-    li.querySelector('.checkbox-checked').classList.add('d-none');
-  });
+  li.classList.remove('selected', 'd-none');
+  li.querySelector('.checkbox-unchecked').classList.remove('d-none');
+  li.querySelector('.checkbox-checked').classList.add('d-none');
+});
 }
 
 /**

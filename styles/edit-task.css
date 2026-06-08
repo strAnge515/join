@@ -1,4 +1,4 @@
-#taskModal.edit-mode {
+.edit-mode {
   width: 720px;
   max-width: 95vw;
   max-height: 90vh;
@@ -7,10 +7,10 @@
   background: transparent;
   margin: auto;
   overflow: visible;
-  top: 0; 
-  bottom: 0; 
-  left: 0; 
-  right: 0; 
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   transform: none;
 }
 
@@ -54,8 +54,6 @@
 }
 
 .edit-task-scrollarea {
-  overflow-y: auto;
-  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -171,7 +169,7 @@
     max-height: 100%;
     border-radius: 0;
     padding: clamp(16px, calc(-50.783px + 20.87vw), 64px)
-             clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
+      clamp(8px, calc(-83.826px + 28.696vw), 74px) 0;
   }
 
   .edit-ok-btn-wrapper {
