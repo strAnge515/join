@@ -24,8 +24,6 @@ async function handleLogin(e) {
     const password = passwordInput.value.trim();
     if (!validateLoginInput(email, password)) return;
     const user = await findUserByEmail(email);
-    console.log(user);
-    
     if (!user || user.password !== password) {
         showLoginError();
         return;
