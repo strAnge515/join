@@ -35,6 +35,10 @@
   flex-grow: 1;
 }
 
+#sidebar-nav-guest {
+  display: none;
+}
+
 .sidebar ul {
   list-style: none;
   padding: 0;

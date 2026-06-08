@@ -7,6 +7,7 @@ import { loadAndPrepareContacts } from './contacts-render.js';
 import { updateTask } from './backend-tasks.js';
 import { getInitials } from './board-utils.js';
 import { initSubtasks, getEditedSubtasks, setupSubtaskUI } from './edit-task-subtasks.js';
+import { setupDateInput } from './edit-task-date.js';
 import {
   readCurrentUser,
   sortCurrentUserFirst,
@@ -15,12 +16,14 @@ import {
   setupAssignedSearch,
 } from './edit-task-contacts.js';
 
+
 let currentEditTaskId = null;
 let currentPrio = 'medium';
 let editSelectedContacts = [];
 let allContacts = [];
 let outsideClickHandler = null;
 let currentUserData = null;
+
 
 /**
  * Closes the edit task modal, resets the scroll behavior and removes the
@@ -37,6 +40,7 @@ function closeEditModal() {
   dialogRef.innerHTML = '';
 }
 
+
 /**
  * Closes the edit modal when the Escape key is pressed.
  *
@@ -46,6 +50,7 @@ function handleEscKey(event) {
   if (event.key === 'Escape') closeEditModal();
 }
 
+
 /**
  * Removes the document-level outside-click handler if one is registered.
  */
@@ -54,6 +59,7 @@ function detachOutsideClickHandler() {
   document.removeEventListener('click', outsideClickHandler);
   outsideClickHandler = null;
 }
+
 
 /**
  * Opens the edit modal for a specific task and initializes all components.
@@ -70,6 +76,7 @@ window.openEditTask = async function (taskId) {
   initSubtasks(task.subtasks || []);
   renderModalContent(task);
 };
+
 
 /**
  * Renders the modal content and sets up event listeners.
@@ -90,34 +97,6 @@ async function renderModalContent(task) {
   setupFormSubmit(dialogRef, task);
 }
 
-/**
- * Initializes the custom date input fields and the native picker sync.
- *
- * @param {HTMLElement} dialogRef - The reference to the modal dialog.
- */
-function setupDateInput(dialogRef) {
-  const picker = dialogRef.querySelector('#edit-date-input');
-  const svg = dialogRef.querySelector('#edit-event-svg');
-  if (!svg || !picker) return;
-  svg.addEventListener('click', () => {
-    if (typeof picker.showPicker === 'function') picker.showPicker();
-  });
-  picker.addEventListener('change', (e) => syncPickerToFields(dialogRef, e.target.value));
-}
-
-/**
- * Writes the YYYY-MM-DD picker value into the three day/month/year inputs.
- *
- * @param {HTMLElement} dialogRef - The modal dialog containing the inputs.
- * @param {string} value - The native picker value in YYYY-MM-DD form.
- */
-function syncPickerToFields(dialogRef, value) {
-  if (!value) return;
-  const [y, m, d] = value.split('-');
-  dialogRef.querySelector('#edit-date-day').value = d;
-  dialogRef.querySelector('#edit-date-month').value = m;
-  dialogRef.querySelector('#edit-date-year').value = y;
-}
 
 /**
  * Sets up click listeners for the three priority buttons.
@@ -136,6 +115,7 @@ function setupPriorityButtons(dialogRef) {
   });
 }
 
+
 /**
  * Loads the contacts and moves the logged-in user to the top of the list.
  *
@@ -146,6 +126,7 @@ async function loadEditContacts() {
   currentUserData = readCurrentUser();
   return sortCurrentUserFirst(contacts, currentUserData);
 }
+
 
 /**
  * Initializes the contacts dropdown and loads contact data.
@@ -167,6 +148,7 @@ async function setupContactsDropdown(dialogRef) {
   updateAvatarsContainer(dialogRef);
 }
 
+
 /**
  * Toggles the visibility of the contacts dropdown list.
  *
@@ -184,6 +166,7 @@ function toggleDropdownVisibility(e, dialogRef) {
   if (!optionsContainer.classList.contains('d-none')) renderEditContactsDropdown(dialogRef);
 }
 
+
 /**
  * Closes the dropdown if the user clicks outside of it.
  *
@@ -200,6 +183,7 @@ function handleOutsideClick(e, dialogRef) {
   dialogRef.querySelector('#edit-arrow-up').classList.add('d-none');
 }
 
+
 /**
  * Renders the list of contacts inside the dropdown menu.
  *
@@ -214,6 +198,7 @@ function renderEditContactsDropdown(dialogRef) {
     optionsContainer.appendChild(createContactListItem(contact, dialogRef));
   });
 }
+
 
 /**
  * Creates a single list item for a contact in the dropdown.
@@ -234,6 +219,7 @@ function createContactListItem(contact, dialogRef) {
   return li;
 }
 
+
 /**
  * Toggles the checkbox icon visibility on a rendered contact list item.
  *
@@ -245,6 +231,7 @@ function applyCheckboxState(li, isSelected) {
   li.querySelector('.checkbox-unchecked').classList.add('d-none');
   li.querySelector('.checkbox-checked').classList.remove('d-none');
 }
+
 
 /**
  * Handles a click on a contact item: toggles selection and re-renders the UI.
@@ -262,6 +249,7 @@ function onContactItemClick(e, contact, fullName, isSelected, dialogRef) {
   updateAvatarsContainer(dialogRef);
 }
 
+
 /**
  * Checks if a specific contact is currently selected.
  *
@@ -274,6 +262,7 @@ function isContactSelected(contact, fullName) {
     (c) => (c.id && c.id === contact.id) || (typeof c === 'string' && c === fullName),
   );
 }
+
 
 /**
  * Adds or removes a contact from the selected contacts array.
@@ -292,6 +281,7 @@ function toggleContactSelection(contact, fullName, isSelected) {
   }
 }
 
+
 /**
  * Updates the container showing the selected contact avatars.
  *
@@ -301,6 +291,7 @@ function updateAvatarsContainer(dialogRef) {
   const avatarsContainer = dialogRef.querySelector('#edit-assigned-avatars');
   if (avatarsContainer) avatarsContainer.innerHTML = renderAvatarsForEdit(editSelectedContacts);
 }
+
 
 /**
  * Binds the submit event to save the edited task data after manual validation.
@@ -319,6 +310,7 @@ function setupFormSubmit(dialogRef, task) {
   });
 }
 
+
 /**
  * Disables the save button to prevent double-submission during the Firestore call.
  *
@@ -328,6 +320,7 @@ function disableSaveButton(dialogRef) {
   const btn = dialogRef.querySelector('#btn-edit-save');
   if (btn) btn.disabled = true;
 }
+
 
 /**
  * Runs manual validation on the edit form. Title is required.
@@ -348,6 +341,7 @@ function validateEditForm(dialogRef) {
   return true;
 }
 
+
 /**
  * Reads the three date fields and returns the DD/MM/YYYY string written to Firestore.
  *
@@ -360,6 +354,7 @@ function readDateFromForm(dialogRef) {
   const y = dialogRef.querySelector('#edit-date-year').value;
   return `${d}/${m}/${y}`;
 }
+
 
 /**
  * Constructs the updated task object and saves it to the backend.
@@ -380,6 +375,7 @@ async function performTaskUpdate(dialogRef, task) {
   await updateTask(currentEditTaskId, updatedTask);
   finalizeTaskUpdate();
 }
+
 
 /**
  * Closes the modal and re-renders the board after a successful update.
