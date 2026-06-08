@@ -5,55 +5,74 @@ import { saveContact } from './backend-contacts.js';
  */
 import { saveUser } from './backend-users.js';
 import { findUserByEmail } from './backend-users.js';
+import { validateSignupForm, showSignupEmailError, clearSignupFieldError } from './signup-validation.js';
 
 
 /** * DOM Elements */
 const form = document.getElementById("signup-form");
 const privacyCheckbox = document.getElementById("accept-privacy");
 const signupBtn = document.getElementById("signup-btn");
-const signupError = document.getElementById("signup-error");
 const togglePassword = document.getElementById("toggle-signup-password");
 const toggleConfirm = document.getElementById("toggle-confirm-password");
+const nameInput = document.getElementById("signup-name");
+const emailInput = document.getElementById("signup-email");
 const passwordInput = document.getElementById("signup-password");
 const confirmInput = document.getElementById("signup-confirm-password");
+const signupInputs = [nameInput, emailInput, passwordInput, confirmInput];
 
 
 /**
  * Handles the signup form submission.
- * Validates inputs, saves user to Firestore and shows success toast.
+ * Validates inputs, checks for duplicates, creates the account and shows feedback.
  * @param {Event} e - The form submit event.
  */
 async function handleSignup(e) {
     e.preventDefault();
-    const name = document.getElementById("signup-name").value.trim();
-    const email = document.getElementById("signup-email").value.trim();
-    const password = passwordInput.value.trim();
-    const confirmPassword = confirmInput.value.trim();
-    if (!validatePasswords(password, confirmPassword)) return;
-    const existingUser = await findUserByEmail(email);
-    if (existingUser) {
-        signupError.textContent = "This email is already registered.";
+    if (!validateSignupForm()) return;
+    signupBtn.disabled = true;
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    if (await findUserByEmail(email)) {
+        showSignupEmailError("This email is already registered.");
+        signupBtn.disabled = false;
         return;
     }
+    await createAccount(name, email, passwordInput.value.trim());
+}
+
+
+/**
+ * Creates the user and a matching contact, then shows the success toast.
+ * @param {string} name - The full name of the user.
+ * @param {string} email - The email address of the user.
+ * @param {string} password - The chosen password.
+ */
+async function createAccount(name, email, password) {
     await saveUser({ name, email, password });
-    await saveContact({ name: name, email: email, phone: "" });
+    await saveContact({ name, email, phone: "" });
     showSuccessToast();
 }
 
 
 /**
- * Validates that both password fields match.
- * @param {string} password - The entered password.
- * @param {string} confirmPassword - The confirmation password.
- * @returns {boolean} True if passwords match, false otherwise.
+ * Enables the signup button only when all fields are filled and the privacy policy is accepted.
  */
-function validatePasswords(password, confirmPassword) {
-    if (password !== confirmPassword) {
-        signupError.textContent = "Your passwords don't match. Please try again.";
-        return false;
-    }
-    signupError.textContent = "";
-    return true;
+function updateSignupButtonState() {
+    const allFilled = signupInputs.every((input) => input.value.trim() !== "");
+    signupBtn.disabled = !(allFilled && privacyCheckbox.checked);
+}
+
+
+/**
+ * Attaches input listeners that clear field errors and refresh the button state.
+ */
+function setupSignupInputListeners() {
+    signupInputs.forEach((input) => {
+        input.addEventListener("input", () => {
+            clearSignupFieldError(input);
+            updateSignupButtonState();
+        });
+    });
 }
 
 
@@ -81,33 +100,9 @@ function toggleVisibility(input, icon) {
 }
 
 
-/** * Initializes the signup page by setting up event listeners and managing the state of the signup button. */
-document.addEventListener("DOMContentLoaded", () => {
-    signupBtn.disabled = !privacyCheckbox.checked;
-});
-
-
-/** * Sets up event listeners for the signup form, privacy checkbox, and password visibility toggles. */
-privacyCheckbox.addEventListener("change", () => {
-    signupBtn.disabled = !privacyCheckbox.checked;
-});
-
-
-/** * Sets up the event listener for the signup form submission. */
+privacyCheckbox.addEventListener("change", updateSignupButtonState);
 togglePassword.addEventListener("click", () => toggleVisibility(passwordInput, togglePassword));
-
-
-/** * Sets up the event listener for the confirm password visibility toggle. */
 toggleConfirm.addEventListener("click", () => toggleVisibility(confirmInput, toggleConfirm));
-
-
-/**
- * Initializes the signup page by setting up event listeners and managing the state of the signup button.
- */
-document.addEventListener("DOMContentLoaded", () => {
-    signupBtn.disabled = !privacyCheckbox.checked;
-});
-
-
-/** Sets up the event listener for the signup form submission. */
 form.addEventListener("submit", handleSignup);
+setupSignupInputListeners();
+updateSignupButtonState();

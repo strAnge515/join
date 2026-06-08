@@ -16,29 +16,40 @@
     </aside>
     <div class="wrapper">
         <main>
-            <form id="signup-form">
+            <form id="signup-form" novalidate>
                 <a href="../index.html" class="back-arrow">&#8592;</a>
                 <h1>Sign up</h1>
                 <div class="seperator"></div>
                 <div class="input">
-                    <div class="input-field-wrapper">
-                        <input type="text" id="signup-name" placeholder="Name">
-                        <img src="../assets/img/contacts/person.svg" alt="" class="input-icon">
+                    <div class="signup-field">
+                        <div class="input-field-wrapper">
+                            <input type="text" id="signup-name" placeholder="Name">
+                            <img src="../assets/img/contacts/person.svg" alt="" class="input-icon">
+                        </div>
+                        <small class="signup-field-error" id="signup-name-error"></small>
                     </div>
-                    <div class="input-field-wrapper">
-                        <input type="email" id="signup-email" placeholder="Email">
-                        <img src="../assets/img/contacts/mail.svg" alt="" class="input-icon">
+                    <div class="signup-field">
+                        <div class="input-field-wrapper">
+                            <input type="email" id="signup-email" placeholder="Email">
+                            <img src="../assets/img/contacts/mail.svg" alt="" class="input-icon">
+                        </div>
+                        <small class="signup-field-error" id="signup-email-error"></small>
                     </div>
-                    <div class="input-field-wrapper">
-                        <input type="password" id="signup-password" placeholder="Password">
-                        <img src="../assets/img/lock.svg" alt="" class="input-icon input-icon--toggle" id="toggle-signup-password">
+                    <div class="signup-field">
+                        <div class="input-field-wrapper">
+                            <input type="password" id="signup-password" placeholder="Password">
+                            <img src="../assets/img/lock.svg" alt="" class="input-icon input-icon--toggle" id="toggle-signup-password">
+                        </div>
+                        <small class="signup-field-error" id="signup-password-error"></small>
                     </div>
-                    <div class="input-field-wrapper">
-                        <input type="password" id="signup-confirm-password" placeholder="Confirm Password">
-                        <img src="../assets/img/lock.svg" alt="" class="input-icon input-icon--toggle" id="toggle-confirm-password">
+                    <div class="signup-field">
+                        <div class="input-field-wrapper">
+                            <input type="password" id="signup-confirm-password" placeholder="Confirm Password">
+                            <img src="../assets/img/lock.svg" alt="" class="input-icon input-icon--toggle" id="toggle-confirm-password">
+                        </div>
+                        <small class="signup-field-error" id="signup-confirm-error"></small>
                     </div>
                 </div>
-                <p class="error-message" id="signup-error"></p>
                 <div class="privacy-policy-wrapper">
                     <input type="checkbox" id="accept-privacy">
                     <label for="accept-privacy">I accept the <a href="./privacy_policy.html" class="privacy-link">Privacy policy</a></label>

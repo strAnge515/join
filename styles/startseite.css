@@ -133,6 +133,25 @@ h1 {
     width: 100%;
 }
 
+.signup-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.signup-field-error {
+    color: var(--color-error);
+    font-size: 13px;
+}
+
+.signup-field-error:empty {
+    display: none;
+}
+
+.input-field-wrapper input.input-error {
+    border-color: var(--color-error);
+}
+
 .login {
     display: flex;
     gap: 16px;

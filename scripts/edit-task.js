@@ -3,6 +3,7 @@ import { loadAndPrepareContacts } from './contacts-render.js';
 import { updateTask } from './backend-tasks.js';
 import { getInitials } from './board-utils.js';
 import { initSubtasks, getEditedSubtasks, setupSubtaskUI } from './edit-task-subtasks.js';
+import { readCurrentUser, sortCurrentUserFirst, getFilteredContacts, markCurrentUserLabel, setupAssignedSearch } from './edit-task-contacts.js';
 
 
 let currentEditTaskId = null;
@@ -10,6 +11,7 @@ let currentPrio = 'medium';
 let editSelectedContacts = [];
 let allContacts = [];
 let outsideClickHandler = null;
+let currentUserData = null;
 
 
 /**
@@ -123,13 +125,25 @@ function setupPriorityButtons(dialogRef) {
 
 
 /**
+ * Loads the contacts and moves the logged-in user to the top of the list.
+ *
+ * @returns {Promise<Array<Object>>} The prepared, current-user-first contacts.
+ */
+async function loadEditContacts() {
+  const contacts = await loadAndPrepareContacts();
+  currentUserData = readCurrentUser();
+  return sortCurrentUserFirst(contacts, currentUserData);
+}
+
+
+/**
  * Initializes the contacts dropdown and loads contact data.
  *
  * @param {HTMLElement} dialogRef - The reference to the modal dialog.
  */
 async function setupContactsDropdown(dialogRef) {
   try {
-    allContacts = await loadAndPrepareContacts();
+    allContacts = await loadEditContacts();
   } catch (e) {
     console.error('Fehler beim Laden der Kontakte:', e);
   }
@@ -138,6 +152,7 @@ async function setupContactsDropdown(dialogRef) {
   toggleBtn.addEventListener('click', (e) => toggleDropdownVisibility(e, dialogRef));
   outsideClickHandler = (e) => handleOutsideClick(e, dialogRef);
   document.addEventListener('click', outsideClickHandler);
+  setupAssignedSearch(dialogRef, renderEditContactsDropdown);
   updateAvatarsContainer(dialogRef);
 }
 
@@ -185,8 +200,9 @@ function handleOutsideClick(e, dialogRef) {
 function renderEditContactsDropdown(dialogRef) {
   const optionsContainer = dialogRef.querySelector('#edit-assigned-options');
   if (!optionsContainer) return;
+  const term = dialogRef.querySelector('#edit-assigned-input').value;
   optionsContainer.innerHTML = '';
-  allContacts.forEach((contact) => {
+  getFilteredContacts(allContacts, term).forEach((contact) => {
     optionsContainer.appendChild(createContactListItem(contact, dialogRef));
   });
 }
@@ -205,6 +221,7 @@ function createContactListItem(contact, dialogRef) {
   const li = document.createElement('li');
   li.className = `assigned-option ${isSelected ? 'selected' : ''}`;
   li.innerHTML = getDropdownTemplate(contact, getInitials(fullName));
+  markCurrentUserLabel(li, contact, currentUserData);
   applyCheckboxState(li, isSelected);
   li.addEventListener('click', (e) => onContactItemClick(e, contact, fullName, isSelected, dialogRef));
   return li;
