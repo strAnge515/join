@@ -49,25 +49,35 @@ export async function renderAssignedDropdown() {
   });
 }
 
+/**
+ * Generates a dropdown list item for the currently logged-in user ("You").
+ * @param {Object} currentLoggedUser - The logged-in user object from Firebase.
+ * @returns {HTMLElement} The list item element for the logged-in user.
+ */
 function generateYouAvatar(currentLoggedUser) {
   const youContact = loggedUser(currentLoggedUser);
   const youInitials = youContact.firstName[0] + (youContact.lastName ? youContact.lastName[0] : '');
-   const currentLoggedUserAvatar = document.createElement('li');
+  const currentLoggedUserAvatar = document.createElement('li');
   currentLoggedUserAvatar.className = 'assigned-option';
   currentLoggedUserAvatar.innerHTML = getDropdownTemplate(youContact, youInitials, true);
   currentLoggedUserAvatar.addEventListener('click', () => {
-    toggleContact(currentLoggedUserAvatar, youContact)
-  })
+    toggleContact(currentLoggedUserAvatar, youContact);
+  });
   return currentLoggedUserAvatar;
 }
 
+/**
+ * Extracts and structures the logged-in user's data for use in the dropdown.
+ * @param {Object} currentLoggedUser - The logged-in user object from Firebase.
+ * @returns {{firstName: string, lastName: string, id: string, color: string, email: string}}
+ */
 function loggedUser(currentLoggedUser) {
   const currentLoggedUserName = currentLoggedUser.name;
   let firstName = currentLoggedUserName.split(' ')[0];
   let lastName = currentLoggedUserName.split(' ')[1] || "";
   let id = currentLoggedUser.id;
   let color = getAvatarColor(0);
-  let email = currentLoggedUser.email
+  let email = currentLoggedUser.email;
   return { firstName, lastName, id, color, email };
 }
 

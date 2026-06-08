@@ -37,21 +37,32 @@ function activateEditMode(li) {
   li.innerHTML = getEditTemplate(subtaskText);
   li.classList.add('is-editing');
   li.querySelector('.subtask-edit-value').focus();
-  li.querySelector('.edit-delete-btn').addEventListener('click', () =>
-    li.remove(),
-  );
+  li.querySelector('.edit-delete-btn').addEventListener('click', () => li.remove());
+  eventListenerConfirmButton(li, subtaskText);
+  editmodeConfirmListener(li);
+  exitEditModePerClick(li, subtaskText);
+}
+
+javascript/**
+ * Saves the edited subtask when the confirm button is clicked.
+ * @param {HTMLElement} li - The subtask list item in edit mode.
+ * @param {string} subtaskText - The current subtask text.
+ */
+function eventListenerConfirmButton(li, subtaskText) {
   li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
     subtaskText = li.querySelector('.subtask-edit-value').value;
     li.innerHTML = getSubtaskTemplate(subtaskText);
     li.classList.remove('is-editing');
     addSubtaskEventListeners(li);
   });
-  editmodeConfirmListener(li);
-  exitEditModePerClick(li, subtaskText);
 }
 
+/**
+ * Exits edit mode when the user clicks outside the subtask list item.
+ * @param {HTMLElement} li - The subtask list item in edit mode.
+ * @param {string} subtaskText - The current subtask text.
+ */
 function exitEditModePerClick(li, subtaskText) {
-  console.log('exitEditModePerClick called');
   document.addEventListener('click', (event) => {
     if (!li.contains(event.target) && li.classList.contains('is-editing')) {
       subtaskText = li.querySelector('.subtask-edit-value').value;
@@ -69,15 +80,12 @@ function exitEditModePerClick(li, subtaskText) {
  * @returns {void}
  */
 function editmodeConfirmListener(li) {
-  li.querySelector('.subtask-edit-value').addEventListener(
-    'keydown',
-    (event) => {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        li.querySelector('.edit-confirm-btn').click();
-      }
-    },
-  );
+  li.querySelector('.subtask-edit-value').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      li.querySelector('.edit-confirm-btn').click();
+    }
+  });
 }
 
 /**
