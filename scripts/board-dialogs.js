@@ -1,18 +1,35 @@
 import { clearTask } from './tasks.js';
-import { addEventListenersToCloseDialog, closeDialog } from './contacts-dialogs.js';
+import {
+  addEventListenersToCloseDialog,
+  closeDialog,
+} from './contacts-dialogs.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
-import { getInitials, getCategoryBadge, getAvatarColor, getSubtaskInfo } from './board-utils.js';
+import {
+  getInitials,
+  getCategoryBadge,
+  getAvatarColor,
+  getSubtaskInfo,
+} from './board-utils.js';
 import { updateTask, deleteTask } from './backend-tasks.js';
-import { getProgressBarHTML, getTaskCardHTML, getEmptySubtaskHTML, getSubtaskItemHTML, getAssignedUsersHTML, getConfirmDialogHTML } from './board-template.js';
+import {
+  getProgressBarHTML,
+  getTaskCardHTML,
+  getEmptySubtaskHTML,
+  getSubtaskItemHTML,
+  getAssignedUsersHTML,
+  getConfirmDialogHTML,
+} from './board-template.js';
 import { renderBoard } from './board.js';
-import {splitDateString} from './tasks-date.js';
+import { splitDateString } from './tasks-date.js';
 
 /**
  * Attaches a click event listener to the "Add Task" button to open the add task dialog.
  */
 export function addEventListenersToAddTaskBtn() {
   const dialogRef = document.getElementById('addTaskDialog');
-  const addTaskButtons = document.querySelectorAll('#addTaskBtn, .board-column__add-btn');
+  const addTaskButtons = document.querySelectorAll(
+    '#addTaskBtn, .board-column__add-btn',
+  );
   if (!dialogRef) return;
   addTaskButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -152,9 +169,15 @@ function fillTaskCardInitials(task) {
       userName = `${user.firstName} ${user.lastName}`;
     } else if (user.name) {
       userName = user.name;
+    } else if (user.id === 'guest') {
+      userName = 'Guest User';
     }
 
-    assignedListRef.innerHTML += getAssignedUsersHTML(getAvatarColor(i), getInitials(userName), userName);
+    assignedListRef.innerHTML += getAssignedUsersHTML(
+      getAvatarColor(i),
+      getInitials(userName),
+      userName,
+    );
   }
 }
 
@@ -169,7 +192,11 @@ function fillTaskCardSubtasks(task) {
     return;
   }
   for (let i = 0; i < task.subtasks.length; i++) {
-    subtaskListRef.innerHTML += getSubtaskItemHTML(task.subtasks[i], task.id, i);
+    subtaskListRef.innerHTML += getSubtaskItemHTML(
+      task.subtasks[i],
+      task.id,
+      i,
+    );
   }
 }
 
@@ -183,7 +210,8 @@ function addTaskCardEventListeners(task) {
   const dialogRef = document.getElementById('taskModal');
   const deleteBtn = document.getElementById('deleteTaskBtn');
   if (closeBtnRef) closeBtnRef.addEventListener('click', closeModal);
-  if (deleteBtn) deleteBtn.addEventListener('click', () => handleModalDelete(task));
+  if (deleteBtn)
+    deleteBtn.addEventListener('click', () => handleModalDelete(task));
   dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
     checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
   });
@@ -197,7 +225,10 @@ function addTaskCardEventListeners(task) {
 async function handleSubtaskToggle(e, task) {
   const index = parseInt(e.target.dataset.index);
   const updatedSubtasks = [...task.subtasks];
-  updatedSubtasks[index] = { ...updatedSubtasks[index], state: e.target.checked };
+  updatedSubtasks[index] = {
+    ...updatedSubtasks[index],
+    state: e.target.checked,
+  };
   task.subtasks = updatedSubtasks;
   await saveSubtaskUpdate(task, updatedSubtasks);
 }
@@ -224,8 +255,12 @@ export function handleModalDelete(task) {
   dialog.innerHTML = getConfirmDialogHTML(task.title || 'Untitled task');
   document.body.appendChild(dialog);
   dialog.showModal();
-  dialog.querySelector('#confirmCancel').addEventListener('click', () => dialog.close());
-  dialog.querySelector('#confirmDelete').addEventListener('click', () => executeTaskDelete(dialog, task));
+  dialog
+    .querySelector('#confirmCancel')
+    .addEventListener('click', () => dialog.close());
+  dialog
+    .querySelector('#confirmDelete')
+    .addEventListener('click', () => executeTaskDelete(dialog, task));
 }
 
 /**

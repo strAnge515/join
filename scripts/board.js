@@ -1,9 +1,17 @@
 import { loadTasks, deleteTask, updateTask } from './backend-tasks.js';
-import { getCategoryBadge, getSubtaskInfo} from './board-utils.js';
+import { getCategoryBadge, getSubtaskInfo } from './board-utils.js';
 import { initDragDrop, refreshCardListeners } from './board-drag-drop.js';
-import { addEventListenersToAddTaskBtn, addDialogCloseListeners, openTaskCard } from './board-dialogs.js';
+import {
+  addEventListenersToAddTaskBtn,
+  addDialogCloseListeners,
+  openTaskCard,
+} from './board-dialogs.js';
 import { addEventListenersToCloseDialog } from './contacts-dialogs.js';
-import { getTaskCardInnerHTML, getProgressBarHTML, getConfirmDialogHTML } from './board-template.js';
+import {
+  getTaskCardInnerHTML,
+  getProgressBarHTML,
+  getConfirmDialogHTML,
+} from './board-template.js';
 
 const columnTodo = document.getElementById('column-todo');
 const columnInProgress = document.getElementById('column-inprogress');
@@ -100,7 +108,11 @@ function handleSearch() {
     displayTasks(allTasks);
     return;
   }
-  const filtered = allTasks.filter((task) => task.title?.toLowerCase().includes(query) || task.description?.toLowerCase().includes(query));
+  const filtered = allTasks.filter(
+    (task) =>
+      task.title?.toLowerCase().includes(query) ||
+      task.description?.toLowerCase().includes(query),
+  );
   displayTasks(filtered);
   if (filtered.length === 0) {
     clearBoard();
@@ -135,6 +147,7 @@ function getAssignedUserNames(assignedTo) {
   return assignedTo.map((u) => {
     if (typeof u === 'string') return u;
     if (u.firstName && u.lastName) return `${u.firstName} ${u.lastName}`;
+    if (u.id === 'guest') return 'Guest User';
     return u.name || 'Unknown';
   });
 }
@@ -144,13 +157,17 @@ function getAssignedUserNames(assignedTo) {
  * @param {HTMLElement} card - The task card element.
  */
 function initMobileSwapButton(card) {
-  card.querySelector('.mobile-swap-button').addEventListener('click', (event) => {
-    event.stopPropagation();
-    const overlay = card.querySelector('.mobile-move-buttons');
-    const isOpen = !overlay.classList.contains('d-none');
-    document.querySelectorAll('.mobile-move-buttons').forEach((o) => o.classList.add('d-none'));
-    overlay.classList.toggle('d-none', isOpen);
-  });
+  card
+    .querySelector('.mobile-swap-button')
+    .addEventListener('click', (event) => {
+      event.stopPropagation();
+      const overlay = card.querySelector('.mobile-move-buttons');
+      const isOpen = !overlay.classList.contains('d-none');
+      document
+        .querySelectorAll('.mobile-move-buttons')
+        .forEach((o) => o.classList.add('d-none'));
+      overlay.classList.toggle('d-none', isOpen);
+    });
 }
 
 /**
@@ -181,7 +198,13 @@ function createTaskCard(task) {
   const assignedUsers = getAssignedUserNames(task.assigned_to);
   const currentStatus = getNeighborStatus(task);
   const categoryBadge = getCategoryBadge(task.category);
-  card.innerHTML = getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedUsers, currentStatus);
+  card.innerHTML = getTaskCardInnerHTML(
+    categoryBadge,
+    task,
+    subtaskInfo,
+    assignedUsers,
+    currentStatus,
+  );
   initMobileSwapButton(card);
   initMobileMoveButtons(card, task.id);
   return card;
@@ -197,7 +220,8 @@ function getNeighborStatus(task) {
   const currentIndex = possibleStatus.indexOf(task.status);
   const neighbors = [];
   if (currentIndex - 1 >= 0) neighbors.push(possibleStatus[currentIndex - 1]);
-  if (currentIndex + 1 < possibleStatus.length) neighbors.push(possibleStatus[currentIndex + 1]);
+  if (currentIndex + 1 < possibleStatus.length)
+    neighbors.push(possibleStatus[currentIndex + 1]);
   return neighbors;
 }
 
