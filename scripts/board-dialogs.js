@@ -214,8 +214,8 @@ function addTaskCardEventListeners(task) {
     deleteBtn.addEventListener('click', () => handleModalDelete(task));
   dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
     checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
+    addEventListenersToCloseDialog(dialogRef);
   });
-  addEventListenersToCloseDialog(dialogRef);
 }
 
 /**
