@@ -43,7 +43,7 @@ function activateEditMode(li) {
   exitEditModePerClick(li, subtaskText);
 }
 
-javascript/**
+/**
  * Saves the edited subtask when the confirm button is clicked.
  * @param {HTMLElement} li - The subtask list item in edit mode.
  * @param {string} subtaskText - The current subtask text.

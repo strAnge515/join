@@ -64,7 +64,7 @@ export function getDropdownTemplate(contact, initials, isYou) {
  * @param {string} initials - The initials displayed inside the avatar.
  * @returns {string} HTML markup for a single avatar element.
  */
-function renderAvatarsForEditTemplate(color, initials) {
+export function renderAvatarsForEditTemplate(color, initials) {
   return `<div class="avatar avatar--stacked" style="background:${color}">${initials}</div>`;
 }
 

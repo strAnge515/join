@@ -1,6 +1,6 @@
 import { loadAndPrepareContacts } from './contacts-render.js';
-import { getDropdownTemplate } from './tasks-template.js';
-import { getAvatarColor } from './board-utils.js';
+import { getDropdownTemplate, renderAvatarsForEditTemplate } from './tasks-template.js';
+import { getAvatarColor, escapeHtml } from './board-utils.js';
 
 export const assignedOptions = document.getElementById('assigned-options');
 export const assignedToggle = document.getElementById('assigned-toggle');
