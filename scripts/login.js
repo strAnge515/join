@@ -22,15 +22,34 @@ async function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById("login-email").value.trim();
     const password = passwordInput.value.trim();
+    if (!validateLoginInput(email, password)) return;
     const user = await findUserByEmail(email);
-    console.log(user);
-    
     if (!user || user.password !== password) {
         showLoginError();
         return;
     }
     sessionStorage.setItem("currentUser", JSON.stringify({ name: user.name, email: user.email, id: user.id }));
     window.location.href = "./pages/summary.html";
+}
+
+
+/**
+ * Validates the login inputs before any backend call.
+ * @param {string} email - The trimmed email value.
+ * @param {string} password - The trimmed password value.
+ * @returns {boolean} True when both fields are filled and the email is valid.
+ */
+function validateLoginInput(email, password) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email === "" || password === "") {
+        loginError.textContent = "Please fill in all fields.";
+        return false;
+    }
+    if (!emailRegex.test(email)) {
+        loginError.textContent = "Please enter a valid email address.";
+        return false;
+    }
+    return true;
 }
 
 

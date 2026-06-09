@@ -133,6 +133,25 @@ h1 {
   width: 100%;
 }
 
+.signup-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.signup-field-error {
+    color: var(--color-error);
+    font-size: 13px;
+}
+
+.signup-field-error:empty {
+    display: none;
+}
+
+.input-field-wrapper input.input-error {
+    border-color: var(--color-error);
+}
+
 .login {
   display: flex;
   gap: 16px;
@@ -337,16 +356,14 @@ h1 {
   }
 
   .wrapper {
-    min-height: calc(100vh - 96px);
+    min-height: auto;
   }
 
   header {
-    position: absolute;
-    bottom: 84px;
-    left: 0;
-    right: 0;
+    position: static;
     justify-content: center;
-    margin: 0;
+    margin: 56px 0 32px;
+    gap: 20px;
   }
 
   header p {
@@ -359,8 +376,9 @@ h1 {
     left: auto;
     transform: none;
     width: calc(100% - 32px);
+    max-width: 344px;
     min-height: auto;
-    margin: 202px auto 0;
+    margin: 80px auto 0;
     padding: 32px 16px;
     gap: 18px;
   }
@@ -387,8 +405,10 @@ h1 {
   }
 
   .login-footer {
-    bottom: 24px;
-    gap: 32px;
+    position: static;
+    transform: none;
+    justify-content: center;
+    margin-bottom: 24px;
   }
 
   .back-arrow {
@@ -421,30 +441,3 @@ h1 {
   }
 }
 
-@media (max-width: 360px) {
-  form {
-    width: calc(100% - 24px);
-    padding: 28px 12px;
-  }
-
-  h1 {
-    font-size: 42px;
-  }
-
-  .input-field-wrapper input {
-    height: 46px;
-    font-size: 15px;
-  }
-
-  header {
-    gap: 12px;
-  }
-
-  .sign-up-button {
-    padding: 0 18px;
-  }
-
-  .login-footer {
-    gap: 24px;
-  }
-}

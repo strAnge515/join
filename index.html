@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="./styles/startseite.css">
     <script type="module" src="./scripts/login.js" defer></script>
 </head>
+
 <body>
     <aside>
         <div class="aside-logo">
@@ -16,22 +18,19 @@
         </div>
     </aside>
     <div class="wrapper">
-        <header>
-            <p>Not a Join user?</p>
-            <button id="sign-up-button" class="sign-up-button">Sign up</button>
-        </header>
         <main>
-            <form id="login-form">
+            <form id="login-form" novalidate>
                 <h1>Log in</h1>
                 <div class="seperator"></div>
                 <div class="input">
                     <div class="input-field-wrapper">
-                        <input type="email" id="login-email" placeholder="Email">
+                        <input type="text" id="login-email" placeholder="Email">
                         <img src="./assets/img/contacts/mail.svg" alt="" class="input-icon">
                     </div>
                     <div class="input-field-wrapper">
                         <input type="password" id="login-password" placeholder="Password">
-                        <img src="./assets/img/lock.svg" alt="" class="input-icon input-icon--toggle" id="toggle-password">
+                        <img src="./assets/img/lock.svg" alt="" class="input-icon input-icon--toggle"
+                            id="toggle-password">
                     </div>
                 </div>
                 <p class="error-message" id="login-error"></p>
@@ -41,10 +40,15 @@
                 </div>
             </form>
         </main>
+        <header>
+            <p>Not a Join user?</p>
+            <button id="sign-up-button" class="sign-up-button">Sign up</button>
+        </header>
         <footer class="login-footer">
             <a href="./pages/privacy_policy.html">Privacy Policy</a>
             <a href="./pages/legal_notice.html">Legal notice</a>
         </footer>
     </div>
 </body>
+
 </html>

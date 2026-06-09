@@ -64,6 +64,11 @@ export async function deleteContact(contactId) {
   }
 }
 
+/**
+ * Updates a specific contact in the Firestore database with new data.
+ * @param {string} contactId - The unique Firebase ID of the contact.
+ * @param {Object} updatedData - An object containing the updated contact data (name, email, phone).
+ */
 export async function updateContact(contactId, updatedData) {
   try {
     const contactRef = doc(db, 'contacts', contactId);
