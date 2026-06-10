@@ -4,15 +4,23 @@ import {
   closeDialog,
 } from './contacts-dialogs.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
-import { closeModal, handleModalDelete } from './board.js';
 import {
   getInitials,
   getCategoryBadge,
   getAvatarColor,
   getSubtaskInfo,
-  getProgressBarHTML,
 } from './board-utils.js';
-import { updateTask } from './backend-tasks.js';
+import { updateTask, deleteTask } from './backend-tasks.js';
+import {
+  getProgressBarHTML,
+  getTaskCardHTML,
+  getEmptySubtaskHTML,
+  getSubtaskItemHTML,
+  getAssignedUsersHTML,
+  getConfirmDialogHTML,
+} from './board-template.js';
+import { renderBoard } from './board.js';
+import { splitDateString } from './tasks-date.js';
 
 /**
  * Attaches a click event listener to the "Add Task" button to open the add task dialog.
@@ -29,6 +37,32 @@ export function addEventListenersToAddTaskBtn() {
       openAddTaskDialog(dialogRef);
     });
   });
+}
+
+/**
+ * Updates the progress bar element on a task card after a subtask state change.
+ * @param {HTMLElement} cardRef - The task card element.
+ * @param {Array} updatedSubtasks - The updated subtasks array.
+ */
+function updateCardProgressBar(cardRef, updatedSubtasks) {
+  const subtaskInfo = getSubtaskInfo(updatedSubtasks);
+  const progressEl = cardRef.querySelector('.task-card__progress');
+  if (progressEl) progressEl.outerHTML = getProgressBarHTML(subtaskInfo);
+}
+
+/**
+ * Saves the updated subtasks array to Firebase and refreshes the progress bar on the task card.
+ * @param {Object} task - The parent task object.
+ * @param {Array} updatedSubtasks - The updated subtasks array.
+ */
+async function saveSubtaskUpdate(task, updatedSubtasks) {
+  try {
+    await updateTask(task.id, { subtasks: updatedSubtasks });
+    const cardRef = document.querySelector(`.task-card[data-id="${task.id}"]`);
+    if (cardRef) updateCardProgressBar(cardRef, updatedSubtasks);
+  } catch (error) {
+    console.error('Fehler beim Speichern des Subtasks:', error);
+  }
 }
 
 /**
@@ -109,31 +143,49 @@ export function openTaskCard(task) {
 }
 
 /**
+ * Get the date from the card
+ * @returns {string} The foramted string for the card
+ */
+export function dateValidationForBoard(task) {
+  const { day, month, year } = splitDateString(task.date);
+  return `${day}/${month}/${year}`;
+}
+
+/**
  * Fills the assigned users list inside the open task modal.
  * @param {Object} task - The task data object containing assigned_to.
  */
 function fillTaskCardInitials(task) {
   const assignedListRef = document.getElementById('assignedList');
   if (!task.assigned_to || task.assigned_to.length === 0) return;
-
   for (let i = 0; i < task.assigned_to.length; i++) {
     const user = task.assigned_to[i];
-
-    let userName = 'Unknown';
-    if (typeof user === 'string') {
-      userName = user;
-    } else if (user.firstName && user.lastName) {
-      userName = `${user.firstName} ${user.lastName}`;
-    } else if (user.name) {
-      userName = user.name;
-    }
-
+    const userName = choseUserName(user);
     assignedListRef.innerHTML += getAssignedUsersHTML(
       getAvatarColor(i),
       getInitials(userName),
       userName,
     );
   }
+}
+
+/**
+ * Determines the username based on the user object.
+ * @param {*} user - The user object or string.
+ * @returns {string} The determined username.
+ */
+function choseUserName(user) {
+  let userName = 'Unknown';
+  if (typeof user === 'string') {
+    userName = user;
+  } else if (user.firstName && user.lastName) {
+    userName = `${user.firstName} ${user.lastName}`;
+  } else if (user.name) {
+    userName = user.name;
+  } else if (user.id === 'guest') {
+    userName = 'Guest User';
+  }
+  return userName;
 }
 
 /**
@@ -169,11 +221,6 @@ function addTaskCardEventListeners(task) {
     deleteBtn.addEventListener('click', () => handleModalDelete(task));
   dialogRef.querySelectorAll('.modal-subtask-checkbox').forEach((checkbox) => {
     checkbox.addEventListener('change', (e) => handleSubtaskToggle(e, task));
-    // if (dialogRef.dataset.outsideClickBound) return;
-    // dialogRef.dataset.outsideClickBound = 'true';
-    // dialogRef.addEventListener('click', (e) => {
-    //   if (e.target === dialogRef) closeModal();
-    // });
     addEventListenersToCloseDialog(dialogRef);
   });
 }
@@ -191,15 +238,51 @@ async function handleSubtaskToggle(e, task) {
     state: e.target.checked,
   };
   task.subtasks = updatedSubtasks;
+  await saveSubtaskUpdate(task, updatedSubtasks);
+}
+
+/**
+ * Closes the task detail modal, re-enables background scrolling and clears modal content.
+ */
+export function closeModal() {
+  const dialogRef = document.getElementById('taskModal');
+  if (!dialogRef) return;
+  document.body.style.overflow = '';
+  dialogRef.close();
+  dialogRef.innerHTML = '';
+}
+
+/**
+ * Shows a custom confirmation overlay before deleting a task from the modal.
+ * @param {Object} task - The task to delete.
+ */
+export function handleModalDelete(task) {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'confirm-overlay';
+  dialog.setAttribute('closedby', 'any');
+  dialog.innerHTML = getConfirmDialogHTML(task.title || 'Untitled task');
+  document.body.appendChild(dialog);
+  dialog.showModal();
+  dialog
+    .querySelector('#confirmCancel')
+    .addEventListener('click', () => dialog.close());
+  dialog
+    .querySelector('#confirmDelete')
+    .addEventListener('click', () => executeTaskDelete(dialog, task));
+}
+
+/**
+ * Executes task deletion and closes the modal after the overlay is removed.
+ * @param {HTMLElement} overlay - The confirm overlay element to remove.
+ * @param {Object} task - The task to delete.
+ */
+async function executeTaskDelete(overlay, task) {
+  overlay.remove();
   try {
-    await updateTask(task.id, { subtasks: updatedSubtasks });
-    const cardRef = document.querySelector(`.task-card[data-id="${task.id}"]`);
-    if (cardRef) {
-      const subtaskInfo = getSubtaskInfo(updatedSubtasks);
-      const progressEl = cardRef.querySelector('.task-card__progress');
-      if (progressEl) progressEl.outerHTML = getProgressBarHTML(subtaskInfo);
-    }
+    await deleteTask(task.id);
+    closeModal();
+    await renderBoard();
   } catch (error) {
-    console.error('Fehler beim Speichern des Subtasks:', error);
+    console.error('Fehler beim Löschen:', error);
   }
 }

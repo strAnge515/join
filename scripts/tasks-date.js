@@ -134,3 +134,44 @@ dateInputContainer.addEventListener('click', (event) => {
     event.target.focus();
   }
 });
+
+/**
+ * Splits a date string into day, month and year segments.
+ * Supports DD/MM/YYYY, DD.MM.YYYY and YYYY-MM-DD / DD-MM-YYYY input.
+ * Returns empty strings for any malformed input (wrong segment count,
+ * non-numeric parts) so corrupted Firestore values can't poison the form.
+ *
+ * @param {string} value - The raw date string from the database.
+ * @returns {{day: string, month: string, year: string}} The split date parts.
+ */
+export function splitDateString(value) {
+  const empty = { day: '', month: '', year: '' };
+  if (!value || typeof value !== 'string') return empty;
+  let parts;
+  if (value.includes('/')) parts = value.split('/');
+  else if (value.includes('.')) parts = value.split('.');
+  else if (value.includes('-')) parts = value.split('-');
+  else return empty;
+  if (parts.length !== 3 || !parts.every((p) => /^\d+$/.test(p))) return empty;
+  if (parts[0].length === 4) return { year: parts[0], month: parts[1], day: parts[2] };
+  return { day: parts[0], month: parts[1], year: parts[2] };
+}
+
+
+/**
+ * Parses a date string and pads the segments for use in the native date picker.
+ *
+ * @param {string} dateValue - The raw date string from the database.
+ * @returns {{day: string, month: string, year: string, formattedDate: string}}
+ *   Padded segments plus a YYYY-MM-DD string for <input type="date">.
+ */
+export function parseEditDate(dateValue) {
+  const { day, month, year } = splitDateString(dateValue);
+  if (!day || !month || !year) return { day, month, year, formattedDate: '' };
+  const dd = day.padStart(2, '0');
+  const mm = month.padStart(2, '0');
+  return { day: dd, month: mm, year, formattedDate: `${year}-${mm}-${dd}` };
+}
+
+
+

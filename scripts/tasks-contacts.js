@@ -1,12 +1,19 @@
 import { loadAndPrepareContacts } from './contacts-render.js';
-import { getDropdownTemplate } from './tasks-template.js';
-import { getAvatarColor } from './board-utils.js';
+import {
+  getDropdownTemplate,
+  renderAvatarsForEditTemplate,
+} from './tasks-template.js';
+import { getAvatarColor, escapeHtml, getInitials } from './board-utils.js';
 
 export const assignedOptions = document.getElementById('assigned-options');
 export const assignedToggle = document.getElementById('assigned-toggle');
-export const arrowDownAssigned = document.getElementById('arrow-down-assignet-to');
+export const arrowDownAssigned = document.getElementById(
+  'arrow-down-assignet-to',
+);
 export const arrowUpAssigned = document.getElementById('arrow-up-assigned-to');
-export const assignedPlaceholder = document.getElementById('assigned-placeholder');
+export const assignedPlaceholder = document.getElementById(
+  'assigned-placeholder',
+);
 export const assignedAvatars = document.getElementById('assigned-avatars');
 export let selectedContacts = [];
 
@@ -16,7 +23,9 @@ export let selectedContacts = [];
  * @returns {void}
  */
 export function filterContacts() {
-  let registeredPersons = Array.from(document.querySelectorAll('.assigned-option'));
+  let registeredPersons = Array.from(
+    document.querySelectorAll('.assigned-option'),
+  );
   let filterInput = assignedPlaceholder.value;
   for (let i = 0; i < registeredPersons.length; i++) {
     const person = registeredPersons[i];
@@ -49,25 +58,41 @@ export async function renderAssignedDropdown() {
   });
 }
 
+/**
+ * Generates a dropdown list item for the currently logged-in user ("You").
+ * @param {Object} currentLoggedUser - The logged-in user object from Firebase.
+ * @returns {HTMLElement} The list item element for the logged-in user.
+ */
 function generateYouAvatar(currentLoggedUser) {
   const youContact = loggedUser(currentLoggedUser);
-  const youInitials = youContact.firstName[0] + (youContact.lastName ? youContact.lastName[0] : '');
-   const currentLoggedUserAvatar = document.createElement('li');
+  const youInitials =
+    youContact.firstName[0] +
+    (youContact.lastName ? youContact.lastName[0] : '');
+  const currentLoggedUserAvatar = document.createElement('li');
   currentLoggedUserAvatar.className = 'assigned-option';
-  currentLoggedUserAvatar.innerHTML = getDropdownTemplate(youContact, youInitials, true);
+  currentLoggedUserAvatar.innerHTML = getDropdownTemplate(
+    youContact,
+    youInitials,
+    true,
+  );
   currentLoggedUserAvatar.addEventListener('click', () => {
-    toggleContact(currentLoggedUserAvatar, youContact)
-  })
+    toggleContact(currentLoggedUserAvatar, youContact);
+  });
   return currentLoggedUserAvatar;
 }
 
+/**
+ * Extracts and structures the logged-in user's data for use in the dropdown.
+ * @param {Object} currentLoggedUser - The logged-in user object from Firebase.
+ * @returns {{firstName: string, lastName: string, id: string, color: string, email: string}}
+ */
 function loggedUser(currentLoggedUser) {
   const currentLoggedUserName = currentLoggedUser.name;
   let firstName = currentLoggedUserName.split(' ')[0];
-  let lastName = currentLoggedUserName.split(' ')[1] || "";
+  let lastName = currentLoggedUserName.split(' ')[1] || '';
   let id = currentLoggedUser.id;
   let color = getAvatarColor(0);
-  let email = currentLoggedUser.email
+  let email = currentLoggedUser.email;
   return { firstName, lastName, id, color, email };
 }
 
@@ -82,7 +107,9 @@ function loggedUser(currentLoggedUser) {
 function toggleContact(li, contact) {
   const checkboxUnchecked = li.querySelector('.checkbox-unchecked');
   const checkboxChecked = li.querySelector('.checkbox-checked');
-  const already = selectedContacts.find((currentContact) => currentContact.id === contact.id);
+  const already = selectedContacts.find(
+    (currentContact) => currentContact.id === contact.id,
+  );
   if (already) {
     deselectContact(li, contact, checkboxUnchecked, checkboxChecked);
   } else {
@@ -117,7 +144,9 @@ function selectContact(li, contact, checkboxUnchecked, checkboxChecked) {
  * @returns {void}
  */
 function deselectContact(li, contact, checkboxUnchecked, checkboxChecked) {
-  selectedContacts = selectedContacts.filter((currentContact) => currentContact.id !== contact.id);
+  selectedContacts = selectedContacts.filter(
+    (currentContact) => currentContact.id !== contact.id,
+  );
   checkboxUnchecked.classList.remove('d-none');
   checkboxChecked.classList.add('d-none');
   li.classList.remove('selected');
@@ -130,7 +159,8 @@ function deselectContact(li, contact, checkboxUnchecked, checkboxChecked) {
  * @returns {HTMLDivElement} The avatar element.
  */
 function createAvatarElement(contact) {
-  const initials = contact.firstName[0] + (contact.lastName ? contact.lastName[0] : '');
+  const initials =
+    contact.firstName[0] + (contact.lastName ? contact.lastName[0] : '');
   const div = document.createElement('div');
   div.className = 'avatar';
   div.style.background = contact.color;
@@ -178,10 +208,10 @@ export function clearAssignedContacts() {
   assignedAvatars.innerHTML = '';
   assignedPlaceholder.value = '';
   document.querySelectorAll('.assigned-option').forEach((li) => {
-  li.classList.remove('selected', 'd-none');
-  li.querySelector('.checkbox-unchecked').classList.remove('d-none');
-  li.querySelector('.checkbox-checked').classList.add('d-none');
-});
+    li.classList.remove('selected', 'd-none');
+    li.querySelector('.checkbox-unchecked').classList.remove('d-none');
+    li.querySelector('.checkbox-checked').classList.add('d-none');
+  });
 }
 
 /**
@@ -192,4 +222,37 @@ export function clearAssignedContacts() {
  */
 export function getSelectedContacts() {
   return selectedContacts;
+}
+
+/**
+ * Returns the HTML string for the stacked avatars shown in the edit dialog.
+ * Visual styling lives in edit-task.css (.avatar--stacked).
+ *
+ * @param {Array} assignedTo - Array of assigned contacts.
+ * @returns {string} HTML markup for the avatar row.
+ */
+export function renderAvatarsForEdit(assignedTo) {
+  if (!Array.isArray(assignedTo)) return '';
+  return assignedTo
+    .map((user, i) => {
+      const initials = escapeHtml(getInitials(getUserDisplayName(user)));
+      const color = user.color || getAvatarColor(i);
+      return renderAvatarsForEditTemplate(color, initials);
+    })
+    .join('');
+}
+
+/**
+ * Resolves the display name of an assigned user, supporting strings and
+ * contact-object shapes (firstName/lastName or name).
+ *
+ * @param {string|Object} user - The assigned user entry.
+ * @returns {string} The full display name.
+ */
+function getUserDisplayName(user) {
+  if (typeof user === 'string') return user;
+  if (user.firstName && user.lastName)
+    return `${user.firstName} ${user.lastName}`;
+  if (user.id === 'guest') return 'Guest User';
+  return user.name || 'Unknown';
 }

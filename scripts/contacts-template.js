@@ -1,8 +1,23 @@
-function getContactTemplate(contact, initials) {
-  let currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-  let isYou = currentUser.email && contact.email === currentUser.email;
-  let youBadge = isYou ? `<span class="you-badge">(You)</span>` : '';
+/**
+ * Returns the HTML markup for the "(You)" badge displayed next to the
+ * currently logged-in user's name.
+ *
+ * @returns {string} The HTML string for the user badge.
+ */
+function getYouBadgeTemplate() {
+  return `<span class="you-badge">(You)</span>`;
+}
 
+/**
+ * Generates the HTML markup for a contact entry, including avatar,
+ * name, email address, and an optional user badge.
+ *
+ * @param {object} contact - The contact whose information should be displayed.
+ * @param {string} initials - The contact's initials shown in the avatar.
+ * @param {string} youBadge - The HTML markup for the "(You)" badge, or an empty string.
+ * @returns {string} The HTML string representing the contact entry.
+ */
+function getContactTemplate(contact, initials, youBadge) {
   return `
     <div class="avatar" style="background:${contact.color}">
       ${initials}
@@ -14,11 +29,18 @@ function getContactTemplate(contact, initials) {
   `;
 }
 
-function getContactDetailTemplate(contact, initials, color) {
-  let currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-  let isYou = currentUser.email && contact.email === currentUser.email;
-  let youBadge = isYou ? `<span class="you-badge">(You)</span>` : '';
-
+/**
+ * Generates the HTML markup for the contact details view, including
+ * avatar, name, contact information, and edit/delete action buttons
+ * for both desktop and mobile layouts.
+ *
+ * @param {object} contact - The contact whose details should be displayed.
+ * @param {string} initials - The contact's initials shown in the avatar.
+ * @param {string} color - The background color used for the avatar.
+ * @param {string} youBadge - The HTML markup for the "(You)" badge, or an empty string.
+ * @returns {string} The HTML string representing the contact details view.
+ */
+function getContactDetailTemplate(contact, initials, color, youBadge) {
   return `
     <div class="contact-detail-card" id="contactDetailCard">
           <div class="detail-header">
@@ -77,6 +99,16 @@ function getContactConfirmHTML() {
   `;
 }
 
+/**
+ * Generates the HTML markup for the edit contact dialog, including
+ * pre-filled form fields and action buttons for updating or deleting
+ * the selected contact.
+ *
+ * @param {object} contact - The contact to edit.
+ * @param {string} initials - The contact's initials displayed in the avatar.
+ * @param {string} color - The background color used for the avatar.
+ * @returns {string} The HTML string representing the edit contact dialog.
+ */
 function getEditContactTemplate(contact, initials, color) {
   return `<div class="dialog">
         <div class="dialog-left">

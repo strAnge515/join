@@ -59,17 +59,25 @@ function addTask() {
     await saveTask(object);
     document.getElementById('subtask-added').showModal();
     setTimeout(async () => {
-      document.getElementById('subtask-added').close();
-      const dialog = document.getElementById('addTaskDialog');
-      if (dialog) dialog.close();
-      clearTask();
-      if (window.renderBoard) {
-        await window.renderBoard();
-      } else {
-        window.location.href = 'board.html';
-      }
+      closeAndResetAfterSave();
     }, 900);
   });
+}
+
+/**
+ * Closes the success dialog and the add task dialog,
+ * resets the form and re-renders the board or redirects to it.
+ */
+async function closeAndResetAfterSave() {
+  document.getElementById('subtask-added').close();
+  const dialog = document.getElementById('addTaskDialog');
+  if (dialog) dialog.close();
+  clearTask();
+  if (window.renderBoard) {
+    await window.renderBoard();
+  } else {
+    window.location.href = 'board.html';
+  }
 }
 
 /**

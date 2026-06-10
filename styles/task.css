@@ -15,7 +15,7 @@ textarea::placeholder {
 }
 
 .main-content {
-  position: relative;
+  position: unset;
 }
 
 .wrapper-add-task {
@@ -328,7 +328,7 @@ textarea::placeholder {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 118px;
+  margin-top: 163px;
   max-width: 970px;
 }
 
@@ -675,7 +675,7 @@ textarea::placeholder {
 
 .required-wrapper {
   position: absolute;
-  top: 807px;
+  top: 932px;
   display: flex;
 }
 
