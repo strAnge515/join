@@ -158,27 +158,34 @@ export function dateValidationForBoard(task) {
 function fillTaskCardInitials(task) {
   const assignedListRef = document.getElementById('assignedList');
   if (!task.assigned_to || task.assigned_to.length === 0) return;
-
   for (let i = 0; i < task.assigned_to.length; i++) {
     const user = task.assigned_to[i];
-
-    let userName = 'Unknown';
-    if (typeof user === 'string') {
-      userName = user;
-    } else if (user.firstName && user.lastName) {
-      userName = `${user.firstName} ${user.lastName}`;
-    } else if (user.name) {
-      userName = user.name;
-    } else if (user.id === 'guest') {
-      userName = 'Guest User';
-    }
-
+    const userName = choseUserName(user);
     assignedListRef.innerHTML += getAssignedUsersHTML(
       getAvatarColor(i),
       getInitials(userName),
       userName,
     );
   }
+}
+
+/**
+ * Determines the username based on the user object.
+ * @param {*} user - The user object or string.
+ * @returns {string} The determined username.
+ */
+function choseUserName(user) {
+  let userName = 'Unknown';
+  if (typeof user === 'string') {
+    userName = user;
+  } else if (user.firstName && user.lastName) {
+    userName = `${user.firstName} ${user.lastName}`;
+  } else if (user.name) {
+    userName = user.name;
+  } else if (user.id === 'guest') {
+    userName = 'Guest User';
+  }
+  return userName;
 }
 
 /**

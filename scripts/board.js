@@ -11,6 +11,9 @@ import {
   getTaskCardInnerHTML,
   getProgressBarHTML,
   getConfirmDialogHTML,
+  getUrgentIconForModal,
+  getMediumIconForModal,
+  getLowIconForModal,
 } from './board-template.js';
 
 const columnTodo = document.getElementById('column-todo');
@@ -41,7 +44,6 @@ export async function renderBoard() {
     allTasks = (await loadTasks()) || [];
     window.allTasks = allTasks;
     window.renderBoard = renderBoard;
-
     displayTasks(allTasks);
     refreshCardListeners();
   } catch (error) {
@@ -194,6 +196,21 @@ function createTaskCard(task) {
   card.className = 'task-card';
   card.dataset.id = task.id;
   card.addEventListener('click', () => openTaskCard(task));
+  fillTaskCardInformation(task, card);
+  initMobileSwapButton(card);
+  initMobileMoveButtons(card, task.id);
+  return card;
+}
+
+/*prettier-ignore */
+/**
+ * Fills a task card with the information from a task and renders its content.
+ *
+ * @param {Task} task - The task to display.
+ * @param {HTMLElement} card - The task card element to populate.
+ * @returns {void}
+ */
+function fillTaskCardInformation(task, card) {
   const subtaskInfo = getSubtaskInfo(task.subtasks);
   const assignedUsers = getAssignedUserNames(task.assigned_to);
   const currentStatus = getNeighborStatus(task);
@@ -205,9 +222,27 @@ function createTaskCard(task) {
     assignedUsers,
     currentStatus,
   );
-  initMobileSwapButton(card);
-  initMobileMoveButtons(card, task.id);
-  return card;
+}
+
+/**
+ * Returns an img tag for the priority icon displayed in the modal.
+ * @param {string} prio - The priority value (urgent, medium, low).
+ * @returns {string} HTML img tag string or empty string if unrecognized.
+ */
+export function getPriorityIconForModal(prio) {
+  const normalized = String(prio || '')
+    .trim()
+    .toLowerCase();
+  if (normalized === 'urgent') {
+    return getUrgentIconForModal();
+  }
+  if (normalized === 'medium') {
+    return getMediumIconForModal();
+  }
+  if (normalized === 'low') {
+    return getLowIconForModal();
+  }
+  return '';
 }
 
 /**

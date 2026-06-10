@@ -51,6 +51,13 @@ function createLetterElement(letter) {
   return el;
 }
 
+export function createYouBadge(contact) {
+  let currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+  let isYou = currentUser.email && contact.email === currentUser.email;
+  let youBadge = isYou ? getYouBadgeTemplate() : '';
+  return youBadge;
+}
+
 /**
  * Creates a contact button element with avatar and contact information.
  *
@@ -65,7 +72,8 @@ function createContactElement(contact) {
   contactBtn.addEventListener('click', () => {
     showContactDetails(contactBtn, contact);
   });
-  contactBtn.innerHTML = getContactTemplate(contact, initials);
+  const youBadge = createYouBadge(contact);
+  contactBtn.innerHTML = getContactTemplate(contact, initials, youBadge);
   return contactBtn;
 }
 
@@ -192,7 +200,9 @@ export function addSlideInAnimation(ref, time) {
   setTimeout(() => {
     element.addEventListener(
       'transitionend',
-      () => {detailContainerRef.classList.remove('no-scroll');},
+      () => {
+        detailContainerRef.classList.remove('no-scroll');
+      },
       { once: true },
     );
     element.classList.add('slide-in');

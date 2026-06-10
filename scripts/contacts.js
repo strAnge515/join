@@ -13,6 +13,7 @@ import {
   renderContacts,
   stringToColor,
   addSlideInAnimation,
+  createYouBadge,
 } from './contacts-render.js';
 
 import {
@@ -121,8 +122,9 @@ export function showContactDetails(element, contact) {
   const contactDetailsRef = document.getElementById('contact-details');
   const initials = contact.firstName[0] + contact.lastName[0];
   const color = contact.color;
+  const youBadge = createYouBadge(contact);
   toggleActiveContact(element);
-  contactDetailsRef.innerHTML = getContactDetailTemplate(contact, initials, color);
+  contactDetailsRef.innerHTML = getContactDetailTemplate(contact, initials, color, youBadge);
   openContactDetails();
   addSlideInAnimation('#contactDetailCard', 100);
   addEventListenersToDetailContact();

@@ -1,5 +1,10 @@
-import { escapeHtml, renderAssignedUsers, createNavButtonMobile } from "./board-utils.js";
-import {dateValidationForBoard} from "./board-dialogs.js"
+import {
+  escapeHtml,
+  renderAssignedUsers,
+  createNavButtonMobile,
+} from './board-utils.js';
+import { dateValidationForBoard } from './board-dialogs.js';
+import { getPriorityIconForModal } from './board.js';
 /**
  * Returns the full HTML string for the task detail modal content.
  * @param {Object} categoryBadge - Badge config with color and label.
@@ -51,21 +56,30 @@ export function getTaskCardHTML(categoryBadge, task) {
 }
 
 /**
- * Returns an img tag for the priority icon displayed in the modal.
- * @param {string} prio - The priority value (urgent, medium, low).
- * @returns {string} HTML img tag string or empty string if unrecognized.
+ * Returns the HTML markup for the urgent priority icon used in the task modal.
+ *
+ * @returns {string} The HTML string containing the urgent priority icon.
  */
-function getPriorityIconForModal(prio) {
-  const normalized = String(prio || '')
-    .trim()
-    .toLowerCase();
-  if (normalized === 'urgent')
-    return '<img src="../assets/img/Property 1=Urgent.svg" alt="urgent" class="prio-icon-modal">';
-  if (normalized === 'medium')
-    return '<img src="../assets/img/Property 1=Medium.svg" alt="medium" class="prio-icon-modal">';
-  if (normalized === 'low')
-    return '<img src="../assets/img/Property 1=Low.svg" alt="low" class="prio-icon-modal">';
-  return '';
+export function getUrgentIconForModal() {
+  return '<img src="../assets/img/Property 1=Urgent.svg" alt="urgent" class="prio-icon-modal">';
+}
+
+/**
+ * Returns the HTML markup for the medium priority icon used in the task modal.
+ *
+ * @returns {string} The HTML string containing the medium priority icon.
+ */
+export function getMediumIconForModal() {
+  return '<img src="../assets/img/Property 1=Medium.svg" alt="medium" class="prio-icon-modal">';
+}
+
+/**
+ * Returns the HTML markup for the low priority icon used in the task modal.
+ *
+ * @returns {string} The HTML string containing the low priority icon.
+ */
+export function getLowIconForModal() {
+  return '<img src="../assets/img/Property 1=Low.svg" alt="low" class="prio-icon-modal">';
 }
 
 /**
@@ -94,7 +108,7 @@ export function getSubtaskItemHTML(subtask, taskId, index) {
  * Returns the HTML for the empty subtask placeholder.
  * @returns {string} HTML string for the empty subtask state.
  */
- export function getEmptySubtaskHTML() {
+export function getEmptySubtaskHTML() {
   return '<div class="subtask-item"><span class="subtask-label">No subtasks</span></div>';
 }
 
@@ -114,7 +128,6 @@ export function getConfirmDialogHTML(title) {
     </div>
   `;
 }
-
 
 /**
  * Returns the HTML for a single assigned user row in the modal.
@@ -157,7 +170,13 @@ export function getProgressBarHTML(subtaskInfo) {
  * @param {string} priorityIcon - Emoji string representing task priority.
  * @returns {string} HTML string for the task card's inner content.
  */
-export function getTaskCardInnerHTML(categoryBadge, task, subtaskInfo, assignedUsers, currentStatus) {
+export function getTaskCardInnerHTML(
+  categoryBadge,
+  task,
+  subtaskInfo,
+  assignedUsers,
+  currentStatus,
+) {
   return `
   <div class="header-wrapper">
       <span class="task-card__category" style="background:${categoryBadge.color}; color:${categoryBadge.textColor};">
