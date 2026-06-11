@@ -134,22 +134,22 @@ h1 {
 }
 
 .signup-field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .signup-field-error {
-    color: var(--color-error);
-    font-size: 13px;
+  color: var(--color-error);
+  font-size: 13px;
 }
 
 .signup-field-error:empty {
-    display: none;
+  display: none;
 }
 
 .input-field-wrapper input.input-error {
-    border-color: var(--color-error);
+  border-color: var(--color-error);
 }
 
 .login {
@@ -252,7 +252,7 @@ h1 {
 
 .login-footer a {
   color: var(--color-muted);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .login-footer a:hover {
@@ -409,11 +409,12 @@ h1 {
     transform: none;
     justify-content: center;
     margin-bottom: 24px;
+    margin-top: 25px;
   }
 
   .back-arrow {
     position: absolute;
-    top: 32px;
+    top: 34px;
     left: 32px;
     font-size: 32px;
     color: var(--color-accent);
@@ -441,3 +442,25 @@ h1 {
   }
 }
 
+@media (max-width: 350px) {
+  .aside-logo img {
+    width: 40px;
+  }
+
+  #signup-form {
+    margin: 25px auto 0;
+  }
+
+  .login-footer {
+    margin-top: 15px;
+  }
+
+  .back-arrow {
+    
+    left: 19px;
+  }
+
+  .aside-logo {
+    padding: 22px 0 0 38px;
+  }
+}
