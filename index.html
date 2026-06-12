@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,44 +10,53 @@
     <script type="module" src="./scripts/login.js" defer></script>
 </head>
 
-<body>
+<body class="mobile-start-active">
+    <div class="mobile-start-screen" id="mobile-start-screen">
+        <img src="./assets/img/screen_logo.svg" alt="Join Logo">
+    </div>
+
     <aside>
         <div class="aside-logo">
             <img src="./assets/img/join_logo.svg" alt="joinlogo">
         </div>
     </aside>
+
     <div class="wrapper">
         <main>
             <form id="login-form" novalidate>
                 <h1>Log in</h1>
                 <div class="seperator"></div>
+
                 <div class="input">
                     <div class="input-field-wrapper">
                         <input type="text" id="login-email" placeholder="Email">
                         <img src="./assets/img/contacts/mail.svg" alt="" class="input-icon">
                     </div>
+
                     <div class="input-field-wrapper">
                         <input type="password" id="login-password" placeholder="Password">
-                        <img src="./assets/img/lock.svg" alt="" class="input-icon input-icon--toggle"
-                            id="toggle-password">
+                        <img src="./assets/img/lock.svg" alt="" class="input-icon input-icon--toggle" id="toggle-password">
                     </div>
                 </div>
+
                 <p class="error-message" id="login-error"></p>
+
                 <div class="login">
                     <button type="submit" class="log-in-button">Log in</button>
                     <button type="button" id="guest-login-btn" class="guest-log-inbutton">Guest Log in</button>
                 </div>
             </form>
         </main>
+
         <header>
             <p>Not a Join user?</p>
             <button id="sign-up-button" class="sign-up-button">Sign up</button>
         </header>
+
         <footer class="login-footer">
             <a href="./pages/privacy_policy.html">Privacy Policy</a>
             <a href="./pages/legal_notice.html">Legal notice</a>
         </footer>
     </div>
 </body>
-
 </html>

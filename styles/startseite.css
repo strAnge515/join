@@ -227,25 +227,29 @@ h1 {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.aside-logo img, .aside-logo-signup img {
-  width: 100%;
-  margin: 50px;
+.aside-logo,
+.aside-logo-signup {
+  position: absolute;
+  top: 20px;
+  left: 60px;
+  width: 100px;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.aside-logo.logo-animation-active {
+  animation: logoMovement 1s ease-in-out forwards;
 }
 
 .aside-logo-signup {
-  margin-bottom: 40px;
-  display: flex;
-  justify-content: center;
-  position: absolute;
+  animation: none;
 }
 
-.aside-logo {
+.aside-logo img,
+.aside-logo-signup img {
   width: 100%;
-  margin-bottom: 40px;
-  display: flex;
-  justify-content: center;
-  animation: logoMovement 1s ease-in-out forwards;
-  position: absolute;
+  margin: 50px;
 }
 
 .login-footer {
@@ -309,6 +313,10 @@ h1 {
   bottom: 45vh;
 }
 
+.mobile-start-screen {
+  display: none;
+}
+
 @keyframes logoMovement {
   from {
     top: 50%;
@@ -337,6 +345,20 @@ h1 {
   }
 }
 
+@keyframes hideMobileStartScreen {
+  to {
+    background-color: transparent;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@keyframes moveMobileStartLogo {
+  to {
+    transform: translate(calc(-50vw + 70px), calc(-50vh + 70px));
+  }
+}
+
 @media (max-width: 768px) {
   body {
     display: block;
@@ -347,17 +369,22 @@ h1 {
   aside {
     width: 100%;
     height: auto;
+    align-items: flex-start;
   }
 
-  .aside-logo {
+  .aside-logo,
+  .aside-logo-signup {
     position: static;
+    width: 100%;
     justify-content: flex-start;
     padding: 37px 0 0 38px;
     margin: 0;
     animation: none;
+    box-sizing: border-box;
   }
 
-  .aside-logo img {
+  .aside-logo img,
+  .aside-logo-signup img {
     width: 64px;
     margin: 0;
   }
@@ -385,7 +412,7 @@ h1 {
     width: calc(100% - 32px);
     max-width: 344px;
     min-height: auto;
-    margin: 80px auto 0;
+    margin: 40px auto 0;
     padding: 32px 16px;
     gap: 18px;
   }
@@ -447,26 +474,32 @@ h1 {
     text-align: center;
     white-space: normal;
   }
-}
 
-@media (max-width: 350px) {
-  .aside-logo img {
-    width: 40px;
+  .mobile-start-screen {
+    position: fixed;
+    inset: 0;
+    background-color: #2a3647;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: hideMobileStartScreen 800ms ease-in-out forwards;
+    animation-delay: 200ms;
   }
 
-  #signup-form {
-    margin: 25px auto 0;
+  .mobile-start-screen img {
+    width: 100px;
+    animation: moveMobileStartLogo 800ms ease-in-out forwards;
+    animation-delay: 200ms;
   }
 
-  .login-footer {
-    margin-top: 15px;
+  body.mobile-start-active .aside-logo,
+  body.mobile-start-active .wrapper {
+    opacity: 0;
   }
 
-  .back-arrow {
-    left: 19px;
-  }
-
-  .aside-logo {
-    padding: 22px 0 0 38px;
+  body:not(.mobile-start-active) .aside-logo,
+  body:not(.mobile-start-active) .wrapper {
+    opacity: 1;
   }
 }

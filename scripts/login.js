@@ -5,7 +5,9 @@
 import { findUserByEmail } from './backend-users.js';
 
 
-/* DOM Elements */  
+/* DOM Elements */
+const logo = document.querySelector(".aside-logo");
+const mobileStartScreen = document.getElementById("mobile-start-screen");
 const form = document.getElementById("login-form");
 const signUpButton = document.getElementById("sign-up-button");
 const guestButton = document.getElementById("guest-login-btn");
@@ -14,22 +16,93 @@ const passwordInput = document.getElementById("login-password");
 const loginError = document.getElementById("login-error");
 
 
+function initLogoAnimation() {
+  if (!logo || isMobileView()) return;
+
+  if (isPageReload()) {
+    resetLogoAnimation();
+    return;
+  }
+
+  if (sessionStorage.getItem("logoAnimationPlayed") === "true") return;
+
+  playLogoAnimation();
+}
+
+
+function playLogoAnimation() {
+  logo.classList.add("logo-animation-active");
+  sessionStorage.setItem("logoAnimationPlayed", "true");
+}
+
+
+function resetLogoAnimation() {
+  sessionStorage.removeItem("logoAnimationPlayed");
+  playLogoAnimation();
+}
+
+
+function isPageReload() {
+  const navigation = performance.getEntriesByType("navigation")[0];
+  return navigation?.type === "reload";
+}
+
+
+function isMobileView() {
+  return window.innerWidth <= 768;
+}
+
+
+function initMobileStartScreen() {
+  if (!shouldShowMobileStartScreen()) {
+    hideMobileStartScreen();
+    return;
+  }
+
+  document.body.classList.add("mobile-start-active");
+  sessionStorage.setItem("mobileStartScreenShown", "true");
+  setTimeout(hideMobileStartScreen, 1100);
+}
+
+
+function shouldShowMobileStartScreen() {
+  const alreadyShown = sessionStorage.getItem("mobileStartScreenShown");
+  return isMobileView() && alreadyShown !== "true";
+}
+
+
+function hideMobileStartScreen() {
+  document.body.classList.remove("mobile-start-active");
+  if (mobileStartScreen) mobileStartScreen.remove();
+}
+
+
 /**
  * Handles the login form submission.
  * @param {Event} e - The form submission event.
  */
 async function handleLogin(e) {
-    e.preventDefault();
-    const email = document.getElementById("login-email").value.trim();
-    const password = passwordInput.value.trim();
-    if (!validateLoginInput(email, password)) return;
-    const user = await findUserByEmail(email);
-    if (!user || user.password !== password) {
-        showLoginError();
-        return;
-    }
-    sessionStorage.setItem("currentUser", JSON.stringify({ name: user.name, email: user.email, id: user.id }));
-    window.location.href = "./pages/summary.html";
+  e.preventDefault();
+
+  const email = document.getElementById("login-email").value.trim();
+  const password = passwordInput.value.trim();
+
+  if (!validateLoginInput(email, password)) return;
+
+  const user = await findUserByEmail(email);
+
+  if (!user || user.password !== password) {
+    showLoginError();
+    return;
+  }
+
+  sessionStorage.setItem("currentUser", JSON.stringify({
+    name: user.name,
+    email: user.email,
+    id: user.id,
+  }));
+
+  window.location.href = "./pages/summary.html";
 }
 
 
@@ -40,16 +113,19 @@ async function handleLogin(e) {
  * @returns {boolean} True when both fields are filled and the email is valid.
  */
 function validateLoginInput(email, password) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email === "" || password === "") {
-        loginError.textContent = "Please fill in all fields.";
-        return false;
-    }
-    if (!emailRegex.test(email)) {
-        loginError.textContent = "Please enter a valid email address.";
-        return false;
-    }
-    return true;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (email === "" || password === "") {
+    loginError.textContent = "Please fill in all fields.";
+    return false;
+  }
+
+  if (!emailRegex.test(email)) {
+    loginError.textContent = "Please enter a valid email address.";
+    return false;
+  }
+
+  return true;
 }
 
 
@@ -57,7 +133,7 @@ function validateLoginInput(email, password) {
  * Displays a login error message to the user.
  */
 function showLoginError() {
-    loginError.textContent = "Check your email and password. Please try again.";
+  loginError.textContent = "Check your email and password. Please try again.";
 }
 
 
@@ -65,36 +141,34 @@ function showLoginError() {
  * Toggles the visibility of the password input field.
  */
 function togglePasswordVisibility() {
-    const isPassword = passwordInput.type === "password";
-    passwordInput.type = isPassword ? "text" : "password";
-    togglePassword.src = isPassword ? "./assets/img/eye.svg" : "./assets/img/eye-off.svg";
+  const isPassword = passwordInput.type === "password";
+
+  passwordInput.type = isPassword ? "text" : "password";
+  togglePassword.src = isPassword ? "./assets/img/eye.svg" : "./assets/img/eye-off.svg";
 }
 
 
-/**
- * Initializes the login page by setting up event listeners.
- */
+function handleSignUpClick() {
+  window.location.href = "./pages/signup.html";
+}
+
+
+function handleGuestLogin() {
+  sessionStorage.setItem("currentUser", JSON.stringify({
+    name: "Guest",
+    email: "",
+    id: "guest",
+  }));
+
+  window.location.href = "./pages/summary.html";
+}
+
+
 form.addEventListener("submit", handleLogin);
-
-
-/**
- * Handles the sign-up button click event.
- */
-signUpButton.addEventListener("click", () => {
-    window.location.href = "./pages/signup.html";
-});
-
-
-/**
- * Handles the guest login button click event.
- */
-guestButton.addEventListener("click", () => {
-    sessionStorage.setItem("currentUser", JSON.stringify({ name: "Guest", email: "", id: "guest" }));
-    window.location.href = "./pages/summary.html";
-});
-
-
-/**
- * Initializes the toggle password visibility button.
- */
+signUpButton.addEventListener("click", handleSignUpClick);
+guestButton.addEventListener("click", handleGuestLogin);
 togglePassword.addEventListener("click", togglePasswordVisibility);
+
+initLogoAnimation();
+initMobileStartScreen();
+
