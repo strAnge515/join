@@ -1,3 +1,51 @@
+const addFormConfig = [
+  {
+    id: 'nameInputAdd',
+    validators: [
+      () => checkInput('nameInputAdd', 'nameError', 'Name fehlt'),
+      () => checkName('nameInputAdd', 'nameError'),
+    ],
+  },
+  {
+    id: 'emailInputAdd',
+    validators: [
+      () => checkInput('emailInputAdd', 'emailError', 'Email fehlt'),
+      () => checkEmail('emailInputAdd', 'emailError'),
+    ],
+  },
+  {
+    id: 'phoneInputAdd',
+    validators: [
+      () => checkInput('phoneInputAdd', 'phoneError', 'Telefon fehlt'),
+      () => checkPhone('phoneInputAdd', 'phoneError'),
+    ],
+  },
+];
+
+export const editFormConfig = [
+  {
+    id: 'nameInputEdit',
+    validators: [
+      () => checkInput('nameInputEdit', 'nameErrorEdit', 'Name fehlt'),
+      () => checkName('nameInputEdit', 'nameErrorEdit'),
+    ],
+  },
+  {
+    id: 'emailInputEdit',
+    validators: [
+      () => checkInput('emailInputEdit', 'emailErrorEdit', 'Email fehlt'),
+      () => checkEmail('emailInputEdit', 'emailErrorEdit'),
+    ],
+  },
+  {
+    id: 'phoneInputEdit',
+    validators: [
+      () => checkInput('phoneInputEdit', 'phoneErrorEdit', 'Telefon fehlt'),
+      () => checkPhone('phoneInputEdit', 'phoneErrorEdit'),
+    ],
+  },
+];
+
 /**
  * Validates the addcontact form inputs.
  *
@@ -150,3 +198,28 @@ export function clearAllInputErrors(dialogRef) {
     error.innerText = '';
   });
 }
+
+/**
+ * Initializes blur event-based validation for form fields.
+ *
+ * For each field in the provided configuration, a `blur` event listener
+ * is attached to the corresponding DOM element. When the element loses focus,
+ * all associated validator functions are executed.
+ *
+ * @param {Array<Object>} config - Array of field validation configurations.
+ * @param {string} config[].id - The DOM id of the input element to validate.
+ * @param {Function[]} config[].validators - Array of validator functions executed on blur.
+ */
+export function initBlurValidation(config) {
+  config.forEach((field) => {
+    const el = document.getElementById(field.id);
+    if (!el) return;
+    el.addEventListener('blur', () => {
+      field.validators.forEach((v) => v());
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initBlurValidation(addFormConfig);
+});
