@@ -5,6 +5,8 @@ import {
   validateEditForm,
   addClearErrorInputListeners,
   clearAllInputErrors,
+  initBlurValidation,
+  editFormConfig,
 } from './contacts-validation.js';
 
 import {
@@ -48,14 +50,27 @@ function addEditDialogEventListeners() {
   const dialogRef = document.getElementById('editContactDialog');
   const deleteBtnRef = document.getElementById('deleteContactBtnEditDialog');
   const form = dialogRef.querySelector('form');
+  addEditFormActionListeners(form, deleteBtnRef);
+  addEventListenersToCloseDialog(dialogRef);
+  addClearErrorInputListeners(dialogRef);
+  if (dialogRef.dataset.listenersInit === 'true') return;
+  dialogRef.dataset.listenersInit = 'true';
+  initBlurValidation(editFormConfig);
+}
+
+/**
+ * Attaches submit and delete event listeners to the edit contact form.
+ *
+ * @param {HTMLFormElement} form - The edit contact form element.
+ * @param {HTMLButtonElement} deleteBtn - The delete button element inside the dialog.
+ */
+function addEditFormActionListeners(form, deleteBtn) {
   form.addEventListener('submit', (event) => {
     editContact(event, state.activeContactId);
   });
-  deleteBtnRef.addEventListener('click', (event) => {
+  deleteBtn.addEventListener('click', () => {
     deleteThisContact(state.activeContactId);
   });
-  addEventListenersToCloseDialog(dialogRef);
-  addClearErrorInputListeners(dialogRef);
 }
 
 /**
