@@ -69,7 +69,8 @@ function checkName(inputId, errorId) {
  * @returns {boolean} True if the email is valid.
  */
 function checkEmail(inputId, errorId) {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regex =
+    /^(?!.*\.\.)[a-zA-Z0-9]+([.+_-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$/;
   return validateField(inputId, errorId, regex, 'Ungültige Email');
 }
 
