@@ -96,9 +96,7 @@ function adjustRootHeaderPaths(htmlText) {
  * @returns {string} The adjusted HTML content with correct paths for subpages.
  */
 function adjustPageHeaderPaths(htmlText) {
-  return htmlText
-    .replace(/src="\.\/assets\//g, 'src="../assets/')
-    .replace(/href="\.\/assets\//g, 'href="../assets/');
+  return htmlText.replace(/src="\.\/assets\//g, 'src="../assets/').replace(/href="\.\/assets\//g, 'href="../assets/');
 }
 
 /**
@@ -108,7 +106,12 @@ function adjustPageHeaderPaths(htmlText) {
  */
 function updateHeaderUI(user, isLoggedIn) {
   const headerRight = document.querySelector('.header-right');
-  if (!isLoggedIn) return hideElement(headerRight);
+  const mobileAvatarCircle = document.getElementById('mobile-profile');
+  if (!isLoggedIn) {
+    hideElement(headerRight);
+    hideElement(mobileAvatarCircle);
+    return;
+  }
   updateProfileInitials(user);
 }
 
