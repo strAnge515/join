@@ -345,19 +345,7 @@ h1 {
   }
 }
 
-@keyframes hideMobileStartScreen {
-  to {
-    background-color: transparent;
-    visibility: hidden;
-    pointer-events: none;
-  }
-}
 
-@keyframes moveMobileStartLogo {
-  to {
-    transform: translate(calc(-50vw + 70px), calc(-50vh + 70px));
-  }
-}
 
 @media (max-width: 768px) {
   body {
@@ -479,23 +467,29 @@ h1 {
     white-space: normal;
   }
 
-  .mobile-start-screen {
-    position: fixed;
-    inset: 0;
-    background-color: #2a3647;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index:1;
-    animation: hideMobileStartScreen 800ms ease-in-out forwards;
-    animation-delay: 200ms;
-  }
+.mobile-start-screen {
+  position: fixed;
+  inset: 0;
+  background-color: #2a3647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
 
-  .mobile-start-screen img {
-    width: 100px;
-    animation: moveMobileStartLogo 800ms ease-in-out forwards;
-    animation-delay: 200ms;
-  }
+.mobile-start-screen img {
+  width: 100px;
+  transition: transform 800ms ease-in-out;
+}
+
+.mobile-start-screen.move img {
+  transform: translate(calc(-50vw + 70px), calc(-50vh + 70px)) scale(0.64);
+}
+
+.mobile-start-screen.hidden {
+  display: none;
+}
 
   body.mobile-start-active .aside-logo,
   body.mobile-start-active .wrapper {

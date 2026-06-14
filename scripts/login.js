@@ -52,21 +52,32 @@ function initMobileStartScreen() {
     hideMobileStartScreen();
     return;
   }
-  document.body.classList.add('mobile-start-active');
-  sessionStorage.setItem('logoPlayedMobile', 'true');
-  setTimeout(hideMobileStartScreen, 1000);
+
+  document.body.classList.add("mobile-start-active");
+  sessionStorage.setItem("logoPlayedMobile", "true");
+
+  setTimeout(() => {
+    mobileStartScreen.classList.add("move");
+  }, 500);
+
+  setTimeout(hideMobileStartScreen, 1400);
 }
 
 
 function shouldShowMobileStartScreen() {
-  if (isPageReload()) sessionStorage.removeItem('logoPlayedMobile');
-  const alreadyShown = sessionStorage.getItem('logoPlayedMobile');
-  return window.innerWidth <= 768 && alreadyShown !== 'true';
+  if (isPageReload()) sessionStorage.removeItem("logoPlayedMobile");
+
+  const alreadyShown = sessionStorage.getItem("logoPlayedMobile");
+  return isMobileView() && alreadyShown !== "true";
 }
 
+
 function hideMobileStartScreen() {
-  document.body.classList.remove('mobile-start-active');
-  if (mobileStartScreen) mobileStartScreen.remove();
+  document.body.classList.remove("mobile-start-active");
+
+  if (mobileStartScreen) {
+    mobileStartScreen.classList.add("hidden");
+  }
 }
 
 
