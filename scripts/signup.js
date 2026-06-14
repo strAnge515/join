@@ -5,7 +5,7 @@ import { saveContact } from './backend-contacts.js';
  */
 import { saveUser } from './backend-users.js';
 import { findUserByEmail } from './backend-users.js';
-import { validateSignupForm, showSignupEmailError, clearSignupFieldError } from './signup-validation.js';
+import { validateSignupForm, showSignupEmailError, clearSignupFieldError, setupSignupBlurValidation } from './signup-validation.js';
 
 
 /** * DOM Elements */
@@ -105,4 +105,5 @@ togglePassword.addEventListener("click", () => toggleVisibility(passwordInput, t
 toggleConfirm.addEventListener("click", () => toggleVisibility(confirmInput, toggleConfirm));
 form.addEventListener("submit", handleSignup);
 setupSignupInputListeners();
+setupSignupBlurValidation();
 updateSignupButtonState();

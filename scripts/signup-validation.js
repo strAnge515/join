@@ -35,7 +35,7 @@ function checkSignupName() {
  * @returns {boolean} True if the email is valid.
  */
 function checkSignupEmail() {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regex = /^(?!.*\.\.)[a-zA-Z0-9]+([.+_-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$/;
   return validateSignupField('signup-email', 'signup-email-error', regex, 'Please enter a valid email address');
 }
 
@@ -90,4 +90,27 @@ export function clearSignupFieldError(input) {
   const field = input.closest('.signup-field');
   input.classList.remove('input-error');
   if (field) field.querySelector('.signup-field-error').innerText = '';
+}
+
+
+/**
+ * Attaches a blur listener that runs the given validator when the field loses focus.
+ *
+ * @param {string} inputId - The input element ID.
+ * @param {Function} validator - The validation function to run on blur.
+ */
+function addBlurValidator(inputId, validator) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  input.addEventListener('blur', validator);
+}
+
+
+/**
+ * Sets up blur-based validation so users get per-field feedback before submitting.
+ */
+export function setupSignupBlurValidation() {
+  addBlurValidator('signup-name', checkSignupName);
+  addBlurValidator('signup-email', checkSignupEmail);
+  addBlurValidator('signup-confirm-password', checkPasswordsMatch);
 }

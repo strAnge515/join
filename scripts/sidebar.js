@@ -35,7 +35,9 @@ function renderSidebar(htmlText, isRoot) {
 
 /** Initializes the sidebar features by updating visibility, setting active links, and setting up the toggle functionality. */
 function initSidebarFeatures() {
-  updateSidebarVisibility(true);
+  const isLoggedIn = sessionStorage.getItem('currentUser') !== null;
+  updateSidebarVisibility(isLoggedIn);
+  updateMobileNavVisibility(isLoggedIn);
   setActiveSidebar();
   setActiveMobileNav();
   setupSidebarToggle();
@@ -95,6 +97,14 @@ function updateSidebarVisibility(isLoggedIn) {
     loggedInNav.style.display = isLoggedIn ? 'block' : 'none';
     guestNav.style.display = isLoggedIn ? 'none' : 'block';
   }
+}
+
+/** Shows or hides the mobile bottom navigation based on the user's login status.
+ * @param {boolean} isLoggedIn - Indicates whether the user is logged in.
+ */
+function updateMobileNavVisibility(isLoggedIn) {
+  const mobileNav = document.querySelector('.mobile-bottom-nav');
+  if (mobileNav) mobileNav.style.display = isLoggedIn ? '' : 'none';
 }
 
 /** Sets up the event listener for the sidebar toggle button to manage the opening and closing of the sidebar on smaller screens. */

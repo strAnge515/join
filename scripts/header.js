@@ -107,9 +107,14 @@ function adjustPageHeaderPaths(htmlText) {
  * @param {boolean} isLoggedIn - Indicates if the user is logged in.
  */
 function updateHeaderUI(user, isLoggedIn) {
-  const headerRight = document.querySelector('.header-right');
-  if (!isLoggedIn) return hideElement(headerRight);
+  if (!isLoggedIn) return hideLoggedOutHeader();
   updateProfileInitials(user);
+}
+
+/** Hides the desktop and mobile profile elements for logged-out visitors on public pages. */
+function hideLoggedOutHeader() {
+  hideElement(document.querySelector('.header-right'));
+  hideElement(document.getElementById('mobile-profile'));
 }
 
 /**
