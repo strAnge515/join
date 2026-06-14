@@ -15,18 +15,12 @@ const togglePassword = document.getElementById("toggle-password");
 const passwordInput = document.getElementById("login-password");
 const loginError = document.getElementById("login-error");
 
-
 function initLogoAnimation() {
-  if (!logo || isMobileView()) return;
-
-  if (isPageReload()) {
-    resetLogoAnimation();
-    return;
-  }
-
-  if (sessionStorage.getItem("logoAnimationPlayed") === "true") return;
-
-  playLogoAnimation();
+  if (!logo || window.innerWidth <= 768) return;
+  if (isPageReload()) sessionStorage.removeItem('logoPlayedDesktop');
+  if (sessionStorage.getItem('logoPlayedDesktop') === 'true') return;
+  logo.classList.add('logo-animation-active');
+  sessionStorage.setItem('logoPlayedDesktop', 'true');
 }
 
 
@@ -38,7 +32,7 @@ function playLogoAnimation() {
 
 function resetLogoAnimation() {
   sessionStorage.removeItem("logoAnimationPlayed");
-  playLogoAnimation();
+    playLogoAnimation();
 }
 
 
@@ -58,21 +52,20 @@ function initMobileStartScreen() {
     hideMobileStartScreen();
     return;
   }
-
-  document.body.classList.add("mobile-start-active");
-  sessionStorage.setItem("mobileStartScreenShown", "true");
-  setTimeout(hideMobileStartScreen, 1100);
+  document.body.classList.add('mobile-start-active');
+  sessionStorage.setItem('logoPlayedMobile', 'true');
+  setTimeout(hideMobileStartScreen, 1000);
 }
 
 
 function shouldShowMobileStartScreen() {
-  const alreadyShown = sessionStorage.getItem("mobileStartScreenShown");
-  return isMobileView() && alreadyShown !== "true";
+  if (isPageReload()) sessionStorage.removeItem('logoPlayedMobile');
+  const alreadyShown = sessionStorage.getItem('logoPlayedMobile');
+  return window.innerWidth <= 768 && alreadyShown !== 'true';
 }
 
-
 function hideMobileStartScreen() {
-  document.body.classList.remove("mobile-start-active");
+  document.body.classList.remove('mobile-start-active');
   if (mobileStartScreen) mobileStartScreen.remove();
 }
 
