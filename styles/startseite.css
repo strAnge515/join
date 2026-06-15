@@ -345,9 +345,6 @@ h1 {
   }
 }
 
-<<<<<<< HEAD
-
-=======
 @keyframes hideMobileStartScreen {
   to {
     background-color: transparent;
@@ -362,7 +359,6 @@ h1 {
     width: 64px;
   }
 }
->>>>>>> ae681590ddc2b6cbfdefb3dfdb74664bef52e8aa
 
 @media (max-width: 768px) {
   body {
