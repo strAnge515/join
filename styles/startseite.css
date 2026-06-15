@@ -234,8 +234,8 @@ h1 {
 .start-screen-logo {
   fill: #2a3647;
   position: absolute;
-  top: 20px;
-  left: 60px;
+  top: 30px;
+  left: 30px;
   width: 100px;
   opacity: 1;
   display: flex;
@@ -438,6 +438,9 @@ h1 {
   }
 
   .start-screen-logo {
+    top: 37px;
+    left: 38px;
+    width: 64px;
     fill: white;
   }
 
