@@ -1,62 +1,104 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join - Login</title>
-    <link rel="icon" type="image/png" href="./assets/img/join_logo.svg">
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./styles/startseite.css">
+    <link rel="icon" type="image/png" href="./assets/img/join_logo.svg" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./styles/startseite.css" />
     <script type="module" src="./scripts/login.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body class="mobile-start-active">
     <div class="mobile-start-screen" id="mobile-start-screen">
-        <img src="./assets/img/screen_logo.svg" alt="Join Logo">
+      <!-- <img src="./assets/img/screen_logo.svg" alt="Join Logo" /> -->
+      <svg
+        width="101"
+        height="122"
+        viewBox="0 0 101 122"
+        xmlns="http://www.w3.org/2000/svg"
+        id="mobileStartScreenLogo"
+      >
+        <path d="M71.6725 0H49.5146V25.4923H71.6725V0Z" />
+        <path
+          d="M49.5142 46.2251H71.6721V82.1779C71.7733 90.8292 69.3112 99.3153 64.5986 106.557C59.9455 113.594 50.963 121.966 34.3446 121.966C16.2434 121.966 5.69286 113.406 0 108.715L13.9765 91.4743C19.533 96.0112 24.885 99.7435 34.4299 99.7435C41.6567 99.7435 44.5372 96.7988 46.2247 94.2307C48.5186 90.6637 49.7052 86.4923 49.6335 82.2464L49.5142 46.2251Z"
+        />
+        <path
+          d="M38.2135 30.1318H16.0557V52.3884H38.2135V30.1318Z"
+          fill="#29ABE2"
+        />
+        <path
+          d="M83.2795 111.522C83.2795 116.265 80.8762 118.815 77.5184 118.815C74.1607 118.815 71.9619 115.785 71.9619 111.762C71.9619 107.739 74.2288 104.554 77.7059 104.554C81.183 104.554 83.2795 107.687 83.2795 111.522ZM74.5356 111.711C74.5356 114.57 75.6776 116.675 77.6377 116.675C79.5978 116.675 80.7057 114.45 80.7057 111.539C80.7057 108.988 79.6831 106.592 77.6377 106.592C75.5924 106.592 74.5356 108.903 74.5356 111.711Z"
+        />
+        <path d="M87.6771 104.76V118.593H85.2227V104.76H87.6771Z" />
+        <path
+          d="M90.3359 118.593V104.76H93.0631L95.9947 110.461C96.7494 111.952 97.4209 113.483 98.006 115.049C97.8526 113.337 97.7844 111.368 97.7844 109.177V104.76H100.034V118.593H97.4946L94.5289 112.772C93.7437 111.243 93.0438 109.671 92.4324 108.064C92.4324 109.776 92.5517 111.711 92.5517 114.09V118.576L90.3359 118.593Z"
+        />
+      </svg>
     </div>
 
     <aside>
-        <div class="aside-logo">
-            <img src="./assets/img/join_logo.svg" alt="joinlogo">
-        </div>
+      <div class="aside-logo">
+        <img src="./assets/img/join_logo.svg" alt="joinlogo" />
+      </div>
     </aside>
 
     <div class="wrapper">
-        <main>
-            <form id="login-form" novalidate>
-                <h1>Log in</h1>
-                <div class="seperator"></div>
+      <main>
+        <form id="login-form" novalidate>
+          <h1>Log in</h1>
+          <div class="seperator"></div>
 
-                <div class="input">
-                    <div class="input-field-wrapper">
-                        <input type="text" id="login-email" placeholder="Email">
-                        <img src="./assets/img/contacts/mail.svg" alt="" class="input-icon">
-                    </div>
+          <div class="input">
+            <div class="input-field-wrapper">
+              <input type="text" id="login-email" placeholder="Email" />
+              <img
+                src="./assets/img/contacts/mail.svg"
+                alt=""
+                class="input-icon"
+              />
+            </div>
 
-                    <div class="input-field-wrapper">
-                        <input type="password" id="login-password" placeholder="Password">
-                        <img src="./assets/img/lock.svg" alt="" class="input-icon input-icon--toggle" id="toggle-password">
-                    </div>
-                </div>
+            <div class="input-field-wrapper">
+              <input
+                type="password"
+                id="login-password"
+                placeholder="Password"
+              />
+              <img
+                src="./assets/img/lock.svg"
+                alt=""
+                class="input-icon input-icon--toggle"
+                id="toggle-password"
+              />
+            </div>
+          </div>
 
-                <p class="error-message" id="login-error"></p>
+          <p class="error-message" id="login-error"></p>
 
-                <div class="login">
-                    <button type="submit" class="log-in-button">Log in</button>
-                    <button type="button" id="guest-login-btn" class="guest-log-inbutton">Guest Log in</button>
-                </div>
-            </form>
-        </main>
+          <div class="login">
+            <button type="submit" class="log-in-button">Log in</button>
+            <button
+              type="button"
+              id="guest-login-btn"
+              class="guest-log-inbutton"
+            >
+              Guest Log in
+            </button>
+          </div>
+        </form>
+      </main>
 
-        <header>
-            <p>Not a Join user?</p>
-            <button id="sign-up-button" class="sign-up-button">Sign up</button>
-        </header>
+      <header>
+        <p>Not a Join user?</p>
+        <button id="sign-up-button" class="sign-up-button">Sign up</button>
+      </header>
 
-        <footer class="login-footer">
-            <a href="./pages/privacy_policy.html">Privacy Policy</a>
-            <a href="./pages/legal_notice.html">Legal notice</a>
-        </footer>
+      <footer class="login-footer">
+        <a href="./pages/privacy_policy.html">Privacy Policy</a>
+        <a href="./pages/legal_notice.html">Legal notice</a>
+      </footer>
     </div>
-</body>
+  </body>
 </html>
