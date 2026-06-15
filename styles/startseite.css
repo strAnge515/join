@@ -16,8 +16,8 @@ aside {
 .wrapper {
   display: flex;
   flex-direction: column;
-  opacity: 0;
-  animation: opacity 1s ease-in-out forwards;
+  /* opacity: 0;
+  animation: opacity 1s ease-in-out forwards; */
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
@@ -231,7 +231,28 @@ h1 {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.aside-logo,
+.start-screen-logo {
+  fill: #2a3647;
+  position: absolute;
+  top: 20px;
+  left: 60px;
+  width: 100px;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  animation: logoMovementDesktop 1s ease-in-out forwards;
+}
+
+.start-screen-background {
+  animation: hideStartScreenBackground 800ms ease-in-out forwards;
+  background-color: #eeeeee;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1;
+  position: absolute;
+}
+
+/* .aside-logo,
 .aside-logo-signup {
   position: absolute;
   top: 20px;
@@ -240,9 +261,9 @@ h1 {
   opacity: 1;
   display: flex;
   justify-content: center;
-}
+} */
 
-.aside-logo.logo-animation-active {
+/* .aside-logo.logo-animation-active {
   animation: logoMovement 1s ease-in-out forwards;
 }
 
@@ -254,7 +275,7 @@ h1 {
 .aside-logo-signup img {
   width: 100%;
   margin: 50px;
-}
+} */
 
 .login-footer {
   position: absolute;
@@ -325,25 +346,27 @@ h1 {
   display: none;
 }
 
-@keyframes logoMovement {
+@keyframes logoMovementDesktop {
   from {
+    position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+    transform: scale(4);
   }
 
   to {
-    top: 20px;
+    /* top: 20px;
     left: 60px;
-    transform: translate(0, 0);
-    width: 100px;
-    opacity: 1;
+    transform: translate(0, 0); */
+
+    transform: scale(1);
+    fill: #2a3647;
   }
 }
 
-@keyframes opacity {
+/* @keyframes opacity {
   from {
     opacity: 0;
   }
@@ -351,9 +374,9 @@ h1 {
   to {
     opacity: 1;
   }
-}
+} */
 
-@keyframes hideMobileStartScreen {
+@keyframes hideStartScreenBackground {
   to {
     background-color: transparent;
     pointer-events: none;
@@ -386,7 +409,7 @@ h1 {
   }
 
   /* .aside-logo, */
-  .aside-logo-signup {
+  /* .aside-logo-signup {
     position: static;
     width: 100%;
     justify-content: flex-start;
@@ -394,20 +417,28 @@ h1 {
     margin: 0;
     animation: none;
     box-sizing: border-box;
-  }
+  } */
 
   /* .aside-logo img, */
-  .aside-logo-signup img {
+  /* .aside-logo-signup img {
     width: 64px;
     margin: 0;
-  }
+  } */
 
   /* .aside-logo {
     transition: opacity 0.3s ease;
   } */
 
-  .wrapper {
+  /* .wrapper {
     min-height: auto;
+  } */
+
+  .start-screen-background {
+    background-color: var(--color-primary);
+  }
+
+  .start-screen-logo {
+    fill: white;
   }
 
   header {
