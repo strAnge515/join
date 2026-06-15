@@ -23,6 +23,10 @@ aside {
   margin: 0 auto;
 }
 
+#signup-form {
+  display: none;
+}
+
 header {
   display: flex;
   justify-content: flex-end;
@@ -282,15 +286,19 @@ h1 {
 }
 
 .back-arrow {
-  font-size: 32px;
-  color: var(--color-accent);
+  left: 60px;
   position: absolute;
-  top: 55px;
-  left: 30px;
+  top: 60px;
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+  border: none;
+  background: url('../assets/img/arrow-left-line.svg') no-repeat center center;
 }
 
 .back-arrow:hover {
-  color: var(--color-accent);
+  border-radius: 50%;
+  background-color: #eeeeee;
 }
 
 .toast-message {
