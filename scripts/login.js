@@ -9,74 +9,73 @@ const logo = document.querySelector('.aside-logo');
 const mobileStartScreen = document.getElementById('mobile-start-screen');
 const form = document.getElementById('login-form');
 const signUpButton = document.getElementById('sign-up-button');
+const backArrow = document.getElementById('back-arrow');
 const guestButton = document.getElementById('guest-login-btn');
 const togglePassword = document.getElementById('toggle-password');
 const passwordInput = document.getElementById('login-password');
 const loginError = document.getElementById('login-error');
 
-function initLogoAnimation() {
-  if (!logo || window.innerWidth <= 768) return;
-  if (isPageReload()) sessionStorage.removeItem('logoPlayedDesktop');
-  if (sessionStorage.getItem('logoPlayedDesktop') === 'true') return;
-  logo.classList.add('logo-animation-active');
-  sessionStorage.setItem('logoPlayedDesktop', 'true');
-}
+// function initLogoAnimation() {
+//   if (!logo || window.innerWidth <= 768) return;
+//   if (isPageReload()) sessionStorage.removeItem('logoPlayedDesktop');
+//   if (sessionStorage.getItem('logoPlayedDesktop') === 'true') return;
+//   logo.classList.add('logo-animation-active');
+//   sessionStorage.setItem('logoPlayedDesktop', 'true');
+// }
 
-function playLogoAnimation() {
-  logo.classList.add('logo-animation-active');
-  sessionStorage.setItem('logoAnimationPlayed', 'true');
-}
+// function playLogoAnimation() {
+//   logo.classList.add('logo-animation-active');
+//   sessionStorage.setItem('logoAnimationPlayed', 'true');
+// }
 
-function resetLogoAnimation() {
-  sessionStorage.removeItem('logoAnimationPlayed');
-  playLogoAnimation();
-}
+// function resetLogoAnimation() {
+//   sessionStorage.removeItem('logoAnimationPlayed');
+//   playLogoAnimation();
+// }
 
-function isPageReload() {
-  const navigation = performance.getEntriesByType('navigation')[0];
-  return navigation?.type === 'reload';
-}
+// function isPageReload() {
+//   const navigation = performance.getEntriesByType('navigation')[0];
+//   return navigation?.type === 'reload';
+// }
 
-function isMobileView() {
-  return window.innerWidth <= 768;
-}
+// function isMobileView() {
+//   return window.innerWidth <= 768;
+// }
 
-function initMobileStartScreen() {
-  if (!shouldShowMobileStartScreen()) {
-    hideMobileStartScreen();
-    return;
-  }
-  // document.body.classList.add('mobile-start-active');
-  document
-    .getElementById('mobileStartScreenLogo')
-    .classList.add('logo-animation');
-  document
-    .getElementById('mobile-start-screen')
-    .classList.add('background-animation');
-  sessionStorage.setItem('logoPlayedMobile', 'true');
-  setTimeout(hideMobileStartScreen, 1000);
-}
+// function initMobileStartScreen() {
+//   if (!shouldShowMobileStartScreen()) {
+//     hideMobileStartScreen();
+//     return;
+//   }
+//   // document.body.classList.add('mobile-start-active');
+//   document
+//     .getElementById('mobileStartScreenLogo')
+//     .classList.add('logo-animation');
+//   document
+//     .getElementById('mobile-start-screen')
+//     .classList.add('background-animation');
+//   sessionStorage.setItem('logoPlayedMobile', 'true');
+//   setTimeout(hideMobileStartScreen, 1000);
+// }
 
-function shouldShowMobileStartScreen() {
-  if (isPageReload()) sessionStorage.removeItem("logoPlayedMobile");
+// function shouldShowMobileStartScreen() {
+//   if (isPageReload()) sessionStorage.removeItem('logoPlayedMobile');
+//   const alreadyShown = sessionStorage.getItem('logoPlayedMobile');
+//   return window.innerWidth <= 768 && alreadyShown !== 'true';
+// }
 
-  const alreadyShown = sessionStorage.getItem("logoPlayedMobile");
-  return isMobileView() && alreadyShown !== "true";
-}
-
-
-function hideMobileStartScreen() {
-  document.body.classList.remove('mobile-start-active');
-  document
-    .getElementById('mobileStartScreenLogo')
-    .classList.remove('logo-animation');
-  document
-    .getElementById('mobileStartScreenLogo')
-    .classList.add('logo-end-state');
-    if(window.innerWidth <= 768 )
-  document.getElementById('mobile-start-screen').style.display = 'flex';
-  // if (mobileStartScreen) mobileStartScreen.remove();
-}
+// function hideMobileStartScreen() {
+//   document.body.classList.remove('mobile-start-active');
+//   document
+//     .getElementById('mobileStartScreenLogo')
+//     .classList.remove('logo-animation');
+//   document
+//     .getElementById('mobileStartScreenLogo')
+//     .classList.add('logo-end-state');
+//     if(window.innerWidth <= 768 )
+//   document.getElementById('mobile-start-screen').style.display = 'flex';
+//   // if (mobileStartScreen) mobileStartScreen.remove();
+// }
 
 /**
  * Handles the login form submission.
@@ -151,8 +150,15 @@ function togglePasswordVisibility() {
     : './assets/img/eye-off.svg';
 }
 
-function handleSignUpClick() {
-  window.location.href = './pages/signup.html';
+function toggleSignUpLogIn() {
+  const loginForm = document.getElementById('login-form');
+  const signupForm = document.getElementById('signup-form');
+  const loginHeader = document.getElementById('login-header');
+  const loginVisible = window.getComputedStyle(loginForm).display !== 'none';
+
+  loginForm.style.display = loginVisible ? 'none' : 'flex';
+  signupForm.style.display = loginVisible ? 'flex' : 'none';
+  loginHeader.style.display = loginVisible ? 'none' : 'flex';
 }
 
 function handleGuestLogin() {
@@ -169,7 +175,8 @@ function handleGuestLogin() {
 }
 
 form.addEventListener('submit', handleLogin);
-signUpButton.addEventListener('click', handleSignUpClick);
+signUpButton.addEventListener('click', toggleSignUpLogIn);
+backArrow.addEventListener('click', toggleSignUpLogIn);
 guestButton.addEventListener('click', handleGuestLogin);
 togglePassword.addEventListener('click', togglePasswordVisibility);
 

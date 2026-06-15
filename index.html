@@ -7,11 +7,14 @@
     <link rel="icon" type="image/png" href="./assets/img/join_logo.svg" />
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./styles/startseite.css" />
+    <!-- <link rel="stylesheet" href="./styles/signup.css" /> -->
     <script type="module" src="./scripts/login.js" defer></script>
+    <script type="module" src="./scripts/signup.js" defer></script>
   </head>
 
-  <body class="mobile-start-active">
-    <div class="mobile-start-screen" id="mobile-start-screen">
+  <body class="">
+    <div class="start-screen-background" >
+    <div class="start-screen-logo" id="startScreen">
       <!-- <img src="./assets/img/screen_logo.svg" alt="Join Logo" /> -->
       <svg
         width="101"
@@ -37,12 +40,13 @@
         />
       </svg>
     </div>
+    </div>
 
-    <aside>
+    <!-- <aside>
       <div class="aside-logo">
         <img src="./assets/img/join_logo.svg" alt="joinlogo" />
       </div>
-    </aside>
+    </aside> -->
 
     <div class="wrapper">
       <main>
@@ -88,12 +92,95 @@
             </button>
           </div>
         </form>
+        <form id="signup-form" novalidate>
+          <button class="back-arrow" id="back-arrow">
+          </button>
+          <h1>Sign up</h1>
+          <div class="seperator"></div>
+          <div class="input">
+            <div class="signup-field">
+              <div class="input-field-wrapper">
+                <input type="text" id="signup-name" placeholder="Name" />
+                <img
+                  src="../assets/img/contacts/person.svg"
+                  alt=""
+                  class="input-icon"
+                />
+              </div>
+              <small class="signup-field-error" id="signup-name-error"></small>
+            </div>
+            <div class="signup-field">
+              <div class="input-field-wrapper">
+                <input type="email" id="signup-email" placeholder="Email" />
+                <img
+                  src="../assets/img/contacts/mail.svg"
+                  alt=""
+                  class="input-icon"
+                />
+              </div>
+              <small class="signup-field-error" id="signup-email-error"></small>
+            </div>
+            <div class="signup-field">
+              <div class="input-field-wrapper">
+                <input
+                  type="password"
+                  id="signup-password"
+                  placeholder="Password"
+                />
+                <img
+                  src="../assets/img/lock.svg"
+                  alt=""
+                  class="input-icon input-icon--toggle"
+                  id="toggle-signup-password"
+                />
+              </div>
+              <small
+                class="signup-field-error"
+                id="signup-password-error"
+              ></small>
+            </div>
+            <div class="signup-field">
+              <div class="input-field-wrapper">
+                <input
+                  type="password"
+                  id="signup-confirm-password"
+                  placeholder="Confirm Password"
+                />
+                <img
+                  src="../assets/img/lock.svg"
+                  alt=""
+                  class="input-icon input-icon--toggle"
+                  id="toggle-confirm-password"
+                />
+              </div>
+              <small
+                class="signup-field-error"
+                id="signup-confirm-error"
+              ></small>
+            </div>
+          </div>
+          <div class="privacy-policy-wrapper">
+            <input type="checkbox" id="accept-privacy" />
+            <label for="accept-privacy"
+              >I accept the
+              <a href="./privacy_policy.html" class="privacy-link"
+                >Privacy policy</a
+              ></label
+            >
+          </div>
+          <button type="submit" class="log-in-button" id="signup-btn" disabled>
+            Sign up
+          </button>
+        </form>
       </main>
 
-      <header>
+      <header id="login-header">
         <p>Not a Join user?</p>
         <button id="sign-up-button" class="sign-up-button">Sign up</button>
       </header>
+
+          </div>
+    <div class="toast-message" id="signup-toast">You Signed Up successfully</div>
 
       <footer class="login-footer">
         <a href="./pages/privacy_policy.html">Privacy Policy</a>
