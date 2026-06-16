@@ -16,8 +16,6 @@ aside {
 .wrapper {
   display: flex;
   flex-direction: column;
-  /* opacity: 0;
-  animation: opacity 1s ease-in-out forwards; */
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
@@ -252,31 +250,6 @@ h1 {
   position: absolute;
 }
 
-/* .aside-logo,
-.aside-logo-signup {
-  position: absolute;
-  top: 20px;
-  left: 60px;
-  width: 100px;
-  opacity: 1;
-  display: flex;
-  justify-content: center;
-} */
-
-/* .aside-logo.logo-animation-active {
-  animation: logoMovement 1s ease-in-out forwards;
-}
-
-.aside-logo-signup {
-  animation: none;
-}
-
-.aside-logo img,
-.aside-logo-signup img {
-  width: 100%;
-  margin: 50px;
-} */
-
 .login-footer {
   position: absolute;
   bottom: 20px;
@@ -357,24 +330,10 @@ h1 {
   }
 
   to {
-    /* top: 20px;
-    left: 60px;
-    transform: translate(0, 0); */
-
     transform: scale(1);
     fill: #2a3647;
   }
 }
-
-/* @keyframes opacity {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-} */
 
 @keyframes hideStartScreenBackground {
   to {
@@ -407,31 +366,6 @@ h1 {
   .aside-logo {
     display: none;
   }
-
-  /* .aside-logo, */
-  /* .aside-logo-signup {
-    position: static;
-    width: 100%;
-    justify-content: flex-start;
-    padding: 37px 0 0 38px;
-    margin: 0;
-    animation: none;
-    box-sizing: border-box;
-  } */
-
-  /* .aside-logo img, */
-  /* .aside-logo-signup img {
-    width: 64px;
-    margin: 0;
-  } */
-
-  /* .aside-logo {
-    transition: opacity 0.3s ease;
-  } */
-
-  /* .wrapper {
-    min-height: auto;
-  } */
 
   .start-screen-background {
     background-color: var(--color-primary);
@@ -526,18 +460,6 @@ h1 {
     white-space: normal;
   }
 
-  /* .mobile-start-screen {
-    position: fixed;
-    inset: 0;
-    background-color: #2a3647;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    animation: hideMobileStartScreen 800ms ease-in-out forwards;
-    animation-delay: 200ms;
-  } */
-
   .background-animation {
     position: fixed;
     inset: 0;
@@ -555,13 +477,6 @@ h1 {
     pointer-events: none;
   }
 
-  /* #mobileStartScreenLogo {
-    width: 100px;
-    animation: moveMobileStartLogo 800ms ease-in-out forwards;
-    animation-delay: 200ms;
-    fill: white;
-  } */
-
   .logo-animation {
     animation: moveMobileStartLogo 800ms ease-in-out forwards;
     animation-delay: 200ms;
@@ -576,15 +491,5 @@ h1 {
     fill: var(--color-primary);
     width: 64px;
     height: auto;
-    /* margin: 37px 0 0 38px; */
   }
-
-  /* body.mobile-start-active .aside-logo,
-  body.mobile-start-active .wrapper {
-    opacity: 0;
-  }
-  body:not(.mobile-start-active) .aside-logo,
-  body:not(.mobile-start-active) .wrapper {
-    opacity: 1;
-  } */
 }
