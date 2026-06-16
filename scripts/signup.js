@@ -95,7 +95,7 @@ function showSuccessToast() {
 function toggleVisibility(input, icon) {
   const isPassword = input.type === 'password';
   input.type = isPassword ? 'text' : 'password';
-  icon.src = isPassword ? '../assets/img/eye.svg' : '../assets/img/lock.svg';
+  icon.src = isPassword ? './assets/img/eye.svg' : './assets/img/lock.svg';
 }
 
 privacyCheckbox.addEventListener('change', updateSignupButtonState);
