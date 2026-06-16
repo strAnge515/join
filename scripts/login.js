@@ -135,6 +135,3 @@ signUpButton.addEventListener('click', toggleSignUpLogIn);
 backArrow.addEventListener('click', toggleSignUpLogIn);
 guestButton.addEventListener('click', handleGuestLogin);
 togglePassword.addEventListener('click', togglePasswordVisibility);
-
-initLogoAnimation();
-initMobileStartScreen();

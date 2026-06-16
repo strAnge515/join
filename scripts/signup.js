@@ -83,7 +83,7 @@ function showSuccessToast() {
   const toast = document.getElementById('signup-toast');
   toast.classList.add('toast-visible');
   setTimeout(() => {
-    window.location.href = '../index.html';
+    window.location.href = './index.html';
   }, 2000);
 }
 
