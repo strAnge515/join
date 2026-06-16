@@ -79,7 +79,14 @@ h1 {
 .input {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+  width: 100%;
+}
+
+.sign-up-input {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
   width: 100%;
 }
 
@@ -129,8 +136,8 @@ h1 {
 
 .error-message {
   color: var(--color-error);
-  font-size: 13px;
-  min-height: 16px;
+  font-size: 16px;
+  min-height: 19px;
   text-align: center;
   width: 100%;
 }
@@ -138,16 +145,13 @@ h1 {
 .signup-field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
 .signup-field-error {
   color: var(--color-error);
-  font-size: 13px;
-}
-
-.signup-field-error:empty {
-  display: none;
+  font-size: 16px;
+  min-height: 19px;
+  display: block;
 }
 
 .input-field-wrapper input.input-error {

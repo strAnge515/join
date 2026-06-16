@@ -80,9 +80,32 @@ function togglePasswordVisibility() {
 }
 
 /**
+ * Clears all input fields and validation messages in the login and signup forms.
+ *
+ * Resets the value of every input element within the login and signup forms,
+ * removes the "input-error" CSS class from those inputs, and clears the text
+ * content of all signup field error messages and general error messages.
+ */
+function clearFormInputsLogInAndSignUp() {
+  document
+    .querySelectorAll('#login-form input, #signup-form input')
+    .forEach((input) => {
+      input.value = '';
+      input.classList.remove('input-error');
+    });
+  document.querySelectorAll('.signup-field-error').forEach((error) => {
+    error.textContent = '';
+  });
+  document.querySelectorAll('.error-message').forEach((error) => {
+    error.textContent = '';
+  });
+}
+
+/**
  * Toggles visibility between the login and signup forms.
  */
 function toggleSignUpLogIn() {
+  clearFormInputsLogInAndSignUp();
   const loginForm = document.getElementById('login-form');
   const signupForm = document.getElementById('signup-form');
   const loginHeader = document.getElementById('login-header');
