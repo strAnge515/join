@@ -149,7 +149,7 @@ function getAssignedUserNames(assignedTo) {
   return assignedTo.map((u) => {
     if (typeof u === 'string') return u;
     if (u.firstName && u.lastName) return `${u.firstName} ${u.lastName}`;
-    if (u.id === 'guest') return 'Guest User';
+    if (u.id === 'guest') return 'Guest';
     return u.name || 'Unknown';
   });
 }

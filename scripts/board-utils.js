@@ -1,3 +1,5 @@
+import { createExtraAvatar } from './board-template.js';
+
 /**
  * Extracts up to two initials from a full name string.
  * @param {string} name - The full name of the user.
@@ -19,7 +21,15 @@ export function getInitials(name) {
  * @returns {string} Hex color string.
  */
 export function getAvatarColor(index) {
-  const colors = ['#29abe2', '#9b59b6', '#2ecc71', '#e67e22', '#e74c3c', '#607d8b', '#1565c0'];
+  const colors = [
+    '#29abe2',
+    '#9b59b6',
+    '#2ecc71',
+    '#e67e22',
+    '#e74c3c',
+    '#607d8b',
+    '#1565c0',
+  ];
   return colors[index % colors.length];
 }
 
@@ -71,7 +81,12 @@ export function normalize(value) {
  * @returns {string} HTML-safe escaped string.
  */
 export function escapeHtml(value) {
-  return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
 }
 
 /**
@@ -81,13 +96,18 @@ export function escapeHtml(value) {
  */
 export function renderAssignedUsers(users) {
   if (!users.length) return '';
-  return users
+  let assignedAvatars = users
+    .slice(0, 3)
     .map((user, index) => {
       const initials = getInitials(user);
       const color = getAvatarColor(index);
       return `<div class="avatar" style="background:${color};">${initials}</div>`;
     })
     .join('');
+  if (users.length > 3) {
+    assignedAvatars += createExtraAvatar(users.length - 3);
+  }
+  return assignedAvatars;
 }
 
 /**
@@ -105,12 +125,27 @@ export function getSubtaskInfo(subtasks) {
   return { total, done, percent };
 }
 
+/**
+ * Creates the HTML markup for mobile navigation buttons that allow
+ * moving a task between different status columns.
+ *
+ * @param {string[]} currentStatus - List of available target statuses.
+ * @param {Object} task - The task for which the navigation buttons are created.
+ * @param {string} task.status - The current status of the task.
+ * @returns {string} HTML string containing the mobile navigation buttons.
+ */
 export function createNavButtonMobile(currentStatus, task) {
- return currentStatus.map((status, index) => `<button type="button" class="mobile-move-section" data-status="${status}">
-    ${index === 0 && task.status !== 'to do' ?
-   '<img src="../assets/img/arrow_upward.svg" alt="arrow-up">' :
-   '<img src="../assets/img/arrow_downward.svg" alt="arrow-down"></img>'}<span>${status}</span></button>`).join('');
+  return currentStatus
+    .map(
+      (
+        status,
+        index,
+      ) => `<button type="button" class="mobile-move-section" data-status="${status}">
+    ${
+      index === 0 && task.status !== 'to do'
+        ? '<img src="../assets/img/arrow_upward.svg" alt="arrow-up">'
+        : '<img src="../assets/img/arrow_downward.svg" alt="arrow-down"></img>'
+    }<span>${status}</span></button>`,
+    )
+    .join('');
 }
-
-
-
