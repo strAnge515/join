@@ -183,7 +183,7 @@ function choseUserName(user) {
   } else if (user.name) {
     userName = user.name;
   } else if (user.id === 'guest') {
-    userName = 'Guest User';
+    userName = 'Guest';
   }
   return userName;
 }
