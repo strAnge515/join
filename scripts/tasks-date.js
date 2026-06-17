@@ -173,5 +173,7 @@ export function parseEditDate(dateValue) {
   return { day: dd, month: mm, year, formattedDate: `${year}-${mm}-${dd}` };
 }
 
+window.validateInputDate = validateInputDate;
+
 
 
