@@ -1,5 +1,6 @@
 .legal-page {
   color: #000000;
+  overflow-wrap: break-word;
 }
 
 .legal-header {

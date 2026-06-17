@@ -16,11 +16,13 @@ aside {
 .wrapper {
   display: flex;
   flex-direction: column;
-  opacity: 0;
-  animation: opacity 1s ease-in-out forwards;
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
+}
+
+#signup-form {
+  display: none;
 }
 
 header {
@@ -77,7 +79,14 @@ h1 {
 .input {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+  width: 100%;
+}
+
+.sign-up-input {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
   width: 100%;
 }
 
@@ -127,8 +136,8 @@ h1 {
 
 .error-message {
   color: var(--color-error);
-  font-size: 13px;
-  min-height: 16px;
+  font-size: 16px;
+  min-height: 19px;
   text-align: center;
   width: 100%;
 }
@@ -136,16 +145,13 @@ h1 {
 .signup-field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
 .signup-field-error {
   color: var(--color-error);
-  font-size: 13px;
-}
-
-.signup-field-error:empty {
-  display: none;
+  font-size: 16px;
+  min-height: 19px;
+  display: block;
 }
 
 .input-field-wrapper input.input-error {
@@ -227,17 +233,24 @@ h1 {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.aside-logo img {
-  width: 100%;
-  margin: 50px;
-}
-
-.aside-logo {
-  width: 100%;
-  margin-bottom: 40px;
+.start-screen-logo {
+  fill: #2a3647;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 100px;
+  opacity: 1;
   display: flex;
   justify-content: center;
-  animation: logoMovement 1s ease-in-out forwards;
+  animation: logoMovementDesktop 1s ease-in-out forwards;
+}
+
+.start-screen-background {
+  animation: hideStartScreenBackground 800ms ease-in-out forwards;
+  background-color: #eeeeee;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1;
   position: absolute;
 }
 
@@ -271,15 +284,19 @@ h1 {
 }
 
 .back-arrow {
-  font-size: 32px;
-  color: var(--color-accent);
+  left: 60px;
   position: absolute;
-  top: 55px;
-  left: 30px;
+  top: 60px;
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+  border: none;
+  background: url('../assets/img/arrow-left-line.svg') no-repeat center center;
 }
 
 .back-arrow:hover {
-  color: var(--color-accent);
+  border-radius: 50%;
+  background-color: #eeeeee;
 }
 
 .toast-message {
@@ -302,31 +319,38 @@ h1 {
   bottom: 45vh;
 }
 
-@keyframes logoMovement {
+.mobile-start-screen {
+  display: none;
+}
+
+@keyframes logoMovementDesktop {
   from {
+    position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+    transform: scale(4);
   }
 
   to {
-    top: 20px;
-    left: 60px;
-    transform: translate(0, 0);
-    width: 100px;
-    opacity: 1;
+    transform: scale(1);
+    fill: #2a3647;
   }
 }
 
-@keyframes opacity {
-  from {
-    opacity: 0;
-  }
-
+@keyframes hideStartScreenBackground {
   to {
-    opacity: 1;
+    background-color: transparent;
+    pointer-events: none;
+  }
+}
+
+@keyframes moveMobileStartLogo {
+  to {
+    transform: translate(calc(-50vw + 70px), calc(-50vh + 76px));
+    fill: var(--color-primary);
+    width: 64px;
   }
 }
 
@@ -340,23 +364,22 @@ h1 {
   aside {
     width: 100%;
     height: auto;
+    align-items: flex-start;
   }
 
   .aside-logo {
-    position: static;
-    justify-content: flex-start;
-    padding: 37px 0 0 38px;
-    margin: 0;
-    animation: none;
+    display: none;
   }
 
-  .aside-logo img {
+  .start-screen-background {
+    background-color: var(--color-primary);
+  }
+
+  .start-screen-logo {
+    top: 37px;
+    left: 38px;
     width: 64px;
-    margin: 0;
-  }
-
-  .wrapper {
-    min-height: auto;
+    fill: white;
   }
 
   header {
@@ -378,7 +401,7 @@ h1 {
     width: calc(100% - 32px);
     max-width: 344px;
     min-height: auto;
-    margin: 80px auto 0;
+    margin: 225px auto 0;
     padding: 32px 16px;
     gap: 18px;
   }
@@ -440,27 +463,37 @@ h1 {
     text-align: center;
     white-space: normal;
   }
-}
 
-@media (max-width: 350px) {
-  .aside-logo img {
-    width: 40px;
+  .background-animation {
+    position: fixed;
+    inset: 0;
+    background-color: #2a3647;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    animation: hideMobileStartScreen 800ms ease-in-out forwards;
+    animation-delay: 200ms;
   }
 
-  #signup-form {
-    margin: 25px auto 0;
+  .background-end-state {
+    background-color: transparent;
+    pointer-events: none;
   }
 
-  .login-footer {
-    margin-top: 15px;
+  .logo-animation {
+    animation: moveMobileStartLogo 800ms ease-in-out forwards;
+    animation-delay: 200ms;
+    fill: white;
+    width: 100px;
   }
 
-  .back-arrow {
-    
-    left: 19px;
-  }
-
-  .aside-logo {
-    padding: 22px 0 0 38px;
+  .logo-end-state {
+    position: absolute;
+    top: 37px;
+    left: 38px;
+    fill: var(--color-primary);
+    width: 64px;
+    height: auto;
   }
 }
