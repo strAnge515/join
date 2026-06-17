@@ -72,6 +72,10 @@
     font-size: 16px;
   }
 
+  .prio-btn {
+    height: 41px;
+  }
+
   .wrapper-add-task-left-side,
   .wrapper-add-task-right-side,
   .task-form-textarea,
@@ -98,6 +102,7 @@
 
   .task-form-input {
     justify-content: flex-start;
+    height: 40px;
   }
 
   .task-form-input::placeholder,
@@ -137,6 +142,12 @@
   .required-wrapper {
     display: none;
   }
+
+  .btn {
+    height: 56px;
+    padding: 0px 20px;
+  }
+  
 }
 
 @media (max-width: 429px) {
@@ -154,4 +165,8 @@
   .main-content {
     padding: 40px 16px 80px;
   }
+
+      .btn-action-wrapper {
+        gap: 16px;
+      }
 }

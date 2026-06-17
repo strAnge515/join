@@ -170,6 +170,7 @@ function initDropdownsEventlistener() {
   toggleCategoryDropdown();
   stopAssignedInputBubbling();
   dropDownCloseListener();
+  categoryCloseListener();
 }
 
 /**
@@ -185,6 +186,19 @@ function dropDownCloseListener() {
       arrowDownAssigned.classList.remove('d-none');
       arrowUpAssigned.classList.add('d-none');
       assignedToggle.classList.remove('open');
+    }
+  });
+}
+
+function categoryCloseListener() {
+  document.addEventListener('click', (event) => {
+    if (!selectCategoryButton.contains(event.target)) {
+     dropdownOptionsContainer.classList.add('d-none');
+    document.getElementById('arrow-down-category').classList.remove('d-none');
+    document.getElementById('arrow-up-category').classList.add('d-none');
+    selectCategoryButton.classList.remove('open');
+       selectCategoryButton.classList.remove('was-submitted-custom');
+    errorTextCategory.classList.add('d-none');
     }
   });
 }
