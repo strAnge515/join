@@ -29,15 +29,25 @@ async function handleLogin(e) {
     showLoginError();
     return;
   }
-  sessionStorage.setItem(
-    'currentUser',
-    JSON.stringify({
-      name: user.name,
-      email: user.email,
-      id: user.id,
-    }),
-  );
-  window.location.href = './pages/summary.html';
+  sessionStorage.setItem("currentUser", JSON.stringify({
+    name: user.name,
+    email: user.email,
+    id: user.id,
+  }));
+
+  sessionStorage.setItem("showMobileGreeting", "true");
+  window.location.href = "./pages/summary.html";
+}
+
+function handleGuestLogin() {
+  sessionStorage.setItem("currentUser", JSON.stringify({
+    name: "Guest",
+    email: "",
+    id: "guest",
+  }));
+
+  sessionStorage.setItem("showMobileGreeting", "true");
+  window.location.href = "./pages/summary.html";
 }
 
 /**
@@ -113,21 +123,6 @@ function toggleSignUpLogIn() {
   loginForm.style.display = loginVisible ? 'none' : 'flex';
   signupForm.style.display = loginVisible ? 'flex' : 'none';
   loginHeader.style.display = loginVisible ? 'none' : 'flex';
-}
-
-/**
- * Handles guest login by creating a temporary "Guest" user session.
- */
-function handleGuestLogin() {
-  sessionStorage.setItem(
-    'currentUser',
-    JSON.stringify({
-      name: 'Guest',
-      email: '',
-      id: 'guest',
-    }),
-  );
-  window.location.href = './pages/summary.html';
 }
 
 form.addEventListener('submit', handleLogin);
