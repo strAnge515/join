@@ -99,7 +99,7 @@ function clearFormInputsLogInAndSignUp() {
   document.querySelectorAll('.error-message').forEach((error) => {
     error.textContent = '';
   });
-  // document.getElementById('accept-privacy').removeAttribute('value');
+  document.getElementById('accept-privacy').checked = false;
 }
 
 /**
