@@ -15,10 +15,6 @@ const togglePassword = document.getElementById('toggle-password');
 const passwordInput = document.getElementById('login-password');
 const loginError = document.getElementById('login-error');
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 /**
  * Handles the login form submission.
  * @param {Event} e - The form submission event.
@@ -33,28 +29,6 @@ async function handleLogin(e) {
     showLoginError();
     return;
   }
-<<<<<<< HEAD
-
-  sessionStorage.setItem("currentUser", JSON.stringify({
-    name: user.name,
-    email: user.email,
-    id: user.id,
-  }));
-
-  sessionStorage.setItem("showMobileGreeting", "true");
-  window.location.href = "./pages/summary.html";
-}
-
-function handleGuestLogin() {
-  sessionStorage.setItem("currentUser", JSON.stringify({
-    name: "Guest",
-    email: "",
-    id: "guest",
-  }));
-
-  sessionStorage.setItem("showMobileGreeting", "true");
-  window.location.href = "./pages/summary.html";
-=======
   sessionStorage.setItem(
     'currentUser',
     JSON.stringify({
@@ -64,7 +38,6 @@ function handleGuestLogin() {
     }),
   );
   window.location.href = './pages/summary.html';
->>>>>>> master
 }
 
 /**
@@ -142,8 +115,6 @@ function toggleSignUpLogIn() {
   loginHeader.style.display = loginVisible ? 'none' : 'flex';
 }
 
-<<<<<<< HEAD
-=======
 /**
  * Handles guest login by creating a temporary "Guest" user session.
  */
@@ -159,7 +130,6 @@ function handleGuestLogin() {
   window.location.href = './pages/summary.html';
 }
 
->>>>>>> master
 form.addEventListener('submit', handleLogin);
 signUpButton.addEventListener('click', toggleSignUpLogIn);
 backArrow.addEventListener('click', toggleSignUpLogIn);
