@@ -28,7 +28,7 @@ export function updateMobileProfile() {
 
 /** Initializes the mobile greeting intro for first-time visitors on mobile devices. It checks if the greeting has already been shown in the current session and if the device is mobile. If the greeting should be shown, it sets a flag in session storage to prevent it from being shown again and displays the greeting for 2 seconds before showing the summary content.
  */
-/*export function initMobileGreetingIntro() {
+export function initMobileGreetingIntro() {
   if (!shouldShowMobileGreeting()) {
     showSummaryContent();
     return;
@@ -36,7 +36,7 @@ export function updateMobileProfile() {
 
   sessionStorage.removeItem("showMobileGreeting");
   setTimeout(showSummaryContent, 2000);
-}*/
+}
 
 /** Retrieves the current user information from session storage, formats the user's name, and returns an object containing the user's first name and last name. If no user is found or if the user's name is not properly formatted, the function returns null.
  * @returns {Object|null} An object containing the user's first name and last name, or null if no user is found or if the name is not properly formatted.
