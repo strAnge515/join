@@ -162,7 +162,7 @@
   .card-text span,
   .bottom-card span {
     width: auto;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.15;
     text-align: center;
   }
@@ -181,12 +181,12 @@
   }
 
   .urgent-right h3 {
-    font-size: 15px;
+    font-size: 16px;
     margin-bottom: 4px;
   }
 
   .urgent-right p {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   body.mobile-greeting-active .headline-row,
@@ -231,5 +231,9 @@
 @media (max-width: 420px) {
   .content {
     padding: 48px 16px 80px;
+  }
+
+  .card-separator {
+    height: 68px;
   }
 }
