@@ -15,67 +15,6 @@ const togglePassword = document.getElementById('toggle-password');
 const passwordInput = document.getElementById('login-password');
 const loginError = document.getElementById('login-error');
 
-// function initLogoAnimation() {
-//   if (!logo || window.innerWidth <= 768) return;
-//   if (isPageReload()) sessionStorage.removeItem('logoPlayedDesktop');
-//   if (sessionStorage.getItem('logoPlayedDesktop') === 'true') return;
-//   logo.classList.add('logo-animation-active');
-//   sessionStorage.setItem('logoPlayedDesktop', 'true');
-// }
-
-// function playLogoAnimation() {
-//   logo.classList.add('logo-animation-active');
-//   sessionStorage.setItem('logoAnimationPlayed', 'true');
-// }
-
-// function resetLogoAnimation() {
-//   sessionStorage.removeItem('logoAnimationPlayed');
-//   playLogoAnimation();
-// }
-
-// function isPageReload() {
-//   const navigation = performance.getEntriesByType('navigation')[0];
-//   return navigation?.type === 'reload';
-// }
-
-// function isMobileView() {
-//   return window.innerWidth <= 768;
-// }
-
-// function initMobileStartScreen() {
-//   if (!shouldShowMobileStartScreen()) {
-//     hideMobileStartScreen();
-//     return;
-//   }
-//   // document.body.classList.add('mobile-start-active');
-//   document
-//     .getElementById('mobileStartScreenLogo')
-//     .classList.add('logo-animation');
-//   document
-//     .getElementById('mobile-start-screen')
-//     .classList.add('background-animation');
-//   sessionStorage.setItem('logoPlayedMobile', 'true');
-//   setTimeout(hideMobileStartScreen, 1000);
-// }
-
-// function shouldShowMobileStartScreen() {
-//   if (isPageReload()) sessionStorage.removeItem('logoPlayedMobile');
-//   const alreadyShown = sessionStorage.getItem('logoPlayedMobile');
-//   return window.innerWidth <= 768 && alreadyShown !== 'true';
-// }
-
-// function hideMobileStartScreen() {
-//   document.body.classList.remove('mobile-start-active');
-//   document
-//     .getElementById('mobileStartScreenLogo')
-//     .classList.remove('logo-animation');
-//   document
-//     .getElementById('mobileStartScreenLogo')
-//     .classList.add('logo-end-state');
-//     if(window.innerWidth <= 768 )
-//   document.getElementById('mobile-start-screen').style.display = 'flex';
-//   // if (mobileStartScreen) mobileStartScreen.remove();
-// }
 
 /**
  * Handles the login form submission.
@@ -96,16 +35,25 @@ async function handleLogin(e) {
     return;
   }
 
-  sessionStorage.setItem(
-    'currentUser',
-    JSON.stringify({
-      name: user.name,
-      email: user.email,
-      id: user.id,
-    }),
-  );
+  sessionStorage.setItem("currentUser", JSON.stringify({
+    name: user.name,
+    email: user.email,
+    id: user.id,
+  }));
 
-  window.location.href = './pages/summary.html';
+  sessionStorage.setItem("showMobileGreeting", "true");
+  window.location.href = "./pages/summary.html";
+}
+
+function handleGuestLogin() {
+  sessionStorage.setItem("currentUser", JSON.stringify({
+    name: "Guest",
+    email: "",
+    id: "guest",
+  }));
+
+  sessionStorage.setItem("showMobileGreeting", "true");
+  window.location.href = "./pages/summary.html";
 }
 
 /**
@@ -159,19 +107,6 @@ function toggleSignUpLogIn() {
   loginForm.style.display = loginVisible ? 'none' : 'flex';
   signupForm.style.display = loginVisible ? 'flex' : 'none';
   loginHeader.style.display = loginVisible ? 'none' : 'flex';
-}
-
-function handleGuestLogin() {
-  sessionStorage.setItem(
-    'currentUser',
-    JSON.stringify({
-      name: 'Guest',
-      email: '',
-      id: 'guest',
-    }),
-  );
-
-  window.location.href = './pages/summary.html';
 }
 
 form.addEventListener('submit', handleLogin);

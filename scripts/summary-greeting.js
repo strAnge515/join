@@ -28,15 +28,15 @@ export function updateMobileProfile() {
 
 /** Initializes the mobile greeting intro for first-time visitors on mobile devices. It checks if the greeting has already been shown in the current session and if the device is mobile. If the greeting should be shown, it sets a flag in session storage to prevent it from being shown again and displays the greeting for 2 seconds before showing the summary content.
  */
-export function initMobileGreetingIntro() {
+/*export function initMobileGreetingIntro() {
   if (!shouldShowMobileGreeting()) {
     showSummaryContent();
     return;
   }
 
-  sessionStorage.setItem("mobileGreetingShown", "true");
+  sessionStorage.removeItem("showMobileGreeting");
   setTimeout(showSummaryContent, 2000);
-}
+}*/
 
 /** Retrieves the current user information from session storage, formats the user's name, and returns an object containing the user's first name and last name. If no user is found or if the user's name is not properly formatted, the function returns null.
  * @returns {Object|null} An object containing the user's first name and last name, or null if no user is found or if the name is not properly formatted.
@@ -113,8 +113,10 @@ function formatNamePart(value) {
  * @returns {boolean} True if the mobile greeting should be shown, false otherwise.
  */
 function shouldShowMobileGreeting() {
-  const wasShown = sessionStorage.getItem("mobileGreetingShown");
-  return window.innerWidth <= 768 && wasShown !== "true";
+  return (
+    window.innerWidth <= 768 &&
+    sessionStorage.getItem("showMobileGreeting") === "true"
+  );
 }
 
 /** Shows the summary content by removing the "mobile-greeting-active" class from the body element. This function is called after the mobile greeting intro has been displayed for first-time visitors on mobile devices, allowing the summary content to be visible.
