@@ -83,7 +83,7 @@ function showSuccessToast() {
   const toast = document.getElementById('signup-toast');
   toast.classList.add('toast-visible');
   setTimeout(() => {
-    window.location.href = '../index.html';
+    window.location.href = './index.html';
   }, 2000);
 }
 
@@ -95,7 +95,7 @@ function showSuccessToast() {
 function toggleVisibility(input, icon) {
   const isPassword = input.type === 'password';
   input.type = isPassword ? 'text' : 'password';
-  icon.src = isPassword ? '../assets/img/eye.svg' : '../assets/img/lock.svg';
+  icon.src = isPassword ? './assets/img/eye.svg' : './assets/img/lock.svg';
 }
 
 privacyCheckbox.addEventListener('change', updateSignupButtonState);

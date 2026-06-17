@@ -41,6 +41,7 @@ function initSidebarFeatures() {
   setActiveSidebar();
   setActiveMobileNav();
   setupSidebarToggle();
+  setupBackButton();
 }
 
 /**
@@ -99,12 +100,16 @@ function updateSidebarVisibility(isLoggedIn) {
   }
 }
 
-/** Shows or hides the mobile bottom navigation based on the user's login status.
+/** Toggles the mobile bottom navigation between the logged-in and guest variants based on login status.
  * @param {boolean} isLoggedIn - Indicates whether the user is logged in.
  */
 function updateMobileNavVisibility(isLoggedIn) {
-  const mobileNav = document.querySelector('.mobile-bottom-nav');
-  if (mobileNav) mobileNav.style.display = isLoggedIn ? '' : 'none';
+  const guestNav = document.querySelector('.mobile-bottom-nav--guest');
+  const loggedInNav = document.querySelector(
+    '.mobile-bottom-nav:not(.mobile-bottom-nav--guest)',
+  );
+  if (loggedInNav) loggedInNav.style.display = isLoggedIn ? '' : 'none';
+  if (guestNav) guestNav.style.display = isLoggedIn ? 'none' : '';
 }
 
 /** Sets up the event listener for the sidebar toggle button to manage the opening and closing of the sidebar on smaller screens. */
@@ -113,6 +118,16 @@ function setupSidebarToggle() {
   if (!toggleButton) return;
   toggleButton.addEventListener('click', () => {
     document.body.classList.toggle('sidebar-open');
+  });
+}
+
+/** Wires the legal/help page back button to return to the previous page without triggering bfcache. */
+function setupBackButton() {
+  const backBtn = document.querySelector('.back-btn');
+  if (!backBtn) return;
+  backBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.location.href = document.referrer || '../index.html';
   });
 }
 
