@@ -8,7 +8,7 @@ import { findUserByEmail } from './backend-users.js';
 const logo = document.querySelector('.aside-logo');
 const mobileStartScreen = document.getElementById('mobile-start-screen');
 const form = document.getElementById('login-form');
-const signUpButton = document.getElementById('sign-up-button');
+const signUpButtons = document.querySelectorAll('.sign-up-button');
 const backArrow = document.getElementById('back-arrow');
 const guestButton = document.getElementById('guest-login-btn');
 const togglePassword = document.getElementById('toggle-password');
@@ -99,6 +99,7 @@ function clearFormInputsLogInAndSignUp() {
   document.querySelectorAll('.error-message').forEach((error) => {
     error.textContent = '';
   });
+  // document.getElementById('accept-privacy').removeAttribute('value');
 }
 
 /**
@@ -108,11 +109,13 @@ function toggleSignUpLogIn() {
   clearFormInputsLogInAndSignUp();
   const loginForm = document.getElementById('login-form');
   const signupForm = document.getElementById('signup-form');
-  const loginHeader = document.getElementById('login-header');
+  const loginHeaderDesktop = document.getElementById('login-header-desktop');
+  const loginHeaderMobile = document.getElementById('login-header-mobile');
   const loginVisible = window.getComputedStyle(loginForm).display !== 'none';
   loginForm.style.display = loginVisible ? 'none' : 'flex';
   signupForm.style.display = loginVisible ? 'flex' : 'none';
-  loginHeader.style.display = loginVisible ? 'none' : 'flex';
+  loginHeaderDesktop.classList.toggle('header-hidden');
+  loginHeaderMobile.classList.toggle('header-hidden');
 }
 
 /**
@@ -131,7 +134,11 @@ function handleGuestLogin() {
 }
 
 form.addEventListener('submit', handleLogin);
-signUpButton.addEventListener('click', toggleSignUpLogIn);
+signUpButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    toggleSignUpLogIn();
+  });
+});
 backArrow.addEventListener('click', toggleSignUpLogIn);
 guestButton.addEventListener('click', handleGuestLogin);
 togglePassword.addEventListener('click', togglePasswordVisibility);
