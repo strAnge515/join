@@ -131,6 +131,10 @@
   margin-left: -8px;
 }
 
+.edit-task-modal .avatar--stacked.avatar--extra {
+  background: #2a3647;
+}
+
 .edit-ok-btn-wrapper {
   display: flex;
   justify-content: flex-end;

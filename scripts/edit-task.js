@@ -14,6 +14,7 @@ let editSelectedContacts = [];
 let allContacts = [];
 let outsideClickHandler = null;
 let currentUserData = null;
+const maxVisibleEditAvatars = 3;
 
 /**
  * Closes the edit task modal, resets the scroll behavior and removes the
@@ -253,13 +254,26 @@ function toggleContactSelection(contact, fullName, isSelected) {
 }
 
 /**
+ * Builds the avatar row HTML, capping visible avatars and adding a "+N" overflow bubble.
+ *
+ * @param {Array<Object>} contacts - The selected contacts.
+ * @returns {string} HTML markup for the capped avatar row.
+ */
+function buildEditAvatarsHtml(contacts) {
+  const visible = renderAvatarsForEdit(contacts.slice(0, maxVisibleEditAvatars));
+  const extra = contacts.length - maxVisibleEditAvatars;
+  if (extra <= 0) return visible;
+  return visible + `<div class="avatar avatar--stacked avatar--extra">+${extra}</div>`;
+}
+
+/**
  * Updates the container showing the selected contact avatars.
  *
  * @param {HTMLElement} dialogRef - The reference to the modal dialog.
  */
 function updateAvatarsContainer(dialogRef) {
   const avatarsContainer = dialogRef.querySelector('#edit-assigned-avatars');
-  if (avatarsContainer) avatarsContainer.innerHTML = renderAvatarsForEdit(editSelectedContacts);
+  if (avatarsContainer) avatarsContainer.innerHTML = buildEditAvatarsHtml(editSelectedContacts);
 }
 
 /**
