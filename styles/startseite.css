@@ -387,17 +387,9 @@ h1 {
     fill: white;
   }
 
-<<<<<<< HEAD
-  header {
-    position: static;
-    justify-content: center;
-    margin: 24px 0 19px;
-    gap: 20px;
-=======
   .login-header-mobile {
     display: flex;
     margin-top: clamp(32px, calc(4.857px + 8.482vw), 70px);
->>>>>>> master
   }
 
   .login-header-desktop {
@@ -448,17 +440,6 @@ h1 {
     padding: 0;
   }
 
-<<<<<<< HEAD
-  .login-footer {
-    position: static;
-    transform: none;
-    justify-content: center;
-    margin-bottom: 24px;
-    margin-top: 14px;
-  }
-
-=======
->>>>>>> master
   .back-arrow {
     position: absolute;
     top: 38px;
