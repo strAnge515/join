@@ -114,7 +114,7 @@
     display: none;
   }
 
-  .mobile-bottom-nav--guest {
+  .mobile-bottom-nav.mobile-bottom-nav--guest {
     grid-template-columns: 1fr 20px 1fr 1fr;
   }
 
