@@ -79,7 +79,8 @@ export function insertDate() {
  *
  * @returns {false}
  */
-function showDateError() {
+function showDateError(mesage) {
+  errorTextDate.textContent = mesage;
   dateInputContainer.classList.add('was-submitted-custom');
   errorTextDate.classList.remove('d-none');
   return false;
@@ -107,9 +108,9 @@ export function validateInputDate() {
   const day = dateInputField[0].value;
   const month = dateInputField[1].value;
   const year = dateInputField[2].value;
-  if (!day || !month || !year) return showDateError();
+  if (!day || !month || !year) return showDateError('This field is required');
   dateInput.value = `${year}-${month}-${day}`;
-  if (!dateInput.validity.valid) return showDateError();
+  if (!dateInput.validity.valid) return showDateError('Invalid Date');
   return hideDateError();
 }
 
@@ -157,7 +158,6 @@ export function splitDateString(value) {
   return { day: parts[0], month: parts[1], year: parts[2] };
 }
 
-
 /**
  * Parses a date string and pads the segments for use in the native date picker.
  *
@@ -173,5 +173,4 @@ export function parseEditDate(dateValue) {
   return { day: dd, month: mm, year, formattedDate: `${year}-${mm}-${dd}` };
 }
 
-
-
+window.validateInputDate = validateInputDate;
