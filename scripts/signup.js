@@ -62,6 +62,18 @@ async function createAccount(name, email, password) {
 function updateSignupButtonState() {
   const allFilled = signupInputs.every((input) => input.value.trim() !== '');
   signupBtn.disabled = !(allFilled && privacyCheckbox.checked);
+  updatePrivacyHint(allFilled);
+}
+
+/**
+ * Shows a hint to accept the privacy policy once all fields are filled but the box is unchecked.
+ * @param {boolean} allFilled - Whether every signup input has a value.
+ */
+function updatePrivacyHint(allFilled) {
+  const hint = document.getElementById('signup-privacy-error');
+  if (!hint) return;
+  hint.innerText =
+    allFilled && !privacyCheckbox.checked ? 'Please accept the Privacy policy.' : '';
 }
 
 /**

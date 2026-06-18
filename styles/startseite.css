@@ -3,6 +3,7 @@ body {
   width: 100%;
   background-color: #f5f7f7;
   margin: 0;
+  flex-direction: column;
 }
 
 aside {
@@ -13,24 +14,36 @@ aside {
   flex-direction: column;
 }
 
-.wrapper {
+main {
+  max-width: 1440px;
+  justify-content: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 207px);
+}
+
+.login-header-desktop {
+  display: flex;
   width: 100%;
   max-width: 1440px;
-  margin: 0 auto;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 30px 0px 0 0;
+  padding-right: 30px;
+  gap: 20px;
+}
+
+.login-header-mobile {
+  display: none;
+  gap: 35px;
+  margin-top: 70px;
+  align-items: center;
 }
 
 #signup-form {
   display: none;
-}
-
-header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 30px 30px 0 0;
-  gap: 20px;
+  position: relative;
 }
 
 header p {
@@ -42,10 +55,6 @@ header p {
 }
 
 form {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   min-height: 400px;
   width: 500px;
   display: flex;
@@ -257,10 +266,12 @@ h1 {
 .login-footer {
   position: absolute;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   gap: 24px;
+  max-width: 1440px;
+  width: 100%;
+  justify-content: center;
+  margin-top: 16px;
 }
 
 .login-footer a {
@@ -323,6 +334,10 @@ h1 {
   display: none;
 }
 
+.header-hidden {
+  display: none;
+}
+
 @keyframes logoMovementDesktop {
   from {
     position: fixed;
@@ -361,16 +376,6 @@ h1 {
     min-height: 100vh;
   }
 
-  aside {
-    width: 100%;
-    height: auto;
-    align-items: flex-start;
-  }
-
-  .aside-logo {
-    display: none;
-  }
-
   .start-screen-background {
     background-color: var(--color-primary);
   }
@@ -382,28 +387,44 @@ h1 {
     fill: white;
   }
 
+<<<<<<< HEAD
   header {
     position: static;
     justify-content: center;
     margin: 24px 0 19px;
     gap: 20px;
+=======
+  .login-header-mobile {
+    display: flex;
+    margin-top: clamp(32px, calc(4.857px + 8.482vw), 70px);
+>>>>>>> master
   }
 
-  header p {
-    font-size: 16px;
+  .login-header-desktop {
+    display: none;
+  }
+
+  .header-hidden {
+    display: none;
+  }
+
+  .login-footer {
+    position: static;
+    margin-bottom: 32px;
+    margin-top: 32px;
   }
 
   form {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
     width: calc(100% - 32px);
     max-width: 344px;
     min-height: auto;
     margin: 200px auto 0;
     padding: 32px 16px;
     gap: 18px;
+  }
+
+  main {
+    height: unset;
   }
 
   h1 {
@@ -427,6 +448,7 @@ h1 {
     padding: 0;
   }
 
+<<<<<<< HEAD
   .login-footer {
     position: static;
     transform: none;
@@ -435,6 +457,8 @@ h1 {
     margin-top: 14px;
   }
 
+=======
+>>>>>>> master
   .back-arrow {
     position: absolute;
     top: 38px;
@@ -495,5 +519,11 @@ h1 {
     fill: var(--color-primary);
     width: 64px;
     height: auto;
+  }
+}
+
+@media (max-width: 332px) {
+  .signup-field-error {
+    font-size: 14px;
   }
 }

@@ -56,6 +56,17 @@ export function getTaskCardHTML(categoryBadge, task) {
 }
 
 /**
+ * Creates an avatar element displaying the number of additional users
+ * that are not shown in the avatar list.
+ *
+ * @param {number} count - The number of additional users.
+ * @returns {string} HTML string representing the extra-count avatar.
+ */
+export function createExtraAvatar(count) {
+  return `<div class="avatar avatar-extracount">+${count}</div>`;
+}
+
+/**
  * Returns the HTML markup for the urgent priority icon used in the task modal.
  *
  * @returns {string} The HTML string containing the urgent priority icon.
