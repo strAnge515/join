@@ -62,6 +62,9 @@ function initHeaderFeatures() {
   updateHeaderUI(currentUser, currentUser !== null);
   setupHeaderMenu();
   setupMobileAccountMenu();
+  document
+    .getElementById('header-account-menu')
+    ?.classList.remove('account-menu--show');
 }
 
 /** Retrieves the current user from session storage.
