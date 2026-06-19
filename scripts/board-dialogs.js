@@ -19,7 +19,7 @@ import {
   getAssignedUsersHTML,
   getConfirmDialogHTML,
 } from './board-template.js';
-import { renderBoard } from './board.js';
+
 import { splitDateString } from './tasks-date.js';
 
 /**
@@ -281,7 +281,7 @@ async function executeTaskDelete(overlay, task) {
   try {
     await deleteTask(task.id);
     closeModal();
-    await renderBoard();
+    await window.renderBoard();
   } catch (error) {
     console.error('Fehler beim Löschen:', error);
   }

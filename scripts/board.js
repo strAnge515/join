@@ -225,27 +225,6 @@ function fillTaskCardInformation(task, card) {
 }
 
 /**
- * Returns an img tag for the priority icon displayed in the modal.
- * @param {string} prio - The priority value (urgent, medium, low).
- * @returns {string} HTML img tag string or empty string if unrecognized.
- */
-export function getPriorityIconForModal(prio) {
-  const normalized = String(prio || '')
-    .trim()
-    .toLowerCase();
-  if (normalized === 'urgent') {
-    return getUrgentIconForModal();
-  }
-  if (normalized === 'medium') {
-    return getMediumIconForModal();
-  }
-  if (normalized === 'low') {
-    return getLowIconForModal();
-  }
-  return '';
-}
-
-/**
  * Returns the neighboring statuses (previous and next) for a given task's current status.
  * @param {Object} task - The task data object containing a status string.
  * @returns {string[]} Array of up to two neighboring status strings.
