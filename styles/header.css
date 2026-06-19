@@ -72,16 +72,21 @@
   background-color: #eeeeee;
 }
 
+.account-wrapper {
+  position: relative;
+}
+
 .account-menu {
   display: none;
   position: absolute;
-  top: 80px;
-  right: 20px;
+  top: 68px;
+  right: -20px;
   background-color: #2a3647;
   padding: 10px;
   border-radius: 20px 0 20px 20px;
   flex-direction: column;
   z-index: 2;
+  width: max-content;
 }
 
 .account-menu--show {
