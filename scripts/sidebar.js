@@ -41,7 +41,6 @@ function initSidebarFeatures() {
   setActiveSidebar();
   setActiveMobileNav();
   setupSidebarToggle();
-  setupBackButton();
 }
 
 /**
@@ -118,16 +117,6 @@ function setupSidebarToggle() {
   if (!toggleButton) return;
   toggleButton.addEventListener('click', () => {
     document.body.classList.toggle('sidebar-open');
-  });
-}
-
-/** Wires the legal/help page back button to return to the previous page without triggering bfcache. */
-function setupBackButton() {
-  const backBtn = document.querySelector('.back-btn');
-  if (!backBtn) return;
-  backBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    window.location.href = document.referrer || '../index.html';
   });
 }
 
