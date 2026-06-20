@@ -147,6 +147,10 @@
     height: 56px;
     padding: 0px 20px;
   }
+
+  .button-wrapper {
+    top: 20px;
+  }
   
 }
 
