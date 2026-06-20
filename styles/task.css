@@ -228,6 +228,11 @@ textarea::placeholder {
   max-height: 110px;
 }
 
+.subtask-left{
+  overflow: hidden;
+  flex: 1;
+}
+
 .subtask-left span::before {
   content: '•';
   padding-right: 5px;
@@ -235,6 +240,14 @@ textarea::placeholder {
 
 .subtask-left span {
   font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+} 
+
+#subtask-input {
+  padding-right: 75px;
 }
 
 .subtask-edit-buttons {
@@ -247,6 +260,11 @@ textarea::placeholder {
 .subtask-item:hover {
   background: #eeeeee;
   border-radius: 10px;
+}
+
+.subtask-item.subtask-item.is-editing:hover {
+  background-color: white;
+  border-radius: 0;
 }
 
 .subtask-item:hover .subtask-edit-buttons {

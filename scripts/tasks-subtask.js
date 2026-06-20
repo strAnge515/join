@@ -51,6 +51,7 @@ function activateEditMode(li) {
 function eventListenerConfirmButton(li, subtaskText) {
   li.querySelector('.edit-confirm-btn').addEventListener('click', () => {
     subtaskText = li.querySelector('.subtask-edit-value').value;
+    if (subtaskText.trim() === '') li.remove();
     li.innerHTML = getSubtaskTemplate(subtaskText);
     li.classList.remove('is-editing');
     addSubtaskEventListeners(li);
@@ -66,6 +67,7 @@ function exitEditModePerClick(li, subtaskText) {
   document.addEventListener('click', (event) => {
     if (!li.contains(event.target) && li.classList.contains('is-editing')) {
       subtaskText = li.querySelector('.subtask-edit-value').value;
+      if (subtaskText.trim() === '') return li.remove();
       li.innerHTML = getSubtaskTemplate(subtaskText);
       li.classList.remove('is-editing');
       addSubtaskEventListeners(li);

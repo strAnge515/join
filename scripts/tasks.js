@@ -1,7 +1,7 @@
 import { saveTask } from './backend-tasks.js';
 import { loadAndPrepareContacts } from './contacts-render.js';
 import { getSubtaskTemplate, getEditTemplate, getDropdownTemplate } from './tasks-template.js';
-import { initDate, dateFocusBehavior, dateDeleteBehavior, dateOnlyNumbers, insertDate, validateInputDate } from './tasks-date.js';
+import { initDate, dateFocusBehavior, dateDeleteBehavior, dateBlurBehavior, dateOnlyNumbers, insertDate, validateInputDate } from './tasks-date.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
 import { subtaskList, subtaskInput } from './tasks-subtask.js';
 import { renderAssignedDropdown, clearAssignedContacts, filterContacts } from './tasks-contacts.js';
@@ -42,6 +42,7 @@ function init() {
   dateFocusBehavior();
   dateDeleteBehavior();
   dateOnlyNumbers();
+  dateBlurBehavior();
 }
 
 /**
@@ -190,14 +191,22 @@ function dropDownCloseListener() {
   });
 }
 
+/**
+ * Closes the category dropdown when clicking outside of it.
+ * Validates the category if the dropdown was open before closing.
+ *
+ * @returns {void}
+ */
 function categoryCloseListener() {
   document.addEventListener('click', (event) => {
     if (!selectCategoryButton.contains(event.target)) {
+       if (selectCategoryButton.classList.contains('open')) {
+        validateInputCategory();
+      }
       dropdownOptionsContainer.classList.add('d-none');
       document.getElementById('arrow-down-category').classList.remove('d-none');
       document.getElementById('arrow-up-category').classList.add('d-none');
       selectCategoryButton.classList.remove('open');
-      
       
     }
   });
@@ -275,7 +284,7 @@ function initFormValidation() {
  * @returns {boolean} True if valid, false if empty.
  */
 function validateInputTitle() {
-  if (taskTitleInput.value === '') {
+  if (taskTitleInput.value.trim() === '') {
     taskTitleInput.classList.add('was-submitted-custom');
     errorTextTitle.classList.remove('d-none');
     return false;
@@ -285,6 +294,11 @@ function validateInputTitle() {
     return true;
   }
 }
+
+/**
+ * Validates the title input field when it loses focus.
+ */
+taskTitleInput.addEventListener('blur', validateInputTitle);
 
 /**
  * Validates the category dropdown.

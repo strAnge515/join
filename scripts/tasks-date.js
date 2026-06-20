@@ -114,6 +114,19 @@ export function validateInputDate() {
   return hideDateError();
 }
 
+/**
+ * Validates the date input when focus moves outside the date container.
+ *
+ * @returns {void}
+ */
+export function dateBlurBehavior() {
+  dateInputContainer.addEventListener('focusout', (event) => {
+    if (!dateInputContainer.contains(event.relatedTarget)) {
+      validateInputDate();
+    }
+  });
+}
+
 // Opens the native date picker when the calendar icon is clicked
 calendarIcon.addEventListener('click', () => {
   dateInput.showPicker();

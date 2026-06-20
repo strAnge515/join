@@ -89,7 +89,7 @@ export function getBoardEditTemplate(data) {
             <p>Title</p>
             <p class="star">*</p>
           </label>
-          <input type="text" id="edit-task-title" class="task-form-input" value="${data.title}" maxlength="40">
+          <input type="text" id="edit-task-title" class="task-form-input" value="${data.title}" maxlength="100">
           <p id="edit-error-title" class="d-none error-writing">This field is required</p>
         </div>
 
