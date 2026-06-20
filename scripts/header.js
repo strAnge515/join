@@ -96,9 +96,7 @@ function adjustRootHeaderPaths(htmlText) {
  * @returns {string} The adjusted HTML content with correct paths for subpages.
  */
 function adjustPageHeaderPaths(htmlText) {
-  return htmlText
-    .replace(/src="\.\/assets\//g, 'src="../assets/')
-    .replace(/href="\.\/assets\//g, 'href="../assets/');
+  return htmlText.replace(/src="\.\/assets\//g, 'src="../assets/').replace(/href="\.\/assets\//g, 'href="../assets/');
 }
 
 /**

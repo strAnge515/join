@@ -13,7 +13,7 @@ export const subtaskList = document.getElementById('subtask-list');
  * @returns {void}
  */
 function addSubtask() {
-  const subtaskValue = subtaskInput.value;
+  const subtaskValue = subtaskInput.value.trim();
   if (subtaskValue === '') return;
   const li = document.createElement('li');
   li.innerHTML = getSubtaskTemplate(subtaskValue);

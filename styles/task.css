@@ -233,6 +233,10 @@ textarea::placeholder {
   padding-right: 5px;
 }
 
+.subtask-left span {
+  font-size: 16px;
+}
+
 .subtask-edit-buttons {
   opacity: 0;
   display: flex;
@@ -340,7 +344,7 @@ textarea::placeholder {
 .btn {
   padding: 12px 28px;
   border-radius: var(--radius);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   border: 1.5px solid transparent;
