@@ -4,7 +4,7 @@ import { updateTask } from './backend-tasks.js';
 import { getInitials, escapeHtml } from './board-utils.js';
 import { initSubtasks, getEditedSubtasks, setupSubtaskUI } from './edit-task-subtasks.js';
 import { setupDateInput } from './edit-task-date.js';
-import { readCurrentUser, sortCurrentUserFirst, getFilteredContacts, markCurrentUserLabel, setupAssignedSearch } from './edit-task-contacts.js';
+import { readCurrentUser, sortCurrentUserFirst, getFilteredContacts, markCurrentUserLabel, setupAssignedSearch, getGuestContact } from './edit-task-contacts.js';
 import { parseEditDate } from './tasks-date.js';
 import { renderAvatarsForEdit } from './tasks-contacts.js';
 
@@ -109,7 +109,9 @@ function setupPriorityButtons(dialogRef) {
 async function loadEditContacts() {
   const contacts = await loadAndPrepareContacts();
   currentUserData = readCurrentUser();
-  return sortCurrentUserFirst(contacts, currentUserData);
+  const sorted = sortCurrentUserFirst(contacts, currentUserData);
+  const guest = getGuestContact();
+  return guest ? [guest, ...sorted] : sorted;
 }
 
 /**

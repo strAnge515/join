@@ -1,3 +1,6 @@
+import { getAvatarColor } from './board-utils.js';
+
+
 /**
  * Reads the logged-in user from sessionStorage.
  * Returns null for missing data or guests (empty email) so no contact gets pinned.
@@ -107,4 +110,23 @@ export function setupAssignedSearch(dialogRef, onRender) {
     openEditDropdown(dialogRef);
     onRender(dialogRef);
   });
+}
+
+
+/**
+ * Builds a selectable dropdown entry for a logged-in guest so the guest can be
+ * assigned. Returns null for registered users (they already exist as contacts).
+ *
+ * @returns {Object|null} The guest contact entry or null.
+ */
+export function getGuestContact() {
+  const stored = sessionStorage.getItem('currentUser');
+  if (!stored) return null;
+  try {
+    const user = JSON.parse(stored);
+    if (user.email) return null;
+    return { firstName: 'Guest', lastName: 'User', id: 'guest', email: '', color: getAvatarColor(0) };
+  } catch (error) {
+    return null;
+  }
 }

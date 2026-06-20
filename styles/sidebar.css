@@ -120,7 +120,6 @@
 
   .mobile-bottom-nav {
     gap: 8px;
-    display: grid;
     grid-template-columns: repeat(4, 1fr);
     position: fixed;
     padding: 0 8px;
@@ -129,6 +128,10 @@
     height: 80px;
     background: #2a3647;
     z-index: 1;
+  }
+
+  .mobile-bottom-nav.mobile-nav-visible {
+    display: grid;
   }
 
   .mobile-bottom-nav a {

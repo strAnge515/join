@@ -121,6 +121,15 @@
   max-height: none;
 }
 
+.edit-task-modal .subtask-left {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.edit-task-modal .subtask-edit-buttons {
+  flex-shrink: 0;
+}
+
 .edit-task-modal .avatar--stacked {
   width: 32px;
   height: 32px;

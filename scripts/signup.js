@@ -33,6 +33,7 @@ const signupInputs = [nameInput, emailInput, passwordInput, confirmInput];
 async function handleSignup(e) {
   e.preventDefault();
   if (!validateSignupForm()) return;
+  if (!privacyCheckbox.checked) return showPrivacyHint();
   signupBtn.disabled = true;
   const name = nameInput.value.trim();
   const email = emailInput.value.trim();
@@ -57,23 +58,26 @@ async function createAccount(name, email, password) {
 }
 
 /**
- * Enables the signup button only when all fields are filled and the privacy policy is accepted.
+ * Enables the signup button once all fields are filled. The privacy policy is checked on submit.
  */
 function updateSignupButtonState() {
-  const allFilled = signupInputs.every((input) => input.value.trim() !== '');
-  signupBtn.disabled = !(allFilled && privacyCheckbox.checked);
-  updatePrivacyHint(allFilled);
+  signupBtn.disabled = !signupInputs.every((input) => input.value.trim() !== '');
 }
 
 /**
- * Shows a hint to accept the privacy policy once all fields are filled but the box is unchecked.
- * @param {boolean} allFilled - Whether every signup input has a value.
+ * Shows the hint asking the user to accept the privacy policy.
  */
-function updatePrivacyHint(allFilled) {
+function showPrivacyHint() {
   const hint = document.getElementById('signup-privacy-error');
-  if (!hint) return;
-  hint.innerText =
-    allFilled && !privacyCheckbox.checked ? 'Please accept the Privacy policy.' : '';
+  if (hint) hint.innerText = 'Please accept the Privacy policy.';
+}
+
+/**
+ * Clears the privacy policy hint.
+ */
+function clearPrivacyHint() {
+  const hint = document.getElementById('signup-privacy-error');
+  if (hint) hint.innerText = '';
 }
 
 /**
@@ -110,7 +114,7 @@ function toggleVisibility(input, icon) {
   icon.src = isPassword ? './assets/img/eye.svg' : './assets/img/lock.svg';
 }
 
-privacyCheckbox.addEventListener('change', updateSignupButtonState);
+privacyCheckbox.addEventListener('change', clearPrivacyHint);
 togglePassword.addEventListener('click', () =>
   toggleVisibility(passwordInput, togglePassword),
 );

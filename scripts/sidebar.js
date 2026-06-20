@@ -3,6 +3,7 @@
  */
 async function initSidebar() {
   try {
+    updateMobileNavVisibility(sessionStorage.getItem('currentUser') !== null);
     const isRoot = !window.location.pathname.includes('/pages/');
     const response = await fetch(getTemplatePath(isRoot));
     if (!response.ok) return;
@@ -108,8 +109,8 @@ function updateMobileNavVisibility(isLoggedIn) {
   const loggedInNav = document.querySelector(
     '.mobile-bottom-nav:not(.mobile-bottom-nav--guest)',
   );
-  if (loggedInNav) loggedInNav.style.display = isLoggedIn ? '' : 'none';
-  if (guestNav) guestNav.style.display = isLoggedIn ? 'none' : '';
+  if (loggedInNav) loggedInNav.classList.toggle('mobile-nav-visible', isLoggedIn);
+  if (guestNav) guestNav.classList.toggle('mobile-nav-visible', !isLoggedIn);
 }
 
 /** Sets up the event listener for the sidebar toggle button to manage the opening and closing of the sidebar on smaller screens. */
