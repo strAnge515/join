@@ -167,9 +167,3 @@
     object-fit: contain;
   }
 }
-
-@media (max-width: 400px) {
-  .mobile-bottom-nav span {
-    font-size: 14px;
-  }
-}

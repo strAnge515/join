@@ -113,8 +113,9 @@ function updateHeaderUI(user, isLoggedIn) {
   if (isLoggedIn) {
     showLoggedInHeader();
     updateProfileInitials(user);
+    return;
   }
-  return;
+  hideLoggedOutHeader();
 }
 
 /** Hides the desktop and mobile profile elements for logged-out visitors on public pages. */
@@ -130,6 +131,20 @@ function showLoggedInHeader() {
  */
 function showCircle(element) {
   if (element) element.classList.add('circleShow');
+}
+
+/** Hides the whole desktop header-right and the mobile profile circle for logged-out visitors. */
+function hideLoggedOutHeader() {
+  document.querySelector('.header-right')?.classList.remove('show-header-right');
+  hideCircle(document.getElementById('mobile-profile'));
+}
+
+/**
+ * Hides the specified circle element by adding the hidden class.
+ * @param {HTMLElement|null} element - The circle element to hide.
+ */
+function hideCircle(element) {
+  if (element) element.classList.add('circle-hidden');
 }
 
 /** Updates the profile initials in the header based on the user's name.
