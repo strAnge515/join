@@ -1,4 +1,4 @@
-import { createExtraAvatar } from './board-template.js';
+import { createExtraAvatar, getUrgentIconForModal, getMediumIconForModal, getLowIconForModal } from './board-template.js';
 
 /**
  * Extracts up to two initials from a full name string.
@@ -148,4 +148,25 @@ export function createNavButtonMobile(currentStatus, task) {
     }<span>${status}</span></button>`,
     )
     .join('');
+}
+
+/**
+ * Returns an img tag for the priority icon displayed in the modal.
+ * @param {string} prio - The priority value (urgent, medium, low).
+ * @returns {string} HTML img tag string or empty string if unrecognized.
+ */
+export function getPriorityIconForModal(prio) {
+  const normalized = String(prio || '')
+    .trim()
+    .toLowerCase();
+  if (normalized === 'urgent') {
+    return getUrgentIconForModal();
+  }
+  if (normalized === 'medium') {
+    return getMediumIconForModal();
+  }
+  if (normalized === 'low') {
+    return getLowIconForModal();
+  }
+  return '';
 }

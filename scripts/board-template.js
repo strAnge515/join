@@ -4,7 +4,7 @@ import {
   createNavButtonMobile,
 } from './board-utils.js';
 import { dateValidationForBoard } from './board-dialogs.js';
-import { getPriorityIconForModal } from './board.js';
+import { getPriorityIconForModal } from './board-utils.js';
 /**
  * Returns the full HTML string for the task detail modal content.
  * @param {Object} categoryBadge - Badge config with color and label.
