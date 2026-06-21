@@ -46,20 +46,6 @@ async function handleLogin(e) {
   window.location.href = './pages/summary.html';
 }
 
-function handleGuestLogin() {
-  sessionStorage.setItem(
-    'currentUser',
-    JSON.stringify({
-      name: 'Guest',
-      email: '',
-      id: 'guest',
-    }),
-  );
-
-  sessionStorage.setItem('showMobileGreeting', 'true');
-  window.location.href = './pages/summary.html';
-}
-
 /**
  * Validates the login inputs before any backend call.
  * @param {string} email - The trimmed email value.
@@ -157,15 +143,43 @@ function showSignup() {
   sessionStorage.setItem('activeForm', 'signup');
 }
 
-form.addEventListener('submit', handleLogin);
+/**
+ * Handles guest login by creating a temporary "Guest" user session.
+ */
+function handleGuestLogin() {
+  sessionStorage.setItem(
+    'currentUser',
+    JSON.stringify({
+      name: 'Guest',
+      email: '',
+      id: 'guest',
+    }),
+  );
+  sessionStorage.setItem('showMobileGreeting', 'true');
+  window.location.href = './pages/summary.html';
+}
+
 signUpButtons.forEach((button) => {
   button.addEventListener('click', () => {
     toggleSignUpLogIn();
   });
 });
-backArrow.addEventListener('click', toggleSignUpLogIn);
-guestButton.addEventListener('click', handleGuestLogin);
-togglePassword.addEventListener('click', togglePasswordVisibility);
+
+if (form) {
+  form.addEventListener('submit', handleLogin);
+}
+
+if (backArrow) {
+  backArrow.addEventListener('click', toggleSignUpLogIn);
+}
+
+if (guestButton) {
+  guestButton.addEventListener('click', handleGuestLogin);
+}
+
+if (togglePassword) {
+  togglePassword.addEventListener('click', togglePasswordVisibility);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const activeForm = sessionStorage.getItem('activeForm');
