@@ -6,4 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionStorage.setItem('activeForm', 'login');
     window.location.href = '../index.html';
   });
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('#loginBtnDesktop')) {
+      sessionStorage.setItem('activeForm', 'login');
+      window.location.href = '../index.html';
+    }
+  });
 });

@@ -49,7 +49,8 @@
   margin-bottom: 15px;
 }
 
-.nav-item a {
+.nav-item a,
+.nav-item button {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -58,11 +59,13 @@
   transition: background-color 0.1s ease;
 }
 
-.nav-item a.active {
+.nav-item a.active,
+.nav-item button.active {
   background-color: #091931;
 }
 
-.nav-item a:hover {
+.nav-item a:hover,
+.nav-item button:hover {
   background-color: #2a3d59;
 }
 
@@ -70,6 +73,12 @@
   width: 24px;
   height: 24px;
   margin-right: 8px;
+}
+
+.nav-icon-login {
+  height: 26px;
+  width: 26px;
+  margin-right: 12px;
 }
 
 .nav-text {
@@ -88,6 +97,16 @@
   gap: 4px;
 }
 
+.login-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .nav-item-footer a.active {
   background-color: #091931;
 }
@@ -96,13 +115,19 @@
   background-color: #2a3d59;
 }
 
-.nav-item-footer a {
+.nav-item-footer a,
+.nav-item-footer button,
+.nav-text {
   display: flex;
   text-decoration: none;
   color: #a8a8a8;
   font-size: 16px;
   transition: background-color 0.1s ease;
   padding: 8px 56px;
+}
+
+.nav-text-login {
+  padding: 0;
 }
 
 .mobile-bottom-nav {

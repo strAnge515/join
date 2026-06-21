@@ -119,8 +119,6 @@ function toggleSignUpLogIn() {
   } else {
     showLogin();
   }
-  loginHeaderDesktop.classList.toggle('header-hidden');
-  loginHeaderMobile.classList.toggle('header-hidden');
 }
 
 /**
@@ -130,6 +128,8 @@ function toggleSignUpLogIn() {
 function showLogin() {
   loginForm.classList.remove('hide-form');
   signupForm.classList.add('hide-form');
+  loginHeaderDesktop.classList.remove('header-hidden');
+  loginHeaderMobile.classList.remove('header-hidden');
   sessionStorage.setItem('activeForm', 'login');
 }
 
@@ -140,6 +140,8 @@ function showLogin() {
 function showSignup() {
   signupForm.classList.remove('hide-form');
   loginForm.classList.add('hide-form');
+  loginHeaderDesktop.classList.add('header-hidden');
+  loginHeaderMobile.classList.add('header-hidden');
   sessionStorage.setItem('activeForm', 'signup');
 }
 
