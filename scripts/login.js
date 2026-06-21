@@ -14,6 +14,10 @@ const guestButton = document.getElementById('guest-login-btn');
 const togglePassword = document.getElementById('toggle-password');
 const passwordInput = document.getElementById('login-password');
 const loginError = document.getElementById('login-error');
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
+const loginHeaderDesktop = document.getElementById('login-header-desktop');
+const loginHeaderMobile = document.getElementById('login-header-mobile');
 
 /**
  * Handles the login form submission.
@@ -29,25 +33,31 @@ async function handleLogin(e) {
     showLoginError();
     return;
   }
-  sessionStorage.setItem("currentUser", JSON.stringify({
-    name: user.name,
-    email: user.email,
-    id: user.id,
-  }));
+  sessionStorage.setItem(
+    'currentUser',
+    JSON.stringify({
+      name: user.name,
+      email: user.email,
+      id: user.id,
+    }),
+  );
 
-  sessionStorage.setItem("showMobileGreeting", "true");
-  window.location.href = "./pages/summary.html";
+  sessionStorage.setItem('showMobileGreeting', 'true');
+  window.location.href = './pages/summary.html';
 }
 
 function handleGuestLogin() {
-  sessionStorage.setItem("currentUser", JSON.stringify({
-    name: "Guest",
-    email: "",
-    id: "guest",
-  }));
+  sessionStorage.setItem(
+    'currentUser',
+    JSON.stringify({
+      name: 'Guest',
+      email: '',
+      id: 'guest',
+    }),
+  );
 
-  sessionStorage.setItem("showMobileGreeting", "true");
-  window.location.href = "./pages/summary.html";
+  sessionStorage.setItem('showMobileGreeting', 'true');
+  window.location.href = './pages/summary.html';
 }
 
 /**
@@ -117,15 +127,49 @@ function clearFormInputsLogInAndSignUp() {
  */
 function toggleSignUpLogIn() {
   clearFormInputsLogInAndSignUp();
-  const loginForm = document.getElementById('login-form');
-  const signupForm = document.getElementById('signup-form');
-  const loginHeaderDesktop = document.getElementById('login-header-desktop');
-  const loginHeaderMobile = document.getElementById('login-header-mobile');
   const loginVisible = window.getComputedStyle(loginForm).display !== 'none';
-  loginForm.style.display = loginVisible ? 'none' : 'flex';
-  signupForm.style.display = loginVisible ? 'flex' : 'none';
+  if (loginVisible) {
+    showSignup();
+  } else {
+    showLogin();
+  }
   loginHeaderDesktop.classList.toggle('header-hidden');
   loginHeaderMobile.classList.toggle('header-hidden');
+}
+
+/**
+ * Displays the login form and hides the signup form.
+ * Also stores the active form state in sessionStorage.
+ */
+function showLogin() {
+  loginForm.classList.remove('hide-form');
+  signupForm.classList.add('hide-form');
+  sessionStorage.setItem('activeForm', 'login');
+}
+
+/**
+ * Displays the signup form and hides the login form.
+ * Also stores the active form state in sessionStorage.
+ */
+function showSignup() {
+  signupForm.classList.remove('hide-form');
+  loginForm.classList.add('hide-form');
+  sessionStorage.setItem('activeForm', 'signup');
+}
+
+/**
+ * Handles guest login by creating a temporary "Guest" user session.
+ */
+function handleGuestLogin() {
+  sessionStorage.setItem(
+    'currentUser',
+    JSON.stringify({
+      name: 'Guest',
+      email: '',
+      id: 'guest',
+    }),
+  );
+  window.location.href = './pages/summary.html';
 }
 
 form.addEventListener('submit', handleLogin);
@@ -137,3 +181,12 @@ signUpButtons.forEach((button) => {
 backArrow.addEventListener('click', toggleSignUpLogIn);
 guestButton.addEventListener('click', handleGuestLogin);
 togglePassword.addEventListener('click', togglePasswordVisibility);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const activeForm = sessionStorage.getItem('activeForm');
+  if (activeForm === 'signup') {
+    showSignup();
+  } else {
+    showLogin();
+  }
+});

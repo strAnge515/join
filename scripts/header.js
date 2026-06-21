@@ -62,6 +62,9 @@ function initHeaderFeatures() {
   updateHeaderUI(currentUser, currentUser !== null);
   setupHeaderMenu();
   setupMobileAccountMenu();
+  document
+    .getElementById('header-account-menu')
+    ?.classList.remove('account-menu--show');
 }
 
 /** Retrieves the current user from session storage.
@@ -96,7 +99,9 @@ function adjustRootHeaderPaths(htmlText) {
  * @returns {string} The adjusted HTML content with correct paths for subpages.
  */
 function adjustPageHeaderPaths(htmlText) {
-  return htmlText.replace(/src="\.\/assets\//g, 'src="../assets/').replace(/href="\.\/assets\//g, 'href="../assets/');
+  return htmlText
+    .replace(/src="\.\/assets\//g, 'src="../assets/')
+    .replace(/href="\.\/assets\//g, 'href="../assets/');
 }
 
 /**
@@ -105,22 +110,26 @@ function adjustPageHeaderPaths(htmlText) {
  * @param {boolean} isLoggedIn - Indicates if the user is logged in.
  */
 function updateHeaderUI(user, isLoggedIn) {
-  if (!isLoggedIn) return hideLoggedOutHeader();
-  updateProfileInitials(user);
+  if (isLoggedIn) {
+    showLoggedInHeader();
+    updateProfileInitials(user);
+  }
+  return;
 }
 
 /** Hides the desktop and mobile profile elements for logged-out visitors on public pages. */
-function hideLoggedOutHeader() {
-  hideElement(document.querySelector('.header-right'));
-  hideElement(document.getElementById('mobile-profile'));
+function showLoggedInHeader() {
+  document.querySelector('.header-right').classList.add('show-header-right');
+  showCircle(document.getElementById('mobile-profile'));
+  showCircle(document.getElementById('header-account-circle'));
 }
 
 /**
  * Hides the specified element by setting its display style to "none".
  * @param {HTMLElement|null} element - The element to hide.
  */
-function hideElement(element) {
-  if (element) element.style.display = 'none';
+function showCircle(element) {
+  if (element) element.classList.add('circleShow');
 }
 
 /** Updates the profile initials in the header based on the user's name.

@@ -42,7 +42,6 @@ main {
 }
 
 #signup-form {
-  display: none;
   position: relative;
 }
 
@@ -334,7 +333,8 @@ h1 {
   display: none;
 }
 
-.header-hidden {
+.header-hidden,
+.hide-form {
   display: none;
 }
 
@@ -396,7 +396,8 @@ h1 {
     display: none;
   }
 
-  .header-hidden {
+  .header-hidden,
+  .hide-form {
     display: none;
   }
 

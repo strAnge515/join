@@ -35,9 +35,13 @@
 }
 
 .header-right {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 20px;
+}
+
+.show-header-right {
+  display: flex;
 }
 
 .help-link img {
@@ -55,7 +59,7 @@
   border-radius: 50%;
   background-color: white;
   color: #29abe2;
-  border: 3px solid #2a3647;
+  border: 3px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,16 +72,21 @@
   background-color: #eeeeee;
 }
 
+.account-wrapper {
+  position: relative;
+}
+
 .account-menu {
   display: none;
   position: absolute;
-  top: 80px;
-  right: 20px;
+  top: 68px;
+  right: -20px;
   background-color: #2a3647;
   padding: 10px;
   border-radius: 20px 0 20px 20px;
   flex-direction: column;
   z-index: 2;
+  width: max-content;
 }
 
 .account-menu--show {
@@ -100,26 +109,14 @@
   display: none;
 }
 
-@media (max-width: 1100px) {
-  /* .header-container {
-    padding: 0 !important;
-    width: 100%;
-    max-width: 100%;
-  } */
+.circleShow {
+  border-color: #2a3647;
+}
 
+@media (max-width: 1100px) {
   #header-container {
-    /* display: block;
-    position: static;
-    height: 0;
-    background: transparent;
-    box-shadow: none; */
     display: none;
   }
-
-  /* #header-container .header-main,
-  #header-container .account-menu {
-    display: none;
-  } */
 
   .mobile-topbar {
     display: flex;
@@ -144,7 +141,7 @@
   .mobile-topbar__profile {
     width: 40px;
     height: 40px;
-    border: 2px solid #2a3647;
+    border: 2px solid transparent;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -155,6 +152,14 @@
     background: #ffffff;
     cursor: pointer;
     pointer-events: auto;
+  }
+
+  .circleShow {
+    border-color: #2a3647;
+  }
+
+  .show-header-right {
+    display: flex;
   }
 
   .mobile-account-menu {
@@ -190,29 +195,4 @@
   .mobile-account-menu button:hover {
     background: #2a3d59;
   }
-
-  /* @media (max-width: 320px) {
-  .mobile-topbar {
-    width: 100%;
-    height: 60px;
-    padding: 0 12px;
-    box-sizing: border-box;
-  }
-
-  .mobile-topbar__logo {
-    width: 26px;
-    height: auto;
-  }
-
-  .mobile-topbar__profile {
-    width: 32px;
-    height: 32px;
-    font-size: 13px;
-  }
-
-  .mobile-account-menu {
-    top: 56px;
-    right: 12px;
-  }
-} */
 }
