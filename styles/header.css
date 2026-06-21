@@ -113,6 +113,10 @@
   border-color: #2a3647;
 }
 
+.circle-hidden {
+  display: none;
+}
+
 @media (max-width: 1100px) {
   #header-container {
     display: none;
