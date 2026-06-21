@@ -157,21 +157,6 @@ function showSignup() {
   sessionStorage.setItem('activeForm', 'signup');
 }
 
-/**
- * Handles guest login by creating a temporary "Guest" user session.
- */
-function handleGuestLogin() {
-  sessionStorage.setItem(
-    'currentUser',
-    JSON.stringify({
-      name: 'Guest',
-      email: '',
-      id: 'guest',
-    }),
-  );
-  window.location.href = './pages/summary.html';
-}
-
 form.addEventListener('submit', handleLogin);
 signUpButtons.forEach((button) => {
   button.addEventListener('click', () => {
