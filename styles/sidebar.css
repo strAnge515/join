@@ -204,3 +204,9 @@
     white-space: nowrap;
   }
 }
+
+@media (max-width: 345px) {
+  .mobile-bottom-nav.mobile-nav-visible {
+    padding: 0;
+  }
+}
