@@ -116,8 +116,7 @@
 }
 
 .nav-item-footer a,
-.nav-item-footer button,
-.nav-text {
+.nav-item-footer button {
   display: flex;
   text-decoration: none;
   color: #a8a8a8;
