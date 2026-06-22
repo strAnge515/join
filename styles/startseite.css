@@ -15,7 +15,6 @@ aside {
 }
 
 main {
-  max-width: 1440px;
   justify-content: center;
   display: flex;
   flex-direction: column;
@@ -29,7 +28,8 @@ main {
   max-width: 1440px;
   justify-content: flex-end;
   align-items: center;
-  margin: 30px 0px 0 0;
+  margin: auto;
+  margin-top: 30px;
   padding-right: 30px;
   gap: 20px;
 }
@@ -253,6 +253,12 @@ h1 {
   animation: logoMovementDesktop 1s ease-in-out forwards;
 }
 
+@media (min-width: 1441px) {
+  .start-screen-logo {
+    left: calc((100vw - 1440px) / 2 + 30px);
+  }
+}
+
 .start-screen-background {
   animation: hideStartScreenBackground 800ms ease-in-out forwards;
   background-color: #eeeeee;
@@ -267,7 +273,6 @@ h1 {
   bottom: 20px;
   display: flex;
   gap: 24px;
-  max-width: 1440px;
   width: 100%;
   justify-content: center;
   margin-top: 16px;
