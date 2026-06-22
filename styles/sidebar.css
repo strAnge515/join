@@ -185,8 +185,11 @@
   .mobile-bottom-nav span {
     font-size: 16px;
     font-weight: 400;
-    color: #cdcdcd;
     text-align: center;
+  }
+
+  .mobile-bottom-nav a {
+    color: #fff;
   }
 
   .mobile-bottom-nav__icon img {
