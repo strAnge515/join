@@ -369,7 +369,7 @@ h1 {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (max-height: 750px) {
   body {
     display: block;
     width: 100%;
