@@ -74,6 +74,7 @@
 
   .prio-btn {
     height: 41px;
+    font-size: 16px;
   }
 
   .wrapper-add-task-left-side,
@@ -151,7 +152,6 @@
   .button-wrapper {
     top: 20px;
   }
-  
 }
 
 @media (max-width: 429px) {
@@ -161,16 +161,18 @@
 }
 
 @media (max-width: 376px) {
-  .prio-btn {
-    gap: unset;
-    font-size: 12px;
-  }
-
   .main-content {
     padding: 40px 16px 80px;
   }
 
-      .btn-action-wrapper {
-        gap: 16px;
-      }
+  .btn-action-wrapper {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 348px) {
+  .prio-btn {
+    padding: clamp(6px, calc(-39.714px + 14.286vw), 10px);
+    gap: clamp(6px, calc(-16.857px + 7.143vw), 8px);
+  }
 }
