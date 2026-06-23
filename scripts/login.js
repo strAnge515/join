@@ -125,7 +125,7 @@ function toggleSignUpLogIn() {
  * Displays the login form and hides the signup form.
  * Also stores the active form state in sessionStorage.
  */
-function showLogin() {
+export function showLogin() {
   loginForm.classList.remove('hide-form');
   signupForm.classList.add('hide-form');
   loginHeaderDesktop.classList.remove('header-hidden');

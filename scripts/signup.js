@@ -5,6 +5,7 @@ import { saveContact } from './backend-contacts.js';
  */
 import { saveUser } from './backend-users.js';
 import { findUserByEmail } from './backend-users.js';
+import { showLogin } from './login.js';
 import {
   validateSignupForm,
   showSignupEmailError,
@@ -61,7 +62,9 @@ async function createAccount(name, email, password) {
  * Enables the signup button once all fields are filled. The privacy policy is checked on submit.
  */
 function updateSignupButtonState() {
-  signupBtn.disabled = !signupInputs.every((input) => input.value.trim() !== '');
+  signupBtn.disabled = !signupInputs.every(
+    (input) => input.value.trim() !== '',
+  );
 }
 
 /**
@@ -99,8 +102,11 @@ function showSuccessToast() {
   const toast = document.getElementById('signup-toast');
   toast.classList.add('toast-visible');
   setTimeout(() => {
-    window.location.href = './index.html';
+    toast.classList.remove('toast-visible');
   }, 2000);
+  setTimeout(() => {
+    showLogin();
+  }, 2300);
 }
 
 /**
