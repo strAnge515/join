@@ -1,11 +1,35 @@
 import { saveTask } from './backend-tasks.js';
 import { loadAndPrepareContacts } from './contacts-render.js';
-import { getSubtaskTemplate, getEditTemplate, getDropdownTemplate } from './tasks-template.js';
-import { initDate, dateFocusBehavior, dateDeleteBehavior, dateBlurBehavior, dateOnlyNumbers, insertDate, validateInputDate } from './tasks-date.js';
+import {
+  getSubtaskTemplate,
+  getEditTemplate,
+  getDropdownTemplate,
+} from './tasks-template.js';
+import {
+  initDate,
+  dateFocusBehavior,
+  dateDeleteBehavior,
+  dateBlurBehavior,
+  dateOnlyNumbers,
+  insertDate,
+  validateInputDate,
+} from './tasks-date.js';
 import { dateInputContainer, errorTextDate } from './tasks-date.js';
 import { subtaskList, subtaskInput } from './tasks-subtask.js';
-import { renderAssignedDropdown, clearAssignedContacts, filterContacts } from './tasks-contacts.js';
-import { assignedOptions, assignedToggle, arrowDownAssigned, arrowUpAssigned, assignedPlaceholder, assignedAvatars, getSelectedContacts } from './tasks-contacts.js';
+import {
+  renderAssignedDropdown,
+  clearAssignedContacts,
+  filterContacts,
+} from './tasks-contacts.js';
+import {
+  assignedOptions,
+  assignedToggle,
+  arrowDownAssigned,
+  arrowUpAssigned,
+  assignedPlaceholder,
+  assignedAvatars,
+  getSelectedContacts,
+} from './tasks-contacts.js';
 import { initResizeHandle } from './tasks-resize.js';
 
 const taskTitleInput = document.getElementById('task-title');
@@ -54,7 +78,12 @@ function init() {
 function addTask() {
   taskForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (!validateInputDate() || !validateInputCategory() || !validateInputTitle()) return;
+    if (
+      !validateInputDate() ||
+      !validateInputCategory() ||
+      !validateInputTitle()
+    )
+      return;
     let informartionsFromInput = addInformations();
     let object = createTaskObjekt(informartionsFromInput);
     await saveTask(object);
@@ -73,6 +102,7 @@ async function closeAndResetAfterSave() {
   document.getElementById('subtask-added').close();
   const dialog = document.getElementById('addTaskDialog');
   if (dialog) dialog.close();
+  document.body.style.overflow = '';
   clearTask();
   if (window.renderBoard) {
     await window.renderBoard();
@@ -99,7 +129,15 @@ function addInformations() {
     email: contact.email,
   }));
   let subtasks = Array.from(subtaskList.querySelectorAll('li'));
-  return { taskTitle, tastkDescription, taskCategory, taskDate, taskPrio, contact, subtasks };
+  return {
+    taskTitle,
+    tastkDescription,
+    taskCategory,
+    taskDate,
+    taskPrio,
+    contact,
+    subtasks,
+  };
 }
 
 /**
@@ -135,7 +173,11 @@ function setPriorityButtons() {
   activeButton.forEach((button) => {
     button.addEventListener('click', () => {
       activeButton.forEach((button) => {
-        button.classList.remove('selected-urgent', 'selected-medium', 'selected-low');
+        button.classList.remove(
+          'selected-urgent',
+          'selected-medium',
+          'selected-low',
+        );
       });
       button.classList.add('selected-' + button.dataset.prio);
     });
@@ -150,9 +192,11 @@ function setPriorityButtons() {
  */
 dropdownOptions.forEach((button) => {
   button.addEventListener('click', (event) => {
-    selectCategoryButton.querySelector('p').textContent = event.currentTarget.textContent;
+    selectCategoryButton.querySelector('p').textContent =
+      event.currentTarget.textContent;
     selectCategoryButton.dataset.value = event.currentTarget.value;
-    document.getElementById('category-hidden').value = event.currentTarget.value;
+    document.getElementById('category-hidden').value =
+      event.currentTarget.value;
     dropdownOptionsContainer.classList.add('d-none');
     document.getElementById('arrow-down-category').classList.remove('d-none');
     document.getElementById('arrow-up-category').classList.add('d-none');
@@ -200,14 +244,13 @@ function dropDownCloseListener() {
 function categoryCloseListener() {
   document.addEventListener('click', (event) => {
     if (!selectCategoryButton.contains(event.target)) {
-       if (selectCategoryButton.classList.contains('open')) {
+      if (selectCategoryButton.classList.contains('open')) {
         validateInputCategory();
       }
       dropdownOptionsContainer.classList.add('d-none');
       document.getElementById('arrow-down-category').classList.remove('d-none');
       document.getElementById('arrow-up-category').classList.add('d-none');
       selectCategoryButton.classList.remove('open');
-      
     }
   });
 }
@@ -376,8 +419,18 @@ function removeErrorMessage() {
 export function clearTask() {
   taskTitleInput.value = '';
   textarea.value = '';
-  document.querySelectorAll('.date-input-field').forEach((input) => (input.value = ''));
-  document.querySelectorAll('.prio-btn').forEach((btn) => btn.classList.remove('selected-urgent', 'selected-medium', 'selected-low'));
+  document
+    .querySelectorAll('.date-input-field')
+    .forEach((input) => (input.value = ''));
+  document
+    .querySelectorAll('.prio-btn')
+    .forEach((btn) =>
+      btn.classList.remove(
+        'selected-urgent',
+        'selected-medium',
+        'selected-low',
+      ),
+    );
   document.querySelector('.prio-btn--medium').classList.add('selected-medium');
   subtaskInput.value = '';
   subtaskList.innerHTML = '';
