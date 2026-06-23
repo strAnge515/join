@@ -30,10 +30,6 @@
   outline: none;
 }
 
-.edit-task-modal * {
-  box-sizing: border-box;
-}
-
 .edit-modal-top {
   display: flex;
   justify-content: flex-end;
@@ -116,9 +112,9 @@
   height: auto;
 }
 
-.edit-task-modal .task-form-subtask-list {
-  overflow: visible;
-  max-height: none;
+.task-form-subtask-list {
+  max-height: 140px;
+  overflow-y: scroll;
 }
 
 .edit-task-modal .subtask-left {

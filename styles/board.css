@@ -450,6 +450,16 @@ h2 {
   gap: 8px;
 }
 
+.info-item--subtasks {
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.info-item--assigned {
+  max-height: 165px;
+  overflow-y: scroll;
+}
+
 .info p {
   font-size: 20px;
 }
