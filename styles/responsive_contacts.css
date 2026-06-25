@@ -143,7 +143,7 @@
   .dialog-left {
     width: 100%;
     height: 46%;
-    min-height: 320px;
+    padding: 0 16px;
   }
   .close-icon {
     filter: brightness(0) invert(1);
